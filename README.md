@@ -47,7 +47,7 @@ After you have found it, use the `ui` command:
 yarn ui add button # or something else instead of button
 ```
 
-Use snake-case to write the component name
+Use snake-case to write the component name.
 
 ## Learn More
 
