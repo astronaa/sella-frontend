@@ -1,3 +1,6 @@
+import { Dayjs } from "dayjs";
+import { StaticImageData } from "next/image";
+
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
 export type StoreId = number;
@@ -20,15 +23,26 @@ export interface Store {
 export type ProductId = number;
 
 export interface Product {
-	id: ProductId,
-	name: string,
-	description: string | null,
-	shortDescription: string,
-	category: string,
-	previewImage: ImageEntry | null,
-	galleryImages: ImageEntry[],
+  id: ProductId,
+  name: string,
+  description: string | null,
+  shortDescription: string,
+  category: string,
+  previewImage: ImageEntry | null,
+  galleryImages: ImageEntry[],
 
-	price: number
+  price: number
+}
+
+export interface ProductCarousel {
+  images: StaticImageData[],
+  description: string,
+}
+
+export interface ProductRate {
+  total: number,
+  likes: number,
+  dislikes: number,
 }
 
 export type TransactionStatus = 'new' | 'paid'
@@ -58,4 +72,12 @@ export interface Sale {
 	product: Product,
 	user: { name: string },
 	transaction: Transaction
+}
+
+export interface ProductReview {
+	user: string,
+	avatar?: string,
+	quote: string,
+	rate: string,
+	date: string
 }

@@ -1,5 +1,20 @@
-import { Product } from "~/shared/api/model";
+import {
+	Product,
+	ProductCarousel,
+	ProductRate,
+	ProductReview,
+} from "~/shared/api/model";
 
 export interface ProductProp {
-	product: Product
+  product: Product
+}
+
+export type ProductCarouseProps = ProductCarousel;
+
+export interface ProductRateProps {
+  rates: ProductRate;
+}
+
+export interface ProductReviewProps {
+	review: ProductReview
 }

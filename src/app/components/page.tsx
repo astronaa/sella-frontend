@@ -9,7 +9,7 @@ import { Form } from "react-final-form";
 import { zodValidate } from "~/shared/lib/zod-final-form";
 import { Product, Store } from "~/shared/api/model";
 import { StoreCard } from "~/entities/store";
-import { ProductCard } from "~/entities/product";
+import { ProductCard, ProductCarousel } from "~/entities/product";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { Controls, DotLottiePlayer } from "@dotlottie/react-player";
 import { useDialogState } from "~/shared/lib/dialog";
@@ -21,7 +21,8 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { RadioGroup, ToggleGroup, Select, Tabs } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import { StoreReportFlow } from "~/features/store/report"
+import {ReportShopDialog, ReportSuccessDialog} from "~/features/report-shop";
+import Img from "~/pages/product/assets/image.avif";
 
 export default function Home() {
 	return (
@@ -103,6 +104,9 @@ export default function Home() {
 				<DotLottiePlayer className='size-[15rem]' src='/lottie/chicken.lottie' autoplay>
 					<Controls />
 				</DotLottiePlayer>
+			</div>
+			<div className="max-w-[760px]">
+				<ProductCarouselTest />
 			</div>
 		</main>
 	);
@@ -385,6 +389,20 @@ const SelectTest = () => {
 		</Select.Root>
 	)
 }
+
+const ProductCarouselTest = () => {
+	const images = [Img, Img, Img, Img, Img];
+
+	const description =
+    "This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time. This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.This could be the beginning of something special. Just a few more formalities, and we'll have your shop set up in no time.";
+
+	return (
+		<ProductCarousel.Root images={images} description={description}>
+			<ProductCarousel.Carousel />
+			<ProductCarousel.Description />
+		</ProductCarousel.Root>
+	);
+};
 
 function TabsTest() {
 	const options = [

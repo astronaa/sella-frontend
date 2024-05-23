@@ -27,10 +27,12 @@ const config = {
 				'black-06': '#0F0F0F',
 
 				'red-100': '#F44336',
-
 				'green-100': '#60B04D',
-
-				'error-100': '#E25728'
+				'error-100': '#E25728',
+        'yellow-100': '#FFDD00',
+        'white-100': '#FFFFFF',
+        'white-80': '#FFFFFF14',
+        'white-04': '#FFFFFF0A',
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],

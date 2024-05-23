@@ -1,0 +1,1 @@
+export { Component as Product } from './ui/Component';
