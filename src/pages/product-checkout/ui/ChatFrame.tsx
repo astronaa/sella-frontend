@@ -1,0 +1,67 @@
+import { HTMLAttributes } from "react";
+import { ProductCard, ProductProp } from "~/entities/product";
+import { cn } from "~/shared/lib/cn";
+import { Button } from "~/shared/ui/kit/button";
+import { Input } from "~/shared/ui/kit/input";
+import { ChatBubble, Message } from "./ChatBubble";
+
+const messages: Message[] = [
+	{
+		title: 'Sellame',
+		body: 'Feel free to ask any questions before ordering by messaging the seller. Keep all conversations within this chat window to stay protected from scams.',
+		imageUrl: '',
+		isSystem: true,
+		createdAt: new Date().toISOString()
+	},
+	{
+		title: 'Storefront Name',
+		body: `Feel free to ask any questions you have before placing an order by sending a message to the seller.
+
+		Please keep all conversations within this chat window and refrain from using external services like Telegram. 
+		
+		We won't be able to protect you in case of scams`,
+		imageUrl: '',
+		isSystem: false,
+		createdAt: new Date().toISOString()
+	},
+]
+
+export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
+
+	return (
+		<div
+			{...props}
+			className={cn(
+				'flex flex-col justify-between border border-secondary bg-white/[.04] rounded-[1.25rem] p-[1rem] gap-[1rem]',
+				className
+			)}
+		>
+			<ProductCard.Root
+				product={product}
+				className='sticky top-0 flex-row w-full max-w-full p-[0.5rem] gap-[1rem]'
+			>
+				<ProductCard.Image className='size-[5rem]' />
+				<ProductCard.Content className='px-0 gap-[0.5rem]'>
+					<ProductCard.Title />
+					<ProductCard.Price />
+				</ProductCard.Content>
+			</ProductCard.Root>
+
+			<div className='flex-grow size-full flex flex-col gap-[1rem]'>
+				<ChatBubble message={messages[0]} />
+				<ChatBubble message={messages[1]} />
+			</div>
+
+			<div className='flex gap-[1rem] w-full'>
+				<Input
+					className='w-full min-h-full rounded-[1.25rem]'
+					placeholder='Your Message'
+				/>
+
+				<Button className='rounded-[1.25rem] px-[1.5rem]'>
+					Send
+				</Button>
+			</div>
+		</div>
+	);
+}
