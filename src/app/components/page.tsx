@@ -18,10 +18,10 @@ import { AuthChannelsSetupTwoFaDialog } from "~/features/auth-channels";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { StoreCreateDialog } from "~/features/store/create";
 import { ProductCreateDialog } from "~/features/product/create";
-import { RadioGroup, ToggleGroup, Select } from "~/shared/ui/kit";
+import { RadioGroup, ToggleGroup, Select, Tabs } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import {ReportShopDialog, ReportSuccessDialog} from "~/features/report-shop";
+import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
 
 export default function Home() {
 	return (
@@ -87,6 +87,8 @@ export default function Home() {
 					</div>
 
 					<Pagination count={190} pageSize={10} siblingCount={1} defaultPage={1} />
+
+					<TabsTest />
 				</div>
 			</div>
 
@@ -332,7 +334,7 @@ function Setup2faDialogTest() {
 	);
 }
 
-export function RegisterFlowDialogTest() {
+function RegisterFlowDialogTest() {
 	const { isOpen, open, handleOpenChange } = useDialogState();
 
 	return (
@@ -412,4 +414,28 @@ const SelectTest = () => {
 			</Select.Positioner>
 		</Select.Root>
 	)
+}
+
+function TabsTest() {
+	const options = [
+		{ id: 'react', label: 'React' },
+		{ id: 'solid', label: 'Solid' },
+		{ id: 'vue', label: 'Vue' },
+	]
+
+	return (
+		<Tabs.Root defaultValue="react">
+			<Tabs.List>
+				{options.map((option) => (
+					<Tabs.Trigger key={option.id} value={option.id}>
+						{option.label}
+					</Tabs.Trigger>
+				))}
+				<Tabs.Indicator />
+			</Tabs.List>
+			<Tabs.Content value="react">Know React? Check out Solid!</Tabs.Content>
+			<Tabs.Content value="solid">Know Solid? Check out Svelte!</Tabs.Content>
+			<Tabs.Content value="vue">Know Vue? Check out React!</Tabs.Content>
+		</Tabs.Root>
+	);
 }

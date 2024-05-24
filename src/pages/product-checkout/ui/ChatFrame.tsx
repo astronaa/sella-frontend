@@ -30,22 +30,7 @@ const messages: Message[] = [
 		questions. Always wanted a case haha`,
 		isSystem: false,
 		createdAt: new Date().toISOString()
-	},
-	{
-		body: `Hello?`,
-		isSystem: false,
-		createdAt: new Date().toISOString()
-	},
-	{
-		body: `Hello?`,
-		isSystem: false,
-		createdAt: new Date().toISOString()
-	},
-	{
-		body: `Hello?`,
-		isSystem: false,
-		createdAt: new Date().toISOString()
-	},
+	}
 ]
 
 export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
