@@ -6,11 +6,13 @@ import { Tabs } from "~/shared/ui/kit";
 
 interface ComponentProps {
 	storeId: StoreId,
-	initialTab?: 'chat' | 'order-actions' | null
+	initialTab?: 'chat' | 'order-actions'
 }
 
 export async function Component({ storeId, initialTab = 'chat' }: ComponentProps) {
 	const product = await fetchProduct(storeId);
+
+	console.log(initialTab);
 
 	return (
 		<div className='w-full min-h-[44.875rem] max-w-content mx-auto px-[1rem]'>

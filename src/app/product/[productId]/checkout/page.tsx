@@ -11,7 +11,7 @@ export default function Page({ params, searchParams }: PageProps) {
 	return (
 		<PageProductCheckout
 			storeId={Number(params.productId)}
-			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : null}
+			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : undefined}
 		/>
 	);
 }
