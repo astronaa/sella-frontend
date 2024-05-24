@@ -3,7 +3,8 @@ import { ProductCard, ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 import { Button } from "~/shared/ui/kit/button";
 import { Input } from "~/shared/ui/kit/input";
-import { ChatBubble, Message } from "./ChatBubble";
+import { Message } from "./ChatBubble";
+import { ChatMessagesStream } from "./ChatMessagesStream";
 
 const messages: Message[] = [
 	{
@@ -21,6 +22,27 @@ const messages: Message[] = [
 		
 		We won't be able to protect you in case of scams`,
 		imageUrl: '',
+		isSystem: false,
+		createdAt: new Date().toISOString()
+	},
+	{
+		body: `Hi, thank you. I don't have any
+		questions. Always wanted a case haha`,
+		isSystem: false,
+		createdAt: new Date().toISOString()
+	},
+	{
+		body: `Hello?`,
+		isSystem: false,
+		createdAt: new Date().toISOString()
+	},
+	{
+		body: `Hello?`,
+		isSystem: false,
+		createdAt: new Date().toISOString()
+	},
+	{
+		body: `Hello?`,
 		isSystem: false,
 		createdAt: new Date().toISOString()
 	},
@@ -47,10 +69,10 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 				</ProductCard.Content>
 			</ProductCard.Root>
 
-			<div className='flex-grow size-full flex flex-col gap-[1rem]'>
-				<ChatBubble message={messages[0]} />
-				<ChatBubble message={messages[1]} />
-			</div>
+			<ChatMessagesStream
+				initialMessages={messages}
+				className='flex-grow overflow-y-auto'
+			/>
 
 			<div className='flex gap-[1rem] w-full'>
 				<Input
