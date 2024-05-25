@@ -98,7 +98,8 @@ const styles = tv(
 				className: [
 					'bg-red-100/[.08] text-red-100',
 					'hocus:bg-red-100/[.16]',
-					'data-[selected]:bg-red-100 data-[selected]:hocus:bg-red-100/80 data-[selected]:text-white'
+					'data-[selected]:bg-red-100 data-[selected]:hocus:bg-red-100/80 data-[selected]:text-white',
+					'data-[state=on]:bg-red-100 data-[state=on]:hocus:bg-red-100/80 data-[state=on]:text-white'
 				]
 			},
 			{
@@ -107,7 +108,8 @@ const styles = tv(
 				className: [
 					'bg-green-100/[.08] text-green-100',
 					'hocus:bg-green-100/[.16]',
-					'data-[selected]:bg-green-100 data-[selected]:hocus:bg-green-100/80 data-[selected]:text-white'
+					'data-[selected]:bg-green-100 data-[selected]:hocus:bg-green-100/80 data-[selected]:text-white',
+					'data-[state=on]:bg-green-100 data-[state=on]:hocus:bg-green-100/80 data-[state=on]:text-white'
 				]
 			},
 		]

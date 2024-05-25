@@ -5,10 +5,11 @@ import { RadioGroup } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
 
-type ComponentProps = HTMLAttributes<HTMLDivElement> & ProductProp;
+type CardProps = HTMLAttributes<HTMLDivElement> & ProductProp & {
+	onActionFulfilled?: () => void;	
+};
 
-export function Component({ product, className, ...props }: ComponentProps) {
-
+export function Card({ product, className, onActionFulfilled, ...props }: CardProps) {
 	return (
 		<div {...props} className={cn('flex flex-col p-[1rem] gap-[1rem] rounded-[1.25rem] border border-secondary', className)}>
 			<Heading size='xs'>Pay for the order</Heading>
@@ -36,7 +37,10 @@ export function Component({ product, className, ...props }: ComponentProps) {
 				</RadioGroup.Item>
 			</RadioGroup.Root>
 
-			<Button className='w-full' size='xl'>
+			<Button 
+				size='xl' 
+				onClick={onActionFulfilled}
+			>
 				Pay Now
 			</Button>
 		</div>

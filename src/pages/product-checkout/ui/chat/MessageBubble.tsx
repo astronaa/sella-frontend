@@ -11,16 +11,16 @@ export interface Message {
 	createdAt: string
 }
 
-interface ChatBubbleProps extends HTMLAttributes<HTMLDivElement> {
+interface ChatMessageBubbleProps extends HTMLAttributes<HTMLDivElement> {
 	message: Message
 }
 
-export function ChatBubble({ message, className, ...props }: ChatBubbleProps) {
+export function ChatMessageBubble({ message, className, ...props }: ChatMessageBubbleProps) {
 	return (
 		<div
 			{...props}
 			className={cn(
-				'flex gap-[1rem] p-[1rem] pe-[3.25rem] rounded-[1.25rem] border border-secondary relative max-w-[31.25rem]',
+				'flex gap-[1rem] p-[1rem] pe-[3.25rem] rounded-[1.25rem] border border-secondary bg-white/[.02] relative max-w-[31.25rem]',
 				className
 			)}
 		>

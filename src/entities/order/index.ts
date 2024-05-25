@@ -1,0 +1,1 @@
+export { type OrderProp } from './ui/Prop';

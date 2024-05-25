@@ -1,10 +1,11 @@
 import { HTMLAttributes } from "react";
-import { ProductCard, ProductProp } from "~/entities/product";
+import { ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 import { Button } from "~/shared/ui/kit/button";
 import { Input } from "~/shared/ui/kit/input";
-import { Message } from "./ChatBubble";
-import { ChatMessagesStream } from "./ChatMessagesStream";
+import { Message } from "./MessageBubble";
+import { ChatMessagesStream } from "./MessagesStream";
+import { PageProductCard } from "../PageProductCard";
 
 const messages: Message[] = [
 	{
@@ -34,7 +35,6 @@ const messages: Message[] = [
 ]
 
 export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
-
 	return (
 		<div
 			{...props}
@@ -43,16 +43,10 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 				className
 			)}
 		>
-			<ProductCard.Root
-				product={product}
-				className='sticky top-0 flex-row w-full max-w-full p-[0.5rem] gap-[1rem]'
-			>
-				<ProductCard.Image className='size-[5rem]' />
-				<ProductCard.Content className='px-0 gap-[0.5rem]'>
-					<ProductCard.Title />
-					<ProductCard.Price />
-				</ProductCard.Content>
-			</ProductCard.Root>
+			<PageProductCard 
+				product={product} 
+				className='w-full max-w-full max-lg:hidden'
+			/>
 
 			<ChatMessagesStream
 				initialMessages={messages}

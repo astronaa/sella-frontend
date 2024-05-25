@@ -27,3 +27,5 @@ export {
 	Label, LabelOrError,
 	Description, ErrorText
 } from './TextControl'
+
+export const Item = ToggleGroup.Item;

@@ -1,1 +1,1 @@
-export { Component as OrderCreateCard } from './ui/Card';
+export { Card as OrderCreateCard } from './ui/Card';

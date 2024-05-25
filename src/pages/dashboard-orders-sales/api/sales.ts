@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { Product, Sale } from "~/shared/api/model";
 
 const product: Product = {
@@ -34,7 +33,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: '-',
 					totalPaid: 328,
 					transactionUrl: '',
-					createdAt: dayjs('May 3, 4:27 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -48,7 +47,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: '-',
 					totalPaid: 279,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 4:11 PM 2024'),
+					createdAt: new Date('May 2, 4:11 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -62,7 +61,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 328,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 4:10 PM 2024'),
+					createdAt: new Date('May 2, 4:10 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -76,7 +75,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 279,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 1:42 PM 2024'),
+					createdAt: new Date('May 2, 1:42 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -90,7 +89,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 328,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -104,7 +103,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 279,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -118,7 +117,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 328,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -132,7 +131,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 279,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -146,7 +145,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 328,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			},
 			{
@@ -160,7 +159,7 @@ export async function fetchSales(): Promise<SalesResponse> {
 					fulfillmentStatus: 'fulfilled',
 					totalPaid: 279,
 					transactionUrl: '',
-					createdAt: dayjs('May 2, 3:42 PM 2024'),
+					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 				}
 			}
 		],
