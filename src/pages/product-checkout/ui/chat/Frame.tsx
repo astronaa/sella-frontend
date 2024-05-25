@@ -39,7 +39,8 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 		<div
 			{...props}
 			className={cn(
-				'flex flex-col justify-between border border-secondary bg-white/[.04] rounded-[1.25rem] p-[1rem] gap-[1rem]',
+				'flex flex-col justify-between border border-secondary bg-white/[.04]',
+				'rounded-[1.25rem] p-[1rem] gap-[1rem] h-[44.875rem]',
 				className
 			)}
 		>

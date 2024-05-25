@@ -36,7 +36,7 @@ export function PageLayout({ children, product, initialTab = 'chat' }: PropsWith
 				{childrenArr[0] && (
 					<Tabs.Content
 						value='chat'
-						className='lg:!flex size-full h-[44.875rem]'
+						className='lg:!flex size-full'
 					>
 						{childrenArr[0]}
 					</Tabs.Content>
