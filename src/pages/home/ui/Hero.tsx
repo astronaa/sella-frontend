@@ -1,11 +1,11 @@
 import Image from "next/image";
 import ImageHero from "../assets/hero.webp";
 
-import { ActionControls } from "~/features/ActionControls";
 import { FeaturesList } from "./Features";
 import { Background } from "./SectionBackground";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
+import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
 export function Hero() {
 	return (
@@ -20,7 +20,7 @@ export function Hero() {
 					</Heading>
 
 					<FeaturesList />
-					<ActionControls />
+					<StorefrontOpenControls />
 				</div>
 
 				<VideoAnimationPlayer

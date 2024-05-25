@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, IconButton } from "~/shared/ui/kit/button";
+import { Button } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { PinInput } from "~/shared/ui/kit/pin-input";
 import { VTextControl } from "~/shared/ui/validation-inputs";
@@ -21,7 +21,7 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { RadioGroup, ToggleGroup, Select, Tabs } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
+import { StoreReportFlow } from "~/features/store/report"
 
 export default function Home() {
 	return (
@@ -67,7 +67,7 @@ export default function Home() {
 						<ProductCreateDialogTest />
 						<ProductManageDialogTest />
 						<RegisterFlowDialogTest />
-						<ReportShopDialogTest />
+						<StoreReportFlow />
 					</div>
 				</div>
 			</div>
@@ -347,36 +347,6 @@ function RegisterFlowDialogTest() {
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 			/>
-		</>
-	);
-}
-
-
-function ReportShopDialogTest() {
-	const { isOpen, open, handleOpenChange } = useDialogState();
-	const { isOpen: isOpenSucess, toggle: toggleSucess } = useDialogState();
-
-	return (
-		<>
-			<IconButton
-				size='lg'
-				colorPalette='gray'
-				aria-label="Report"
-				onClick={open}
-			>
-				<Icons.AlertOctagon />
-			</IconButton>
-
-			<ReportShopDialog
-				open={isOpen}
-				onOpenChange={handleOpenChange}
-				onActionFulfilled={toggleSucess}
-			/>
-
-			<ReportSuccessDialog open={isOpenSucess} onContinue={() => {
-				toggleSucess()
-				handleOpenChange({ open: false })
-			}} />
 		</>
 	);
 }

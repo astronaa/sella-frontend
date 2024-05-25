@@ -3,10 +3,10 @@
 import { useDialogState } from "~/shared/lib/dialog";
 import { IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
-import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
+import { ReportStoreDialog } from "./ReportStoreDialog";
+import { ReportSuccessDialog } from "./ReportSuccessDialog";
 
-
-export function ReportShop() {
+export function ReportFlow() {
 	const { isOpen, open, handleOpenChange } = useDialogState();
 	const { isOpen: isOpenSucess, toggle: toggleSucess } = useDialogState();
 
@@ -21,16 +21,19 @@ export function ReportShop() {
 				<Icons.AlertOctagon />
 			</IconButton>
 
-			<ReportShopDialog
+			<ReportStoreDialog
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 				onActionFulfilled={toggleSucess}
 			/>
 
-			<ReportSuccessDialog open={isOpenSucess} onContinue={() => {
-				toggleSucess()
-				handleOpenChange({ open: false })
-			}} />
+			<ReportSuccessDialog
+				open={isOpenSucess}
+				onContinue={() => {
+					toggleSucess()
+					handleOpenChange({ open: false })
+				}}
+			/>
 		</>
 	);
 }

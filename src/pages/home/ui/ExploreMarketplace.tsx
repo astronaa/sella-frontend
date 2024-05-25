@@ -2,7 +2,7 @@
 
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCard, StoreLink } from "~/entities/store";
-import { SellaMeTrustedInfluencers } from "~/widgets/sella-me-trusted-influencers";
+import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { storeData } from "~/shared/api/store";
 
 export function ExploreMarketPlace() {
@@ -32,7 +32,7 @@ export function ExploreMarketPlace() {
 						))}
 					</div>
 				</div>
-				<SellaMeTrustedInfluencers />
+				<StorefrontOpenBanner />
 			</div>
 		</div>
 	);
