@@ -1,5 +1,6 @@
-import { ProductRate, ReviewCard } from "~/entities/product";
+import { ProductRate } from "~/entities/product";
 import { Icons } from "~/shared/ui/icons";
+import { PreviewImage } from "~/shared/ui/image";
 import { Select } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 
@@ -17,6 +18,7 @@ const options = [
 const reviews = [
 	{
 		user: "Mohammad Haroon",
+		avatar: null,
 		quote:
       "This product is amazing!!! I use it every day and I can't imagine my life without it. It's the best product I've ever used and I highly recommend it to everyone.",
 		rate: "like",
@@ -24,6 +26,7 @@ const reviews = [
 	},
 	{
 		user: "Andrew Lawton",
+		avatar: null,
 		quote:
       "The car is great, customer service is the worst. They are robots machines , who think everyone is stupid and we must have a phd in Tesla. Very rude people.",
 		rate: "dislike",
@@ -31,6 +34,7 @@ const reviews = [
 	},
 	{
 		user: "Mehmet Ogul",
+		avatar: null,
 		quote:
       "I recently purchased a [product] from [Store Name], and I couldn’t be happier with my online shopping experience. Their website was user-friendly, making it easy to find the perfect item. The checkout process was smooth, and I received my order promptly. The [product] arrived in excellent condition, exactly as described on their website. I’m thrilled with the quality and will definitely shop at [Store Name] again in the future. Highly recommended!",
 		rate: "like",
@@ -75,14 +79,36 @@ export function Reviews() {
 				</Select.Root>
 			</div>
 			{reviews.map((review, index) => (
-				<ReviewCard.Root review={review} key={index}>
+				<div className="flex flex-col px-4 py-6 gap-6 rounded-[20px] border border-white-04" key={index}>
 					<div className="flex gap-2 items-center">
-						<ReviewCard.Avatar className="size-8"/>
-						<ReviewCard.Reviewer />
+						<PreviewImage
+							alt={`Image of ${review.user}`}
+							src={review.avatar}
+							className="size-8 rounded-full flex-shrink-0 shadow-sm"
+						/>
+						<div className="text-white-100 text-[18px]/[23.4px] font-semibold">
+							{review.user}
+						</div>
 					</div>
-					<ReviewCard.Quote />
-					<ReviewCard.Rate />
-				</ReviewCard.Root>
+					<div className="text-black-74 text-[16px]/[20.8px] font-normal">
+						{review.quote}
+					</div>
+					<div className="flex items-center gap-2">
+						{review.rate === "like" ? (
+							<Button variant="subtle" className="pointer-events-none size-[38px] min-w-[38px] px-0 text-green-100 border border-green-100 bg-green-100/[.06]">
+								<Icons.Likes className="size-[16px]" />
+							</Button>
+						) :
+							review.rate === "dislike" ? (
+								<Button variant="subtle" className="pointer-events-none size-[38px] min-w-[38px] px-0 text-red-100 border border-red-100 bg-red-100/[.08]">
+									<Icons.Dislikes className="size-[16px]" />
+								</Button>
+							) : null}
+						<div className="text-[16px]/[20.8px] font-normal text-black-60">
+							{review.date}
+						</div>
+					</div>
+				</div>
 			))}
 			<Button colorPalette="gray">
 				Show More

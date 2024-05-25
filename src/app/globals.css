@@ -36,3 +36,7 @@ body {
   color: white !important;
   @apply text-accent-100;
 }
+
+span[data-state=checked] .pay-option-label {
+  @apply text-white;
+}

@@ -15,8 +15,9 @@ const styles = tv(
 			label: 'radioGroup__label',
 			item: 'radioGroup__item select-none',
 			itemText: [
-				'text-white',
-				'data-[disabled]:text-white/25'
+				'text-black-60',
+				'data-[disabled]:text-white/25',
+				'data-[state=checked]:text-yellow-100'
 			],
 			itemControl: [
 				'bg-white/[.08] rounded-full border outline outline-offset-[-0.25rem]',
