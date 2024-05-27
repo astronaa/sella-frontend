@@ -21,7 +21,7 @@ export function VideoAnimationPlayer({ src, srcHevc, children, ...props }: Video
 		<div {...props}>
 			<video
 				ref={videoRef}
-				autoPlay loop muted
+				autoPlay loop muted playsInline
 				className={cn('size-full', !videoLoaded && 'opacity-0 size-0')}
 				onTimeUpdate={() => setVideoLoaded(true)}
 			>
