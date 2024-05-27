@@ -15,7 +15,7 @@ export function Link({ store: s, className, ...props }: LinkProps) {
 
 	return (
 		<NextLink 
-			href={`/store/${store.id}`} 
+			href={`/stores/${store.id}`} 
 			{...props} 
 			className={cn('transition [&:hover>*]:bg-white/[.02]', className)}
 		/>

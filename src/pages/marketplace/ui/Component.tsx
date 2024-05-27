@@ -1,6 +1,6 @@
 import { ExploreMarketplace } from "~/pages/marketplace/ui/ExploreMarketplace";
-import { SellaMeTrustedInfluencers } from "~/widgets/sella-me-trusted-influencers";
 import { fetchStores } from "~/pages/store/api";
+import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 
 export async function Component() {
 	const stores = await fetchStores();
@@ -12,7 +12,7 @@ export async function Component() {
 				initialData={stores}
 			/>
 
-			<SellaMeTrustedInfluencers
+			<StorefrontOpenBanner
 				className='max-w-content m-auto'
 			/>
 		</div>

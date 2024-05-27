@@ -3,9 +3,9 @@ import ImageHero from "../assets/hero.webp";
 import { Background } from "./SectionBackground";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
-import { ActionControls } from "~/features/ActionControls";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
+import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
 export function CreateStore() {
 	return (
@@ -26,7 +26,7 @@ export function CreateStore() {
 
 					<CreateStoreFeatures />
 
-					<ActionControls />
+					<StorefrontOpenControls />
 				</div>
 
 				<VideoAnimationPlayer

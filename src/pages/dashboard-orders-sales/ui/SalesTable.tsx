@@ -11,6 +11,7 @@ import {
 	TransactionActionButton
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
+import { dayJs } from "~/shared/lib/dayjs";
 
 const config = [
 	{ width: '3.75rem' },
@@ -56,7 +57,7 @@ export function SalesTable({ initialData }: { initialData: SalesResponse }) {
 							<FlexTable.Row key={o.id}>
 								<span>{index + 1}</span>
 								<span>
-									{o.transaction.createdAt.format('MMM DD, hh:mm A')}
+									{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
 								</span>
 								<span className='text-white'>
 									<ProductRow product={o.product} />

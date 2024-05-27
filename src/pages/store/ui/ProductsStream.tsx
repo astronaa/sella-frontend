@@ -9,6 +9,7 @@ import { ProductManageDialog } from "~/features/product/manage";
 import { ProductCard, ProductPrice } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
+import { BleedingContainer } from "./BleedingContainer";
 
 interface ProductsStreamProps {
 	initialData: Product[]
@@ -22,9 +23,11 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
 			{editModeEnabled ? (
-				<div className='w-full max-w-full overflow-x-auto'>
-					<ProductsEditTable products={products} />
-				</div>
+				<BleedingContainer>
+					<div className='w-full max-w-full overflow-x-auto'>
+						<ProductsEditTable products={products} />
+					</div>
+				</BleedingContainer>
 			) : (
 				<ProductsGrid products={products} />
 			)}
@@ -71,7 +74,7 @@ const tableConfig = [
 
 function ProductsEditTable({ products }: { products: Product[] }) {
 	return (
-		<FlexTable.Root className='w-[max(100%,60rem)]' config={tableConfig}>
+		<FlexTable.Root className='w-[max(100%,60rem)] px-[1rem]' config={tableConfig}>
 			<FlexTable.Head>
 				<span>#</span>
 				<span>Product</span>

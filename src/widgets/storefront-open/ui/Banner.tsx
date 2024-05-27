@@ -1,8 +1,8 @@
-import { ActionControls } from "~/features/ActionControls";
 import { cn } from "~/shared/lib/cn";
 import { HTMLAttributes } from "react";
+import { ActionControls } from "./ActionControls";
 
-export function SellaMeTrustedInfluencers({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function Banner({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
 			className={cn(

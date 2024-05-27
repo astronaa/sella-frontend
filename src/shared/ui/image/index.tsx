@@ -25,7 +25,7 @@ export function PreviewImage({ src, className, ...props }: PreviewImageProps) {
 				/>
 			) : (
 				<Icons.Image
-					className='size-[max(1rem,40%)] flex-shrink-0'
+					className='size-[max(1.5rem,40%)] flex-shrink-0'
 				/>
 			)}
 		</div>

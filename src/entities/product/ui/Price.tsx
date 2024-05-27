@@ -1,3 +1,5 @@
+'use client';
+
 import { HTMLArkProps, ark } from "@ark-ui/react";
 import { useProductContext } from "./context";
 import { Icons } from "~/shared/ui/icons";

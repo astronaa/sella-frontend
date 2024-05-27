@@ -1,4 +1,3 @@
-import { Heading } from "~/shared/ui/heading";
 import { cn } from "~/shared/lib/cn";
 import { Carousel } from "~/pages/marketplace/ui/Carousel";
 import { HTMLAttributes } from "react";
@@ -6,6 +5,7 @@ import { Store } from "~/shared/api/model";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { resolvedTwConfig } from "~/shared/lib/resolved-tw-config";
+import { Heading } from "~/shared/ui/kit/heading";
 
 type ExploreMarketplaceProps = HTMLAttributes<HTMLDivElement> & {
 	initialData: Store[]
@@ -22,7 +22,7 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 		>
 			<div className="flex flex-col w-full gap-[3rem]">
 				<div className="space-y-4 max-w-content m-auto w-full">
-					<Heading className="text-[2.625rem]">
+					<Heading>
 						Explore marketplace
 					</Heading>
 					<div className="text-black-60 text-balance w-1/2 max-md:w-full max-md:text-wrap">

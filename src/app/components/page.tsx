@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, IconButton } from "~/shared/ui/kit/button";
+import { Button } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { PinInput } from "~/shared/ui/kit/pin-input";
 import { VTextControl } from "~/shared/ui/validation-inputs";
@@ -18,10 +18,10 @@ import { AuthChannelsSetupTwoFaDialog } from "~/features/auth-channels";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { StoreCreateDialog } from "~/features/store/create";
 import { ProductCreateDialog } from "~/features/product/create";
-import { RadioGroup, ToggleGroup, Select } from "~/shared/ui/kit";
+import { RadioGroup, ToggleGroup, Select, Tabs } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import {ReportShopDialog, ReportSuccessDialog} from "~/features/report-shop";
+import { StoreReportFlow } from "~/features/store/report"
 
 export default function Home() {
 	return (
@@ -67,7 +67,7 @@ export default function Home() {
 						<ProductCreateDialogTest />
 						<ProductManageDialogTest />
 						<RegisterFlowDialogTest />
-						<ReportShopDialogTest />
+						<StoreReportFlow />
 					</div>
 				</div>
 			</div>
@@ -87,6 +87,8 @@ export default function Home() {
 					</div>
 
 					<Pagination count={190} pageSize={10} siblingCount={1} defaultPage={1} />
+
+					<TabsTest />
 				</div>
 			</div>
 
@@ -332,7 +334,7 @@ function Setup2faDialogTest() {
 	);
 }
 
-export function RegisterFlowDialogTest() {
+function RegisterFlowDialogTest() {
 	const { isOpen, open, handleOpenChange } = useDialogState();
 
 	return (
@@ -345,36 +347,6 @@ export function RegisterFlowDialogTest() {
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 			/>
-		</>
-	);
-}
-
-
-function ReportShopDialogTest() {
-	const { isOpen, open, handleOpenChange } = useDialogState();
-	const { isOpen: isOpenSucess, toggle: toggleSucess } = useDialogState();
-
-	return (
-		<>
-			<IconButton
-				size='lg'
-				colorPalette='gray'
-				aria-label="Report"
-				onClick={open}
-			>
-				<Icons.AlertOctagon />
-			</IconButton>
-
-			<ReportShopDialog
-				open={isOpen}
-				onOpenChange={handleOpenChange}
-				onActionFulfilled={toggleSucess}
-			/>
-
-			<ReportSuccessDialog open={isOpenSucess} onContinue={() => {
-				toggleSucess()
-				handleOpenChange({ open: false })
-			}} />
 		</>
 	);
 }
@@ -412,4 +384,28 @@ const SelectTest = () => {
 			</Select.Positioner>
 		</Select.Root>
 	)
+}
+
+function TabsTest() {
+	const options = [
+		{ id: 'react', label: 'React' },
+		{ id: 'solid', label: 'Solid' },
+		{ id: 'vue', label: 'Vue' },
+	]
+
+	return (
+		<Tabs.Root defaultValue="react">
+			<Tabs.List>
+				{options.map((option) => (
+					<Tabs.Trigger key={option.id} value={option.id}>
+						{option.label}
+					</Tabs.Trigger>
+				))}
+				<Tabs.Indicator />
+			</Tabs.List>
+			<Tabs.Content value="react">Know React? Check out Solid!</Tabs.Content>
+			<Tabs.Content value="solid">Know Solid? Check out Svelte!</Tabs.Content>
+			<Tabs.Content value="vue">Know Vue? Check out React!</Tabs.Content>
+		</Tabs.Root>
+	);
 }

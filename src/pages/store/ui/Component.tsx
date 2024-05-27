@@ -6,9 +6,9 @@ import { StoreManageDialog } from "~/features/store/manage";
 import { ProductsStream } from "./ProductsStream";
 import { EditModeProvider } from "../model/edit-mode";
 import { ToggleEditModeButton } from "./ToggleEditModeButton";
-import { SellaMeTrustedInfluencers } from "~/widgets/sella-me-trusted-influencers";
+import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
-import { ReportShop } from "~/features/report-shop";
+import { StoreReportFlow } from "~/features/store/report";
 
 export async function Component({ storeId }: { storeId: StoreId }) {
 	const store = await fetchStore(storeId);
@@ -44,7 +44,7 @@ export async function Component({ storeId }: { storeId: StoreId }) {
 						/>
 						<ToggleEditModeButton />
 
-						<ReportShop />
+						<StoreReportFlow />
 					</div>
 				</div>
 
@@ -59,7 +59,7 @@ export async function Component({ storeId }: { storeId: StoreId }) {
 				storeId={storeId}
 			/>
 
-			<SellaMeTrustedInfluencers />
+			<StorefrontOpenBanner />
 		</div>
 	);
 }

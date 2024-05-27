@@ -1,5 +1,3 @@
-import { Dayjs } from "dayjs";
-
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
 export type StoreId = number;
@@ -41,7 +39,7 @@ export interface Transaction {
 	fulfillmentStatus: 'fulfilled' | '-',
 	totalPaid: number,
 	transactionUrl: string,
-	createdAt: Dayjs
+	createdAt: string
 }
 
 export type OrderId = number;
