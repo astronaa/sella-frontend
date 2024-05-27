@@ -1,0 +1,69 @@
+import { create } from 'zustand'
+import { getAccount, signMessage } from '@wagmi/core'
+import { wagmiConfig } from '../config/rainbow-kit';
+import { apiClient } from '../api/client';
+
+type ModalTypes =
+	| 'wallet-connect'
+	| 'register-twitter'
+	| 'register-profile'
+	| 'register-success'
+	| '2fa'
+	| '2fa-success'
+	| 'create-store'
+	| 'create-store-success'
+	| 'create-product'
+	| 'all-set'
+
+export interface StoreType {
+	open: boolean,
+	setOpen: (open: boolean) => void,
+	currentModal: ModalTypes,
+	openModal: (modal: ModalTypes) => () => void,
+	startFlow: () => Promise<void>,
+	hasTwitter: boolean,
+	hasUsername: boolean
+}
+
+export const useRegisterFlow = create<StoreType>(set => ({
+	open: false,
+	setOpen: open => set({ open }),
+	currentModal: 'register-twitter',
+	openModal: modal => () => set({ currentModal: modal }),
+	hasTwitter: false,
+	hasUsername: false,
+
+	async startFlow() {
+		const { address } = getAccount(wagmiConfig);
+		if (!address) {
+			set({ open: true, currentModal: 'wallet-connect' });
+			return;
+		}
+
+		const { data: nonceResponse } = await apiClient.auth.generateNonce({ address });
+		if (!nonceResponse)
+			return;
+
+		const { data: loginResponse } = await apiClient.auth.login({
+			address,
+			signature: await signMessage(wagmiConfig, {
+				message: `By signing this message you accept Privacy Policy and Terms of Usage | ${nonceResponse.nonce}`
+			})
+		});
+
+		if (!loginResponse)
+			return;
+
+		set({
+			hasTwitter: loginResponse.hasTwitter,
+			hasUsername: loginResponse.hasUsername
+		})
+
+		if (!loginResponse.hasTwitter)
+			set({ open: true, currentModal: 'register-twitter' });
+		else if (!loginResponse.hasUsername)
+			set({ open: true, currentModal: 'register-profile' });
+		else
+			set({ open: true, currentModal: '2fa' });
+	}
+}));

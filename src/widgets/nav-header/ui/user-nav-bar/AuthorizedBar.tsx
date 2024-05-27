@@ -1,0 +1,52 @@
+'use client';
+
+import { HTMLAttributes } from "react";
+import { cn } from "~/shared/lib/cn";
+import { truncateStrFromMiddle } from "~/shared/lib/truncate";
+import { Icons } from "~/shared/ui/icons";
+import { IconButton } from "~/shared/ui/kit/button";
+import { NavIconButton } from "./NavIconButton";
+import { useUserGetQuery } from "~/entities/user";
+import { useAccount } from "wagmi";
+
+export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	const { data: user } = useUserGetQuery();
+	const { address } = useAccount();
+
+	return (
+		<div {...props}
+			className={cn(
+				'flex gap-[0.75rem]',
+				'max-lg:flex-col max-lg:border-t max-lg:border-t-secondary max-lg:pt-[1.5rem] max-lg:px-[1.25rem]',
+				className
+			)}
+		>
+			<div className='flex flex-col items-end justify-between text-[0.8125rem] max-lg:flex-row max-lg:text-[1.125rem]'>
+				<span>{user?.username}</span>
+				<span className='text-black-40'>
+					{address && truncateStrFromMiddle(address)}
+				</span>
+			</div>
+
+			<div className='flex gap-[0.75rem] max-lg:[&>*]:w-full max-lg:[&>*]:h-[3.4375rem]'>
+				<NavIconButton
+					href='/dashboard/sales'
+					activeOnHrefs={['/dashboard/orders']}
+				>
+					<Icons.Package />
+				</NavIconButton>
+
+				<NavIconButton href='/dashboard' end>
+					<Icons.Building />
+				</NavIconButton>
+
+				<IconButton
+					className='text-accent-100'
+					colorPalette='gray' size='sm'
+				>
+					<Icons.Settings />
+				</IconButton>
+			</div>
+		</div>
+	);
+}

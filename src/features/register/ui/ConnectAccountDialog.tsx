@@ -4,11 +4,11 @@ import { Icons } from '~/shared/ui/icons';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 
-type ConnectAccountDialogProps = Dialog.RootProps & {
+type ConnectTwitterDialogProps = Dialog.RootProps & {
 	onConnectClick: () => void;
 };
 
-export function ConnectAccountDialog({ onConnectClick, ...props }: ConnectAccountDialogProps) {
+export function ConnectTwitterDialog({ onConnectClick, ...props }: ConnectTwitterDialogProps) {
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />

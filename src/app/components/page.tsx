@@ -13,7 +13,7 @@ import { ProductCard } from "~/entities/product";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { Controls, DotLottiePlayer } from "@dotlottie/react-player";
 import { useDialogState } from "~/shared/lib/dialog";
-import { RegisterDialog } from "~/features/register";
+import { RegisterSetupProfileDialog } from "~/features/register";
 import { AuthChannelsSetupTwoFaDialog } from "~/features/auth-channels";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { StoreCreateDialog } from "~/features/store/create";
@@ -236,7 +236,7 @@ function RegisterDialogTest() {
 				Register
 			</Button>
 
-			<RegisterDialog
+			<RegisterSetupProfileDialog
 				open={isOpen} onOpenChange={handleOpenChange}
 			/>
 		</>

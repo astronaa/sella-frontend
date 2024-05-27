@@ -1,52 +1,66 @@
+'use client';
+
 import { useState } from 'react';
 import { Dialog } from '~/shared/ui/kit';
 import { RegisterSuccessDialog } from './RegisterSuccessDialog';
 import { TwoFaSuccessDialog } from './TwoFaSuccessDialog';
 import { Button } from '~/shared/ui/kit/button';
-
-import { RegisterDialog } from '~/features/register';
+import { RegisterSetupProfileDialog, RegisterConnectTwitterDialog } from '~/features/register';
 import { StoreCreateDialog } from '~/features/store/create';
 import { AuthChannelsSetupTwoFaDialog } from '~/features/auth-channels';
 import { CreateStoreSuccessDialog } from './CreateStoreSuccessDialog';
 import { Store } from '~/shared/api/model';
 import { ProductCreateDialog } from '~/features/product/create';
 import { AllSetDialog } from './AllSetDialog';
-
-type ModalTypes =
-	'register'
-	| 'register-success'
-	| '2fa'
-	| '2fa-success'
-	| 'create-store'
-	| 'create-store-success'
-	| 'create-product'
-	| 'all-set'
+import { useRegisterFlow } from '~/shared/model/register-flow';
+import { useWalletGuard } from './useWalletGuard';
 
 export function FlowDialog(props: Dialog.RootProps) {
-	const [currentModal, setCurrentModal] = useState<ModalTypes>('register');
+	const open = useRegisterFlow(s => s.open);
+	const setOpen = useRegisterFlow(s => s.setOpen);
+	const currentModal = useRegisterFlow(s => s.currentModal);
+	const openModalAction = useRegisterFlow(s => s.openModal);
+	const hasUsername = useRegisterFlow(s => s.hasUsername);
 
-	const isOpen = (modal: ModalTypes) => !!props?.open && currentModal == modal;
-	const openModalAction = (modal: ModalTypes) => () => setCurrentModal(modal);
+	const isOpen = (modal: typeof currentModal) =>
+		(!!props?.open || open) && currentModal == modal;
 
 	const [createdStore, setCreatedStore] = useState<Store | null>(null);
 
+	const onOpenChange: Dialog.RootProps['onOpenChange'] = details => {
+		props?.onOpenChange?.(details);
+		setOpen(details.open);
+	}
+
+	useWalletGuard();
+
 	return (
 		<>
-			<RegisterDialog
+			<RegisterConnectTwitterDialog
 				{...props}
-				open={isOpen('register')}
+				open={isOpen('register-twitter')}
+				onOpenChange={onOpenChange}
+				onConnectClick={openModalAction(hasUsername ? 'register-success' : 'register-profile')}
+			/>
+
+			<RegisterSetupProfileDialog
+				{...props}
+				open={isOpen('register-profile')}
+				onOpenChange={onOpenChange}
 				onActionFulfilled={openModalAction('register-success')}
 			/>
 
 			<RegisterSuccessDialog
 				{...props}
 				open={isOpen('register-success')}
+				onOpenChange={onOpenChange}
 				onContinue={openModalAction('2fa')}
 			/>
 
 			<AuthChannelsSetupTwoFaDialog
 				{...props}
 				open={isOpen('2fa')}
+				onOpenChange={onOpenChange}
 				onActionFulfilled={openModalAction('2fa-success')}
 				cancelButton={
 					<Button
@@ -61,14 +75,16 @@ export function FlowDialog(props: Dialog.RootProps) {
 			<TwoFaSuccessDialog
 				{...props}
 				open={isOpen('2fa-success')}
+				onOpenChange={onOpenChange}
 				onContinue={openModalAction('create-store')}
 			/>
 
 			<StoreCreateDialog
 				{...props}
 				open={isOpen('create-store')}
+				onOpenChange={onOpenChange}
 				onActionFulfilled={store => {
-					setCurrentModal('create-store-success');
+					openModalAction('create-store-success')();
 					setCreatedStore(store);
 				}}
 				cancelButton={
@@ -85,6 +101,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 				{...props}
 				store={createdStore}
 				open={isOpen('create-store-success')}
+				onOpenChange={onOpenChange}
 				onContinue={openModalAction('create-product')}
 			/>
 
@@ -93,6 +110,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 					{...props}
 					storeId={createdStore.id}
 					open={isOpen('create-product')}
+					onOpenChange={onOpenChange}
 					onActionFulfilled={openModalAction('all-set')}
 					cancelButton={
 						<Button
@@ -108,6 +126,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 			<AllSetDialog
 				{...props}
 				open={isOpen('all-set')}
+				onOpenChange={onOpenChange}
 			/>
 		</>
 	);

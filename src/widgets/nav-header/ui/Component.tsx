@@ -1,20 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { cn } from "~/shared/lib/cn";
 import { AppLogo } from "~/shared/ui/logo";
 import { NavItems } from "./NavItems";
-import Link from "next/link";
-import { UserNavBar } from "./RightNavBar";
+import { UserNavBar } from "./user-nav-bar";
 import { IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { PhoneNavItems } from "./PhoneNavItems";
 import { usePathname } from "next/navigation";
 
-export function Component({
-	className,
-	...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function Component({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const [showPhoneNavbar, setShowPhoneNavbar] = useState(false);
 
 	const togglePhoneNavbar = () => {
@@ -59,7 +56,9 @@ export function Component({
 					<NavItems className='max-lg:hidden' />
 				</div>
 
-				<UserNavBar className='max-lg:hidden' />
+				<UserNavBar
+					className='max-lg:hidden'
+				/>
 			</div>
 
 			{showPhoneNavbar && (
