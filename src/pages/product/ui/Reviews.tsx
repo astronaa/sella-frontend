@@ -45,9 +45,9 @@ const reviews = [
 export function Reviews() {
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex justify-between items-end">
+			<div className="flex flex-col lg:flex-row gap-6 lg:gap-0 lg:justify-between items-start lg:items-end">
 				<div className="flex flex-col gap-2">
-					<div className="text-[32px]/[35.2px] font-semibold">
+					<div className="text-[42px]/[46.2px] lg:text-[32px]/[35.2px] font-semibold">
             Buyers Reviews
 					</div>
 					<ProductRate.Root rates={totalRates}>
@@ -95,12 +95,12 @@ export function Reviews() {
 					</div>
 					<div className="flex items-center gap-2">
 						{review.rate === "like" ? (
-							<Button variant="subtle" className="pointer-events-none size-[38px] min-w-[38px] px-0 text-green-100 border border-green-100 bg-green-100/[.06]">
+							<Button variant="subtle" colorPalette="green" className="pointer-events-none size-[38px] min-w-[38px] px-0 border">
 								<Icons.Likes className="size-[16px]" />
 							</Button>
 						) :
 							review.rate === "dislike" ? (
-								<Button variant="subtle" className="pointer-events-none size-[38px] min-w-[38px] px-0 text-red-100 border border-red-100 bg-red-100/[.08]">
+								<Button variant="subtle" colorPalette="red" className="pointer-events-none size-[38px] min-w-[38px] px-0 border">
 									<Icons.Dislikes className="size-[16px]" />
 								</Button>
 							) : null}

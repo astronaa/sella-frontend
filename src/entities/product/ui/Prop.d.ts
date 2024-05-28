@@ -18,3 +18,8 @@ export interface ProductRateProps {
 export interface ProductReviewProps {
 	review: ProductReview
 }
+
+export interface PaymentProps {
+	product: Product,
+	onCheckout: (withChat: boolean) => void
+}

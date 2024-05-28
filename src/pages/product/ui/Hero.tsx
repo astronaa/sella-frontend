@@ -17,7 +17,7 @@ export function Hero() {
 				<span>in </span>
 				<span className="text-white-100">Category</span>
 			</div>
-			<div className="text-[54px]/[59.4px] text-white-100 font-semibold">
+			<div className="text-[42px]/[46.2px] lg:text-[54px]/[59.4px] text-white-100 font-semibold">
         Product Name
 			</div>
 			<ProductCarousel.Root images={images} description={description}>

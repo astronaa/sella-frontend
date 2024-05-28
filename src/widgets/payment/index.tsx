@@ -1,1 +1,0 @@
-export { Payment } from "./ui/Component";

@@ -1,19 +1,41 @@
-import { Payment } from "~/widgets/payment";
+"use client";
+
+import { Payment } from "~/entities/product";
 import { Hero } from "./Hero";
 import { Reviews } from "./Reviews";
 import { PreviewImage } from "~/shared/ui/image";
 import { Icons } from "~/shared/ui/icons";
 import { Button } from "~/shared/ui/kit/button";
+import { Product } from "~/shared/api/model";
+
+const product: Product = {
+	id: 2,
+	name: 'Product Name',
+	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
+	shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
+	previewImage: null,
+	galleryImages: [],
+	category: 'Category',
+	price: 2.99
+}
 
 export function Component() {
+
+	const onCheckout = (withChat: boolean) => {
+		console.log({withChat})
+	}
+
 	return (
 		<div className="flex items-start gap-16 mx-auto max-w-content">
-			<div className="w-[65.52%] max-w-[760px] flex flex-col gap-16">
+			<div className="hidden lg:flex w-[65.52%] max-w-[760px] flex-col gap-16">
 				<Hero />
 				<Reviews />
 			</div>
-			<div className="flex flex-col gap-4 w-[31.2%] max-w-[360px]">
-				<Payment/>
+			<div className="flex flex-col gap-4 w-full lg:w-[31.2%] lg:max-w-[360px] px-4 lg:px-0">
+				<div className="block lg:hidden">
+					<Hero />
+				</div>
+				<Payment product={product} onCheckout={onCheckout}/>
 				<div className="border border-white-04 rounded-[20px] p-4 flex flex-col gap-6">
 					<div className="flex flex-col gap-4">
 						<div className="flex gap-4 items-center">
@@ -56,6 +78,9 @@ export function Component() {
 					<Button colorPalette="gray">
 						Category
 					</Button>
+				</div>
+				<div className="block lg:hidden">
+					<Reviews />
 				</div>
 			</div>
 		</div>

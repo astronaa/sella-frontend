@@ -6,5 +6,6 @@ export { ProductProvider } from "./ui/context";
 export { Price as ProductPrice } from "./ui/Price";
 export { Row as ProductRow } from "./ui/Row";
 export { Image as ProductImage } from "./ui/Image";
+export { Payment } from "./ui/Payment";
 
 export type { ProductProp } from "./ui/Prop";

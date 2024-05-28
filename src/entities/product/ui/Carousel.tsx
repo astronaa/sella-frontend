@@ -27,7 +27,7 @@ export function Root({ images, description, className, ...props }: RootProps) {
 			<ark.div
 				{...props}
 				className={cn(
-					"flex flex-col gap-6 pb-8 border-b border-white-80",
+					"flex flex-col gap-4 lg:gap-6 pb-8 border-b border-white-80",
 					className
 				)}
 			/>
@@ -102,8 +102,9 @@ export function Carousel(props: CarouselKit.RootProps) {
 export const Description = () => {
 	const { description } = useComponentContext();
 	return (
-		<ark.div className="text-[16px]/[24px] font-normal text-black-74">
-			{description}
+		<ark.div className="text-[16px]/[24px] font-normal text-black-74 flex flex-col gap-4">
+			<span className="line-clamp-5 lg:line-clamp-none">{description}</span>
+			<ark.div className="text-[16px]/[20.8px] text-white-100 font-semibold block lg:hidden">Show more...</ark.div>
 		</ark.div>
 	);
 };

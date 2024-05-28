@@ -1,13 +1,14 @@
 import { Icons } from "~/shared/ui/icons";
 import { RadioGroup } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
+import { PaymentProps } from "./Prop";
 
 const options = [
 	{ id: 'sella', label: 'Pay with $SELLA', price: 0.89, oldPrice: 0.99 },
 	{ id: 'usdt', label: 'Pay with $USDT', price: 0.99},
 ]
 
-export function Payment() {
+export function Payment({product, onCheckout}: PaymentProps) {
 	return (
 		<div className="border border-white-04 rounded-[20px] p-4 flex flex-col gap-8">
 			<div className="flex flex-col gap-6">
@@ -31,8 +32,8 @@ export function Payment() {
 				</RadioGroup.Root>
 			</div>
 			<div className="flex flex-col gap-4">
-				<Button variant="solid">Checkout</Button>
-				<Button colorPalette="gray">Chat with a seller</Button>
+				<Button variant="solid" onClick={() => onCheckout(false)}>Checkout</Button>
+				<Button colorPalette="gray" onClick={() => onCheckout(true)}>Chat with a seller</Button>
 			</div>
 		</div>
 	)
