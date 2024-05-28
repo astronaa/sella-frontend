@@ -40,7 +40,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 				{...props}
 				open={isOpen('register-twitter')}
 				onOpenChange={onOpenChange}
-				onConnectClick={openModalAction(hasUsername ? 'register-success' : 'register-profile')}
+				onActionFulfilled={openModalAction(hasUsername ? 'register-success' : 'register-profile')}
 			/>
 
 			<RegisterSetupProfileDialog

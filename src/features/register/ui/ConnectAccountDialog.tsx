@@ -3,12 +3,37 @@
 import { Icons } from '~/shared/ui/icons';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
+import { apiClient } from "~/shared/api/client";
+import { useEffect } from "react";
+import { invariant } from "~/shared/lib/asserts";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+invariant(BASE_URL, 'NEXT_PUBLIC_API_URL not defined');
 
 type ConnectTwitterDialogProps = Dialog.RootProps & {
-	onConnectClick: () => void;
+	onActionFulfilled: () => void;
 };
 
-export function ConnectTwitterDialog({ onConnectClick, ...props }: ConnectTwitterDialogProps) {
+export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwitterDialogProps) {
+
+	const handleConnect = () => {
+		window.open(apiClient.auth.getTwitterAuthUrl(), '_blank', 'popup')
+	}
+
+	useEffect(() => {
+		const listener = (e: MessageEvent) => {
+			if (e.origin !== BASE_URL) return
+			console.log(e)
+
+			// onActionFulfilled(e.data)
+			onActionFulfilled()
+		}
+
+
+		window.addEventListener('message', listener)
+		return () => window.removeEventListener('message', listener)
+	}, []);
+
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />
@@ -27,7 +52,7 @@ export function ConnectTwitterDialog({ onConnectClick, ...props }: ConnectTwitte
 						<Button
 							className='w-full gap-[0.5rem]'
 							colorPalette='social' size='lg'
-							onClick={onConnectClick}
+							onClick={handleConnect}
 						>
 							<Icons.Xtwitter /> Connect X
 						</Button>

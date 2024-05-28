@@ -152,6 +152,103 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/users/{username}/stores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Returns list of stores that user owns */
+        get: operations["UsersController_getUserStores"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/stores/{url}/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["StoreController_getProductsByStoreUrl"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/stores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["StoreController_getAllStores"];
+        put?: never;
+        post: operations["StoreController_createStore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/stores/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["StoreController_deleteStore"];
+        options?: never;
+        head?: never;
+        patch: operations["StoreController_updateStore"];
+        trace?: never;
+    };
+    "/api/stores/{url}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["StoreController_reportStoreByUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/stores/{id}/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["StoreController_changeStoreImage"];
+        trace?: never;
+    };
     "/api/media/{id}": {
         parameters: {
             query?: never;
@@ -163,6 +260,38 @@ export interface paths {
         get: operations["MediaController_getMedia"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_getProduct"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{id}/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ProductsController_addImage"];
         delete?: never;
         options?: never;
         head?: never;
@@ -242,10 +371,8 @@ export interface components {
         NonceResponseDto: {
             nonce: number;
         };
-        Promise: Record<string, never>;
         User: {
             id: number;
-            profilePicture: components["schemas"]["Promise"];
             profilePictureId: string;
             address: string;
             username: string;
@@ -254,6 +381,40 @@ export interface components {
             telegramId: string;
             /** Format: date-time */
             createdAt: string;
+        };
+        Store: {
+            id: number;
+            imageId: string;
+            ownerId: number;
+            name: string;
+            description: string;
+            url: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ProductShortInfo: {
+            id: string;
+            name: string;
+            shortDescription: string;
+            price: number;
+            imageId: string;
+        };
+        CreateStoreDto: {
+            name: string;
+            description: string;
+            url: string;
+        };
+        UpdateStoreDto: {
+            name: string;
+            description: string;
+            url: string;
+        };
+        ReportStoreDto: {
+            tag: string;
+            message: string;
+        };
+        ProductAddImageResultDto: {
+            imageId: string;
         };
     };
     responses: never;
@@ -560,6 +721,209 @@ export interface operations {
             };
         };
     };
+    UsersController_getUserStores: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                username: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully sent list of stores */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["Store"];
+                };
+            };
+        };
+    };
+    StoreController_getProductsByStoreUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of products for store */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductShortInfo"][];
+                };
+            };
+        };
+    };
+    StoreController_getAllStores: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns all the stores in application */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["Store"][];
+                };
+            };
+        };
+    };
+    StoreController_createStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStoreDto"];
+            };
+        };
+        responses: {
+            /** @description Store created successfully, new store was return in message body */
+            201: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["Store"];
+                };
+            };
+            /** @description Request data sent was not valid by schema */
+            400: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
+            };
+        };
+    };
+    StoreController_deleteStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Store successfully deleted */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User does not own store */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    StoreController_updateStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateStoreDto"];
+            };
+        };
+        responses: {
+            /** @description Store successfully updated */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Request data sent was not valid by schema */
+            400: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
+            };
+            /** @description User does not own store */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    StoreController_reportStoreByUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReportStoreDto"];
+            };
+        };
+        responses: {
+            /** @description Store successfully reported */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Request data sent was not valid by schema */
+            400: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
+            };
+        };
+    };
+    StoreController_changeStoreImage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User successfully changed store image */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User does not own store */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User sent not valid image */
+            422: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
+            };
+        };
+    };
     MediaController_getMedia: {
         parameters: {
             query?: never;
@@ -579,6 +943,53 @@ export interface operations {
             };
             /** @description Media with that ID was not found */
             404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductsController_getProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductsController_addImage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image added successfully. Returns the image ID */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductAddImageResultDto"];
+                };
+            };
+            /** @description Maximum number of images reached */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Invalid file type or file size */
+            422: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
