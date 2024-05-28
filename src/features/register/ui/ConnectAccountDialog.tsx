@@ -3,36 +3,36 @@
 import { Icons } from '~/shared/ui/icons';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
-import { apiClient } from "~/shared/api/client";
-import { useEffect } from "react";
-import { invariant } from "~/shared/lib/asserts";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-invariant(BASE_URL, 'NEXT_PUBLIC_API_URL not defined');
+import { useEffect, useRef } from "react";
+import { useCallbackRef } from '~/shared/lib/use-callback-ref';
+import { apiClient } from '~/shared/api/client';
 
 type ConnectTwitterDialogProps = Dialog.RootProps & {
 	onActionFulfilled: () => void;
 };
 
 export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwitterDialogProps) {
+	const windowRef = useRef<Window | null>(null);
 
 	const handleConnect = () => {
-		window.open(apiClient.auth.getTwitterAuthUrl(), '_blank', 'popup')
+		windowRef.current = window.open(apiClient.auth.getTwitterAuthUrl(), '_blank', 'popup')
 	}
+
+	const onActionFulfilledCb = useCallbackRef(onActionFulfilled);
 
 	useEffect(() => {
 		const listener = (e: MessageEvent) => {
-			if (e.origin !== BASE_URL) return
-			console.log(e)
+			if (e.origin !== window.location.origin) return
 
-			// onActionFulfilled(e.data)
-			onActionFulfilled()
+			if(e.data.type == 'twitter-auth-result') {
+				windowRef.current?.close();
+				onActionFulfilledCb()
+			}
 		}
-
 
 		window.addEventListener('message', listener)
 		return () => window.removeEventListener('message', listener)
-	}, []);
+	}, [onActionFulfilledCb]);
 
 	return (
 		<Dialog.Root {...props}>

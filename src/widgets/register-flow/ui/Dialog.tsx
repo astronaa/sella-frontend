@@ -12,8 +12,7 @@ import { CreateStoreSuccessDialog } from './CreateStoreSuccessDialog';
 import { Store } from '~/shared/api/model';
 import { ProductCreateDialog } from '~/features/product/create';
 import { AllSetDialog } from './AllSetDialog';
-import { useRegisterFlow } from '~/shared/model/register-flow';
-import { useWalletGuard } from './useWalletGuard';
+import { useRegisterFlow, useRegisterFlowWalletGuard } from '~/shared/model/register-flow';
 
 export function FlowDialog(props: Dialog.RootProps) {
 	const open = useRegisterFlow(s => s.open);
@@ -32,7 +31,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 		setOpen(details.open);
 	}
 
-	useWalletGuard();
+	useRegisterFlowWalletGuard();
 
 	return (
 		<>

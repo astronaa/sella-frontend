@@ -20,8 +20,10 @@ export function createAuthClient() {
 			});
 		},
 		getTwitterAuthUrl() {
-			const redirectUrl = `${BASE_URL}auth-twitter-result`
-			return new URL(`api/twitter/auth?successUrl=${redirectUrl}&failureUrl=${redirectUrl}`, BASE_URL)
+			const redirectUrl = new URL('/auth/twitter-callback', window.location.toString());
+			const encodedRedirectUrl = encodeURIComponent(redirectUrl.toString());
+
+			return new URL(`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, BASE_URL)
 		},
 
 		schemaGenerateNonce,

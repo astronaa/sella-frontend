@@ -8,10 +8,12 @@ import { IconButton } from "~/shared/ui/kit/button";
 import { NavIconButton } from "./NavIconButton";
 import { useUserGetQuery } from "~/entities/user";
 import { useAccount } from "wagmi";
+import { useAccountModal } from "@rainbow-me/rainbowkit";
 
 export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const { data: user } = useUserGetQuery();
 	const { address } = useAccount();
+	const { openAccountModal } = useAccountModal();
 
 	return (
 		<div {...props}
@@ -21,12 +23,18 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 				className
 			)}
 		>
-			<div className='flex flex-col items-end justify-between text-[0.8125rem] max-lg:flex-row max-lg:text-[1.125rem]'>
-				<span>{user?.username}</span>
-				<span className='text-black-40'>
-					{address && truncateStrFromMiddle(address)}
-				</span>
-			</div>
+			{openAccountModal && (
+				<button
+					onClick={openAccountModal}
+					className='flex flex-col items-end justify-between text-[0.8125rem] max-lg:flex-row \
+						max-lg:text-[1.125rem] hover:bg-white/[.04] px-[0.5rem] rounded-[0.5rem]'
+				>
+					<span>{user?.username ?? 'unnamed'}</span>
+					<span className='text-black-40'>
+						{address && truncateStrFromMiddle(address)}
+					</span>
+				</button>
+			)}
 
 			<div className='flex gap-[0.75rem] max-lg:[&>*]:w-full max-lg:[&>*]:h-[3.4375rem]'>
 				<NavIconButton

@@ -1,7 +1,12 @@
+'use client';
+
 import { create } from 'zustand'
 import { getAccount, signMessage } from '@wagmi/core'
 import { wagmiConfig } from '../config/rainbow-kit';
 import { apiClient } from '../api/client';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccountEffect } from 'wagmi';
+import { useEffect } from 'react';
 
 type ModalTypes =
 	| 'wallet-connect'
@@ -67,3 +72,28 @@ export const useRegisterFlow = create<StoreType>(set => ({
 			set({ open: true, currentModal: '2fa' });
 	}
 }));
+
+export function useRegisterFlowWalletGuard() {
+	// This is just because rainbowkit modal are nailed to the hooks
+	const open = useRegisterFlow(s => s.open);
+	const setOpen = useRegisterFlow(s => s.setOpen);
+	const currentModal = useRegisterFlow(s => s.currentModal);
+	const startFlow = useRegisterFlow(s => s.startFlow);
+	const { openConnectModal, connectModalOpen } = useConnectModal();
+
+	useAccountEffect({
+		onConnect: () => {
+			if(currentModal == 'wallet-connect')
+				startFlow();
+		}
+	});
+
+	useEffect(() => {
+		if (open && currentModal == 'wallet-connect') {
+			if (connectModalOpen)
+				setOpen(false);
+			else if (openConnectModal)
+				openConnectModal();
+		}
+	}, [open, currentModal, openConnectModal, startFlow, setOpen, connectModalOpen]);
+}
