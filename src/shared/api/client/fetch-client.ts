@@ -15,15 +15,16 @@ export function createFetchClient(options?: ClientOptions) {
 export const fetchClient = createFetchClient();
 
 export const authFetchClient = createFetchClient({
-	async fetch(...params) {
-		const response = await fetch(...params);
+	async fetch(request) {
+		const options = { credentials: 'include' } as const;
+		const response = await fetch(request, options);
 
 		if (response.status != 401)
 			return response;
 
-		const refresh = await fetchClient.POST('/api/auth/refresh')
+		const refresh = await fetchClient.POST('/api/auth/refresh', options)
 		if (refresh.response.ok)
-			return fetch(...params);
+			return fetch(request, options);
 
 		return response;
 	}
