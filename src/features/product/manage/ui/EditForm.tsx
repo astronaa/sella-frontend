@@ -35,7 +35,7 @@ type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 export function EditForm({ onActionFulfilled, product, className, ...props }: EditFormProps) {
 	const onSubmit = (values: SchemaType) => {
 		const product: Product = {
-			id: 1,
+			id: '1',
 			...values,
 			description: values?.description ?? null,
 			previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,

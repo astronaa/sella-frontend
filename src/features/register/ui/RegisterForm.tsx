@@ -2,17 +2,10 @@
 
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
-import { z } from 'zod';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
-
-export const schema = z.object({
-	userName: z.string().min(3, 'Min length is 3'),
-	avatar: z.instanceof(File)
-});
-
-export type SchemaType = z.infer<typeof schema>
+import { schema, SchemaType } from "~/features/register/api";
 
 type RegisterFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
@@ -33,6 +26,7 @@ export function RegisterForm({ onActionFulfilled, ...props }: RegisterFormProps)
 				>
 					<DividerWithElement className='gap-[1rem] mb-[1rem]'>
 						<VImageUploader
+							accept='image/png, image/jpeg'
 							label='Upload Avatar' name='avatar'
 							className='rounded-full'
 						/>

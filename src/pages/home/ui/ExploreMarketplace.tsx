@@ -3,7 +3,88 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
-import { storeData } from "~/shared/api/store";
+import { Store } from "~/shared/api/model";
+
+export const storeData: Store[] = [
+	{
+		id: 1,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		},
+	},
+	{
+		id: 2,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		},
+	},
+	{
+		id: 3,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		},
+	},
+	{
+		id: 4,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		},
+	},
+	{
+		id: 5,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		},
+	},
+	{
+		id: 6,
+		name: "Store Name",
+		shortName: "@storename",
+		isVerified: true,
+		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+		previewImage: null,
+		rating: {
+			likes: 45,
+			dislikes: 16,
+			reviewsCount: 673,
+		}
+	},
+];
 
 export function ExploreMarketPlace() {
 	return (
@@ -24,8 +105,8 @@ export function ExploreMarketPlace() {
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 						{storeData.map(store => (
 							<StoreLink key={store.id} store={store}>
-								<StoreCard.Composed 
-									store={store} 
+								<StoreCard.Composed
+									store={store}
 									className='w-full mx-auto'
 								/>
 							</StoreLink>

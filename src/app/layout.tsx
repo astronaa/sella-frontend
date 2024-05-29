@@ -1,12 +1,16 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import '@park-ui/tailwind-plugin/preset.css'
-import { cn } from "~/shared/lib/cn";
+import '@rainbow-me/rainbowkit/styles.css';
 
+import type { Metadata } from "next";
+
+import { cn } from "~/shared/lib/cn";
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { NavHeader } from "~/widgets/nav-header";
 import { Footer } from "~/widgets/footer";
+import { Providers } from "./_providers";
+import { RegisterFlowDialog } from "~/widgets/register-flow";
 
 const fontVariables = [fontInter.variable, fontManrope.variable];
 
@@ -23,12 +27,17 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={cn(...fontVariables, 'bg-black-06 text-white font-inter')}>
-				<NavHeader className='sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header' />
-				<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
-					{children}
-				</div>
-				<Footer />
+				<Providers>
+					<NavHeader className='sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header' />
+					<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
+						{children}
+					</div>
+					<Footer />
+
+					<RegisterFlowDialog />
+				</Providers>
 			</body>
 		</html>
+
 	);
 }

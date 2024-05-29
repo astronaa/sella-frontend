@@ -3,12 +3,37 @@
 import { Icons } from '~/shared/ui/icons';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
+import { useEffect, useRef } from "react";
+import { useCallbackRef } from '~/shared/lib/use-callback-ref';
+import { apiClient } from '~/shared/api/client';
 
-type ConnectAccountDialogProps = Dialog.RootProps & {
-	onConnectClick: () => void;
+type ConnectTwitterDialogProps = Dialog.RootProps & {
+	onActionFulfilled: () => void;
 };
 
-export function ConnectAccountDialog({ onConnectClick, ...props }: ConnectAccountDialogProps) {
+export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwitterDialogProps) {
+	const windowRef = useRef<Window | null>(null);
+
+	const handleConnect = () => {
+		windowRef.current = window.open(apiClient.auth.getTwitterAuthUrl(), '_blank', 'popup')
+	}
+
+	const onActionFulfilledCb = useCallbackRef(onActionFulfilled);
+
+	useEffect(() => {
+		const listener = (e: MessageEvent) => {
+			if (e.origin !== window.location.origin) return
+
+			if(e.data.type == 'twitter-auth-result') {
+				windowRef.current?.close();
+				onActionFulfilledCb()
+			}
+		}
+
+		window.addEventListener('message', listener)
+		return () => window.removeEventListener('message', listener)
+	}, [onActionFulfilledCb]);
+
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />
@@ -27,7 +52,7 @@ export function ConnectAccountDialog({ onConnectClick, ...props }: ConnectAccoun
 						<Button
 							className='w-full gap-[0.5rem]'
 							colorPalette='social' size='lg'
-							onClick={onConnectClick}
+							onClick={handleConnect}
 						>
 							<Icons.Xtwitter /> Connect X
 						</Button>

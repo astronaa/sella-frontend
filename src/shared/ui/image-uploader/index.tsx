@@ -2,14 +2,15 @@
 
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "../icons";
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, InputHTMLAttributes, useState } from "react";
 
 export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
 	onChange?: (image: File | null) => void
+	accept?: InputHTMLAttributes<HTMLInputElement>['accept']
 }
 
-export function ImageUploader({ className, label, onChange, ...props }: ImageUploaderProps) {
+export function ImageUploader({ className, label, onChange, accept, ...props }: ImageUploaderProps) {
 	const [imagePreview, setImagePreview] = useState<string | null>();
 
 	const changePreview = (image: File | null) => {
@@ -56,7 +57,7 @@ export function ImageUploader({ className, label, onChange, ...props }: ImageUpl
 			</div>
 
 			<input
-				accept='image/*'
+				accept={accept ?? 'image/*'}
 				className='absolute size-full top-0 left-0 opacity-0 cursor-pointer'
 				type='file'
 				onChange={handleFileChange}

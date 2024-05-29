@@ -1,7 +1,7 @@
 import { Product, Sale } from "~/shared/api/model";
 
 const product: Product = {
-	id: 1,
+	id: '1',
 	name: 'Product Name',
 	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 	shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
