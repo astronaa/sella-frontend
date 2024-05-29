@@ -59,7 +59,7 @@ export async function fetchSimilarStores(storeId: StoreId): Promise<Store[]> {
 export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 	return [
 		{
-			id: 1,
+			id: '1',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -69,7 +69,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 2,
+			id: '2',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -79,7 +79,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 3,
+			id: '3',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -89,7 +89,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 4,
+			id: '4',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -99,7 +99,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 5,
+			id: '5',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -109,7 +109,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 6,
+			id: '6',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -119,7 +119,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 7,
+			id: '7',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -129,7 +129,7 @@ export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
 			price: 2.99
 		},
 		{
-			id: 8,
+			id: '8',
 			name: 'Product Name',
 			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',

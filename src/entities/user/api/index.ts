@@ -7,7 +7,7 @@ const options = queryOptions({
 	queryFn: async () => {
 		const { data, error, response } = await apiClient.users.getProfile()
 
-		if(response.status == 401)
+		if(response.status != 200)
 			return null;
 
 		if(error)

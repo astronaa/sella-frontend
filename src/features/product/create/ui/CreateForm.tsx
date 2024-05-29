@@ -35,7 +35,7 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 export function CreateForm({ onActionFulfilled, storeId, className, ...props }: CreateFormProps) {
 	const onSubmit = (values: SchemaType) => {
 		const store: Product = {
-			id: 1,
+			id: '1',
 			...values,
 			description: values?.description ?? null,
 			previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,

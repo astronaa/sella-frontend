@@ -10,7 +10,7 @@ import { useAccount } from "wagmi";
 export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 	const { address } = useAccount();
 	const { data: user } = useUserGetQuery();
-	const isAuthorized = !!address && !!user && user.twitterId && user.username;
+	const isAuthorized = !!user && address;
 
 	return (
 		<Skeleton className='rounded-[1rem]' loading={user === undefined}>
@@ -21,5 +21,4 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 			)}
 		</Skeleton>
 	);
-
 }

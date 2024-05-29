@@ -10,7 +10,7 @@ interface PageCreateOrderProps {
 }
 
 export async function PageCreateOrder({ storeId, initialTab = 'chat' }: PageCreateOrderProps) {
-	const product = await fetchProduct(storeId);
+	const product = await fetchProduct(String(storeId));
 
 	return (
 		<PageLayout

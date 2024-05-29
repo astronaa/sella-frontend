@@ -6,7 +6,6 @@ import { Dialog } from '~/shared/ui/kit';
 import { RegisterForm } from './RegisterForm';
 import { SchemaType } from "~/features/register/api";
 import { apiClient } from "~/shared/api/client";
-import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 type RegisterDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void
@@ -48,11 +47,12 @@ export function SetupProfileDialog(props: RegisterDialogProps) {
 					/>
 
 					<Dialog.ContentFooter>
-						<Skeleton className='rounded-[1rem]' loading={loading}>
-							<Button form={formId} className='w-full' size='lg'>
-								Continue
-							</Button>
-						</Skeleton>
+						<Button
+							form={formId} disabled={loading}
+							className='w-full' size='lg'
+						>
+							Continue
+						</Button>
 					</Dialog.ContentFooter>
 				</Dialog.Content>
 			</Dialog.Positioner>

@@ -49,11 +49,22 @@ export const useRegisterFlow = create<StoreType>(set => ({
 		if (!nonceResponse)
 			return;
 
-		const { data: loginResponse } = await apiClient.auth.login({
-			address,
-			signature: await signMessage(wagmiConfig, {
-				message: `By signing this message you accept Privacy Policy and Terms of Usage | ${nonceResponse.nonce}`
+		let signature: string;
+
+		try {
+			signature = await signMessage(wagmiConfig, {
+				message: `By signing this message you accept Privacy Policy and Terms of Usage | ${nonceResponse.nonce}`,
 			})
+		}
+		catch (error) {
+			// viem sometimes throwing UnauthorizedProviderError despite the fact that the wallet is connected
+			// the fast workaround:
+			window.location.reload();
+			return;
+		}
+
+		const { data: loginResponse } = await apiClient.auth.login({
+			address, signature: signature
 		});
 
 		if (!loginResponse)
@@ -68,8 +79,6 @@ export const useRegisterFlow = create<StoreType>(set => ({
 			set({ open: true, currentModal: 'register-twitter' });
 		else if (!loginResponse.hasUsername)
 			set({ open: true, currentModal: 'register-profile' });
-		else
-			set({ open: true, currentModal: '2fa' });
 	}
 }));
 
@@ -83,7 +92,7 @@ export function useRegisterFlowWalletGuard() {
 
 	useAccountEffect({
 		onConnect: () => {
-			if(currentModal == 'wallet-connect')
+			if (currentModal == 'wallet-connect')
 				startFlow();
 		}
 	});

@@ -27,7 +27,8 @@ export function createAuthClient() {
 		},
 		setUsername(payload: { username: string }) {
 			return authFetchClient.PATCH('/api/auth/username', {
-				body: payload
+				body: payload,
+				parseAs: 'text'
 			})
 		},
 

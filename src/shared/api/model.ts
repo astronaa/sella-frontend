@@ -17,7 +17,7 @@ export interface Store {
 	}
 }
 
-export type ProductId = number;
+export type ProductId = string;
 
 export interface Product {
 	id: ProductId,

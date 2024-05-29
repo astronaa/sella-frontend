@@ -201,7 +201,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/stores/{id}": {
+    "/api/stores/{url}": {
         parameters: {
             query?: never;
             header?: never;
@@ -233,7 +233,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/stores/{id}/image": {
+    "/api/stores/{url}/image": {
         parameters: {
             query?: never;
             header?: never;
@@ -276,6 +276,22 @@ export interface paths {
         get: operations["ProductsController_getProduct"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ProductsController_updateProduct"];
+        trace?: never;
+    };
+    "/api/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ProductsController_createProduct"];
         delete?: never;
         options?: never;
         head?: never;
@@ -322,7 +338,6 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description This endpoint is where Twitter redirects the user after authorization. It saves the user's Twitter account to the database. */
         get: operations["TwitterController_callback"];
         put?: never;
         post?: never;
@@ -404,14 +419,44 @@ export interface components {
             description: string;
             url: string;
         };
+        StoreResponseDto: {
+            data: components["schemas"]["Store"][];
+            total: number;
+        };
         UpdateStoreDto: {
             name: string;
             description: string;
             url: string;
         };
         ReportStoreDto: {
-            tag: string;
-            message: string;
+            /** @description List of enum values */
+            tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
+            message?: string;
+        };
+        ProductInfoDto: {
+            name: string;
+            description: string;
+            shortDescription: string;
+            price: number;
+            imageIds: string[];
+            storeUrl: string;
+        };
+        ProductCreateDto: {
+            name: string;
+            description: string;
+            shortDescription: string;
+            price: number;
+            storeUrl: string;
+        };
+        ProductCreateResultDto: {
+            id: string;
+        };
+        ProductUpdateDto: {
+            name: string;
+            description: string;
+            shortDescription: string;
+            price: number;
+            imageIds: string[];
         };
         ProductAddImageResultDto: {
             imageId: string;
@@ -743,7 +788,10 @@ export interface operations {
     };
     StoreController_getProductsByStoreUrl: {
         parameters: {
-            query?: never;
+            query: {
+                page: number;
+                pageSize: number;
+            };
             header?: never;
             path: {
                 url: string;
@@ -763,7 +811,10 @@ export interface operations {
     };
     StoreController_getAllStores: {
         parameters: {
-            query?: never;
+            query: {
+                page: number;
+                pageSize: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -774,7 +825,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["Store"][];
+                    "application/json": components["schemas"]["StoreResponseDto"];
                 };
             };
         };
@@ -813,7 +864,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                url: string;
             };
             cookie?: never;
         };
@@ -836,7 +887,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                url: string;
             };
             cookie?: never;
         };
@@ -899,11 +950,18 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                url: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file?: string;
+                };
+            };
+        };
         responses: {
             /** @description User successfully changed store image */
             200: {
@@ -953,13 +1011,100 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
                 id: string;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            /** @description Product retrieved successfully */
             200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductInfoDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductsController_updateProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductUpdateDto"];
+            };
+        };
+        responses: {
+            /** @description Product updated successfully. Returns updated product info */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductInfoDto"];
+                };
+            };
+            /** @description Invalid product data or maximum number of images reached */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User cannot edit this product */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductsController_createProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductCreateDto"];
+            };
+        };
+        responses: {
+            /** @description Product created successfully. Returns ID of a new product */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductCreateResultDto"];
+                };
+            };
+            /** @description Invalid product data or maximum number of images reached */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User does not own this store */
+            403: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
@@ -970,11 +1115,22 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
                 id: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file?: string;
+                };
+            };
+        };
         responses: {
             /** @description Image added successfully. Returns the image ID */
             200: {
@@ -985,6 +1141,16 @@ export interface operations {
             };
             /** @description Maximum number of images reached */
             400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User cannot edit this product */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
@@ -1023,7 +1189,6 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Currently just a placeholder. Should redirect to the frontend page, which will explain the result */
             200: {
                 headers: Record<string, unknown>;
                 content?: never;

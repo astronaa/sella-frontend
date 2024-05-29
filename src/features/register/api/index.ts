@@ -6,7 +6,7 @@ export const schema = z.object({
 	userName: z.string().min(3, 'Min length is 3'),
 	avatar: z.instanceof(File)
 		.refine((v) => v.size <= MAX_AVATAR_FILE_SIZE, {
-			message: 'Еhe file size should not exceed 2mb'
+			message: 'The file size should not exceed 2mb'
 		})
 });
 
