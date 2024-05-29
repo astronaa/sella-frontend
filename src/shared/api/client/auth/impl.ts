@@ -25,6 +25,11 @@ export function createAuthClient() {
 
 			return new URL(`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, BASE_URL)
 		},
+		setUsername(payload: { username: string }) {
+			return authFetchClient.PATCH('/api/auth/username', {
+				body: payload
+			})
+		},
 
 		schemaGenerateNonce,
 		schemaLogin

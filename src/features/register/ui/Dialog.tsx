@@ -1,17 +1,28 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 import { RegisterForm } from './RegisterForm';
+import { SchemaType } from "~/features/register/api";
+import { apiClient } from "~/shared/api/client";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 type RegisterDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void
 };
 
 export function SetupProfileDialog(props: RegisterDialogProps) {
-	const onActionFulfilled = () => {
+	const [loading, setLoading] = useState(false)
+
+	const onActionFulfilled = async (values: SchemaType) => {
+		setLoading(true)
+
+		await apiClient.auth.setUsername({ username: values.userName })
+		await apiClient.users.setAvatar(values.avatar)
+
 		props?.onActionFulfilled?.();
+		setLoading(false)
 	}
 
 	const formId = useId();
@@ -37,9 +48,11 @@ export function SetupProfileDialog(props: RegisterDialogProps) {
 					/>
 
 					<Dialog.ContentFooter>
-						<Button form={formId} className='w-full' size='lg'>
-							Continue
-						</Button>
+						<Skeleton className='rounded-[1rem]' loading={loading}>
+							<Button form={formId} className='w-full' size='lg'>
+								Continue
+							</Button>
+						</Skeleton>
 					</Dialog.ContentFooter>
 				</Dialog.Content>
 			</Dialog.Positioner>
