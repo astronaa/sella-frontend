@@ -1,11 +1,12 @@
 'use client';
 
 import { Dialog } from '~/shared/ui/kit';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { useUserProfileSettingsDialog } from '~/shared/model/user-profile';
 import { SettingsForm } from './SettingsForm';
 import { useAccount } from 'wagmi';
+import { Portal } from '@ark-ui/react';
 
 type ProfileDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void
@@ -15,6 +16,14 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 	const formId = useId();
 	const { address } = useAccount();
 	const { open, setOpen } = useUserProfileSettingsDialog();
+	const [loading, setLoading] = useState(false);
+
+	const onFormActionFulfilled = () => {
+		setOpen(false);
+		setLoading(false);
+
+		onActionFulfilled?.();
+	}
 
 	return (
 		<Dialog.Root
@@ -23,36 +32,43 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 		>
 			<Dialog.Backdrop />
 
-			<Dialog.Positioner>
-				<Dialog.Content
-					className='items-start w-[37.5rem] gap-[2rem] pt-[1.5625rem] pb-[2.1875rem]'
-				>
-					<Dialog.CloseButton />
+			<Portal>
+				<Dialog.Positioner>
+					<Dialog.Content
+						className='items-start w-[37.5rem] gap-[2rem] pt-[1.5625rem] pb-[2.1875rem]'
+					>
+						<Dialog.CloseButton />
 
-					<Dialog.ContentHeading className='items-start'>
-						<Dialog.Title>Profile Settings</Dialog.Title>
-					</Dialog.ContentHeading>
+						<Dialog.ContentHeading className='items-start'>
+							<Dialog.Title>Profile Settings</Dialog.Title>
+						</Dialog.ContentHeading>
 
-					<SettingsForm
-						id={formId} 
-						onActionFulfilled={onActionFulfilled}
-					/>
+						<SettingsForm
+							id={formId}
+							onBeforeAction={() => setLoading(true)}
+							onActionFulfilled={onFormActionFulfilled}
+							onActionRejected={() => setLoading(false)}
+						/>
 
-					<Dialog.ContentFooter className='mt-[1rem]'>
-						<Dialog.CloseTrigger asChild>
+						<Dialog.ContentFooter className='mt-[1rem]'>
+							<Dialog.CloseTrigger asChild>
+								<Button
+									size='lg' colorPalette='gray'
+									className='w-full'
+								>
+									Close
+								</Button>
+							</Dialog.CloseTrigger>
 							<Button
-								size='lg' colorPalette='gray'
-								className='w-full'
+								className='w-full' size='lg'
+								form={formId} disabled={loading}
 							>
-								Close
+								Save Changes
 							</Button>
-						</Dialog.CloseTrigger>
-						<Button form={formId} className='w-full' size='lg'>
-							Save Changes
-						</Button>
-					</Dialog.ContentFooter>
-				</Dialog.Content>
-			</Dialog.Positioner>
+						</Dialog.ContentFooter>
+					</Dialog.Content>
+				</Dialog.Positioner>
+			</Portal>
 		</Dialog.Root>
 	);
 }

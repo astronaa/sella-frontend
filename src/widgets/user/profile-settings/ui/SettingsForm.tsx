@@ -1,24 +1,23 @@
 'use client';
 
-import { HTMLAttributes, useMemo } from 'react';
+import { HTMLAttributes, useMemo, useRef } from 'react';
 import { Form } from 'react-final-form';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
-import { useUserGetQuery } from '~/entities/user';
+import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
+import { AuthChannelsVerifyEmailDialog } from '~/features/auth-channels';
+import { apiClient } from '~/shared/api/client';
 import { cn } from '~/shared/lib/cn';
+import { useDialogState } from '~/shared/lib/dialog';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
-import { InputGroup } from '~/shared/ui/kit/input';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
 
 export const schema = z.object({
-	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
-	price: z.coerce.number({ message: 'Price is required' }).min(1, 'Min price is 1 USDT'),
-	shortDescription: z.string({ required_error: 'Description is required' }),
-	description: z.string().optional(),
-	previewImage: z.instanceof(File).optional(),
-	galleryImages: z.array(z.instanceof(File)).optional()
+	username: apiClient.auth.schemaUsername,
+	telegramId: z.string().min(3, 'Min length is 3').nullable().optional(),
+	email: z.string().email().nullable().optional()
 });
 
 export type SchemaType = z.infer<typeof schema>
@@ -26,15 +25,57 @@ export type SchemaType = z.infer<typeof schema>
 type SettingsFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
 	onActionFulfilled?: () => void;
+	onActionRejected?: () => void;
+	onBeforeAction?: () => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function SettingsForm({ onActionFulfilled, className, ...props }: SettingsFormProps) {
+export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionRejected, className, ...props }: SettingsFormProps) {
 	const { data: user } = useUserGetQuery();
 	const { address } = useAccount();
 
+	const {
+		isOpen: isVerifyDialogOpen,
+		open: openVerifyDialog,
+		close: closeVerifyDialog,
+		handleOpenChange: handleVerifyDialogOpenChange
+	} = useDialogState({
+		processValueChange: open => {
+			if (!open)
+				verifyDialogResolverRef.current?.(false);
+		}
+	});
+
+	const verifyDialogResolverRef = useRef<((result: boolean) => void) | null>(null);
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onSubmit = (values: SchemaType) => {
+	const onSubmit = async (values: SchemaType) => {
+		onBeforeAction?.();
+
+		if (user?.username != values.username) {
+			await apiClient.auth.setUsername(values.username);
+
+			invalidateUserGetQuery();
+		}
+
+		if (user?.email != values.email && values.email) {
+			const { error } = await apiClient.auth.sendEmailCode(values.email);
+
+			if (error)
+				return onActionRejected?.();
+
+			openVerifyDialog();
+
+			const result = await new Promise<boolean>(resolve => {
+				verifyDialogResolverRef.current = resolve;
+			})
+
+			closeVerifyDialog();
+
+			if (!result)
+				return onActionRejected?.();
+		}
+
 		onActionFulfilled?.();
 	};
 
@@ -49,7 +90,7 @@ export function SettingsForm({ onActionFulfilled, className, ...props }: Setting
 			validate={zodValidate(schema)}
 			initialValues={initialValues}
 		>
-			{({ handleSubmit }) => (
+			{({ handleSubmit, values }) => (
 				<form
 					{...props} onSubmit={handleSubmit}
 					className={cn('flex flex-col w-full gap-[2rem]', className)}
@@ -65,7 +106,7 @@ export function SettingsForm({ onActionFulfilled, className, ...props }: Setting
 									Wallet
 								</VTextControl.LabelOrError>
 								<VTextControl.Input
-									className='pointer-events-none truncate max-w-full'
+									className='pointer-events-none truncate max-w-full pe-[1rem]'
 									readOnly
 								/>
 							</VTextControl.Root>
@@ -85,19 +126,19 @@ export function SettingsForm({ onActionFulfilled, className, ...props }: Setting
 						2fa / Notifications
 					</DividerWithElement>
 
-					<VTextControl.Root className='w-full' name='telegram'>
+					<VTextControl.Root className='w-full' name='telegramId'>
 						<VTextControl.Label>
 							Telegram
 						</VTextControl.Label>
-						<InputGroup>
+						<VTextControl.Input
+							className='ps-[3rem]'
+							placeholder="Your @telegram"
+						>
 							<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
 								<Icons.Telegram className='size-[1.25rem]' />
 							</span>
-							<VTextControl.Input
-								className='ps-[3rem]'
-								placeholder="Your @telegram"
-							/>
-						</InputGroup>
+						</VTextControl.Input>
+						<VTextControl.ErrorText />
 					</VTextControl.Root>
 
 					<VTextControl.Root className='w-full' name='email'>
@@ -107,7 +148,17 @@ export function SettingsForm({ onActionFulfilled, className, ...props }: Setting
 						<VTextControl.Input
 							placeholder="johnappleseed@gmail.com"
 						/>
+						<VTextControl.ErrorText />
 					</VTextControl.Root>
+
+					<AuthChannelsVerifyEmailDialog
+						email={values.email ?? null}
+						open={isVerifyDialogOpen}
+						onOpenChange={handleVerifyDialogOpenChange}
+						onActionFulfilled={() => {
+							verifyDialogResolverRef.current?.(true);
+						}}
+					/>
 				</form>
 			)}
 		</Form>

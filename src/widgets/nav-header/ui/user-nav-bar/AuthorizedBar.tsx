@@ -31,7 +31,9 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 					className='flex flex-col items-end justify-between text-[0.8125rem] max-lg:flex-row \
 						max-lg:text-[1.125rem] hover:bg-white/[.04] px-[0.5rem] rounded-[0.5rem]'
 				>
-					<span>{user?.username ?? 'unnamed'}</span>
+					<span className='truncate max-w-full'>
+						{user?.username ?? 'unnamed'}
+					</span>
 					<span className='text-black-40'>
 						{address && truncateStrFromMiddle(address)}
 					</span>
