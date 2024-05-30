@@ -59,9 +59,9 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 				/>
 
 				<div className="flex flex-col gap-[2rem] max-w-content m-auto w-full max-xl:items-center">
-					<div className="grid grid-cols-2 gap-10 max-w-content m-auto max-md:grid-cols-1">
+					<div className="grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1">
 						{data.data?.items.map((store) => (
-							<Skeleton loading={isFetching} key={store.id}>
+							<Skeleton className="rounded-[1.25rem]" loading={isFetching} key={store.id}>
 								<div className="w-full">
 									<StoreLink key={store.id} store={store}>
 										<StoreCard.Composed

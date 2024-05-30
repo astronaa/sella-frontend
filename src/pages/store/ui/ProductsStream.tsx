@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 interface ProductsStreamProps {
 	initialData?: { items: Product[], total: number }
@@ -28,7 +29,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 	const { enabled: editModeEnabled } = useEditModeContext();
 	const [page, setPage] = useState(INITIAL_PAGE)
 
-	const { data } = useQuery({
+	const { data, isFetching } = useQuery({
 		initialData: { data: initialData, error: undefined },
 		queryKey: ['products', page],
 		queryFn: async () => apiClient.stores
@@ -50,7 +51,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 					</div>
 				</BleedingContainer>
 			) : (
-				<ProductsGrid products={products} />
+				<ProductsGrid products={products} loading={isFetching} />
 			)}
 
 			<Pagination
@@ -65,22 +66,24 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 	);
 }
 
-function ProductsGrid({ products }: { products: Product[] }) {
+function ProductsGrid({ products, loading }: { products: Product[], loading?: boolean }) {
 	return (
 		<div className={cn(
 			'grid grid-cols-4 gap-[2.5rem] w-full',
 			'max-md:grid-cols-1 max-lg:grid-cols-2 max-xl:grid-cols-3'
 		)}>
 			{products.map(p => (
-				<ProductCard.Root key={p.id} product={p} className='w-full mx-auto'>
-					<ProductCard.Image className='max-md:h-[15.875rem]' />
+				<Skeleton className="rounded-[1.25rem]" loading={loading} key={p.id}>
+					<ProductCard.Root key={p.id} product={p} className='w-full mx-auto'>
+						<ProductCard.Image className='max-md:h-[15.875rem]' />
 
-					<ProductCard.Content>
-						<ProductCard.Title />
-						<ProductCard.Description />
-						<ProductCard.Price />
-					</ProductCard.Content>
-				</ProductCard.Root>
+						<ProductCard.Content>
+							<ProductCard.Title />
+							<ProductCard.Description />
+							<ProductCard.Price />
+						</ProductCard.Content>
+					</ProductCard.Root>
+				</Skeleton>
 			))}
 		</div>
 	);
