@@ -19,7 +19,7 @@ export function useProductStrictContext() {
 
 export function useProductContextOrProp(p?: Product) {
 	const product = useProductContext() ?? p;
-	invariant(!!product, 'Usage of product row outside context or without passed product prop');
+	invariant(!!product, 'Usage of product component outside context or without passed product prop');
 
 	return product;
 }

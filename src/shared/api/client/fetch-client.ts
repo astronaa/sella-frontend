@@ -22,7 +22,7 @@ export const authFetchClient = createFetchClient({
 		if (response.status != 401)
 			return response;
 
-		const body = await response.json();
+		const body = await response.clone().json();
 		if(!body.isAuthorized)
 			return response;
 

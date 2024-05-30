@@ -3,20 +3,17 @@
 import NextLink from "next/link";
 import { ComponentPropsWithoutRef } from "react";
 import { StoreProp } from "./Prop";
-import { useProductContext } from "~/entities/product/ui/context";
-import { invariant } from "~/shared/lib/asserts";
 import { cn } from "~/shared/lib/cn";
+import { useStoreContextOrProp } from "./context";
 
 type LinkProps = Omit<ComponentPropsWithoutRef<typeof NextLink>, 'href'> & Partial<StoreProp>;
 
 export function Link({ store: s, className, ...props }: LinkProps) {
-	const store = useProductContext() ?? s;
-	invariant(!!store, 'Usage of store link outside context or without passed store prop');
+	const store = useStoreContextOrProp(s)
 
 	return (
 		<NextLink 
-			href={`/stores/${store.id}`} 
-			{...props} 
+			href={`/stores/${store.shortName}`} {...props} 
 			className={cn('transition [&:hover>*]:bg-white/[.02]', className)}
 		/>
 	);

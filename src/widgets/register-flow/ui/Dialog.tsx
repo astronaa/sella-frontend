@@ -46,6 +46,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 				{...props}
 				open={isOpen('register-profile')}
 				onOpenChange={onOpenChange}
+				closeOnInteractOutside={false}
 				onActionFulfilled={openModalAction('register-success')}
 			/>
 

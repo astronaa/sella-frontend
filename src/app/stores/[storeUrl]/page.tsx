@@ -1,13 +1,13 @@
 import { PageStore } from "~/pages/store";
 
 interface PageProps {
-	params: { storeId: string }
+	params: { storeUrl: string }
 }
 
 export default function Page({ params }: PageProps) {
 	return (
 		<PageStore
-			storeId={Number(params.storeId)}
+			storeUrl={params.storeUrl}
 		/>
 	);
 }

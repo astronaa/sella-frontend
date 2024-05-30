@@ -34,7 +34,7 @@ export const useRegisterFlow = create<StoreType>(set => ({
 	open: false,
 	setOpen: open => set({ open }),
 	currentModal: 'register-twitter',
-	openModal: modal => () => set({ currentModal: modal }),
+	openModal: modal => () => set({ open: true, currentModal: modal }),
 	hasTwitter: false,
 	hasUsername: false,
 
