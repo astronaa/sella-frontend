@@ -1,6 +1,6 @@
-import { ExploreMarketplace } from "~/pages/marketplace/ui/ExploreMarketplace";
-import { fetchStores } from "~/pages/store/api";
+import { ExploreMarketplace } from "./ExploreMarketplace";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
+import { fetchStores } from "../api/stores";
 
 export async function Component() {
 	const stores = await fetchStores();

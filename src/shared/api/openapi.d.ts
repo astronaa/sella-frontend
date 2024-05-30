@@ -185,6 +185,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/stores/{url}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["StoreController_getStoreByUrl"];
+        put?: never;
+        post?: never;
+        delete: operations["StoreController_deleteStore"];
+        options?: never;
+        head?: never;
+        patch: operations["StoreController_updateStore"];
+        trace?: never;
+    };
     "/api/stores": {
         parameters: {
             query?: never;
@@ -199,22 +215,6 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/api/stores/{url}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["StoreController_deleteStore"];
-        options?: never;
-        head?: never;
-        patch: operations["StoreController_updateStore"];
         trace?: never;
     };
     "/api/stores/{url}/report": {
@@ -298,7 +298,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/{id}/image": {
+    "/api/products/{id}/images": {
         parameters: {
             query?: never;
             header?: never;
@@ -407,33 +407,8 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
-        ProductShortInfo: {
-            id: string;
-            name: string;
-            shortDescription: string;
-            price: number;
-            imageId: string;
-        };
-        CreateStoreDto: {
-            name: string;
-            description: string;
-            url: string;
-        };
-        StoreResponseDto: {
-            data: components["schemas"]["Store"][];
-            total: number;
-        };
-        UpdateStoreDto: {
-            name: string;
-            description: string;
-            url: string;
-        };
-        ReportStoreDto: {
-            /** @description List of enum values */
-            tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
-            message?: string;
-        };
         ProductInfoDto: {
+            id: string;
             name: string;
             description: string;
             shortDescription: string;
@@ -441,11 +416,34 @@ export interface components {
             imageIds: string[];
             storeUrl: string;
         };
+        ProductsResponseDto: {
+            data: components["schemas"]["ProductInfoDto"][];
+            total: number;
+        };
+        CreateStoreDto: {
+            name: string;
+            description?: string;
+            url: string;
+        };
+        StoreResponseDto: {
+            data: components["schemas"]["Store"][];
+            total: number;
+        };
+        UpdateStoreDto: {
+            name?: string;
+            description?: string;
+            url?: string;
+        };
+        ReportStoreDto: {
+            /** @description List of enum values */
+            tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
+            message?: string;
+        };
         ProductCreateDto: {
             name: string;
-            description: string;
-            shortDescription: string;
-            price: number;
+            description?: string;
+            shortDescription?: string;
+            price?: number;
             storeUrl: string;
         };
         ProductCreateResultDto: {
@@ -459,7 +457,7 @@ export interface components {
             imageIds: string[];
         };
         ProductAddImageResultDto: {
-            imageId: string;
+            imageIds: string[];
         };
     };
     responses: never;
@@ -804,58 +802,33 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductShortInfo"][];
+                    "application/json": components["schemas"]["ProductsResponseDto"];
                 };
             };
         };
     };
-    StoreController_getAllStores: {
+    StoreController_getStoreByUrl: {
         parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-            };
+            query?: never;
             header?: never;
-            path?: never;
+            path: {
+                url: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Returns all the stores in application */
+            /** @description Returns store by given url address */
             200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["StoreResponseDto"];
-                };
-            };
-        };
-    };
-    StoreController_createStore: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateStoreDto"];
-            };
-        };
-        responses: {
-            /** @description Store created successfully, new store was return in message body */
-            201: {
                 headers: Record<string, unknown>;
                 content: {
                     "application/json": components["schemas"]["Store"];
                 };
             };
-            /** @description Request data sent was not valid by schema */
-            400: {
+            /** @description Store was not found */
+            404: {
                 headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["BadRequestDto"];
-                };
+                content?: never;
             };
         };
     };
@@ -913,6 +886,56 @@ export interface operations {
             403: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    StoreController_getAllStores: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns all the stores in application */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["StoreResponseDto"];
+                };
+            };
+        };
+    };
+    StoreController_createStore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStoreDto"];
+            };
+        };
+        responses: {
+            /** @description Store created successfully, new store was return in message body */
+            201: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["Store"];
+                };
+            };
+            /** @description Request data sent was not valid by schema */
+            400: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
             };
         };
     };
@@ -1126,13 +1149,12 @@ export interface operations {
         requestBody: {
             content: {
                 "multipart/form-data": {
-                    /** Format: binary */
-                    file?: string;
+                    file?: string[];
                 };
             };
         };
         responses: {
-            /** @description Image added successfully. Returns the image ID */
+            /** @description Images added successfully. Returns an array of current product images IDs */
             200: {
                 headers: Record<string, unknown>;
                 content: {
@@ -1163,7 +1185,12 @@ export interface operations {
     };
     TwitterController_auth: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description URL to redirect user to after successful authentication */
+                successUrl: string;
+                /** @description URL to redirect user to after failed authentication */
+                failureUrl: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;

@@ -1,7 +1,6 @@
 import { fetchStore, fetchStoreProducts } from "../api";
 import { Button } from "~/shared/ui/kit/button";
 import { StoreCard } from "~/entities/store";
-import { StoreId } from "~/shared/api/model";
 import { StoreManageDialog } from "~/features/store/manage";
 import { ProductsStream } from "./ProductsStream";
 import { EditModeProvider } from "../model/edit-mode";
@@ -10,9 +9,9 @@ import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { StoreReportFlow } from "~/features/store/report";
 
-export async function Component({ storeId }: { storeId: StoreId }) {
-	const store = await fetchStore(storeId);
-	const products = await fetchStoreProducts(storeId);
+export async function Component({ storeUrl }: { storeUrl: string }) {
+	const store = await fetchStore(storeUrl);
+	const products = await fetchStoreProducts(storeUrl);
 
 	return (
 		<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
@@ -56,7 +55,7 @@ export async function Component({ storeId }: { storeId: StoreId }) {
 
 			<SimilarStoreFronts
 				className='mb-[6rem] max-md:mb-[3rem]'
-				storeId={storeId}
+				storeUrl={storeUrl}
 			/>
 
 			<StorefrontOpenBanner />

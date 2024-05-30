@@ -1,28 +1,12 @@
-import { Product, ProductId } from "../../model";
+import { ProductId } from "../../model";
 import { authFetchClient } from "../fetch-client";
 import { PayloadCreate, PayloadUpdate, schemaCreate, schemaUpdate } from "./schemas";
-import { components } from "../../openapi";
-
-const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): Product => {
-	const [previewImage, ...galleryImages] = obj.imageIds;
-
-	return {
-		id: obj.name, // todo obj.id after openapi update
-		name: obj.name,
-		price: obj.price,
-		description: obj.description,
-		shortDescription: obj.shortDescription,
-		category: 'category',
-		previewImage,
-		galleryImages,
-	}
-}
+import { mapDtoToProduct } from "./mappers";
 
 export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
 			return await authFetchClient.POST('/api/products', {
-				// @ts-expect-error expecting openapi changes
 				body: { storeUrl, ...payload }
 			});
 		},
@@ -55,9 +39,9 @@ export function createProductsClient() {
 				}
 			},
 			async uploadImages(payload: File[]) {
-				return await authFetchClient.POST('/api/products/{id}/image', {
+				return await authFetchClient.POST('/api/products/{id}/images', {
 					params: { path: { id: productId } },
-					body: { file: 'placeholder' },
+					body: { file: [] },
 					bodySerializer: () => {
 						const formData = new FormData();
 						payload.forEach(f => formData.set('file', f));

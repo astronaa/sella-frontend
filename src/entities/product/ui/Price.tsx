@@ -1,20 +1,17 @@
 'use client';
 
 import { HTMLArkProps, ark } from "@ark-ui/react";
-import { useProductContext } from "./context";
+import { useProductContextOrProp } from "./context";
 import { Icons } from "~/shared/ui/icons";
 import { cn } from "~/shared/lib/cn";
 import { ProductProp } from "./Prop";
-import { invariant } from "~/shared/lib/asserts";
 
 const currencyMap = new Map([
 	['usdt', Icons.CurrencyUsdt]
 ])
 
 export function Price({ className, product: p, ...props }: HTMLArkProps<'div'> & Partial<ProductProp>) {
-	const product = useProductContext() ?? p;
-	invariant(!!product, 'Usage of products price outside context or without passed product prop');
-
+	const product = useProductContextOrProp(p);
 	const Icon = currencyMap.get('usdt');
 
 	return (

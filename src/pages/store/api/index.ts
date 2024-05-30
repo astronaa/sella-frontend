@@ -1,142 +1,23 @@
-import { Product, Store, StoreId } from "~/shared/api/model";
+import { apiClient } from "~/shared/api/client";
 
-export async function fetchStore(storeId: StoreId): Promise<Store> {
-	return {
-		id: storeId,
-		name: "First Store",
-		shortName: "@storename",
-		isVerified: true,
-		description: "Market, Limit, Stop Limit, and Auction Mode orders.",
-		previewImage: null,
-		rating: {
-			likes: 45,
-			dislikes: 16,
-			reviewsCount: 673,
-		},
-	}
-}
+export async function fetchStore(storeUrl: string) {
+	const { data, error } = await apiClient.stores.for(storeUrl).get();
+	if(error)
+		throw error;
 
-export async function fetchStores(): Promise<Store[]> {
-	return (Array
-		.from({ length: 8 })
-		.fill({
-			id: 0,
-			name: "First Store",
-			shortName: "@storename",
-			isVerified: true,
-			description: "Market, Limit, Stop Limit, and Auction Mode orders.",
-			previewImage: null,
-			rating: {
-				likes: 45,
-				dislikes: 16,
-				reviewsCount: 673,
-			},
-		}) as Store[])
-		.map((item, index) => ({ ...item, id: index + 1 }))
+	return data;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function fetchSimilarStores(storeId: StoreId): Promise<Store[]> {
-	return (Array
-		.from({ length: 2 })
-		.fill({
-			id: 0,
-			name: "First Store",
-			shortName: "@storename",
-			isVerified: true,
-			description: "Market, Limit, Stop Limit, and Auction Mode orders.",
-			previewImage: null,
-			rating: {
-				likes: 45,
-				dislikes: 16,
-				reviewsCount: 673,
-			},
-		}) as Store[])
-		.map((item, index) => ({ ...item, id: index + 1 }))
+export async function fetchSimilarStores(storeUrl: string) {
+	const { data } = await apiClient.stores.getAll({ page: 1, limit: 2 });
+	return data?.items ?? [];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function fetchStoreProducts(storeId: StoreId): Promise<Product[]> {
-	return [
-		{
-			id: '1',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '2',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '3',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '4',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '5',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '6',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '7',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		},
-		{
-			id: '8',
-			name: 'Product Name',
-			description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-			previewImage: null,
-			galleryImages: [],
-			category: 'Category',
-			price: 2.99
-		}
-	]
+export async function fetchStoreProducts(storeUrl: string) {
+	const { data } = await apiClient.stores
+		.for(storeUrl)
+		.getProducts({ page: 1, limit: 8 })
+
+	return data?.items ?? [];
 }
