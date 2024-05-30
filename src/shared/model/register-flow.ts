@@ -20,7 +20,7 @@ type ModalTypes =
 	| 'create-product'
 	| 'all-set'
 
-export interface StoreType {
+interface StoreType {
 	open: boolean,
 	setOpen: (open: boolean) => void,
 	currentModal: ModalTypes,

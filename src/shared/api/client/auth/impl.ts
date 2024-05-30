@@ -1,6 +1,12 @@
 import {
+	PayloadEmail,
 	PayloadGenerateNonce, PayloadLogin,
-	schemaGenerateNonce, schemaLogin
+	PayloadUsername,
+	PayloadVerifyEmailCode,
+	schemaEmail,
+	schemaGenerateNonce, schemaLogin,
+	schemaUsername,
+	schemaVerifyEmailCode
 } from "./schema";
 
 import { authFetchClient } from "../fetch-client";
@@ -25,14 +31,29 @@ export function createAuthClient() {
 
 			return new URL(`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, BASE_URL)
 		},
-		setUsername(payload: { username: string }) {
+		setUsername(username: PayloadUsername) {
 			return authFetchClient.PATCH('/api/auth/username', {
+				body: { username },
+				parseAs: 'text'
+			})
+		},
+		async sendEmailCode(email: PayloadEmail) {
+			return authFetchClient.POST('/api/auth/email/send-code', {
+				body: { email },
+				parseAs: 'text'
+			})
+		},
+		async verifyEmailCode(payload: PayloadVerifyEmailCode) {
+			return authFetchClient.POST('/api/auth/email/verify-code', {
 				body: payload,
 				parseAs: 'text'
 			})
 		},
 
 		schemaGenerateNonce,
-		schemaLogin
+		schemaLogin,
+		schemaUsername,
+		schemaEmail,
+		schemaVerifyEmailCode
 	}
 }

@@ -9,7 +9,7 @@ import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VTextControl } from '~/shared/ui/validation-inputs';
-import { VerifyEmailDialogContent } from './VerifyEmailDialog';
+import { VerifyEmailDialog } from './VerifyEmailDialog';
 
 type SetupTwoFaDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
@@ -31,7 +31,8 @@ export function SetupTwoFaDialog({ onActionFulfilled, cancelButton, ...props }: 
 
 	return (
 		<>
-			<VerifyEmailDialogContent
+			<VerifyEmailDialog
+				email='test@mail.com'
 				{...props} open={open && isVerifyEmailOpened}
 				onActionFulfilled={onActionFulfilled}
 			/>

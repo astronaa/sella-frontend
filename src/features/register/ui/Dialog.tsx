@@ -17,7 +17,7 @@ export function SetupProfileDialog(props: RegisterDialogProps) {
 	const onActionFulfilled = async (values: SchemaType) => {
 		setLoading(true)
 
-		await apiClient.auth.setUsername({ username: values.userName })
+		await apiClient.auth.setUsername(values.userName)
 		await apiClient.users.setAvatar(values.avatar)
 
 		props?.onActionFulfilled?.();
