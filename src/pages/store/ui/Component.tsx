@@ -50,6 +50,7 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 				<ProductsStream
 					className='mb-[6rem] max-md:mb-[5rem]'
 					initialData={products}
+					storeUrl={storeUrl}
 				/>
 			</EditModeProvider>
 

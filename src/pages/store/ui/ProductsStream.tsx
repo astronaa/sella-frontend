@@ -10,15 +10,36 @@ import { ProductCard, ProductPrice } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
+import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { apiClient } from "~/shared/api/client";
+import { PageChangeDetails } from "@zag-js/pagination";
+import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 
 interface ProductsStreamProps {
-	initialData: Product[]
+	initialData?: { items: Product[], total: number }
 	className?: string
+	storeUrl: string
 }
 
-export function ProductsStream({ initialData, className }: ProductsStreamProps) {
-	const products = initialData;
+const INITIAL_PAGE = 1
+
+export function ProductsStream({ initialData, storeUrl, className }: ProductsStreamProps) {
 	const { enabled: editModeEnabled } = useEditModeContext();
+	const [page, setPage] = useState(INITIAL_PAGE)
+
+	const { data } = useQuery({
+		initialData: { data: initialData, error: undefined },
+		queryKey: ['products', page],
+		queryFn: async () => apiClient.stores
+			.for(storeUrl)
+			.getProducts({ page, limit: PRODUCT_ITEMS_PER_PAGE }),
+		refetchOnMount: false,
+	})
+
+	const products = data?.data?.items ?? []
+
+	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
@@ -33,9 +54,12 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 			)}
 
 			<Pagination
-				className='overflow-auto'
-				count={190} pageSize={10}
-				siblingCount={1} defaultPage={1}
+				onPageChange={handlePageChange}
+				className='w-min'
+				count={data?.data?.total ?? 0}
+				pageSize={PRODUCT_ITEMS_PER_PAGE}
+				defaultPage={INITIAL_PAGE}
+				siblingCount={1}
 			/>
 		</div>
 	);

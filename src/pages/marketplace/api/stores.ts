@@ -1,20 +1,6 @@
-import { Store } from "~/shared/api/model";
+import { apiClient } from "~/shared/api/client";
+import { STORE_ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 
-export async function fetchStores(): Promise<Store[]> {
-	return (Array
-		.from({ length: 8 })
-		.fill({
-			id: 0,
-			name: "First Store",
-			shortName: "@storename",
-			isVerified: true,
-			description: "Market, Limit, Stop Limit, and Auction Mode orders.",
-			previewImage: null,
-			rating: {
-				likes: 45,
-				dislikes: 16,
-				reviewsCount: 673,
-			},
-		}) as Store[])
-		.map((item, index) => ({ ...item, id: index + 1 }))
+export async function fetchMarketplaceStores() {
+	return await apiClient.stores.getAll({ page: 1, limit: STORE_ITEMS_PER_PAGE });
 }

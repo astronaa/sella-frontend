@@ -75,7 +75,7 @@ export function createStoresClient() {
 				return data ? {
 					data: {
 						items: data.data.map(mapDtoToProduct),
-						total: 0
+						total: data.total
 					},
 					error
 				} : {

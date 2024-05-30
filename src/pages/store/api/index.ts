@@ -1,4 +1,5 @@
 import { apiClient } from "~/shared/api/client";
+import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 
 export async function fetchStore(storeUrl: string) {
 	const { data, error } = await apiClient.stores.for(storeUrl).get();
@@ -17,7 +18,7 @@ export async function fetchSimilarStores(storeUrl: string) {
 export async function fetchStoreProducts(storeUrl: string) {
 	const { data } = await apiClient.stores
 		.for(storeUrl)
-		.getProducts({ page: 1, limit: 8 })
+		.getProducts({ page: 1, limit: PRODUCT_ITEMS_PER_PAGE })
 
-	return data?.items ?? [];
+	return data;
 }
