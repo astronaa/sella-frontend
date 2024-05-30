@@ -18,7 +18,7 @@ export function Root({ product, className, ...props }: RootProps) {
 			<ark.div
 				{...props}
 				className={cn(
-					'flex flex-col gap-[1rem] items-center w-[16.25rem] max-w-[24.375rem] p-[0.5rem] pb-[1rem] ',
+					'flex flex-col gap-[1rem] items-start w-[16.25rem] max-w-[24.375rem] p-[0.5rem] pb-[1rem] ',
 					'border border-secondary rounded-[1.25rem]',
 					className
 				)}

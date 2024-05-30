@@ -4,8 +4,8 @@ import { fetchSimilarStores } from "~/pages/store/api";
 import { Heading } from "~/shared/ui/kit/heading";
 
 interface SimilarStorefrontsProps {
-	className?: string, 
-	storeUrl: string 
+	className?: string,
+	storeUrl: string
 }
 
 export async function SimilarStoreFronts({ className, storeUrl }: SimilarStorefrontsProps) {
@@ -16,11 +16,11 @@ export async function SimilarStoreFronts({ className, storeUrl }: SimilarStorefr
 			<Heading>Similar Storefronts</Heading>
 			<div className='flex gap-10 max-md:flex-col'>
 				{stores.map((store) => (
-					<StoreLink key={store.id} store={store}>
-						<StoreCard.Composed 
-							store={store} 
-							className='w-full mx-auto'
-						/>
+					<StoreLink
+						key={store.id} store={store}
+						className='w-full mx-auto max-w-[35rem]'
+					>
+						<StoreCard.Composed store={store} />
 					</StoreLink>
 				))}
 			</div>
