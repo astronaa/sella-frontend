@@ -10,7 +10,9 @@ import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { NavHeader } from "~/widgets/nav-header";
 import { Footer } from "~/widgets/footer";
 import { Providers } from "./_providers";
+
 import { RegisterFlowDialog } from "~/widgets/register-flow";
+import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
 
 const fontVariables = [fontInter.variable, fontManrope.variable];
 
@@ -35,6 +37,7 @@ export default function RootLayout({
 					<Footer />
 
 					<RegisterFlowDialog />
+					<UserProfileSettingsDialog />
 				</Providers>
 			</body>
 		</html>

@@ -9,11 +9,13 @@ import { NavIconButton } from "./NavIconButton";
 import { useUserGetQuery } from "~/entities/user";
 import { useAccount } from "wagmi";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
+import { useUserProfileSettingsDialog } from "~/shared/model/user-profile";
 
 export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const { data: user } = useUserGetQuery();
 	const { address } = useAccount();
 	const { openAccountModal } = useAccountModal();
+	const { open, setOpen } = useUserProfileSettingsDialog();
 
 	return (
 		<div {...props}
@@ -51,6 +53,7 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 				<IconButton
 					className='text-accent-100'
 					colorPalette='gray' size='sm'
+					active={open} onClick={() => setOpen(true)}
 				>
 					<Icons.Settings />
 				</IconButton>
