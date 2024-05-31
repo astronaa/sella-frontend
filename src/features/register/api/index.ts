@@ -1,13 +1,9 @@
 import { z } from "zod";
-
-const MAX_AVATAR_FILE_SIZE = 2_000_000
+import { apiClient } from "~/shared/api/client";
 
 export const schema = z.object({
-	userName: z.string().min(3, 'Min length is 3'),
-	avatar: z.instanceof(File)
-		.refine((v) => v.size <= MAX_AVATAR_FILE_SIZE, {
-			message: 'The file size should not exceed 2mb'
-		})
+	userName: apiClient.auth.schemaUsername,
+	avatar: apiClient.users.schemaAvatarFile.optional()
 });
 
 export type SchemaType = z.infer<typeof schema>

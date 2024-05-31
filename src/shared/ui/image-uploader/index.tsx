@@ -2,20 +2,40 @@
 
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "../icons";
-import { HTMLAttributes, InputHTMLAttributes, useState } from "react";
+import { HTMLAttributes, InputHTMLAttributes, useRef, useState } from "react";
+import { IconButton } from "../kit/button";
 
 export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
-	onChange?: (image: File | null) => void
-	accept?: InputHTMLAttributes<HTMLInputElement>['accept']
+	onChange?: (image: File | null | undefined) => void
+	accept?: InputHTMLAttributes<HTMLInputElement>['accept'],
+	initialImageSrc?: string
 }
 
-export function ImageUploader({ className, label, onChange, accept, ...props }: ImageUploaderProps) {
-	const [imagePreview, setImagePreview] = useState<string | null>();
+export function ImageUploader({ className, label, onChange, accept, initialImageSrc, ...props }: ImageUploaderProps) {
+	const defaultValue = initialImageSrc ?? null;
+	const [imagePreview, setImagePreview] = useState<string | null>(defaultValue);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const changePreview = (image: File | null) => {
 		setImagePreview(image ? URL.createObjectURL(image) : null);
 		onChange?.(image);
+	}
+
+	const resetImage = () => {
+		setImagePreview(defaultValue);
+		onChange?.(undefined);
+
+		if (inputRef.current)
+			inputRef.current.value = '';
+	}
+
+	const clearImage = () => {
+		setImagePreview(null);
+		onChange?.(null);
+
+		if (inputRef.current)
+			inputRef.current.value = '';
 	}
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,11 +77,33 @@ export function ImageUploader({ className, label, onChange, accept, ...props }: 
 			</div>
 
 			<input
+				ref={inputRef} type='file'
 				accept={accept ?? 'image/*'}
 				className='absolute size-full top-0 left-0 opacity-0 cursor-pointer'
-				type='file'
 				onChange={handleFileChange}
 			/>
+
+			<div className='absolute bottom-[0.5rem] flex gap-[0.5rem]'>
+				{imagePreview !== defaultValue && defaultValue !== null && (
+					<IconButton
+						className='rounded-full transition-all opacity-0 group-hover:opacity-100 relative z-10'
+						size='sm' variant='ghost'
+						onClick={resetImage}
+					>
+						<Icons.Refresh />
+					</IconButton>
+				)}
+
+				{imagePreview !== null && (
+					<IconButton
+						className='rounded-full transition-all opacity-0 group-hover:opacity-100 relative z-10'
+						size='sm' variant='ghost'
+						onClick={clearImage}
+					>
+						<Icons.Close />
+					</IconButton>
+				)}
+			</div>
 		</div>
 	);
 }

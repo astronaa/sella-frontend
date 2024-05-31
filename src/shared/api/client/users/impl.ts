@@ -1,13 +1,21 @@
 import { authFetchClient } from "../fetch-client";
+import { schemaFile } from "../shared/schemas";
+import { mapDtoToUser } from "./mappers";
 
 export function createUsersClient() {
 	return {
 		async getProfile() {
-			return authFetchClient.GET('/api/users/profile');
+			const { data, error, response } = await authFetchClient.GET('/api/users/profile');
+
+			return data ? {
+				data: mapDtoToUser(data),
+				error, response
+			} : {
+				data, error, response
+			}
 		},
 		async setAvatar(file: File) {
 			return authFetchClient.PATCH('/api/users/profile-picture', {
-				// headers: new Headers({ 'Content-Type': 'multipart/form-data' }),
 				body: { file: 'placeholder' },
 				bodySerializer: () => {
 					const formData = new FormData()
@@ -15,6 +23,11 @@ export function createUsersClient() {
 					return formData;
 				}
 			})
-		}
+		},
+		async deleteAvatar() {
+			return authFetchClient.DELETE('/api/users/profile-picture')
+		},
+
+		schemaAvatarFile: schemaFile(1024 * 1024 * 2) // 2mb
 	}
 }
