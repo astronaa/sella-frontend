@@ -1,11 +1,18 @@
 import {
-	PayloadGenerateNonce, PayloadLogin,
-	schemaGenerateNonce, schemaLogin
+	PayloadEmail,
+	PayloadGenerateNonce, 
+	PayloadLogin,
+	PayloadUsername,
+	PayloadVerifyEmailCode,
+	schemaEmail,
+	schemaGenerateNonce, 
+	schemaLogin,
+	schemaUsername,
+	schemaVerifyEmailCode
 } from "./schema";
 
 import { authFetchClient } from "../fetch-client";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+import { API_BASE_URL } from "~/shared/config/api-base-url";
 
 export function createAuthClient() {
 	return {
@@ -23,16 +30,34 @@ export function createAuthClient() {
 			const redirectUrl = new URL('/auth/twitter-callback', window.location.toString());
 			const encodedRedirectUrl = encodeURIComponent(redirectUrl.toString());
 
-			return new URL(`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, BASE_URL)
+			return new URL(
+				`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, 
+				API_BASE_URL
+			)
 		},
-		setUsername(payload: { username: string }) {
+		setUsername(username: PayloadUsername) {
 			return authFetchClient.PATCH('/api/auth/username', {
+				body: { username },
+				parseAs: 'text'
+			})
+		},
+		async sendEmailCode(email: PayloadEmail) {
+			return authFetchClient.POST('/api/auth/email/send-code', {
+				body: { email },
+				parseAs: 'text'
+			})
+		},
+		async verifyEmailCode(payload: PayloadVerifyEmailCode) {
+			return authFetchClient.POST('/api/auth/email/verify-code', {
 				body: payload,
 				parseAs: 'text'
 			})
 		},
 
 		schemaGenerateNonce,
-		schemaLogin
+		schemaLogin,
+		schemaUsername,
+		schemaEmail,
+		schemaVerifyEmailCode
 	}
 }

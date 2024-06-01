@@ -57,7 +57,7 @@ export function ErrorText({ className, ...props }: Omit<HTMLAttributes<HTMLSpanE
 
 export function Description({ className, children, ...props }: HTMLAttributes<HTMLSpanElement>) {
 	return (
-		<span {...props} className={cn('text-[#666666]', className)}>
+		<span {...props} className={cn('text-black-40', className)}>
 			{children}
 		</span>
 	)

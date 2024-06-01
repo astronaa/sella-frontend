@@ -59,3 +59,14 @@ export interface Sale {
 	user: { name: string },
 	transaction: Transaction
 }
+
+export interface User {
+	id: number,
+	avatarImage: ImageEntry | null,
+	address: string,
+	username: string,
+	email: string,
+	twitterId: string,
+	telegramId: string,
+	createdAt: string
+}

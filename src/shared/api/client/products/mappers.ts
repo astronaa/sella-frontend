@@ -1,8 +1,9 @@
 import { Product } from "../../model";
 import { components } from "../../openapi";
+import { mapMediaIdToUrl } from "../shared/mappers";
 
 export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): Product => {
-	const [previewImage, ...galleryImages] = obj.imageIds;
+	const [previewImage, ...galleryImages] = obj.imageIds.map(mapMediaIdToUrl);
 
 	return {
 		id: obj.id,
@@ -11,7 +12,7 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 		description: obj.description,
 		shortDescription: obj.shortDescription,
 		category: 'category',
-		previewImage,
+		previewImage: previewImage ?? null,
 		galleryImages,
 	};
 };

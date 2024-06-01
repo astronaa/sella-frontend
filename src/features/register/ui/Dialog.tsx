@@ -4,24 +4,17 @@ import { useId, useState } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 import { RegisterForm } from './RegisterForm';
-import { SchemaType } from "~/features/register/api";
-import { apiClient } from "~/shared/api/client";
 
 type RegisterDialogProps = Dialog.RootProps & {
-	onActionFulfilled?: () => void
+	onActionFulfilled?: () => void;
 };
 
-export function SetupProfileDialog(props: RegisterDialogProps) {
+export function SetupProfileDialog({ onActionFulfilled, ...props }: RegisterDialogProps) {
 	const [loading, setLoading] = useState(false)
 
-	const onActionFulfilled = async (values: SchemaType) => {
-		setLoading(true)
-
-		await apiClient.auth.setUsername({ username: values.userName })
-		await apiClient.users.setAvatar(values.avatar)
-
-		props?.onActionFulfilled?.();
-		setLoading(false)
+	const onFormSubmit = async () => {
+		onActionFulfilled?.();
+		setLoading(false);
 	}
 
 	const formId = useId();
@@ -43,7 +36,8 @@ export function SetupProfileDialog(props: RegisterDialogProps) {
 
 					<RegisterForm
 						id={formId}
-						onActionFulfilled={onActionFulfilled}
+						onBeforeAction={() => setLoading(true)}
+						onActionFulfilled={onFormSubmit}
 					/>
 
 					<Dialog.ContentFooter>
