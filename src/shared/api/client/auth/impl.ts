@@ -1,11 +1,11 @@
 import {
 	PayloadEmail,
-	PayloadGenerateNonce, 
+	PayloadGenerateNonce,
 	PayloadLogin,
 	PayloadUsername,
 	PayloadVerifyEmailCode,
 	schemaEmail,
-	schemaGenerateNonce, 
+	schemaGenerateNonce,
 	schemaLogin,
 	schemaUsername,
 	schemaVerifyEmailCode
@@ -31,14 +31,16 @@ export function createAuthClient() {
 			const encodedRedirectUrl = encodeURIComponent(redirectUrl.toString());
 
 			return new URL(
-				`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`, 
+				`api/twitter/auth?successUrl=${encodedRedirectUrl}&failureUrl=${encodedRedirectUrl}`,
 				API_BASE_URL
 			)
 		},
 		telegramCallback(data: unknown) {
 			return authFetchClient.GET('/api/auth/telegram', {
-				// @ts-expect-error params for the callback not listed on the swagger
-				body: data,
+				params: {
+					// @ts-expect-error params for the callback not listed on the swagger
+					query: data
+				},
 				redirect: 'manual'
 			});
 		},
