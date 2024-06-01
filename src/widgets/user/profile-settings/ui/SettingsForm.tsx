@@ -14,6 +14,7 @@ import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
+import { LoginButton } from '@telegram-auth/react';
 
 export const schema = z.object({
 	username: apiClient.auth.schemaUsername,
@@ -60,23 +61,17 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 				const { error } = await apiClient.users.setAvatar(values.avatar);
 				if (error)
 					throw error;
-
-				invalidateUserGetQuery();
 			}
 			else if (values.avatar === null) {
 				const { error } = await apiClient.users.deleteAvatar();
 				if (error)
 					throw error;
-
-				invalidateUserGetQuery();
 			}
 
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
 				if (error)
 					throw error;
-
-				invalidateUserGetQuery();
 			}
 
 			if (user?.email != values.email && values.email) {
@@ -95,6 +90,8 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 					throw result;
 			}
 
+			invalidateUserGetQuery();
+
 			onActionFulfilled?.();
 		}
 		catch {
@@ -106,8 +103,6 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		wallet: address,
 		...user
 	}), [address, user]);
-
-	console.log(initialValues);
 
 	return (
 		<Form
@@ -124,7 +119,7 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 						<VImageUploader
 							label='Upload Avatar' name='avatar'
 							className='flex-shrink-0 size-[11.625rem] rounded-full'
-							initialImageSrc={user?.avatarImage ?? undefined}
+							initialImageSrc={initialValues.avatarImage ?? undefined}
 						/>
 						<div className='flex flex-col justify-between max-md:gap-[1rem]'>
 							<VTextControl.Root className='w-full' name='wallet'>
@@ -152,20 +147,30 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 						2fa / Notifications
 					</DividerWithElement>
 
-					<VTextControl.Root className='w-full' name='telegramId'>
-						<VTextControl.Label>
-							Telegram
-						</VTextControl.Label>
-						<VTextControl.Input
-							className='ps-[3rem]'
-							placeholder="Your @telegram"
-						>
-							<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
-								<Icons.Telegram className='size-[1.25rem]' />
-							</span>
-						</VTextControl.Input>
-						<VTextControl.ErrorText />
-					</VTextControl.Root>
+					{initialValues.telegramId ? (
+						<VTextControl.Root className='w-full' name='telegramId'>
+							<VTextControl.Label>
+								Telegram
+							</VTextControl.Label>
+							<VTextControl.Input
+								className='ps-[3rem] cursor-default'
+								placeholder="Your @telegram"
+								readOnly
+							>
+								<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
+									<Icons.Telegram className='size-[1.25rem]' />
+								</span>
+							</VTextControl.Input>
+							<VTextControl.ErrorText />
+						</VTextControl.Root>
+					) : (
+						<div className='w-full [&_iframe]:w-full'>
+							<LoginButton
+								botUsername='dsabdsahbdsahbot'
+								authCallbackUrl='https://sella.veydlin.com/api/auth/telegram'
+							/>
+						</div>
+					)}
 
 					<VTextControl.Root className='w-full' name='email'>
 						<VTextControl.Label>
