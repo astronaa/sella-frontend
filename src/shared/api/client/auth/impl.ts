@@ -35,6 +35,13 @@ export function createAuthClient() {
 				API_BASE_URL
 			)
 		},
+		telegramCallback(data: unknown) {
+			return authFetchClient.GET('/api/auth/telegram', {
+				// @ts-expect-error params for the callback not listed on the swagger
+				body: data,
+				redirect: 'manual'
+			});
+		},
 		setUsername(username: PayloadUsername) {
 			return authFetchClient.PATCH('/api/auth/username', {
 				body: { username },
