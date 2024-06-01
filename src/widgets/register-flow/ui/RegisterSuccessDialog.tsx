@@ -3,12 +3,15 @@
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
+import { useUserGetQuery } from '~/entities/user';
 
 type RegisterSuccessDialog = Dialog.RootProps & {
 	onContinue: () => void
 }
 
 export function RegisterSuccessDialog({ onContinue, ...props }: RegisterSuccessDialog) {
+	const { data: user } = useUserGetQuery();
+
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />
@@ -18,7 +21,7 @@ export function RegisterSuccessDialog({ onContinue, ...props }: RegisterSuccessD
 					<Dialog.CloseButton />
 
 					<Dialog.ContentHeading>
-						<Dialog.Title>Welcome, @username</Dialog.Title>
+						<Dialog.Title>Welcome, {user?.username}</Dialog.Title>
 						<Dialog.Description>
 							This could be the beginning of something special. Just a few more formalities,
 							and we&apos;ll have your shop set up in no time.

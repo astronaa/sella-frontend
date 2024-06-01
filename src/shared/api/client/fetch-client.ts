@@ -1,9 +1,6 @@
-import { invariant } from '~/shared/lib/asserts';
+import { API_BASE_URL } from '~/shared/config/api-base-url';
 import { paths } from '../openapi';
 import createClient, { ClientOptions } from "openapi-fetch";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-invariant(API_BASE_URL, 'NEXT_PUBLIC_API_URL not defined');
 
 export function createFetchClient(options?: ClientOptions) {
 	return createClient<paths>({

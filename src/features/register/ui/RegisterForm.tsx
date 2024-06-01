@@ -6,14 +6,26 @@ import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
 import { schema, SchemaType } from "~/features/register/api";
+import { apiClient } from '~/shared/api/client';
+import { invalidateUserGetQuery } from '~/entities/user';
 
 type RegisterFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
+	onBeforeAction?: () => void;
 	onActionFulfilled?: (values: SchemaType) => void;
 };
 
-export function RegisterForm({ onActionFulfilled, ...props }: RegisterFormProps) {
-	const onSubmit = (values: SchemaType) => {
+export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: RegisterFormProps) {
+	const onSubmit = async (values: SchemaType) => {
+		onBeforeAction?.();
+
+		await apiClient.auth.setUsername(values.userName);
+
+		if(values.avatar)
+			await apiClient.users.setAvatar(values.avatar);
+
+		invalidateUserGetQuery();
+
 		onActionFulfilled?.(values);
 	};
 
@@ -33,18 +45,15 @@ export function RegisterForm({ onActionFulfilled, ...props }: RegisterFormProps)
 					</DividerWithElement>
 
 					<VTextControl.Root className='w-full' name='userName'>
-						<VTextControl.Label>Product Description</VTextControl.Label>
 						<VTextControl.Input
 							className='text-center'
 							size='2xl' placeholder="@username"
 						/>
 						<VTextControl.ErrorText />
+						<VTextControl.Description className='text-center text-black-60'>
+							This will be your unique identifier — choose a name that truly represents you or your brand.
+						</VTextControl.Description>
 					</VTextControl.Root>
-
-					<p className='text-black-60 text-center'>
-						Select your username. This will be your unique identifier on
-						Sella — choose a name that truly represents you or your brand.
-					</p>
 				</form>
 			)}
 		</Form>

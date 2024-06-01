@@ -29,6 +29,7 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 		<Dialog.Root
 			{...props} open={open && !!address}
 			onOpenChange={({ open }) => setOpen(open)}
+			unmountOnExit lazyMount
 		>
 			<Dialog.Backdrop />
 
