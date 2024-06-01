@@ -3238,15 +3238,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@telegram-auth/react@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@telegram-auth/react@npm:1.0.3"
-  peerDependencies:
-    react: ">=18"
-  checksum: 10c0/35e4b18ec9a8c531734b5be4c3d9156561e0fa638d56f992b725f7a104ba2c300dbab86455663d1d9acca8c025819905d21b2090bce07c1ef3f16b402319034c
-  languageName: node
-  linkType: hard
-
 "@trysound/sax@npm:0.2.0":
   version: 0.2.0
   resolution: "@trysound/sax@npm:0.2.0"
@@ -10142,7 +10133,6 @@ __metadata:
     "@stylistic/eslint-plugin-js": "npm:^1.8.0"
     "@svgr/webpack": "npm:^8.1.0"
     "@tanstack/react-query": "npm:^5.39.0"
-    "@telegram-auth/react": "npm:^1.0.3"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"

@@ -5,7 +5,7 @@ import { Form } from 'react-final-form';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
-import { AuthChannelsVerifyEmailDialog } from '~/features/auth-channels';
+import { AuthChannelsTelegramAuthButton, AuthChannelsVerifyEmailDialog } from '~/features/auth-channels';
 import { apiClient } from '~/shared/api/client';
 import { cn } from '~/shared/lib/cn';
 import { useDialogState } from '~/shared/lib/dialog';
@@ -14,7 +14,6 @@ import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
-import { LoginButton } from '@telegram-auth/react';
 
 export const schema = z.object({
 	username: apiClient.auth.schemaUsername,
@@ -164,10 +163,9 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							<VTextControl.ErrorText />
 						</VTextControl.Root>
 					) : (
-						<div className='w-full [&_iframe]:w-full'>
-							<LoginButton
-								botUsername='dsabdsahbdsahbot'
-								authCallbackUrl='https://sella.veydlin.com/api/auth/telegram'
+						<div className='w-full'>
+							<AuthChannelsTelegramAuthButton 
+								onActionFulfilled={invalidateUserGetQuery}
 							/>
 						</div>
 					)}

@@ -5,3 +5,7 @@ export {
 export {
 	VerifyEmailDialog as AuthChannelsVerifyEmailDialog
 } from './ui/VerifyEmailDialog'
+
+export {
+	TelegramAuthButton as AuthChannelsTelegramAuthButton
+} from './ui/TelegramAuthButton'
