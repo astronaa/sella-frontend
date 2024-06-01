@@ -12,8 +12,6 @@ export function TelegramAuthButton({ onActionFulfilled, onActionRejected }: Tele
 		<TelegramLoginButton
 			botUsername={TG_BOT_NAME}
 			onAuthCallback={async data => {
-				console.log(data);
-				
 				const { error } = await apiClient.auth.telegramCallback(data);
 
 				if(error)

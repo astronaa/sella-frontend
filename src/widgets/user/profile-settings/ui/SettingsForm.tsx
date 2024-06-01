@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLAttributes, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import { Form, useField, useForm, useFormState } from 'react-final-form';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
@@ -120,6 +120,7 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							className='flex-shrink-0 size-[11.625rem] rounded-full'
 							initialImageSrc={initialValues.avatarImage ?? undefined}
 						/>
+						
 						<div className='flex flex-col justify-between max-md:gap-[1rem]'>
 							<VTextControl.Root className='w-full' name='wallet'>
 								<VTextControl.LabelOrError>
@@ -146,39 +147,9 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 						2fa / Notifications
 					</DividerWithElement>
 
-					{initialValues.telegramId ? (
-						<VTextControl.Root className='w-full' name='telegramId'>
-							<VTextControl.Label>
-								Telegram
-							</VTextControl.Label>
-							<VTextControl.Input
-								className='ps-[3rem] cursor-default'
-								placeholder="Your @telegram"
-								readOnly
-							>
-								<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
-									<Icons.Telegram className='size-[1.25rem]' />
-								</span>
-							</VTextControl.Input>
-							<VTextControl.ErrorText />
-						</VTextControl.Root>
-					) : (
-						<div className='w-full'>
-							<AuthChannelsTelegramAuthButton 
-								onActionFulfilled={invalidateUserGetQuery}
-							/>
-						</div>
-					)}
+					<TelegramControl name='telegramId' />
 
-					<VTextControl.Root className='w-full' name='email'>
-						<VTextControl.Label>
-							Email Address
-						</VTextControl.Label>
-						<VTextControl.Input
-							placeholder="johnappleseed@gmail.com"
-						/>
-						<VTextControl.ErrorText />
-					</VTextControl.Root>
+					<EmailControl name='email' />
 
 					<AuthChannelsVerifyEmailDialog
 						email={values.email ?? null}
@@ -190,4 +161,70 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			)}
 		</Form>
 	);
+}
+
+
+function EmailControl({ name }: { name: string }) {
+	const { change } = useForm();
+	const { input } = useField(name);
+	const { initialValues } = useFormState<SchemaType>({
+		subscription: { initialValues: true }
+	});
+
+	return (
+		<VTextControl.Root className='w-full' name={name}>
+			<VTextControl.Label className='flex justify-between w-full'>
+				<span>Email Address</span>
+				{initialValues.email && input.value == initialValues.email && (
+					<span
+						className='text-cyan-100 cursor-pointer'
+						onClick={() => change('email', null)}
+					>
+						Disconnect
+					</span>
+				)}
+			</VTextControl.Label>
+			<VTextControl.Input
+				placeholder="johnappleseed@gmail.com"
+			/>
+			<VTextControl.ErrorText />
+		</VTextControl.Root>
+	);
+}
+
+function TelegramControl({ name }: { name: string }) {
+	const { initialValues } = useFormState<SchemaType>({
+		subscription: { initialValues: true }
+	});
+
+	return initialValues.telegramId ? (
+		<VTextControl.Root className='w-full' name={name}>
+			<VTextControl.Label className='flex justify-between w-full'>
+				<span>Telegram</span>
+				{initialValues.telegramId && (
+					<span
+						className='text-cyan-100 cursor-pointer'
+					>
+						Disconnect
+					</span>
+				)}
+			</VTextControl.Label>
+			<VTextControl.Input
+				className='ps-[3rem] cursor-default'
+				placeholder="Your @telegram"
+				readOnly
+			>
+				<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
+					<Icons.Telegram className='size-[1.25rem]' />
+				</span>
+			</VTextControl.Input>
+			<VTextControl.ErrorText />
+		</VTextControl.Root>
+	) : (
+		<div className='w-full'>
+			<AuthChannelsTelegramAuthButton
+				onActionFulfilled={invalidateUserGetQuery}
+			/>
+		</div>
+	)
 }

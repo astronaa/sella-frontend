@@ -8,6 +8,7 @@ import { PinInput } from '~/shared/ui/kit/pin-input';
 import { useMutation } from '@tanstack/react-query';
 import { apiClient } from '~/shared/api/client';
 import { Portal } from '@ark-ui/react';
+import { cn } from '~/shared/lib/cn';
 
 type VerifyEmailDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void;
@@ -18,7 +19,7 @@ const PIN_DIGITS_COUNT = 4;
 
 export function VerifyEmailDialog({ onActionFulfilled, email, ...props }: VerifyEmailDialogProps) {
 	const [codeValue, setCodeValue] = useState<string[]>([]);
-	const isValueValid = codeValue.length == PIN_DIGITS_COUNT;
+	const isValueValid = codeValue.length == PIN_DIGITS_COUNT && codeValue.every(c => c.length);
 
 	const { mutateAsync: verifyEmail, error } = useMutation<null, { message: string }, string>({
 		mutationFn: async (code: string) => {
@@ -40,7 +41,13 @@ export function VerifyEmailDialog({ onActionFulfilled, email, ...props }: Verify
 	}
 
 	return (
-		<Dialog.Root {...props}>
+		<Dialog.Root
+			{...props}
+			unmountOnExit lazyMount
+			onExitComplete={() => {
+				setCodeValue([]);
+			}}
+		>
 			<Dialog.Backdrop />
 
 			<Portal>
@@ -69,9 +76,9 @@ export function VerifyEmailDialog({ onActionFulfilled, email, ...props }: Verify
 								</p>
 							)}
 
-							<RepeatCounter 
+							<RepeatCounter
 								onResendClick={() => {
-									if(email) {
+									if (email) {
 										setCodeValue([]);
 										apiClient.auth.sendEmailCode(email);
 									}
@@ -115,7 +122,7 @@ function RepeatCounter(props: RepeatCounterProps) {
 	}, []);
 
 	const onResendClick = async () => {
-		if(!timer && props.onResendClick) {
+		if (!timer && props.onResendClick) {
 			const newTime = props.onResendClick();
 			setTimer(newTime);
 		}
@@ -124,7 +131,7 @@ function RepeatCounter(props: RepeatCounterProps) {
 	return (
 		<p className='text-black-60'>
 			Didn’t received the code? <span
-				className='text-cyan-100 cursor-pointer'
+				className={cn('text-cyan-100 cursor-pointer', timer && 'cursor-not-allowed')}
 				onClick={onResendClick}
 			>
 				{timer ? `Resend in ${dayJs(timer * 1000).format('mm:ss')}` : 'Resend now'}
