@@ -2,9 +2,7 @@ export async function GET() {
 	return new Response(
 		`<head>
 			<script>
-				${redirectFunction}
-
-				redirectFunction();
+				(${redirectFunction})();
 			</script>
 		</head>`,
 		{
