@@ -31,6 +31,18 @@ type SettingsFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionRejected?: () => void;
 };
 
+class FormError {
+	field: string | undefined
+	message: string
+
+	constructor({ field, message }: { field?: string, message: string | string[] }) {
+		this.field = field;
+		this.message = Array.isArray(message) ? message[0] : message;
+	}
+}
+
+const validateForm = zodValidate(schema);
+
 export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionRejected, className, ...props }: SettingsFormProps) {
 	const { data: user } = useUserGetQuery();
 	const { address } = useAccount();
@@ -70,14 +82,14 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
 				if (error)
-					throw error;
+					throw new FormError({ field: 'username', message: error.message });
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
 				if (error)
-					throw error;
+					throw new FormError({ field: 'email', message: error.message });
 
 				openVerifyDialog();
 
@@ -93,8 +105,11 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 			onActionFulfilled?.();
 		}
-		catch {
-			return onActionRejected?.();
+		catch (error) {
+			onActionRejected?.();
+
+			if (error instanceof FormError && error.field)
+				return { [error.field]: error.message }
 		}
 	};
 
@@ -106,7 +121,7 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 	return (
 		<Form
 			onSubmit={onSubmit}
-			validate={zodValidate(schema)}
+			validate={validateForm}
 			initialValues={initialValues}
 		>
 			{({ handleSubmit, values }) => (
@@ -120,8 +135,8 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							className='flex-shrink-0 size-[11.625rem] rounded-full'
 							initialImageSrc={initialValues.avatarImage ?? undefined}
 						/>
-						
-						<div className='flex flex-col justify-between max-md:gap-[1rem]'>
+
+						<div className='flex flex-col justify-between max-md:gap-[1rem] gap-[0.5rem]'>
 							<VTextControl.Root className='w-full' name='wallet'>
 								<VTextControl.LabelOrError>
 									Wallet
@@ -133,12 +148,13 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							</VTextControl.Root>
 
 							<VTextControl.Root className='w-full' name='username'>
-								<VTextControl.LabelOrError>
+								<VTextControl.Label>
 									Username
-								</VTextControl.LabelOrError>
+								</VTextControl.Label>
 								<VTextControl.Input
 									placeholder='Your username'
 								/>
+								<VTextControl.ErrorText />
 							</VTextControl.Root>
 						</div>
 					</div>

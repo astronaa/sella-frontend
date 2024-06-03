@@ -47,19 +47,16 @@ export function createAuthClient() {
 		setUsername(username: PayloadUsername) {
 			return authFetchClient.PATCH('/api/auth/username', {
 				body: { username },
-				parseAs: 'text'
 			})
 		},
 		async sendEmailCode(email: PayloadEmail) {
 			return authFetchClient.POST('/api/auth/email/send-code', {
 				body: { email },
-				parseAs: 'text'
 			})
 		},
 		async verifyEmailCode(payload: PayloadVerifyEmailCode) {
 			return authFetchClient.POST('/api/auth/email/verify-code', {
 				body: payload,
-				parseAs: 'text'
 			})
 		},
 

@@ -152,6 +152,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/users/{username}/exists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Check if username taken */
+        get: operations["UsersController_exists"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users/{username}/stores": {
         parameters: {
             query?: never;
@@ -247,6 +264,23 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["StoreController_changeStoreImage"];
+        trace?: never;
+    };
+    "/api/stores/{url}/exists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Check if url taken */
+        get: operations["StoreController_storeExists"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/media/{id}": {
@@ -347,6 +381,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/explore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ExploreController_getExplore"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -388,7 +438,7 @@ export interface components {
         };
         User: {
             id: number;
-            profilePictureId: string;
+            profilePictureId: Record<string, never>;
             address: string;
             username: string;
             email: string;
@@ -396,6 +446,9 @@ export interface components {
             telegramId: string;
             /** Format: date-time */
             createdAt: string;
+        };
+        ExistsResponseDto: {
+            exists: boolean;
         };
         Store: {
             id: number;
@@ -414,6 +467,7 @@ export interface components {
             shortDescription: string;
             price: number;
             imageIds: string[];
+            hasPreview: boolean;
             storeUrl: string;
         };
         ProductsResponseDto: {
@@ -450,14 +504,19 @@ export interface components {
             id: string;
         };
         ProductUpdateDto: {
-            name: string;
-            description: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
+            name?: string;
+            description?: string;
+            shortDescription?: string;
+            price?: number;
+            imageIds?: string[];
+            hasPreview?: boolean;
         };
         ProductAddImageResultDto: {
             imageIds: string[];
+        };
+        GetExploreResponseDto: {
+            data: components["schemas"]["Store"][];
+            total: number;
         };
     };
     responses: never;
@@ -764,6 +823,26 @@ export interface operations {
             };
         };
     };
+    UsersController_exists: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                username: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response if username taken or not */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ExistsResponseDto"];
+                };
+            };
+        };
+    };
     UsersController_getUserStores: {
         parameters: {
             query?: never;
@@ -1005,6 +1084,26 @@ export interface operations {
             };
         };
     };
+    StoreController_storeExists: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response if url taken or not */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ExistsResponseDto"];
+                };
+            };
+        };
+    };
     MediaController_getMedia: {
         parameters: {
             query?: never;
@@ -1219,6 +1318,27 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    ExploreController_getExplore: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of stores for explore page */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["GetExploreResponseDto"];
+                };
             };
         };
     };

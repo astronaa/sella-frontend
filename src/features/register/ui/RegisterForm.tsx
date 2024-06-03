@@ -7,7 +7,7 @@ import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
 import { schema, SchemaType } from "~/features/register/api";
 import { apiClient } from '~/shared/api/client';
-import { invalidateUserGetQuery } from '~/entities/user';
+import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
 
 type RegisterFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
@@ -16,10 +16,12 @@ type RegisterFormProps = HTMLAttributes<HTMLFormElement> & {
 };
 
 export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: RegisterFormProps) {
+	const { data: user } = useUserGetQuery();
+
 	const onSubmit = async (values: SchemaType) => {
 		onBeforeAction?.();
 
-		await apiClient.auth.setUsername(values.userName);
+		await apiClient.auth.setUsername(values.username);
 
 		if(values.avatar)
 			await apiClient.users.setAvatar(values.avatar);
@@ -30,7 +32,11 @@ export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: Re
 	};
 
 	return (
-		<Form onSubmit={onSubmit} validate={zodValidate(schema)}>
+		<Form 
+			onSubmit={onSubmit} 
+			validate={zodValidate(schema)}
+			initialValues={user}
+		>
 			{({ handleSubmit }) => (
 				<form
 					className='flex flex-col w-full gap-[1rem]'
@@ -41,10 +47,11 @@ export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: Re
 							accept='image/png, image/jpeg'
 							label='Upload Avatar' name='avatar'
 							className='rounded-full'
+							initialImageSrc={user?.avatarImage ?? undefined}
 						/>
 					</DividerWithElement>
 
-					<VTextControl.Root className='w-full' name='userName'>
+					<VTextControl.Root className='w-full' name='username'>
 						<VTextControl.Input
 							className='text-center'
 							size='2xl' placeholder="@username"

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { LoginButtonProps, TTelegramAuthLogin } from './types';
 import { createScript } from './createScript';
+import { useCallbackRef } from '~/shared/lib/use-callback-ref';
 
 /**
  * It takes an object with a bunch of properties and assigns it to the global variable
@@ -20,23 +21,26 @@ function initTelegramAuthLogin(options: TTelegramAuthLogin) {
  * @param {LoginButtonProps} props The props to pass to the component.
  * @returns A React component that renders the Telegram login button.
  */
-export function TelegramLoginButton(props: LoginButtonProps) {
+export function TelegramLoginButton({ onAuthCallback, ...props }: LoginButtonProps) {
 	const hiddenDivRef = useRef<HTMLDivElement>(null);
 	const scriptRef = useRef<HTMLScriptElement>();
+
+	const onAuthCb = useCallbackRef(onAuthCallback);
 
 	useEffect(() => {
 		// destroy the existing script element
 		scriptRef.current?.remove();
 
 		// init the global variable
-		initTelegramAuthLogin({ onAuthCallback: props.onAuthCallback });
+		initTelegramAuthLogin({ onAuthCallback: onAuthCb });
 
 		// create a new script element and save it
 		scriptRef.current = createScript(props);
 
 		// add the script element to the DOM
 		hiddenDivRef.current?.after(scriptRef.current);
-	}, [props]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [onAuthCb, ...Object.values(props)]);
 
 	return <div ref={hiddenDivRef} hidden />;
 }
