@@ -16,7 +16,7 @@ type ManageDialogProps = Dialog.RootProps & {
 export function ManageDialog({ product, triggerElement, ...props }: ManageDialogProps) {
 	const formId = useId();
 
-	const onProductEdit = () => {
+	const onProductEdit = (data: Product) => {
 		props?.onOpenChange?.({ open: false })
 	}
 
@@ -45,7 +45,8 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 
 						<EditForm
 							className='gap-[2rem]'
-							id={formId} product={product}
+							id={formId}
+							product={product}
 							onActionFulfilled={onProductEdit}
 						/>
 

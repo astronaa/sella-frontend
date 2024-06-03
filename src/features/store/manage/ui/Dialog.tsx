@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog } from '~/shared/ui/kit';
-import { EditForm } from './EditForm';
+import { EditForm, SchemaType } from './EditForm';
 import { ReactNode, useId } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Store } from '~/shared/api/model';
@@ -15,7 +15,7 @@ type ManageDialogProps = Dialog.RootProps & {
 export function ManageDialog({ store, triggerElement, ...props }: ManageDialogProps) {
 	const formId = useId();
 
-	const onStoreEdit = () => {
+	const onStoreEdit = (data: SchemaType) => {
 		props?.onOpenChange?.({ open: false })
 	}
 
@@ -43,7 +43,8 @@ export function ManageDialog({ store, triggerElement, ...props }: ManageDialogPr
 
 					<EditForm
 						className='gap-[2rem]'
-						id={formId} store={store}
+						id={formId}
+						store={store}
 						onActionFulfilled={onStoreEdit}
 					/>
 

@@ -8,6 +8,7 @@ import { ToggleEditModeButton } from "./ToggleEditModeButton";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { StoreReportFlow } from "~/features/store/report";
+import { ProductCreateDialog } from "~/features/product/create";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
 	const store = await fetchStore(storeUrl);
@@ -38,6 +39,14 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 							triggerElement={
 								<Button colorPalette='gray' size='lg'>
 									Settings
+								</Button>
+							}
+						/>
+						<ProductCreateDialog
+							store={store}
+							triggerElement={
+								<Button colorPalette='gray' size='lg'>
+									Product
 								</Button>
 							}
 						/>

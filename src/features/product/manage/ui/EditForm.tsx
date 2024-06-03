@@ -13,6 +13,9 @@ import {
 	VTextControl,
 	VUploader
 } from '~/shared/ui/validation-inputs';
+import { apiClient } from "~/shared/api/client";
+import { queryClient } from "~/shared/config/query-client";
+import { useMutation } from "@tanstack/react-query";
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -31,19 +34,32 @@ type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionFulfilled?: (product: Product) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function EditForm({ onActionFulfilled, product, className, ...props }: EditFormProps) {
-	const onSubmit = (values: SchemaType) => {
-		const product: Product = {
-			id: '1',
-			...values,
-			description: values?.description ?? null,
-			previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,
-			galleryImages: values.galleryImages?.map(URL.createObjectURL) ?? [],
-			category: 'Category'
-		}
+	const { mutate: updateProduct } = useMutation({
+		mutationFn: async (values: SchemaType) => {
+			const { data } = await apiClient.products.for(product.id).update({
+				name: values.name,
+				description: values.description,
+				price: Number(values.price),
+				shortDescription: values.shortDescription,
+				imageIds: []
+			})
 
-		onActionFulfilled?.(product);
+			// await apiClient.products.for(product.id).uploadImages(data.previewImage)
+
+			return data
+		},
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['stores'] })
+
+			if(data) {
+				onActionFulfilled?.(data)
+			}
+		}
+	})
+
+	const onSubmit = (values: SchemaType) => {
+		updateProduct(values)
 	};
 
 	return (

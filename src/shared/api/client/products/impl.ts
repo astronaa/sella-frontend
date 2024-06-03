@@ -28,7 +28,6 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
-					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 
@@ -39,6 +38,7 @@ export function createProductsClient() {
 				}
 			},
 			async uploadImages(payload: File[]) {
+				console.log('uploadImages',payload)
 				return await authFetchClient.POST('/api/products/{id}/images', {
 					params: { path: { id: productId } },
 					body: { file: [] },

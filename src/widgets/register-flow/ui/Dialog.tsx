@@ -84,6 +84,8 @@ export function FlowDialog(props: Dialog.RootProps) {
 				open={isOpen('create-store')}
 				onOpenChange={onOpenChange}
 				onActionFulfilled={store => {
+					if(!store) return
+
 					openModalAction('create-store-success')();
 					setCreatedStore(store);
 				}}

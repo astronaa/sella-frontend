@@ -13,6 +13,7 @@ import { StoreProvider, useStoreStrictContext } from "./context";
 export type RootProps = HTMLArkProps<'div'> & StoreProp;
 
 export function Root({ store, className, ...props }: RootProps) {
+	console.log(store)
 	return (
 		<StoreProvider value={store}>
 			<ark.div
@@ -31,8 +32,11 @@ export function Image({ className, ...props }: Omit<PreviewImageProps, 'src' | '
 
 	return (
 		<PreviewImage
+			width={200}
+			height={200}
 			alt={`Image of ${title}`}
-			src={imageUrl} {...props}
+			src={imageUrl}
+			{...props}
 			className={cn('rounded-full flex-shrink-0 shadow-sm', className)}
 		/>
 	);

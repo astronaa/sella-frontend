@@ -3,7 +3,7 @@
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
-import { Product, StoreId } from '~/shared/api/model';
+import { Product, Store, StoreId } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 
@@ -13,6 +13,8 @@ import {
 	VTextControl,
 	VUploader
 } from '~/shared/ui/validation-inputs';
+import { useMutation } from "@tanstack/react-query";
+import { apiClient } from "~/shared/api/client";
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -27,23 +29,41 @@ export type SchemaType = z.infer<typeof schema>
 
 type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
-	storeId: StoreId,
+	store: Store,
 	onActionFulfilled?: (product: Product) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function CreateForm({ onActionFulfilled, storeId, className, ...props }: CreateFormProps) {
-	const onSubmit = (values: SchemaType) => {
-		const store: Product = {
-			id: '1',
-			...values,
-			description: values?.description ?? null,
-			previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,
-			galleryImages: values.galleryImages?.map(URL.createObjectURL) ?? [],
-			category: 'Category'
-		}
+export function CreateForm({ onActionFulfilled, store, className, ...props }: CreateFormProps) {
+	const { mutate: createProduct, data } = useMutation({
+		mutationFn: async (values: SchemaType) => {
+			const { data } = await apiClient.products.create(store.shortName, {
+				name: values.name,
+				description: values.description,
+				price: Number(values.price),
+				shortDescription: values.shortDescription,
+				storeUrl: store.shortName
+			})
 
-		onActionFulfilled?.(store);
+			//TODO
+			if(!data) return
+
+			return {
+				id: data.id,
+				...values,
+				category: 'category',
+				description: values?.description ?? null,
+				previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,
+				galleryImages: values.galleryImages?.map(URL.createObjectURL) ?? [],
+			}
+
+			// await apiClient.products.for(data.id).uploadImages(values.galleryImages ?? [])
+		},
+		onSuccess: (data) => data && onActionFulfilled?.(data)
+	})
+
+	const onSubmit = (values: SchemaType) => {
+		createProduct(values)
 	};
 
 	return (

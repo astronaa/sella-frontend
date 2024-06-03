@@ -27,7 +27,7 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 		initialData: { data: initialData, error: undefined },
 		queryKey: ['stores', page],
 		queryFn: async () => apiClient.stores.getAll({ page: page, limit: STORE_ITEMS_PER_PAGE }),
-		refetchOnMount: false
+		// refetchOnMount: false//TODO
 	})
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])

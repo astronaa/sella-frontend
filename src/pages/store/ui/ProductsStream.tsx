@@ -30,12 +30,15 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 	const [page, setPage] = useState(INITIAL_PAGE)
 
 	const { data, isFetching } = useQuery({
-		initialData: { data: initialData, error: undefined },
+		initialData: initialData
+			? { data: initialData, error: undefined }
+			//TODO error
+			: { data: undefined, error: {} },
 		queryKey: ['products', page],
 		queryFn: async () => apiClient.stores
 			.for(storeUrl)
 			.getProducts({ page, limit: PRODUCT_ITEMS_PER_PAGE }),
-		refetchOnMount: false,
+		staleTime: 10 * 60 * 1000
 	})
 
 	const products = data?.data?.items ?? []
