@@ -1,6 +1,3 @@
-import Image from "next/image";
-import ImageHero from "../assets/hero.webp";
-
 import { FeaturesList } from "./Features";
 import { Background } from "./SectionBackground";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
@@ -24,16 +21,16 @@ export function Hero() {
 				</div>
 
 				<VideoAnimationPlayer
-					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
-					src='/videos/hero-anim.webm'
-					srcHevc='/videos/hero-anim.mp4'
+					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block h-[48rem]'
+					src='/videos/hero-anim2.webm'
+					// srcHevc='/videos/hero-anim.mp4'
 				>
-					<Image
+					{/* <Image
 						src={ImageHero}
 						alt="Hero image"
 						className="size-full"
 						quality={100}
-					/>
+					/> */}
 				</VideoAnimationPlayer>
 			</div>
 		</div>

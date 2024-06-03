@@ -1,5 +1,3 @@
-import Image from "next/image";
-import ImageHero from "../assets/hero.webp";
 import { Background } from "./SectionBackground";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
@@ -30,16 +28,16 @@ export function CreateStore() {
 				</div>
 
 				<VideoAnimationPlayer
-					className='flex-shrink-0 w-[26rem] xl:w-[48rem] hidden lg:block'
-					src='/videos/hero-anim.webm'
-					srcHevc='/videos/hero-anim.mp4'
+					className='flex-shrink-0 w-[26rem] xl:w-[48rem] hidden lg:block h-[48rem]'
+					src='/videos/hero-anim2.webm'
+					// srcHevc='/videos/hero-anim.mp4'
 				>
-					<Image
+					{/* <Image
 						src={ImageHero}
 						alt="Hero image"
 						className="size-full"
 						quality={100}
-					/>
+					/> */}
 				</VideoAnimationPlayer>
 			</div>
 		</div>
