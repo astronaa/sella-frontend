@@ -5,6 +5,7 @@ import { useField } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
 import { ValidationStatusIcon } from "./ValidationStatusIcon";
 import { useControlContext } from "./ControlProvider";
+import { shouldRenderFieldError } from "./error";
 
 export {
 	Root, Label, LabelOrError,
@@ -14,7 +15,7 @@ export {
 export function Input({ children, className, ...props }: Omit<TextAreaProps, 'error' | 'id'>) {
 	const { id, name } = useControlContext();
 	const { meta: fieldState, input: { onChange, ...fieldProps } } = useField(name);
-	const error = fieldState.touched && fieldState.error;
+	const shouldRender = shouldRenderFieldError(fieldState);
 
 	return (
 		<InputGroup>
@@ -26,7 +27,7 @@ export function Input({ children, className, ...props }: Omit<TextAreaProps, 'er
 					onChange(e);
 					props?.onChange?.(e);
 				}}
-				id={id} error={!!error}
+				id={id} error={shouldRender}
 				className={cn('w-full pe-[3rem]', className)}
 			/>
 			<ValidationStatusIcon name={name} className='absolute h-full right-2 top-0 items-start pt-[1rem]' />

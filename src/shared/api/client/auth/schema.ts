@@ -28,6 +28,7 @@ export type PayloadVerifyEmailCode = z.infer<typeof schemaVerifyEmailCode>;
 
 export const schemaUsername = z
 	.string({ required_error: 'Name is required' })
+	.regex(/^[a-zA-Z0-9_-]+$/, { message: 'Username can only contain letters, numbers, underscores, and hyphens' })
 	.min(3, 'Min length is 3')
 
 export type PayloadUsername = z.infer<typeof schemaUsername>

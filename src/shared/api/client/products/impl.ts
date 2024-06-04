@@ -28,7 +28,6 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
-					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 

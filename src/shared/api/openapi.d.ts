@@ -152,6 +152,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/users/{username}/exists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Check if username taken */
+        get: operations["UsersController_exists"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users/{username}/stores": {
         parameters: {
             query?: never;
@@ -247,6 +264,23 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["StoreController_changeStoreImage"];
+        trace?: never;
+    };
+    "/api/stores/{url}/exists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Check if url taken */
+        get: operations["StoreController_storeExists"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/media/{id}": {
@@ -347,6 +381,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/explore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ExploreController_getExplore"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["OrdersController_createOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/my-orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_getMyOrders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/my-sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_getMySales"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -368,6 +466,8 @@ export interface components {
             address: string;
             /** @description Signature after user signed login message */
             signature: string;
+            /** @description Referral code from friend */
+            refCode?: string;
         };
         LoginResponseDto: {
             hasTwitter: boolean;
@@ -394,8 +494,15 @@ export interface components {
             email: string;
             twitterId: string;
             telegramId: string;
+            refCode: string;
+            invitedBy: number;
+            /** Format: date-time */
+            lastOnline: string;
             /** Format: date-time */
             createdAt: string;
+        };
+        ExistsResponseDto: {
+            exists: boolean;
         };
         Store: {
             id: number;
@@ -414,6 +521,7 @@ export interface components {
             shortDescription: string;
             price: number;
             imageIds: string[];
+            hasPreview: boolean;
             storeUrl: string;
         };
         ProductsResponseDto: {
@@ -450,14 +558,55 @@ export interface components {
             id: string;
         };
         ProductUpdateDto: {
-            name: string;
-            description: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
+            name?: string;
+            description?: string;
+            shortDescription?: string;
+            price?: number;
+            imageIds?: string[];
+            hasPreview?: boolean;
         };
         ProductAddImageResultDto: {
             imageIds: string[];
+        };
+        GetExploreResponseDto: {
+            data: components["schemas"]["Store"][];
+            total: number;
+        };
+        OrderCreateDto: {
+            productId: string;
+            /** @enum {string} */
+            status: "New" | "Paid" | "Delivered" | "Canceled";
+            /** @enum {string} */
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            price: number;
+        };
+        OrderCreateResultDto: {
+            id: string;
+        };
+        PaginationMetaDto: {
+            currentPage: number;
+            pageSize: number;
+            hasNextPage: boolean;
+            totals: number;
+        };
+        MyOrdersResponseDto: {
+            orders: string[];
+            totalPrice: number;
+            meta: components["schemas"]["PaginationMetaDto"];
+        };
+        OrderResponse: {
+            productName: string;
+            storeName: string;
+            status: string;
+            fulfillmentStatus: string;
+            /** Format: date-time */
+            date: string;
+            price: number;
+        };
+        MySalesResponseDto: {
+            sales: components["schemas"]["OrderResponse"][];
+            totalPrice: number;
+            meta: components["schemas"]["PaginationMetaDto"];
         };
     };
     responses: never;
@@ -764,6 +913,26 @@ export interface operations {
             };
         };
     };
+    UsersController_exists: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                username: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response if username taken or not */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ExistsResponseDto"];
+                };
+            };
+        };
+    };
     UsersController_getUserStores: {
         parameters: {
             query?: never;
@@ -1005,6 +1174,26 @@ export interface operations {
             };
         };
     };
+    StoreController_storeExists: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response if url taken or not */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ExistsResponseDto"];
+                };
+            };
+        };
+    };
     MediaController_getMedia: {
         parameters: {
             query?: never;
@@ -1219,6 +1408,101 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    ExploreController_getExplore: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of stores for explore page */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["GetExploreResponseDto"];
+                };
+            };
+        };
+    };
+    OrdersController_createOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrderCreateDto"];
+            };
+        };
+        responses: {
+            /** @description Order created successfully. Returns ID of the new order */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["OrderCreateResultDto"];
+                };
+            };
+            /** @description Invalid order data */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    OrdersController_getMyOrders: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user orders successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["MyOrdersResponseDto"];
+                };
+            };
+        };
+    };
+    OrdersController_getMySales: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user sales successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["MySalesResponseDto"];
+                };
             };
         };
     };

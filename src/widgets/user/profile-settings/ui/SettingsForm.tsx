@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLAttributes, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import { Form, useField, useForm, useFormState } from 'react-final-form';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
@@ -30,6 +30,18 @@ type SettingsFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionFulfilled?: () => void;
 	onActionRejected?: () => void;
 };
+
+class FormError {
+	field: string | undefined
+	message: string
+
+	constructor({ field, message }: { field?: string, message: string | string[] }) {
+		this.field = field;
+		this.message = Array.isArray(message) ? message[0] : message;
+	}
+}
+
+const validateForm = zodValidate(schema);
 
 export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionRejected, className, ...props }: SettingsFormProps) {
 	const { data: user } = useUserGetQuery();
@@ -70,14 +82,14 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
 				if (error)
-					throw error;
+					throw new FormError({ field: 'username', message: error.message });
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
 				if (error)
-					throw error;
+					throw new FormError({ field: 'email', message: error.message });
 
 				openVerifyDialog();
 
@@ -93,8 +105,11 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 			onActionFulfilled?.();
 		}
-		catch {
-			return onActionRejected?.();
+		catch (error) {
+			onActionRejected?.();
+
+			if (error instanceof FormError && error.field)
+				return { [error.field]: error.message }
 		}
 	};
 
@@ -106,7 +121,7 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 	return (
 		<Form
 			onSubmit={onSubmit}
-			validate={zodValidate(schema)}
+			validate={validateForm}
 			initialValues={initialValues}
 		>
 			{({ handleSubmit, values }) => (
@@ -120,7 +135,8 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							className='flex-shrink-0 size-[11.625rem] rounded-full'
 							initialImageSrc={initialValues.avatarImage ?? undefined}
 						/>
-						<div className='flex flex-col justify-between max-md:gap-[1rem]'>
+
+						<div className='flex flex-col justify-between max-md:gap-[1rem] gap-[0.5rem]'>
 							<VTextControl.Root className='w-full' name='wallet'>
 								<VTextControl.LabelOrError>
 									Wallet
@@ -132,12 +148,13 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							</VTextControl.Root>
 
 							<VTextControl.Root className='w-full' name='username'>
-								<VTextControl.LabelOrError>
+								<VTextControl.Label>
 									Username
-								</VTextControl.LabelOrError>
+								</VTextControl.Label>
 								<VTextControl.Input
 									placeholder='Your username'
 								/>
+								<VTextControl.ErrorText />
 							</VTextControl.Root>
 						</div>
 					</div>
@@ -146,39 +163,9 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 						2fa / Notifications
 					</DividerWithElement>
 
-					{initialValues.telegramId ? (
-						<VTextControl.Root className='w-full' name='telegramId'>
-							<VTextControl.Label>
-								Telegram
-							</VTextControl.Label>
-							<VTextControl.Input
-								className='ps-[3rem] cursor-default'
-								placeholder="Your @telegram"
-								readOnly
-							>
-								<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
-									<Icons.Telegram className='size-[1.25rem]' />
-								</span>
-							</VTextControl.Input>
-							<VTextControl.ErrorText />
-						</VTextControl.Root>
-					) : (
-						<div className='w-full'>
-							<AuthChannelsTelegramAuthButton 
-								onActionFulfilled={invalidateUserGetQuery}
-							/>
-						</div>
-					)}
+					<TelegramControl name='telegramId' />
 
-					<VTextControl.Root className='w-full' name='email'>
-						<VTextControl.Label>
-							Email Address
-						</VTextControl.Label>
-						<VTextControl.Input
-							placeholder="johnappleseed@gmail.com"
-						/>
-						<VTextControl.ErrorText />
-					</VTextControl.Root>
+					<EmailControl name='email' />
 
 					<AuthChannelsVerifyEmailDialog
 						email={values.email ?? null}
@@ -190,4 +177,70 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			)}
 		</Form>
 	);
+}
+
+
+function EmailControl({ name }: { name: string }) {
+	const { change } = useForm();
+	const { input } = useField(name);
+	const { initialValues } = useFormState<SchemaType>({
+		subscription: { initialValues: true }
+	});
+
+	return (
+		<VTextControl.Root className='w-full' name={name}>
+			<VTextControl.Label className='flex justify-between w-full'>
+				<span>Email Address</span>
+				{initialValues.email && input.value == initialValues.email && (
+					<span
+						className='text-cyan-100 cursor-pointer'
+						onClick={() => change('email', null)}
+					>
+						Disconnect
+					</span>
+				)}
+			</VTextControl.Label>
+			<VTextControl.Input
+				placeholder="johnappleseed@gmail.com"
+			/>
+			<VTextControl.ErrorText />
+		</VTextControl.Root>
+	);
+}
+
+function TelegramControl({ name }: { name: string }) {
+	const { initialValues } = useFormState<SchemaType>({
+		subscription: { initialValues: true }
+	});
+
+	return initialValues.telegramId ? (
+		<VTextControl.Root className='w-full' name={name}>
+			<VTextControl.Label className='flex justify-between w-full'>
+				<span>Telegram</span>
+				{initialValues.telegramId && (
+					<span
+						className='text-cyan-100 cursor-pointer'
+					>
+						Disconnect
+					</span>
+				)}
+			</VTextControl.Label>
+			<VTextControl.Input
+				className='ps-[3rem] cursor-default'
+				placeholder="Your @telegram"
+				readOnly
+			>
+				<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
+					<Icons.Telegram className='size-[1.25rem]' />
+				</span>
+			</VTextControl.Input>
+			<VTextControl.ErrorText />
+		</VTextControl.Root>
+	) : (
+		<div className='w-full'>
+			<AuthChannelsTelegramAuthButton
+				onActionFulfilled={invalidateUserGetQuery}
+			/>
+		</div>
+	)
 }
