@@ -8,6 +8,7 @@ import { useField } from "react-final-form";
 import { Input as BaseInput, InputGroup, InputProps } from "../kit/input";
 import { ValidationStatusIcon } from "./ValidationStatusIcon";
 import { ControlProvider, useControlContext, ControlProps } from "./ControlProvider";
+import { extractErrorFromFieldState, shouldRenderFieldError } from './error';
 
 export function Root({ name, id, children, className, ...props }: HTMLAttributes<HTMLDivElement> & ControlProps) {
 	return (
@@ -34,11 +35,12 @@ export function Label({ children, ...props }: LabelProps) {
 export function LabelOrError({ children, className, ...props }: LabelProps) {
 	const { id, name } = useControlContext();
 	const { meta: fieldState } = useField(name);
-	const error = fieldState.touched && fieldState.error;
+	const error = extractErrorFromFieldState(fieldState);
+	const shouldRender = shouldRenderFieldError(fieldState);
 
 	return (
-		<label htmlFor={id} {...props} className={cn(!!error && 'text-error-100', className)}>
-			{error ? error : children}
+		<label htmlFor={id} {...props} className={cn(shouldRender && 'text-error-100', className)}>
+			{shouldRender ? error : children}
 		</label>
 	);
 }
@@ -46,9 +48,10 @@ export function LabelOrError({ children, className, ...props }: LabelProps) {
 export function ErrorText({ className, ...props }: Omit<HTMLAttributes<HTMLSpanElement>, 'children'>) {
 	const { name } = useControlContext();
 	const { meta: fieldState } = useField(name);
-	const error = fieldState.touched && fieldState.error;
+	const error = extractErrorFromFieldState(fieldState);
+	const shouldRender = shouldRenderFieldError(fieldState);
 
-	return !!error && (
+	return shouldRender && (
 		<span {...props} className={cn('text-error-100', className)}>
 			{error}
 		</span>
@@ -66,7 +69,7 @@ export function Description({ className, children, ...props }: HTMLAttributes<HT
 export function Input({ children, className, ...props }: Omit<InputProps, 'error' | 'id'>) {
 	const { id, name } = useControlContext();
 	const { meta: fieldState, input: { onChange, ...fieldProps } } = useField(name);
-	const error = fieldState.touched && fieldState.error;
+	const shouldRender = shouldRenderFieldError(fieldState);
 
 	return (
 		<InputGroup>
@@ -78,7 +81,7 @@ export function Input({ children, className, ...props }: Omit<InputProps, 'error
 					onChange(e);
 					props?.onChange?.(e);
 				}}
-				id={id} error={!!error}
+				id={id} error={shouldRender}
 				className={cn('w-full pe-[3rem]', className)}
 			/>
 			<ValidationStatusIcon name={name} className='absolute h-full right-2 top-0' />

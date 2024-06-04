@@ -6,6 +6,7 @@ import { Dialog } from '~/shared/ui/kit';
 import { useEffect, useRef } from "react";
 import { useCallbackRef } from '~/shared/lib/use-callback-ref';
 import { apiClient } from '~/shared/api/client';
+import { invalidateUserGetQuery } from '~/entities/user';
 
 type ConnectTwitterDialogProps = Dialog.RootProps & {
 	onActionFulfilled: () => void;
@@ -26,6 +27,7 @@ export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwi
 
 			if(e.data.type == 'twitter-auth-result') {
 				windowRef.current?.close();
+				invalidateUserGetQuery();
 				onActionFulfilledCb()
 			}
 		}

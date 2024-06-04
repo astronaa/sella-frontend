@@ -2,7 +2,7 @@ import { z } from "zod";
 import { apiClient } from "~/shared/api/client";
 
 export const schema = z.object({
-	userName: apiClient.auth.schemaUsername,
+	username: apiClient.auth.schemaUsername,
 	avatar: apiClient.users.schemaAvatarFile.optional()
 });
 
