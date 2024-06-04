@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog } from '~/shared/ui/kit';
-import { EditForm, SchemaType } from './EditForm';
+import { EditForm } from './EditForm';
 import { ReactNode, useId } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Store } from '~/shared/api/model';
@@ -9,18 +9,28 @@ import { DeleteButton } from './DeleteButton';
 
 type ManageDialogProps = Dialog.RootProps & {
 	store: Store,
-	triggerElement?: ReactNode
+	triggerElement?: ReactNode,
+	onActionDeleteFulfilled?: () => void,
+	onActionEditFulfilled?: (store: Store) => void
 };
 
-export function ManageDialog({ store, triggerElement, ...props }: ManageDialogProps) {
+export function ManageDialog({
+	store, triggerElement,
+	onActionDeleteFulfilled,
+	onActionEditFulfilled,
+	...props
+}: ManageDialogProps) {
 	const formId = useId();
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onStoreEdit = (data: SchemaType) => {
+	const onStoreEdit = (store: Store) => {
+		onActionEditFulfilled?.(store);
+
 		props?.onOpenChange?.({ open: false })
 	}
 
 	const onStoreDelete = () => {
+		onActionDeleteFulfilled?.();
+
 		props?.onOpenChange?.({ open: false })
 	}
 
@@ -51,7 +61,7 @@ export function ManageDialog({ store, triggerElement, ...props }: ManageDialogPr
 
 					<Dialog.ContentFooter>
 						<DeleteButton
-							storeId={store.id}
+							storeUrl={store.shortName}
 							onActionFulfilled={onStoreDelete}
 						/>
 

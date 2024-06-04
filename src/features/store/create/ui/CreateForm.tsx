@@ -11,12 +11,11 @@ import { DefaultError, useMutation } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { Store } from "~/shared/api/model";
 
-export const schema = z.object({
-	name: z.string().min(3, 'Min length is 3'),
-	shortName: z.string().min(3, 'Min length is 3'),
-	description: z.string().min(5, 'Min length is 5'),
-	previewImage: z.instanceof(File)
-});
+const schema = apiClient.stores.schemaCreate.merge(
+	z.object({
+		previewImage: z.instanceof(File)
+	})
+);
 
 export type SchemaType = z.infer<typeof schema>
 
@@ -26,16 +25,16 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 };
 
 export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
-	const { mutate: createStore, data } = useMutation<Store | undefined, DefaultError, SchemaType>({
+	const { mutateAsync: createStore } = useMutation<Store, DefaultError, SchemaType>({
 		mutationFn: async (values: SchemaType) => {
-			const { data } = await apiClient.stores.create({
+			const { data, error } = await apiClient.stores.create({
 				shortName: values.shortName,
 				name: values.name,
 				description: values.description
 			})
 
-			//TODO should be catch
-			if(!data) return
+			if(error) 
+				throw error
 
 			await apiClient.stores.for(data.shortName).setImage(values.previewImage)
 
@@ -46,9 +45,12 @@ export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
 		}
 	})
 
-	const onSubmit = (values: SchemaType) => {
-		createStore(values)
-		onActionFulfilled?.(data);
+	const onSubmit = async (values: SchemaType) => {
+		try {
+			const store = await createStore(values);
+			onActionFulfilled?.(store);
+		}
+		catch {};
 	};
 
 	return (

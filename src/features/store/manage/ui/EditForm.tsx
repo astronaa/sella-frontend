@@ -1,6 +1,12 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
+import {
+	VImageUploader,
+	VTextAreaControl,
+	VTextControl,
+} from '~/shared/ui/validation-inputs';
+
+import { HTMLAttributes, useMemo } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
 import { StoreInputAddon } from '~/entities/store';
@@ -8,60 +14,71 @@ import { Store } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
-
-import {
-	VImageUploader,
-	VTextAreaControl,
-	VTextControl,
-} from '~/shared/ui/validation-inputs';
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 import { useMutation } from "@tanstack/react-query";
 
-export const schema = z.object({
-	name: z.string().min(3, 'Min length is 3'),
-	shortName: z.string().min(3, 'Min length is 3'),
-	description: z.string(),
-	previewImage: z.instanceof(File)
-});
+const schema = apiClient.stores.schemaCreate.merge(
+	z.object({
+		previewImage: z.instanceof(File).optional()
+	})
+);
 
 export type SchemaType = z.infer<typeof schema>
 
 type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
 	store: Store,
-	onActionFulfilled?: (store: SchemaType) => void;
+	onActionFulfilled?: (store: Store) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const validate = zodValidate(schema)
+
 export function EditForm({ onActionFulfilled, store, className, ...props }: EditFormProps) {
-	const { mutate: updateStore } = useMutation({
-		mutationFn: async (data: SchemaType) => {
-			await apiClient.stores.for(store.shortName).update({
-				shortName: data.shortName,
-				name: data.name,
-				description: data.description
-			})
-			await apiClient.stores.for(store.shortName).setImage(data.previewImage)
+	const { mutateAsync: updateStore } = useMutation({
+		mutationFn: async ({ previewImage, ...data }: SchemaType) => {
+			const { error } = await apiClient.stores.for(store.shortName)
+				.update({
+					shortName: data.shortName,
+					name: data.name,
+					description: data.description
+				})
+
+			if (error)
+				throw error;
+
+			if (previewImage)
+				await apiClient.stores.for(store.shortName).setImage(previewImage)
+
+			return { ...store, ...data }
 		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stores'] })
 	})
 
-	const onSubmit = (values: SchemaType) => {
+	const onSubmit = async (values: SchemaType) => {
 		const result: SchemaType = {
 			...store,
 			...values,
 			previewImage: values.previewImage,
 		}
-		updateStore(result)
-		onActionFulfilled?.(result);
+
+		try {
+			const store = await updateStore(result)
+			onActionFulfilled?.(store);
+		}
+		catch { };
 	};
+
+	const initialValues = useMemo(() => {
+		const { previewImage: previewImageUrl, ...rest } = store;
+		return { previewImageUrl, ...rest }
+	}, [store]);
 
 	return (
 		<Form
 			onSubmit={onSubmit}
-			validate={zodValidate(schema)}
-			initialValues={store}
+			validate={validate}
+			initialValues={initialValues}
 		>
 			{({ handleSubmit }) => (
 				<form
@@ -72,6 +89,7 @@ export function EditForm({ onActionFulfilled, store, className, ...props }: Edit
 						<VImageUploader
 							label='Storefront Image' name='previewImage'
 							className='rounded-full'
+							initialImageSrc={initialValues.previewImageUrl ?? undefined}
 						/>
 					</DividerWithElement>
 

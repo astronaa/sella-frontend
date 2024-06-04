@@ -33,6 +33,24 @@ export function createStoresClient() {
 			}
 		},
 
+		async getForExplore(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			const { data, error } = await authFetchClient.GET('/api/explore', {
+				params: {
+					query: mapPaginationPayloadToDto(pagination)
+				},
+			});
+
+			return data ? {
+				data: {
+					items: data.data.map(mapDtoToStore),
+					total: data.total
+				},
+				error
+			} : {
+				data, error
+			}
+		},
+
 		async create(payload: PayloadCreate) {
 			const { data, error } = await authFetchClient.POST('/api/stores', {
 				body: {
@@ -48,8 +66,6 @@ export function createStoresClient() {
 				data, error
 			}
 		},
-
-		schemaCreate,
 
 		for: (storeUrl: string) => ({
 			async get() {
@@ -121,10 +137,11 @@ export function createStoresClient() {
 					parseAs: 'text'
 				})
 			},
+		}),
 
-			schemaUpdate,
-			schemaReport,
-			reportReasons
-		})
+		schemaCreate,
+		schemaUpdate,
+		schemaReport,
+		reportReasons,
 	}
 }

@@ -28,7 +28,7 @@ const styles = tv(
 			size: {
 				default: {
 					contentHeading: 'gap-[1.5rem]',
-					content: 'p-[3.125rem] rounded-[1.25rem] w-[28.125rem] gap-[3.125rem] max-h-[90%]',
+					content: 'p-[3.125rem] rounded-[1.25rem] w-[28.125rem] gap-[3.125rem]',
 					closeButton: 'top-[1rem] right-[1rem] rounded-full'
 				}
 			}
