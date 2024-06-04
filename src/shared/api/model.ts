@@ -1,6 +1,6 @@
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
-export type StoreId = number;
+export type StoreId = string;
 
 export interface Store {
 	id: StoreId,

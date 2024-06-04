@@ -13,7 +13,7 @@ export function PreviewImage({ src, className, ...props }: PreviewImageProps) {
 	return (
 		<div className={cn(
 			'flex items-center justify-center size-[11.25rem] rounded-[1rem]',
-			'border border-secondary bg-white/[.02] p-[1rem] text-white/[.08]',
+			'border border-secondary bg-white/[.02] text-white/[.08]',
 			className
 		)}
 		>
@@ -21,7 +21,7 @@ export function PreviewImage({ src, className, ...props }: PreviewImageProps) {
 				<NextImage
 					src={src}
 					{...props}
-					className={cn('size-full')}
+					className={cn('size-full p-[0.5rem]')}
 				/>
 			) : (
 				<Icons.Image

@@ -1,7 +1,7 @@
 import { Order, Product, Store } from "~/shared/api/model";
 
 const store: Store = {
-	id: 1,
+	id: '1',
 	name: "First Store",
 	shortName: "@storename",
 	isVerified: true,

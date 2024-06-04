@@ -173,7 +173,7 @@ function ValidationTest() {
 }
 
 const store: Store = {
-	id: 1,
+	id: '1',
 	name: 'Store Name',
 	shortName: '@storename',
 	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',

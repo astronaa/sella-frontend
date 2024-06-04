@@ -9,10 +9,10 @@ import { Pagination } from "~/shared/ui/kit/pagination";
 import { resolvedTwConfig } from "~/shared/lib/resolved-tw-config";
 import { Heading } from "~/shared/ui/kit/heading";
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "~/shared/api/client";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { STORE_ITEMS_PER_PAGE } from "~/pages/marketplace/config";
+import { fetchMarketplaceStores } from "../api/stores";
 
 type ExploreMarketplaceProps = HTMLAttributes<HTMLDivElement> & {
 	initialData?: { items: Store[], total: number }
@@ -26,9 +26,11 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 	const { data, isFetching } = useQuery({
 		initialData: { data: initialData, error: undefined },
 		queryKey: ['stores', page],
-		queryFn: async () => apiClient.stores.getAll({ page: page, limit: STORE_ITEMS_PER_PAGE }),
-		// refetchOnMount: false//TODO
+		queryFn: async () => fetchMarketplaceStores(page),
+		staleTime: 5_000
 	})
+
+	console.log(initialData, data);
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
@@ -59,17 +61,20 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 				/>
 
 				<div className="flex flex-col gap-[2rem] max-w-content m-auto w-full max-xl:items-center">
-					<div className="grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1">
+					<div className="grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1 w-full">
 						{data.data?.items.map((store) => (
-							<Skeleton className="rounded-[1.25rem]" loading={isFetching} key={store.id}>
-								<div className="w-full">
-									<StoreLink key={store.id} store={store}>
-										<StoreCard.Composed
-											store={store}
-											className='mx-auto'
-										/>
-									</StoreLink>
-								</div>
+							<Skeleton 
+								asChild key={store.id}
+								loading={isFetching} 
+							>
+								<StoreLink 
+									store={store}
+									className='rounded-[1.25rem] w-full mx-auto'
+								>
+									<StoreCard.Composed
+										store={store}
+									/>
+								</StoreLink>
 							</Skeleton>
 						))}
 					</div>

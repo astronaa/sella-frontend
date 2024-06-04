@@ -3,7 +3,7 @@ import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 
 export const mapDtoToStore = (obj: components['schemas']['Store']): Store => ({
-	id: obj.id,
+	id: obj.url,
 	description: obj.description,
 	isVerified: false,
 	name: obj.name,

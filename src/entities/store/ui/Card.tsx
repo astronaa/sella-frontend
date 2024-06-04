@@ -19,7 +19,7 @@ export function Root({ store, className, ...props }: RootProps) {
 			<ark.div
 				{...props}
 				className={cn(
-					'border border-secondary p-[1rem] rounded-[1.25rem] flex gap-[2rem] items-start md:items-center max-w-[35rem]  ',
+					'border border-secondary p-[1rem] rounded-[1.25rem] flex gap-[2rem] items-start md:items-center max-w-[35rem]',
 					className
 				)}
 			/>

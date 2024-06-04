@@ -3,7 +3,7 @@ import { Store } from "~/shared/api/model";
 export async function fetchMyStorefronts(): Promise<Store[]> {
 	return [
 		{
-			id: 1,
+			id: '1',
 			name: "First Store",
 			shortName: "@storename",
 			isVerified: true,
@@ -16,7 +16,7 @@ export async function fetchMyStorefronts(): Promise<Store[]> {
 			},
 		},
 		{
-			id: 2,
+			id: '2',
 			name: "Second Store",
 			shortName: "@storename",
 			isVerified: true,
@@ -29,7 +29,7 @@ export async function fetchMyStorefronts(): Promise<Store[]> {
 			},
 		},
 		{
-			id: 3,
+			id: '3',
 			name: "Third Store",
 			shortName: "@storename",
 			isVerified: true,

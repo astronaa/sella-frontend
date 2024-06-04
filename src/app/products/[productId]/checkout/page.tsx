@@ -10,7 +10,7 @@ export default function Page({ params, searchParams }: PageProps) {
 
 	return (
 		<PageProductCreateOrder
-			storeId={Number(params.productId)}
+			storeId={params.productId}
 			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : undefined}
 		/>
 	);
