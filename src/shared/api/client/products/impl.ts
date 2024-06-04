@@ -38,7 +38,7 @@ export function createProductsClient() {
 				}
 			},
 			async uploadImages(payload: File[]) {
-				console.log('uploadImages',payload)
+
 				return await authFetchClient.POST('/api/products/{id}/images', {
 					params: { path: { id: productId } },
 					body: { file: [] },

@@ -3,7 +3,7 @@
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
-import { Product, Store, StoreId } from '~/shared/api/model';
+import { Product, Store } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 
@@ -35,14 +35,13 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function CreateForm({ onActionFulfilled, store, className, ...props }: CreateFormProps) {
-	const { mutate: createProduct, data } = useMutation({
+	const { mutate: createProduct } = useMutation({
 		mutationFn: async (values: SchemaType) => {
 			const { data } = await apiClient.products.create(store.shortName, {
 				name: values.name,
 				description: values.description,
 				price: Number(values.price),
-				shortDescription: values.shortDescription,
-				storeUrl: store.shortName
+				shortDescription: values.shortDescription
 			})
 
 			//TODO

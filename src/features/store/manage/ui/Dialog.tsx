@@ -15,6 +15,7 @@ type ManageDialogProps = Dialog.RootProps & {
 export function ManageDialog({ store, triggerElement, ...props }: ManageDialogProps) {
 	const formId = useId();
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onStoreEdit = (data: SchemaType) => {
 		props?.onOpenChange?.({ open: false })
 	}

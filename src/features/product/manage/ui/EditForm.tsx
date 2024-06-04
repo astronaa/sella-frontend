@@ -41,8 +41,7 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 				name: values.name,
 				description: values.description,
 				price: Number(values.price),
-				shortDescription: values.shortDescription,
-				imageIds: []
+				shortDescription: values.shortDescription
 			})
 
 			// await apiClient.products.for(product.id).uploadImages(data.previewImage)

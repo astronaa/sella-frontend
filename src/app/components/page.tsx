@@ -287,7 +287,7 @@ function ProductCreateDialogTest() {
 			</Button>
 
 			<ProductCreateDialog
-				storeId={1}
+				store={store}
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 			/>

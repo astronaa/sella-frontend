@@ -110,7 +110,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 			{createdStore && (
 				<ProductCreateDialog
 					{...props}
-					storeId={createdStore.id}
+					store={createdStore}
 					open={isOpen('create-product')}
 					onOpenChange={onOpenChange}
 					onActionFulfilled={openModalAction('all-set')}

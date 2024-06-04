@@ -7,7 +7,7 @@ import { StoreInputAddon } from '~/entities/store';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
-import { useMutation } from "@tanstack/react-query";
+import { DefaultError, useMutation } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { Store } from "~/shared/api/model";
 
@@ -26,7 +26,7 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 };
 
 export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
-	const { mutate: createStore, data } = useMutation<Store | undefined, any, SchemaType>({
+	const { mutate: createStore, data } = useMutation<Store | undefined, DefaultError, SchemaType>({
 		mutationFn: async (values: SchemaType) => {
 			const { data } = await apiClient.stores.create({
 				shortName: values.shortName,
