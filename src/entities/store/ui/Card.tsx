@@ -13,7 +13,6 @@ import { StoreProvider, useStoreStrictContext } from "./context";
 export type RootProps = HTMLArkProps<'div'> & StoreProp;
 
 export function Root({ store, className, ...props }: RootProps) {
-	console.log(store)
 	return (
 		<StoreProvider value={store}>
 			<ark.div

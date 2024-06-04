@@ -17,7 +17,10 @@ export function ManageDialog({ store }: StoreProp) {
 				</Button>
 			}
 			onActionDeleteFulfilled={() => router.push(`/dashboard`)}
-			onActionEditFulfilled={newStore => router.push(`/stores/${newStore.shortName}`)}
+			onActionEditFulfilled={newStore => {
+				if(store.shortName != newStore.shortName)
+					router.push(`/stores/${newStore.shortName}`)
+			}}
 		/>
 	);
 }

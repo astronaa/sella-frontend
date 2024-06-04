@@ -51,8 +51,18 @@ export function createStoresClient() {
 			}
 		},
 
+		async getForCurrentUser() {
+			const { data, error } = await authFetchClient.GET('/api/users/stores');
+
+			return data ? {
+				data: data.map(mapDtoToStore), error
+			} : {
+				data, error
+			}
+		},
+
 		async create(payload: PayloadCreate) {
-			const { data, error } = await authFetchClient.POST('/api/stores', {
+			const { data, error, response } = await authFetchClient.POST('/api/stores', {
 				body: {
 					name: payload.name,
 					url: payload.shortName,
@@ -61,9 +71,11 @@ export function createStoresClient() {
 			});
 
 			return data ? {
-				data: mapDtoToStore(data), error
+				data: mapDtoToStore(data), 
+				error, response
 			} : {
-				data, error
+				data, error,
+				response
 			}
 		},
 

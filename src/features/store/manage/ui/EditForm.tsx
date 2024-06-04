@@ -8,23 +8,12 @@ import {
 
 import { HTMLAttributes, useMemo } from 'react';
 import { Form } from 'react-final-form';
-import { z } from 'zod';
 import { StoreInputAddon } from '~/entities/store';
 import { Store } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
-import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
-import { apiClient } from "~/shared/api/client";
-import { queryClient } from "~/shared/config/query-client";
-import { useMutation } from "@tanstack/react-query";
-
-const schema = apiClient.stores.schemaCreate.merge(
-	z.object({
-		previewImage: z.instanceof(File).optional()
-	})
-);
-
-export type SchemaType = z.infer<typeof schema>
+import { FormError } from '~/shared/lib/errors';
+import { SchemaType, updateStore, validateForm } from '../api';
 
 type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
@@ -32,41 +21,22 @@ type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionFulfilled?: (store: Store) => void;
 };
 
-const validate = zodValidate(schema)
-
 export function EditForm({ onActionFulfilled, store, className, ...props }: EditFormProps) {
-	const { mutateAsync: updateStore } = useMutation({
-		mutationFn: async ({ previewImage, ...data }: SchemaType) => {
-			const { error } = await apiClient.stores.for(store.shortName)
-				.update({
-					shortName: data.shortName,
-					name: data.name,
-					description: data.description
-				})
-
-			if (error)
-				throw error;
-
-			if (previewImage)
-				await apiClient.stores.for(store.shortName).setImage(previewImage)
-
-			return { ...store, ...data }
-		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stores'] })
-	})
-
 	const onSubmit = async (values: SchemaType) => {
-		const result: SchemaType = {
-			...store,
-			...values,
-			previewImage: values.previewImage,
-		}
-
 		try {
-			const store = await updateStore(result)
-			onActionFulfilled?.(store);
+			const result = await updateStore(store, {
+				...store,
+				...values,
+				previewImage: values.previewImage,
+			})
+
+			onActionFulfilled?.(result);
 		}
-		catch { };
+		catch (error) {
+			if (error instanceof FormError && error.field) {
+				return { [error.field]: error.message }
+			}
+		};
 	};
 
 	const initialValues = useMemo(() => {
@@ -77,7 +47,7 @@ export function EditForm({ onActionFulfilled, store, className, ...props }: Edit
 	return (
 		<Form
 			onSubmit={onSubmit}
-			validate={validate}
+			validate={validateForm}
 			initialValues={initialValues}
 		>
 			{({ handleSubmit }) => (

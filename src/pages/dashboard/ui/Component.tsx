@@ -1,11 +1,26 @@
-import { fetchMyStorefronts } from "../api";
+'use client';
+
 import { Button } from "~/shared/ui/kit/button";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCreateDialog } from "~/features/store/create";
+import { useQuery } from "@tanstack/react-query";
+import { apiClient } from "~/shared/api/client";
+import { storeMock } from "~/shared/api/client/stores/mock";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 
-export async function Component() {
-	const stores = await fetchMyStorefronts();
+export function Component() {
+	const { data: stores, isLoading } = useQuery({
+		queryKey: ['stores'],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.getForCurrentUser();
+
+			if (error)
+				throw error;
+
+			return data;
+		}
+	});
 
 	return (
 		<div className='flex flex-col w-full gap-[3rem] max-w-content mx-auto px-[1rem]'>
@@ -24,11 +39,19 @@ export async function Component() {
 			</div>
 
 			<div className='grid grid-cols-2 max-sm:grid-cols-1 gap-[2.5rem]'>
-				{stores.map(s => (
-					<StoreLink store={s} key={s.id}>
-						<StoreCard.Composed store={s} />
-					</StoreLink>
-				))}
+				{isLoading ? (
+					Array(4).fill(storeMock).map((s, index) => (
+						<Skeleton key={index} loading={isLoading} asChild>
+							<StoreCard.Composed store={s} />
+						</Skeleton>
+					))
+				) : (
+					stores?.map(s => (
+						<StoreLink key={s.id} store={s} >
+							<StoreCard.Composed store={s} />
+						</StoreLink>
+					))
+				)}
 			</div>
 		</div>
 	);

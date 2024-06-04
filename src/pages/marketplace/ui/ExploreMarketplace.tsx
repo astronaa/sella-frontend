@@ -30,8 +30,6 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 		staleTime: 5_000
 	})
 
-	console.log(initialData, data);
-
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
 	return (

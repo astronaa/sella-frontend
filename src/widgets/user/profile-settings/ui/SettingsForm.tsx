@@ -9,6 +9,7 @@ import { AuthChannelsTelegramAuthButton, AuthChannelsVerifyEmailDialog } from '~
 import { apiClient } from '~/shared/api/client';
 import { cn } from '~/shared/lib/cn';
 import { useDialogState } from '~/shared/lib/dialog';
+import { FormError } from '~/shared/lib/errors';
 import { usePromiseResolver } from '~/shared/lib/use-promise-resolver';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
@@ -30,16 +31,6 @@ type SettingsFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionFulfilled?: () => void;
 	onActionRejected?: () => void;
 };
-
-class FormError {
-	field: string | undefined
-	message: string
-
-	constructor({ field, message }: { field?: string, message: string | string[] }) {
-		this.field = field;
-		this.message = Array.isArray(message) ? message[0] : message;
-	}
-}
 
 const validateForm = zodValidate(schema);
 

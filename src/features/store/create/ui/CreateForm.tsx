@@ -2,22 +2,12 @@
 
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
-import { z } from 'zod';
 import { StoreInputAddon } from '~/entities/store';
-import { zodValidate } from '~/shared/lib/zod-final-form';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
-import { DefaultError, useMutation } from "@tanstack/react-query";
-import { apiClient } from "~/shared/api/client";
 import { Store } from "~/shared/api/model";
-
-const schema = apiClient.stores.schemaCreate.merge(
-	z.object({
-		previewImage: z.instanceof(File)
-	})
-);
-
-export type SchemaType = z.infer<typeof schema>
+import { FormError } from '~/shared/lib/errors';
+import { SchemaType, createStore, validateForm } from '../api';
 
 type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
@@ -25,36 +15,20 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 };
 
 export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
-	const { mutateAsync: createStore } = useMutation<Store, DefaultError, SchemaType>({
-		mutationFn: async (values: SchemaType) => {
-			const { data, error } = await apiClient.stores.create({
-				shortName: values.shortName,
-				name: values.name,
-				description: values.description
-			})
-
-			if(error) 
-				throw error
-
-			await apiClient.stores.for(data.shortName).setImage(values.previewImage)
-
-			return {
-				...data,
-				previewImage: URL.createObjectURL(values.previewImage)
-			}
-		}
-	})
-
 	const onSubmit = async (values: SchemaType) => {
 		try {
-			const store = await createStore(values);
-			onActionFulfilled?.(store);
+			const result = await createStore(values);
+			onActionFulfilled?.(result);
 		}
-		catch {};
+		catch (error) {
+			if (error instanceof FormError && error.field) {
+				return { [error.field]: error.message }
+			}
+		};
 	};
 
 	return (
-		<Form onSubmit={onSubmit} validate={zodValidate(schema)}>
+		<Form onSubmit={onSubmit} validate={validateForm}>
 			{({ handleSubmit }) => (
 				<form
 					className='flex flex-col w-full gap-[2rem]'
@@ -71,8 +45,8 @@ export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
 					<div className='flex gap-[2rem] w-full max-md:flex-col'>
 						<VTextControl.Root className='w-full' name='name'>
 							<VTextControl.Label>Store Name</VTextControl.Label>
-							<VTextControl.Input placeholder="Store Name"/>
-							<VTextControl.ErrorText/>
+							<VTextControl.Input placeholder="Store Name" />
+							<VTextControl.ErrorText />
 						</VTextControl.Root>
 
 						<VTextControl.Root className='w-full' name='shortName'>
@@ -80,11 +54,11 @@ export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
 							<StoreInputAddon>
 								{({ Component: Addon, inputClassName }) => (
 									<VTextControl.Input className={inputClassName}>
-										<Addon/>
+										<Addon />
 									</VTextControl.Input>
 								)}
 							</StoreInputAddon>
-							<VTextControl.ErrorText/>
+							<VTextControl.ErrorText />
 						</VTextControl.Root>
 					</div>
 
@@ -94,7 +68,7 @@ export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {
 							className='h-[6.25rem]'
 							placeholder="Can be one sentence, a short paragraph"
 						/>
-						<VTextAreaControl.ErrorText/>
+						<VTextAreaControl.ErrorText />
 					</VTextAreaControl.Root>
 				</form>
 			)}
