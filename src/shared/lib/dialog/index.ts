@@ -1,28 +1,30 @@
-import { useCallback, useMemo, useState } from "react";
-import { useCallbackRef } from "../use-callback-ref";
+import { useCallback, useMemo } from "react";
+import { DialogOpenChangeDetails } from "@ark-ui/react";
+import { useControllableState } from "../use-controllable-state";
 
 interface UseDialogStateArgs {
+	open?: boolean,
 	defaultOpen?: boolean,
-	processValueChange?: (open: boolean) => boolean | void
+	onChange?: (open: boolean) => void,
+	onOpenChange?: (details: DialogOpenChangeDetails) => void
 }
 
-export function useDialogState({ defaultOpen = false, processValueChange }: UseDialogStateArgs = {}) {
-	const [open, setOpen] = useState(defaultOpen);
-
-	const applyOpenValue = useCallbackRef((open: boolean) => {
-		if (processValueChange)
-			setOpen(processValueChange(open) ?? open);
-		else
-			setOpen(open);
+export function useDialogState(props: UseDialogStateArgs = {}) {
+	const [open, setOpen] = useControllableState({
+		value: props.open, defaultValue: props.defaultOpen,
+		onChange(open) {
+			props?.onChange?.(open);
+			props?.onOpenChange?.({ open });
+		},
 	});
 
-	const openCb = useCallback(() => { applyOpenValue(true) }, [applyOpenValue]);
-	const closeCb = useCallback(() => { applyOpenValue(false) }, [applyOpenValue]);
-	const toggleCb = useCallback(() => { applyOpenValue(!open) }, [applyOpenValue, open]);
+	const openCb = useCallback(() => { setOpen(true) }, [setOpen]);
+	const closeCb = useCallback(() => { setOpen(false) }, [setOpen]);
+	const toggleCb = useCallback(() => { setOpen(o => !o) }, [setOpen]);
 
-	const handleOpenChange = useCallback(({ open }: { open: boolean }) => {
-		applyOpenValue(open);
-	}, [applyOpenValue]);
+	const handleOpenChange = useCallback(({ open }: DialogOpenChangeDetails) => {
+		setOpen(open);
+	}, [setOpen]);
 
 	return useMemo(() => ({
 		isOpen: open,

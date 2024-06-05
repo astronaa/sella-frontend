@@ -3,7 +3,15 @@ import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 
 export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): Product => {
-	const [previewImage, ...galleryImages] = obj.imageIds.map(mapMediaIdToUrl);
+	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
+
+	const imagesConfig = obj.hasPreview ? {
+		previewImage: mappedImages[0],
+		galleryImages: mappedImages.slice(1)
+	} : {
+		previewImage: null,
+		galleryImages: mappedImages
+	}
 
 	return {
 		id: obj.id,
@@ -12,7 +20,8 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 		description: obj.description ?? null,
 		shortDescription: obj.shortDescription,
 		category: 'category',
-		previewImage: previewImage ?? null,
-		galleryImages,
+		hasPreview: obj.hasPreview,
+		imageIds: obj.imageIds,
+		...imagesConfig
 	};
 };

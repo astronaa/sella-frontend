@@ -25,6 +25,8 @@ export interface Product {
 	description: string | null,
 	shortDescription: string,
 	category: string,
+	imageIds: ImageEntry[],
+	hasPreview: boolean,
 	previewImage: ImageEntry | null,
 	galleryImages: ImageEntry[],
 

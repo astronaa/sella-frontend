@@ -7,6 +7,7 @@ import { Button } from '~/shared/ui/kit/button';
 import { Product } from '~/shared/api/model';
 import { DeleteButton } from './DeleteButton';
 import { Portal } from '@ark-ui/react';
+import { useDialogState } from '~/shared/lib/dialog';
 
 type ManageDialogProps = Dialog.RootProps & {
 	product: Product,
@@ -15,18 +16,23 @@ type ManageDialogProps = Dialog.RootProps & {
 
 export function ManageDialog({ product, triggerElement, ...props }: ManageDialogProps) {
 	const formId = useId();
+	const { isOpen, handleOpenChange, close } = useDialogState(props);
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onProductEdit = (data: Product) => {
-		props?.onOpenChange?.({ open: false })
+		close();
 	}
 
 	const onProductDelete = () => {
-		props?.onOpenChange?.({ open: false })
+		close();
 	}
 
 	return (
-		<Dialog.Root {...props}>
+		<Dialog.Root 
+			{...props} 
+			unmountOnExit lazyMount
+			open={isOpen} onOpenChange={handleOpenChange}
+		>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
 					{triggerElement}

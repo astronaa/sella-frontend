@@ -47,9 +47,9 @@ export function CreateForm({ onActionFulfilled, store, className, ...props }: Cr
 			if(error) 
 				throw error;
 
-			return data;
+			await apiClient.products.for(data.id).uploadImages(data, values);
 
-			// await apiClient.products.for(data.id).uploadImages(values.galleryImages ?? [])
+			return data;
 		},
 		onSuccess: (data) => data && onActionFulfilled?.(data)
 	})
@@ -75,7 +75,7 @@ export function CreateForm({ onActionFulfilled, store, className, ...props }: Cr
 								<VTextControl.LabelOrError>
 									Product Name
 								</VTextControl.LabelOrError>
-								<VTextControl.Input />
+								<VTextControl.Input placeholder='Enter product name' />
 							</VTextControl.Root>
 
 							<VTextControl.Root className='w-full' name='price'>

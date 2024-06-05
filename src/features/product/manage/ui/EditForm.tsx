@@ -1,6 +1,6 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
 import { Product } from '~/shared/api/model';
@@ -37,23 +37,23 @@ type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 export function EditForm({ onActionFulfilled, product, className, ...props }: EditFormProps) {
 	const { mutate: updateProduct } = useMutation({
 		mutationFn: async (values: SchemaType) => {
-			const { data } = await apiClient.products.for(product.id).update({
+			const { data, error } = await apiClient.products.for(product.id).update({
 				name: values.name,
 				description: values.description,
 				price: Number(values.price),
 				shortDescription: values.shortDescription
 			})
 
-			// await apiClient.products.for(product.id).uploadImages(data.previewImage)
+			if (error)
+				throw error;
+
+			await apiClient.products.for(product.id).uploadImages(product, values);
 
 			return data
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['stores'] })
-
-			if(data) {
-				onActionFulfilled?.(data)
-			}
+			onActionFulfilled?.(data)
 		}
 	})
 
@@ -61,11 +61,16 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 		updateProduct(values)
 	};
 
+	const initialValues = useMemo(() => {
+		const { previewImage: previewImageUrl, ...rest } = product;
+		return { previewImageUrl, ...rest }
+	}, [product]);
+
 	return (
 		<Form
 			onSubmit={onSubmit}
 			validate={zodValidate(schema)}
-			initialValues={product}
+			initialValues={initialValues}
 		>
 			{({ handleSubmit }) => (
 				<form
@@ -76,6 +81,7 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 						<VImageUploader
 							label='Attach Preview' name='previewImage'
 							className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
+							initialImageSrc={initialValues.previewImageUrl ?? undefined}
 						/>
 						<div className='flex flex-col justify-between w-full max-md:gap-[2rem]'>
 							<VTextControl.Root className='w-full' name='name'>

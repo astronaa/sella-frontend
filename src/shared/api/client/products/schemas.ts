@@ -9,6 +9,18 @@ export const schemaCreate = z.object({
 
 export type PayloadCreate = z.infer<typeof schemaCreate>
 
-export const schemaUpdate = schemaCreate.partial();
+export const schemaUpdate = schemaCreate.partial().merge(
+	z.object({ 
+		imageIds: z.array(z.string()).optional(),
+		hasPreview: z.coerce.boolean().optional()
+	})
+)
 
 export type PayloadUpdate = z.infer<typeof schemaUpdate>
+
+export const schemaUploadImages = z.object({
+	previewImage: z.instanceof(File).optional().nullable(),
+	galleryImages: z.array(z.instanceof(File).or(z.string())).optional()
+})
+
+export type PayloadUploadImages = z.infer<typeof schemaUploadImages>

@@ -49,7 +49,7 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		close: closeVerifyDialog,
 		handleOpenChange: handleVerifyDialogOpenChange
 	} = useDialogState({
-		processValueChange: open => {
+		onChange: open => {
 			if (!open)
 				resolveEmailVerification(false);
 		}
