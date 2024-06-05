@@ -6,9 +6,15 @@ import { mapDtoToProduct } from "./mappers";
 export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
-			return await authFetchClient.POST('/api/products', {
+			const { data, error } = await authFetchClient.POST('/api/products', {
 				body: { storeUrl, ...payload }
 			});
+
+			return data ? {
+				data: mapDtoToProduct(data), error
+			} : {
+				data, error
+			}
 		},
 
 		schemaCreate,

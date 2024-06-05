@@ -66,7 +66,7 @@ export function createStoresClient() {
 				body: {
 					name: payload.name,
 					url: payload.shortName,
-					description: payload.description
+					description: payload.description ?? undefined
 				}
 			});
 
@@ -115,7 +115,7 @@ export function createStoresClient() {
 					params: { path: { url: storeUrl } },
 					body: {
 						name: payload.name,
-						description: payload.description,
+						description: payload.description ?? undefined,
 						url: payload.shortName
 					},
 					parseAs: 'text'

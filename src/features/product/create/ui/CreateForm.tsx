@@ -37,24 +37,17 @@ type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 export function CreateForm({ onActionFulfilled, store, className, ...props }: CreateFormProps) {
 	const { mutate: createProduct } = useMutation({
 		mutationFn: async (values: SchemaType) => {
-			const { data } = await apiClient.products.create(store.shortName, {
+			const { data, error } = await apiClient.products.create(store.shortName, {
 				name: values.name,
 				description: values.description,
 				price: Number(values.price),
 				shortDescription: values.shortDescription
 			})
 
-			//TODO
-			if(!data) return
+			if(error) 
+				throw error;
 
-			return {
-				id: data.id,
-				...values,
-				category: 'category',
-				description: values?.description ?? null,
-				previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,
-				galleryImages: values.galleryImages?.map(URL.createObjectURL) ?? [],
-			}
+			return data;
 
 			// await apiClient.products.for(data.id).uploadImages(values.galleryImages ?? [])
 		},

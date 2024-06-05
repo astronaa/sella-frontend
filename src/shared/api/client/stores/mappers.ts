@@ -4,7 +4,7 @@ import { mapMediaIdToUrl } from "../shared/mappers";
 
 export const mapDtoToStore = (obj: components['schemas']['Store'] | components['schemas']['StoreInfoDto']): Store => ({
 	id: obj.url,
-	description: obj.description,
+	description: obj.description ?? null,
 	isVerified: false,
 	name: obj.name,
 	previewImage: obj.imageId ? mapMediaIdToUrl(obj.imageId) : null,

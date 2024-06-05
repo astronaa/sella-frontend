@@ -537,14 +537,14 @@ export interface components {
         };
         User: {
             id: number;
-            profilePictureId: string;
+            profilePictureId?: string;
             address: string;
-            username: string;
-            email: string;
-            twitterId: string;
-            telegramId: string;
+            username?: string;
+            email?: string;
+            twitterId?: string;
+            telegramId?: string;
             refCode: string;
-            invitedBy: number;
+            invitedBy?: string;
             /** Format: date-time */
             lastOnline: string;
             /** Format: date-time */
@@ -555,7 +555,7 @@ export interface components {
         };
         Store: {
             id: number;
-            imageId: string;
+            imageId?: string;
             ownerId: number;
             name: string;
             description: string;
@@ -571,7 +571,7 @@ export interface components {
         ProductInfoDto: {
             id: string;
             name: string;
-            description: string;
+            description?: string;
             shortDescription: string;
             price: number;
             imageIds: string[];
@@ -585,9 +585,9 @@ export interface components {
         };
         StoreInfoDto: {
             /** Format: uuid */
-            imageId: string;
+            imageId?: string;
             name: string;
-            description: string;
+            description?: string;
             url: string;
             /** Format: date-time */
             createdAt: string;
@@ -615,12 +615,9 @@ export interface components {
         ProductCreateDto: {
             name: string;
             description?: string;
-            shortDescription?: string;
+            shortDescription: string;
             price?: number;
             storeUrl: string;
-        };
-        ProductCreateResultDto: {
-            id: string;
         };
         ProductUpdateDto: {
             name?: string;
@@ -672,7 +669,7 @@ export interface components {
         Product: {
             id: string;
             name: string;
-            description: string;
+            description?: string;
             shortDescription: string;
             price: number;
             imageIds: string[];
@@ -685,6 +682,7 @@ export interface components {
         Order: {
             id: string;
             buyerId: number;
+            buyer: components["schemas"]["User"];
             sellerId: number;
             productId: string;
             product: components["schemas"]["Product"];
@@ -1423,7 +1421,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductCreateResultDto"];
+                    "application/json": components["schemas"]["ProductInfoDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */

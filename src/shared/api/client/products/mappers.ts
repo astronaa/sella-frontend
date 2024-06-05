@@ -9,7 +9,7 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 		id: obj.id,
 		name: obj.name,
 		price: Number(obj.price),
-		description: obj.description,
+		description: obj.description ?? null,
 		shortDescription: obj.shortDescription,
 		category: 'category',
 		previewImage: previewImage ?? null,

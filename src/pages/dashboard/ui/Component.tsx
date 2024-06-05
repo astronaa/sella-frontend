@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { storeMock } from "~/shared/api/client/stores/mock";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { Icons } from "~/shared/ui/icons";
 
 export function Component() {
 	const { data: stores, isLoading } = useQuery({
@@ -38,7 +40,15 @@ export function Component() {
 				/>
 			</div>
 
-			<div className='grid grid-cols-2 max-sm:grid-cols-1 gap-[2.5rem]'>
+			{stores?.length === 0 && (
+				<NotFoundScreen>
+					<Icons.Building />
+
+					{`You don't have any storefronts yet`}
+				</NotFoundScreen>
+			)}
+
+			<div className='grid grid-cols-2 max-sm:grid-cols-1 gap-[2.5rem] w-full'>
 				{isLoading ? (
 					Array(4).fill(storeMock).map((s, index) => (
 						<Skeleton key={index} loading={isLoading} asChild>

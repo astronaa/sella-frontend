@@ -35,7 +35,7 @@ export function ManageDialog({
 	}
 
 	return (
-		<Dialog.Root {...props}>
+		<Dialog.Root {...props} unmountOnExit lazyMount>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
 					{triggerElement}

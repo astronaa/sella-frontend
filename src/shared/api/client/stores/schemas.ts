@@ -5,7 +5,7 @@ export const schemaCreate = z.object({
 	shortName: z.string()
 		.regex(/^[a-zA-Z0-9_-]+$/, { message: 'URL can only contain letters, numbers, underscores, and hyphens' })
 		.min(3, 'Min length is 3'),
-	description: z.string().optional()
+	description: z.string().optional().nullable()
 })
 
 export type PayloadCreate = z.infer<typeof schemaCreate>;

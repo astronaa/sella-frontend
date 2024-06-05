@@ -7,7 +7,7 @@ export interface Store {
 	name: string,
 	shortName: string,
 	isVerified: boolean,
-	description: string,
+	description: string | null,
 	previewImage: ImageEntry | null,
 
 	rating: {
@@ -64,9 +64,9 @@ export interface User {
 	id: number,
 	avatarImage: ImageEntry | null,
 	address: string,
-	username: string,
-	email: string,
-	twitterId: string,
-	telegramId: string,
+	username: string | null,
+	email: string | null,
+	twitterId: string | null,
+	telegramId: string | null,
 	createdAt: string
 }

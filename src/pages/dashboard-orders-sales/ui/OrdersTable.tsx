@@ -4,7 +4,7 @@ import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
 import { Pagination } from "~/shared/ui/kit/pagination";
-import { NotFoundScreen } from "./NotFoundScreen";
+import { NotFoundScreen } from "../../../shared/ui/not-found-screen";
 
 import {
 	TransactionStatusBadge,
