@@ -64,7 +64,7 @@ export function createProductsClient() {
 
 					const { data } = await authFetchClient.POST('/api/products/{id}/images', {
 						params: { path: { id: productId } },
-						body: { file: [] },
+						body: { files: [] },
 						bodySerializer: () => {
 							const formData = new FormData();
 							filesToUpload.forEach(f => formData.append('files', f));

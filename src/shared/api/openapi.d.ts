@@ -131,7 +131,7 @@ export interface paths {
         delete: operations["UsersController_deleteProfilePicture"];
         options?: never;
         head?: never;
-        /** @description Update user's profile picture. Accepts JPEG or PNG up to **2MB** (2 000 000 bytes) in size. */
+        /** @description Update user's profile picture. Accepts JPEG or PNG up to **3MB** (3 000 000 bytes) in size. */
         patch: operations["UsersController_updateProfilePicture"];
         trace?: never;
     };
@@ -358,7 +358,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["ProductsController_addImage"];
+        post: operations["ProductsController_addImages"];
         delete?: never;
         options?: never;
         head?: never;
@@ -558,7 +558,7 @@ export interface components {
             imageId?: string;
             ownerId: number;
             name: string;
-            description: string;
+            description?: string;
             url: string;
             /** Format: date-time */
             createdAt: string;
@@ -616,7 +616,7 @@ export interface components {
             name: string;
             description?: string;
             shortDescription: string;
-            price?: number;
+            price: number;
             storeUrl: string;
         };
         ProductUpdateDto: {
@@ -1436,7 +1436,7 @@ export interface operations {
             };
         };
     };
-    ProductsController_addImage: {
+    ProductsController_addImages: {
         parameters: {
             query?: never;
             header?: never;
@@ -1452,12 +1452,12 @@ export interface operations {
         requestBody: {
             content: {
                 "multipart/form-data": {
-                    file?: string[];
+                    files?: string[];
                 };
             };
         };
         responses: {
-            /** @description Images added successfully. Returns an array of current product images IDs */
+            /** @description Images added successfully. Returns an array of new product images IDs */
             200: {
                 headers: Record<string, unknown>;
                 content: {
