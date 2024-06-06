@@ -2,8 +2,10 @@ import { z } from "zod";
 
 export const schemaCreate = z.object({
 	name: z.string().min(3, 'Min length is 3'),
-	shortName: z.string().min(3, 'Min length is 3'),
-	description: z.string().optional()
+	shortName: z.string()
+		.regex(/^[a-zA-Z0-9_-]+$/, { message: 'URL can only contain letters, numbers, underscores, and hyphens' })
+		.min(3, 'Min length is 3'),
+	description: z.string().optional().nullable()
 })
 
 export type PayloadCreate = z.infer<typeof schemaCreate>;
@@ -15,12 +17,12 @@ export type PayloadUpdate = z.infer<typeof schemaUpdate>;
 export const ANOTHER_REASON_ID = 'SomethingElse';
 
 export const reportReasons = [
-	"Spam", 
-	"Nudity", 
-	"Scam", 
-	"Illegal", 
-	"Violence", 
-	"HateSpeech", 
+	"Spam",
+	"Nudity",
+	"Scam",
+	"Illegal",
+	"Violence",
+	"HateSpeech",
 	ANOTHER_REASON_ID
 ] as const;
 

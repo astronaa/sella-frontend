@@ -18,7 +18,7 @@ export function Root({ store, className, ...props }: RootProps) {
 			<ark.div
 				{...props}
 				className={cn(
-					'border border-secondary p-[1rem] rounded-[1.25rem] flex gap-[2rem] items-start md:items-center max-w-[35rem]  ',
+					'border border-secondary p-[1rem] rounded-[1.25rem] flex gap-[2rem] items-start md:items-center max-w-[35rem]',
 					className
 				)}
 			/>
@@ -31,8 +31,11 @@ export function Image({ className, ...props }: Omit<PreviewImageProps, 'src' | '
 
 	return (
 		<PreviewImage
+			width={200}
+			height={200}
 			alt={`Image of ${title}`}
-			src={imageUrl} {...props}
+			src={imageUrl}
+			{...props}
 			className={cn('rounded-full flex-shrink-0 shadow-sm', className)}
 		/>
 	);

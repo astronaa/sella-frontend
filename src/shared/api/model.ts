@@ -1,13 +1,13 @@
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
-export type StoreId = number;
+export type StoreId = string;
 
 export interface Store {
 	id: StoreId,
 	name: string,
 	shortName: string,
 	isVerified: boolean,
-	description: string,
+	description: string | null,
 	previewImage: ImageEntry | null,
 
 	rating: {
@@ -25,6 +25,8 @@ export interface Product {
 	description: string | null,
 	shortDescription: string,
 	category: string,
+	imageIds: ImageEntry[],
+	hasPreview: boolean,
 	previewImage: ImageEntry | null,
 	galleryImages: ImageEntry[],
 
@@ -64,9 +66,9 @@ export interface User {
 	id: number,
 	avatarImage: ImageEntry | null,
 	address: string,
-	username: string,
-	email: string,
-	twitterId: string,
-	telegramId: string,
+	username: string | null,
+	email: string | null,
+	twitterId: string | null,
+	telegramId: string | null,
 	createdAt: string
 }

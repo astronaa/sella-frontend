@@ -1,13 +1,14 @@
 import { fetchStore, fetchStoreProducts } from "../api";
 import { Button } from "~/shared/ui/kit/button";
 import { StoreCard } from "~/entities/store";
-import { StoreManageDialog } from "~/features/store/manage";
 import { ProductsStream } from "./ProductsStream";
 import { EditModeProvider } from "../model/edit-mode";
 import { ToggleEditModeButton } from "./ToggleEditModeButton";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { StoreReportFlow } from "~/features/store/report";
+import { ProductCreateDialog } from "~/features/product/create";
+import { ManageDialog } from "./ManageDialog";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
 	const store = await fetchStore(storeUrl);
@@ -33,16 +34,17 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 					</StoreCard.Root>
 
 					<div className='flex gap-[1rem] md:self-end'>
-						<StoreManageDialog
+						<ManageDialog store={store} />
+						<ProductCreateDialog
 							store={store}
 							triggerElement={
 								<Button colorPalette='gray' size='lg'>
-									Settings
+									Create Product
 								</Button>
 							}
 						/>
-						<ToggleEditModeButton />
 
+						<ToggleEditModeButton />
 						<StoreReportFlow />
 					</div>
 				</div>
@@ -50,6 +52,7 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 				<ProductsStream
 					className='mb-[6rem] max-md:mb-[5rem]'
 					initialData={products}
+					storeUrl={storeUrl}
 				/>
 			</EditModeProvider>
 

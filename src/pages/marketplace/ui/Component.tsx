@@ -1,15 +1,15 @@
 import { ExploreMarketplace } from "./ExploreMarketplace";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
-import { fetchStores } from "../api/stores";
+import { fetchMarketplaceStores } from "~/pages/marketplace/api/stores";
 
 export async function Component() {
-	const stores = await fetchStores();
+	const { data } = await fetchMarketplaceStores();
 
 	return (
 		<div className='px-4'>
 			<ExploreMarketplace
 				className='mb-[3rem]'
-				initialData={stores}
+				initialData={data}
 			/>
 
 			<StorefrontOpenBanner

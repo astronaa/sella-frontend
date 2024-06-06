@@ -3,7 +3,7 @@
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
-import { Product, StoreId } from '~/shared/api/model';
+import { Product, Store } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 
@@ -13,6 +13,9 @@ import {
 	VTextControl,
 	VUploader
 } from '~/shared/ui/validation-inputs';
+import { useMutation } from "@tanstack/react-query";
+import { apiClient } from "~/shared/api/client";
+import { queryClient } from '~/shared/config/query-client';
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -27,23 +30,36 @@ export type SchemaType = z.infer<typeof schema>
 
 type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
-	storeId: StoreId,
+	store: Store,
 	onActionFulfilled?: (product: Product) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function CreateForm({ onActionFulfilled, storeId, className, ...props }: CreateFormProps) {
-	const onSubmit = (values: SchemaType) => {
-		const store: Product = {
-			id: '1',
-			...values,
-			description: values?.description ?? null,
-			previewImage: values.previewImage ? URL.createObjectURL(values.previewImage) : null,
-			galleryImages: values.galleryImages?.map(URL.createObjectURL) ?? [],
-			category: 'Category'
-		}
+export function CreateForm({ onActionFulfilled, store, className, ...props }: CreateFormProps) {
+	const { mutate: createProduct } = useMutation({
+		mutationFn: async (values: SchemaType) => {
+			const { data, error } = await apiClient.products.create(store.shortName, {
+				name: values.name,
+				description: values.description,
+				price: Number(values.price),
+				shortDescription: values.shortDescription
+			})
 
-		onActionFulfilled?.(store);
+			if (error)
+				throw error;
+
+			await apiClient.products.for(data.id).uploadImages(data, values);
+
+			return data;
+		},
+		onSuccess: (data) => {
+			onActionFulfilled?.(data)
+			queryClient.invalidateQueries({ queryKey: ['products'] })
+		}
+	})
+
+	const onSubmit = (values: SchemaType) => {
+		createProduct(values)
 	};
 
 	return (
@@ -63,7 +79,7 @@ export function CreateForm({ onActionFulfilled, storeId, className, ...props }: 
 								<VTextControl.LabelOrError>
 									Product Name
 								</VTextControl.LabelOrError>
-								<VTextControl.Input />
+								<VTextControl.Input placeholder='Enter product name' />
 							</VTextControl.Root>
 
 							<VTextControl.Root className='w-full' name='price'>

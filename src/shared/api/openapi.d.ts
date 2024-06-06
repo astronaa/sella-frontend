@@ -131,7 +131,7 @@ export interface paths {
         delete: operations["UsersController_deleteProfilePicture"];
         options?: never;
         head?: never;
-        /** @description Update user's profile picture. Accepts JPEG or PNG up to **2MB** (2 000 000 bytes) in size. */
+        /** @description Update user's profile picture. Accepts JPEG or PNG up to **3MB** (3 000 000 bytes) in size. */
         patch: operations["UsersController_updateProfilePicture"];
         trace?: never;
     };
@@ -178,6 +178,23 @@ export interface paths {
         };
         /** @description Returns list of stores that user owns */
         get: operations["UsersController_getUserStores"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/stores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Returns stores of authorized user */
+        get: operations["UsersController_getAuthUserStores"];
         put?: never;
         post?: never;
         delete?: never;
@@ -341,7 +358,39 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["ProductsController_addImage"];
+        post: operations["ProductsController_addImages"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{productId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ReviewsController_getCommentsByProductId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/{orderId}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ReviewsController_getReviewForOrder"];
+        put?: never;
+        post: operations["ReviewsController_createReview"];
         delete?: never;
         options?: never;
         head?: never;
@@ -488,14 +537,14 @@ export interface components {
         };
         User: {
             id: number;
-            profilePictureId: string;
+            profilePictureId?: string;
             address: string;
-            username: string;
-            email: string;
-            twitterId: string;
-            telegramId: string;
+            username?: string;
+            email?: string;
+            twitterId?: string;
+            telegramId?: string;
             refCode: string;
-            invitedBy: number;
+            invitedBy?: string;
             /** Format: date-time */
             lastOnline: string;
             /** Format: date-time */
@@ -506,27 +555,43 @@ export interface components {
         };
         Store: {
             id: number;
-            imageId: string;
+            imageId?: string;
             ownerId: number;
             name: string;
-            description: string;
+            description?: string;
             url: string;
             /** Format: date-time */
             createdAt: string;
         };
+        RatingDto: {
+            total: number;
+            positive: number;
+            negative: number;
+        };
         ProductInfoDto: {
             id: string;
             name: string;
-            description: string;
+            description?: string;
             shortDescription: string;
             price: number;
             imageIds: string[];
             hasPreview: boolean;
             storeUrl: string;
+            rating: components["schemas"]["RatingDto"];
         };
         ProductsResponseDto: {
             data: components["schemas"]["ProductInfoDto"][];
             total: number;
+        };
+        StoreInfoDto: {
+            /** Format: uuid */
+            imageId?: string;
+            name: string;
+            description?: string;
+            url: string;
+            /** Format: date-time */
+            createdAt: string;
+            rating: components["schemas"]["RatingDto"];
         };
         CreateStoreDto: {
             name: string;
@@ -534,7 +599,7 @@ export interface components {
             url: string;
         };
         StoreResponseDto: {
-            data: components["schemas"]["Store"][];
+            data: components["schemas"]["StoreInfoDto"][];
             total: number;
         };
         UpdateStoreDto: {
@@ -550,12 +615,9 @@ export interface components {
         ProductCreateDto: {
             name: string;
             description?: string;
-            shortDescription?: string;
-            price?: number;
+            shortDescription: string;
+            price: number;
             storeUrl: string;
-        };
-        ProductCreateResultDto: {
-            id: string;
         };
         ProductUpdateDto: {
             name?: string;
@@ -567,6 +629,27 @@ export interface components {
         };
         ProductAddImageResultDto: {
             imageIds: string[];
+        };
+        CommentUserDto: {
+            username: string;
+            profilePictureId?: string;
+        };
+        ReviewDto: {
+            /** Format: uuid */
+            id: string;
+            text: string;
+            isPositive: boolean;
+            user?: components["schemas"]["CommentUserDto"];
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ReviewsResponseDto: {
+            comments: components["schemas"]["ReviewDto"][];
+            total: number;
+        };
+        CreateReviewDto: {
+            text: string;
+            isPositive: boolean;
         };
         GetExploreResponseDto: {
             data: components["schemas"]["Store"][];
@@ -583,30 +666,38 @@ export interface components {
         OrderCreateResultDto: {
             id: string;
         };
-        PaginationMetaDto: {
-            currentPage: number;
-            pageSize: number;
-            hasNextPage: boolean;
-            totals: number;
-        };
-        MyOrdersResponseDto: {
-            orders: string[];
-            totalPrice: number;
-            meta: components["schemas"]["PaginationMetaDto"];
-        };
-        OrderResponse: {
-            productName: string;
-            storeName: string;
-            status: string;
-            fulfillmentStatus: string;
-            /** Format: date-time */
-            date: string;
+        Product: {
+            id: string;
+            name: string;
+            description?: string;
+            shortDescription: string;
             price: number;
+            imageIds: string[];
+            hasPreview: boolean;
+            store: components["schemas"]["Store"];
+            storeId: number;
+            /** Format: date-time */
+            createdAt: string;
         };
-        MySalesResponseDto: {
-            sales: components["schemas"]["OrderResponse"][];
+        Order: {
+            id: string;
+            buyerId: number;
+            buyer: components["schemas"]["User"];
+            sellerId: number;
+            productId: string;
+            product: components["schemas"]["Product"];
+            /** @enum {string} */
+            status: "New" | "Paid" | "Delivered" | "Canceled";
+            /** @enum {string} */
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            price: number;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        OrderResponseDto: {
+            data: components["schemas"]["Order"][];
+            total: number;
             totalPrice: number;
-            meta: components["schemas"]["PaginationMetaDto"];
         };
     };
     responses: never;
@@ -948,7 +1039,25 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["Store"];
+                    "application/json": components["schemas"]["Store"][];
+                };
+            };
+        };
+    };
+    UsersController_getAuthUserStores: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully sent list of stores */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["Store"][];
                 };
             };
         };
@@ -991,7 +1100,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["Store"];
+                    "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Store was not found */
@@ -1053,6 +1162,11 @@ export interface operations {
             };
             /** @description User does not own store */
             403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Store with given url already exists */
+            409: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
@@ -1307,7 +1421,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductCreateResultDto"];
+                    "application/json": components["schemas"]["ProductInfoDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */
@@ -1322,7 +1436,7 @@ export interface operations {
             };
         };
     };
-    ProductsController_addImage: {
+    ProductsController_addImages: {
         parameters: {
             query?: never;
             header?: never;
@@ -1338,12 +1452,12 @@ export interface operations {
         requestBody: {
             content: {
                 "multipart/form-data": {
-                    file?: string[];
+                    files?: string[];
                 };
             };
         };
         responses: {
-            /** @description Images added successfully. Returns an array of current product images IDs */
+            /** @description Images added successfully. Returns an array of new product images IDs */
             200: {
                 headers: Record<string, unknown>;
                 content: {
@@ -1367,6 +1481,70 @@ export interface operations {
             };
             /** @description Invalid file type or file size */
             422: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ReviewsController_getCommentsByProductId: {
+        parameters: {
+            query: {
+                productId: string;
+                page: number;
+                pageSize: number;
+                sort: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of reviews for product with given ID */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ReviewsResponseDto"];
+                };
+            };
+        };
+    };
+    ReviewsController_getReviewForOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Review for order with given ID */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ReviewDto"];
+                };
+            };
+        };
+    };
+    ReviewsController_createReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReviewDto"];
+            };
+        };
+        responses: {
+            201: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
@@ -1480,7 +1658,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["MyOrdersResponseDto"];
+                    "application/json": components["schemas"]["OrderResponseDto"];
                 };
             };
         };
@@ -1501,7 +1679,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["MySalesResponseDto"];
+                    "application/json": components["schemas"]["OrderResponseDto"];
                 };
             };
         };

@@ -1,28 +1,19 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
-import { Form } from 'react-final-form';
-import { z } from 'zod';
-import { StoreInputAddon } from '~/entities/store';
-import { Store } from '~/shared/api/model';
-import { cn } from '~/shared/lib/cn';
-import { zodValidate } from '~/shared/lib/zod-final-form';
-import { DividerWithElement } from '~/shared/ui/kit/divider';
-
 import {
 	VImageUploader,
 	VTextAreaControl,
 	VTextControl,
 } from '~/shared/ui/validation-inputs';
 
-export const schema = z.object({
-	name: z.string().min(3, 'Min length is 3'),
-	shortName: z.string().min(3, 'Min length is 3'),
-	description: z.string(),
-	previewImage: z.instanceof(File)
-});
-
-export type SchemaType = z.infer<typeof schema>
+import { HTMLAttributes, useMemo } from 'react';
+import { Form } from 'react-final-form';
+import { StoreInputAddon } from '~/entities/store';
+import { Store } from '~/shared/api/model';
+import { cn } from '~/shared/lib/cn';
+import { DividerWithElement } from '~/shared/ui/kit/divider';
+import { FormError } from '~/shared/lib/errors';
+import { SchemaType, updateStore, validateForm } from '../api';
 
 type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
@@ -30,29 +21,34 @@ type EditFormProps = HTMLAttributes<HTMLFormElement> & {
 	onActionFulfilled?: (store: Store) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function EditForm({ onActionFulfilled, store, className, ...props }: EditFormProps) {
-	const onSubmit = (values: SchemaType) => {
-		const store: Store = {
-			id: 1,
-			...values,
-			isVerified: false,
-			previewImage: URL.createObjectURL(values.previewImage),
-			rating: {
-				likes: 0,
-				dislikes: 0,
-				reviewsCount: 575
-			}
-		}
+	const onSubmit = async (values: SchemaType) => {
+		try {
+			const result = await updateStore(store, {
+				...store,
+				...values,
+				previewImage: values.previewImage,
+			})
 
-		onActionFulfilled?.(store);
+			onActionFulfilled?.(result);
+		}
+		catch (error) {
+			if (error instanceof FormError && error.field) {
+				return { [error.field]: error.message }
+			}
+		};
 	};
+
+	const initialValues = useMemo(() => {
+		const { previewImage: previewImageUrl, ...rest } = store;
+		return { previewImageUrl, ...rest }
+	}, [store]);
 
 	return (
 		<Form
 			onSubmit={onSubmit}
-			validate={zodValidate(schema)}
-			initialValues={store}
+			validate={validateForm}
+			initialValues={initialValues}
 		>
 			{({ handleSubmit }) => (
 				<form
@@ -63,6 +59,7 @@ export function EditForm({ onActionFulfilled, store, className, ...props }: Edit
 						<VImageUploader
 							label='Storefront Image' name='previewImage'
 							className='rounded-full'
+							initialImageSrc={initialValues.previewImageUrl ?? undefined}
 						/>
 					</DividerWithElement>
 

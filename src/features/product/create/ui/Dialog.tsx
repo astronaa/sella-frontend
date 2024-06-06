@@ -4,19 +4,37 @@ import { Dialog } from '~/shared/ui/kit';
 import { CreateForm } from './CreateForm';
 import { ReactNode, useId } from 'react';
 import { Button } from '~/shared/ui/kit/button';
-import { Product, StoreId } from '~/shared/api/model';
+import { Product, Store } from '~/shared/api/model';
+import { useDialogState } from '~/shared/lib/dialog';
 
 type CreateDialogProps = Dialog.RootProps & {
-	storeId: StoreId,
+	store: Store,
 	onActionFulfilled?: (product: Product) => void
 	cancelButton?: ReactNode
+	triggerElement?: ReactNode
 };
 
-export function CreateDialog({ onActionFulfilled, cancelButton, storeId, ...props }: CreateDialogProps) {
+export function CreateDialog({ onActionFulfilled, triggerElement, cancelButton, store, ...props }: CreateDialogProps) {
 	const formId = useId();
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
+
+	const onFormSubmit = (product: Product) => {
+		onActionFulfilled?.(product);
+		close();
+	}
 
 	return (
-		<Dialog.Root {...props}>
+		<Dialog.Root
+			{...props}
+			unmountOnExit lazyMount
+			open={isOpen} onOpenChange={handleOpenChange}
+		>
+			{triggerElement && (
+				<Dialog.Trigger asChild>
+					{triggerElement}
+				</Dialog.Trigger>
+			)}
+
 			<Dialog.Backdrop />
 
 			<Dialog.Positioner>
@@ -26,15 +44,15 @@ export function CreateDialog({ onActionFulfilled, cancelButton, storeId, ...prop
 					<Dialog.ContentHeading>
 						<Dialog.Title>First Item Upload</Dialog.Title>
 						<Dialog.Description>
-							Attach an image that best represents your item. Name your listing, craft a 
+							Attach an image that best represents your item. Name your listing, craft a
 							catchy description, and set a price. Remember, you can change any details later on.
 						</Dialog.Description>
 					</Dialog.ContentHeading>
 
 					<CreateForm
 						className='gap-[1rem]'
-						id={formId} storeId={storeId}
-						onActionFulfilled={onActionFulfilled}
+						id={formId} store={store}
+						onActionFulfilled={onFormSubmit}
 					/>
 
 					<Dialog.ContentFooter>

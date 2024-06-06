@@ -33,23 +33,51 @@ export function createStoresClient() {
 			}
 		},
 
-		async create(payload: PayloadCreate) {
-			const { data, error } = await authFetchClient.POST('/api/stores', {
-				body: {
-					name: payload.name,
-					url: payload.shortName,
-					description: payload.description
-				}
+		async getForExplore(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			const { data, error } = await authFetchClient.GET('/api/explore', {
+				params: {
+					query: mapPaginationPayloadToDto(pagination)
+				},
 			});
 
 			return data ? {
-				data: mapDtoToStore(data), error
+				data: {
+					items: data.data.map(mapDtoToStore),
+					total: data.total
+				},
+				error
 			} : {
 				data, error
 			}
 		},
 
-		schemaCreate,
+		async getForCurrentUser() {
+			const { data, error } = await authFetchClient.GET('/api/users/stores');
+
+			return data ? {
+				data: data.map(mapDtoToStore), error
+			} : {
+				data, error
+			}
+		},
+
+		async create(payload: PayloadCreate) {
+			const { data, error, response } = await authFetchClient.POST('/api/stores', {
+				body: {
+					name: payload.name,
+					url: payload.shortName,
+					description: payload.description ?? undefined
+				}
+			});
+
+			return data ? {
+				data: mapDtoToStore(data), 
+				error, response
+			} : {
+				data, error,
+				response
+			}
+		},
 
 		for: (storeUrl: string) => ({
 			async get() {
@@ -75,7 +103,7 @@ export function createStoresClient() {
 				return data ? {
 					data: {
 						items: data.data.map(mapDtoToProduct),
-						total: 0
+						total: data.total
 					},
 					error
 				} : {
@@ -87,7 +115,7 @@ export function createStoresClient() {
 					params: { path: { url: storeUrl } },
 					body: {
 						name: payload.name,
-						description: payload.description,
+						description: payload.description ?? undefined,
 						url: payload.shortName
 					},
 					parseAs: 'text'
@@ -121,10 +149,11 @@ export function createStoresClient() {
 					parseAs: 'text'
 				})
 			},
+		}),
 
-			schemaUpdate,
-			schemaReport,
-			reportReasons
-		})
+		schemaCreate,
+		schemaUpdate,
+		schemaReport,
+		reportReasons,
 	}
 }

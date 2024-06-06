@@ -8,9 +8,10 @@ const product: Product = {
 	previewImage: null,
 	galleryImages: [],
 	category: 'Category',
-	price: 2.99
+	price: 2.99,
+	imageIds: [],
+	hasPreview: false
 }
-
 
 export interface SalesResponse {
 	data: Sale[],

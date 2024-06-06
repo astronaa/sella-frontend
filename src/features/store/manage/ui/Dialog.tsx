@@ -9,22 +9,33 @@ import { DeleteButton } from './DeleteButton';
 
 type ManageDialogProps = Dialog.RootProps & {
 	store: Store,
-	triggerElement?: ReactNode
+	triggerElement?: ReactNode,
+	onActionDeleteFulfilled?: () => void,
+	onActionEditFulfilled?: (store: Store) => void
 };
 
-export function ManageDialog({ store, triggerElement, ...props }: ManageDialogProps) {
+export function ManageDialog({
+	store, triggerElement,
+	onActionDeleteFulfilled,
+	onActionEditFulfilled,
+	...props
+}: ManageDialogProps) {
 	const formId = useId();
 
-	const onStoreEdit = () => {
+	const onStoreEdit = (store: Store) => {
+		onActionEditFulfilled?.(store);
+
 		props?.onOpenChange?.({ open: false })
 	}
 
 	const onStoreDelete = () => {
+		onActionDeleteFulfilled?.();
+
 		props?.onOpenChange?.({ open: false })
 	}
 
 	return (
-		<Dialog.Root {...props}>
+		<Dialog.Root {...props} unmountOnExit lazyMount>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
 					{triggerElement}
@@ -43,13 +54,14 @@ export function ManageDialog({ store, triggerElement, ...props }: ManageDialogPr
 
 					<EditForm
 						className='gap-[2rem]'
-						id={formId} store={store}
+						id={formId}
+						store={store}
 						onActionFulfilled={onStoreEdit}
 					/>
 
 					<Dialog.ContentFooter>
 						<DeleteButton
-							storeId={store.id}
+							storeUrl={store.shortName}
 							onActionFulfilled={onStoreDelete}
 						/>
 

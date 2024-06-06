@@ -1,7 +1,7 @@
 import { Order, Product, Store } from "~/shared/api/model";
 
 const store: Store = {
-	id: 1,
+	id: '1',
 	name: "First Store",
 	shortName: "@storename",
 	isVerified: true,
@@ -22,7 +22,9 @@ const product: Product = {
 	previewImage: null,
 	galleryImages: [],
 	category: 'Category',
-	price: 2.99
+	price: 2.99,
+	imageIds: [],
+	hasPreview: false
 }
 
 export interface OrdersResponse {

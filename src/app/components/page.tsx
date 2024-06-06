@@ -173,7 +173,7 @@ function ValidationTest() {
 }
 
 const store: Store = {
-	id: 1,
+	id: '1',
 	name: 'Store Name',
 	shortName: '@storename',
 	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
@@ -210,7 +210,9 @@ const product: Product = {
 	previewImage: null,
 	galleryImages: [],
 	category: 'Category',
-	price: 2.99
+	price: 2.99,
+	imageIds: [],
+	hasPreview: false
 }
 
 function ProductCardTest() {
@@ -287,7 +289,7 @@ function ProductCreateDialogTest() {
 			</Button>
 
 			<ProductCreateDialog
-				storeId={1}
+				store={store}
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 			/>
