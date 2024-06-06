@@ -5,7 +5,7 @@ import { Icons } from "~/shared/ui/icons";
 
 export function TransactionStatusBadge({ status }: { status: Transaction['status']; }) {
 	switch (status) {
-		case 'new':
+		case 'New':
 			return <Badge colorPalette='accent'>New</Badge>;
 		default:
 			return (
@@ -17,7 +17,7 @@ export function TransactionStatusBadge({ status }: { status: Transaction['status
 }
 
 export function TransactionActionButton({ transaction }: { transaction: Transaction; }) {
-	if (transaction.fulfillmentStatus != 'fulfilled')
+	if (transaction.fulfillmentStatus != 'Fulfilled')
 		return null;
 
 	return (

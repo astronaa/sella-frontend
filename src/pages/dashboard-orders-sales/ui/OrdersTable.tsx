@@ -12,6 +12,8 @@ import {
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
+import { apiClient } from "~/shared/api/client";
+import { useQuery } from "@tanstack/react-query";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,10 +26,18 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function OrdersTable({ initialData }: { initialData: OrdersResponse }) {
-	const { data: orders, total } = initialData;
+export function OrdersTable({ initialData }: { initialData?: OrdersResponse }) {
+	const { data } = useQuery({
+		queryKey: ['sales'],
+		queryFn: async () => {
+			const { data } = await apiClient.orders.getAll()
+			return data
+		},
+		initialData,
+		staleTime: 10 * 60 * 1000
+	})
 
-	if (!orders.length) {
+	if (!data?.items.length) {
 		return (
 			<NotFoundScreen>
 				<Icons.PackageThin />
@@ -53,7 +63,7 @@ export function OrdersTable({ initialData }: { initialData: OrdersResponse }) {
 					</FlexTable.Head>
 
 					<FlexTable.Body className='text-[0.875rem]'>
-						{orders.map((o, index) => (
+						{data.items.map((o, index) => (
 							<FlexTable.Row key={o.id}>
 								<span>{index + 1}</span>
 								<span>
@@ -89,7 +99,7 @@ export function OrdersTable({ initialData }: { initialData: OrdersResponse }) {
 
 			<Pagination
 				className='px-[1rem]'
-				count={total} pageSize={10}
+				count={data.total} pageSize={10}
 			/>
 		</BleedingContainer>
 	);

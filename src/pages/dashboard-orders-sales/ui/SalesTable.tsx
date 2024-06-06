@@ -1,3 +1,5 @@
+'use client'
+
 import { FlexTable } from "~/shared/ui/kit";
 import { SalesResponse } from "../api/sales";
 import { ProductRow } from "~/entities/product";
@@ -12,6 +14,8 @@ import {
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
+import { apiClient } from "~/shared/api/client";
+import { useQuery } from "@tanstack/react-query";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,10 +28,19 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function SalesTable({ initialData }: { initialData: SalesResponse }) {
-	const { data: sales, total } = initialData;
+export function SalesTable({ initialData }: { initialData?: SalesResponse }) {
+	const { data } = useQuery({
+		queryKey: ['sales'],
+		queryFn: async () => {
+			const { data } = await apiClient.sales.getAll()
+			return data
+		},
+		initialData,
+		staleTime: 10 * 60 * 1000
+	})
 
-	if (!sales.length) {
+
+	if (!data?.items.length) {
 		return (
 			<NotFoundScreen>
 				<Icons.PackageThin />
@@ -53,33 +66,33 @@ export function SalesTable({ initialData }: { initialData: SalesResponse }) {
 					</FlexTable.Head>
 
 					<FlexTable.Body className='text-[0.875rem]'>
-						{sales.map((o, index) => (
-							<FlexTable.Row key={o.id}>
+						{data?.items.map((sale, index) => (
+							<FlexTable.Row key={sale.id}>
 								<span>{index + 1}</span>
 								<span>
-									{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
+									{dayJs(sale.transaction.createdAt).format('MMM DD, hh:mm A')}
 								</span>
 								<span className='text-white'>
-									<ProductRow product={o.product} />
+									<ProductRow product={sale.product} />
 								</span>
 								<span className='text-black-60'>
-									{o.user.name}
+									{sale.user.name}
 								</span>
 								<span>
 									<TransactionStatusBadge
-										status={o.transaction.status}
+										status={sale.transaction.status}
 									/>
 								</span>
 								<span>
 									<Badge className='capitalize'>
-										{o.transaction.fulfillmentStatus}
+										{sale.transaction.fulfillmentStatus}
 									</Badge>
 								</span>
 								<span className='text-accent-100'>
-									{o.transaction.totalPaid} USDT
+									{sale.product.price} USDT
 								</span>
 								<span className='sticky right-0'>
-									<TransactionActionButton transaction={o.transaction} />
+									<TransactionActionButton transaction={sale.transaction} />
 								</span>
 							</FlexTable.Row>
 						))}
@@ -87,9 +100,10 @@ export function SalesTable({ initialData }: { initialData: SalesResponse }) {
 				</FlexTable.Root>
 			</div>
 
-			<Pagination 
+			<Pagination
 				className='px-[1rem]'
-				count={total} pageSize={10} 
+				count={data.total}
+				pageSize={10}
 			/>
 		</BleedingContainer>
 	);
