@@ -1,10 +1,9 @@
-import Image from "next/image";
-import ImageEscrow from "../assets/escrow.png";
 import { Button } from "~/shared/ui/kit/button";
 import { Background } from "./SectionBackground";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { Heading } from "~/shared/ui/kit/heading";
+import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 
 export function EscrowBuyerSeller() {
 	return (
@@ -31,11 +30,16 @@ export function EscrowBuyerSeller() {
 					</Button>
 				</div>
 
-				<Image
+				<VideoAnimationPlayer
+					src='/videos/ecrow.webm'
+					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
+				/>
+
+				{/* <Image
 					src={ImageEscrow}
 					alt="Escrow image"
 					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
-				/>
+				/> */}
 			</div>
 		</div>
 	);
