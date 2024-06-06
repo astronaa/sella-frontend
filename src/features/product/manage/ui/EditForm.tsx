@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLAttributes, useMemo } from 'react';
-import { Form } from 'react-final-form';
+import { Form, useField } from 'react-final-form';
 import { z } from 'zod';
 import { Product } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
@@ -16,14 +16,18 @@ import {
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 import { useMutation } from "@tanstack/react-query";
+import { IconButton } from '~/shared/ui/kit/button';
+import { Icons } from '~/shared/ui/icons';
+import { mapMediaUrlToId } from '~/shared/api/client/shared/mappers';
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
 	price: z.coerce.number({ message: 'Price is required' }).min(1, 'Min price is 1 USDT'),
 	shortDescription: z.string({ required_error: 'Description is required' }),
 	description: z.string().optional(),
-	previewImage: z.instanceof(File).optional(),
-	galleryImages: z.array(z.instanceof(File)).optional()
+	previewImage: z.instanceof(File).optional().nullable(),
+	galleryImages: z.array(z.instanceof(File)).optional(),
+	galleryImagesUrls: z.array(z.string())
 });
 
 export type SchemaType = z.infer<typeof schema>
@@ -47,12 +51,18 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 			if (error)
 				throw error;
 
-			await apiClient.products.for(product.id).uploadImages(product, values);
+			await apiClient.products.for(product.id).uploadImages(product, {
+				previewImage: values.previewImage,
+				galleryImages: [
+					...values.galleryImagesUrls.map(mapMediaUrlToId), 
+					...values.galleryImages ?? []
+				]
+			});
 
 			return data
 		},
 		onSuccess: (data) => {
-			queryClient.invalidateQueries({ queryKey: ['stores'] })
+			queryClient.invalidateQueries({ queryKey: ['products'] })
 			onActionFulfilled?.(data)
 		}
 	})
@@ -62,8 +72,13 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 	};
 
 	const initialValues = useMemo(() => {
-		const { previewImage: previewImageUrl, ...rest } = product;
-		return { previewImageUrl, ...rest }
+		const {
+			previewImage: previewImageUrl,
+			galleryImages: galleryImagesUrls,
+			...rest
+		} = product;
+
+		return { previewImageUrl, galleryImagesUrls, ...rest }
 	}, [product]);
 
 	return (
@@ -120,20 +135,46 @@ export function EditForm({ onActionFulfilled, product, className, ...props }: Ed
 						/>
 					</VTextAreaControl.Root>
 
-					<VUploader.Root
-						name='galleryImages' multiple
-						rootProps={{ className: 'w-full' }}
-					>
-						<VUploader.LabelOrError>
-							Product Images
-						</VUploader.LabelOrError>
-
-						<VUploader.Previews className='grid-cols-6'>
-							<VUploader.AddButton />
-						</VUploader.Previews>
-					</VUploader.Root>
+					<ImagesUploader />
 				</form>
 			)}
 		</Form>
+	);
+}
+
+function ImagesUploader() {
+	const {
+		input: { value: images, onChange: setImages }
+	} = useField<string[]>('galleryImagesUrls')
+
+	return (
+		<VUploader.Root
+			name='galleryImages' multiple
+			rootProps={{ className: 'w-full' }}
+		>
+			<VUploader.LabelOrError>
+				Product Images
+			</VUploader.LabelOrError>
+
+			<VUploader.Previews
+				className='grid-cols-6'
+				prevSlot={images.map(imgUrl => (
+					<VUploader.FilePreview
+						key={imgUrl}
+						file={{ name: 'image.jpg', url: imgUrl }}
+						renderActionBar={
+							<IconButton
+								variant='action' size='xs' type='button'
+								onClick={() => setImages(images.filter(i => i !== imgUrl))}
+							>
+								<Icons.Close className='size-[1.25rem]' />
+							</IconButton>
+						}
+					/>
+				))}
+			>
+				<VUploader.AddButton />
+			</VUploader.Previews>
+		</VUploader.Root>
 	);
 }

@@ -2,7 +2,6 @@ import { HTMLAttributes, ReactNode } from "react";
 import { cn } from "~/shared/lib/cn";
 
 export interface CustomFileModel {
-	id: number,
 	name: string,
 	url: string
 }

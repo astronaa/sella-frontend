@@ -21,7 +21,7 @@ export function PreviewImage({ src, className, ...props }: PreviewImageProps) {
 				<NextImage
 					src={src}
 					{...props}
-					className={cn('size-full')}
+					className={cn('size-full object-cover')}
 				/>
 			) : (
 				<Icons.Image

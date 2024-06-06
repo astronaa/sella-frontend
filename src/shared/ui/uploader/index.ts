@@ -7,5 +7,6 @@ export type RootProps = UploadProps;
 
 export const AddButton = UploadAddButton;
 export const Previews = UploadPreviews;
+export { FilePreview } from './FilePreview';
 
 export * as Uploader from './'

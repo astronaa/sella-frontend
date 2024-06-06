@@ -12,7 +12,7 @@ export {
 } from './TextControl'
 
 export {
-	Previews, AddButton
+	Previews, AddButton, FilePreview
 } from '../uploader'
 
 export type RootProps = ControlProps & Uploader.RootProps & {

@@ -15,6 +15,7 @@ import {
 } from '~/shared/ui/validation-inputs';
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
+import { queryClient } from '~/shared/config/query-client';
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -44,14 +45,17 @@ export function CreateForm({ onActionFulfilled, store, className, ...props }: Cr
 				shortDescription: values.shortDescription
 			})
 
-			if(error) 
+			if (error)
 				throw error;
 
 			await apiClient.products.for(data.id).uploadImages(data, values);
 
 			return data;
 		},
-		onSuccess: (data) => data && onActionFulfilled?.(data)
+		onSuccess: (data) => {
+			onActionFulfilled?.(data)
+			queryClient.invalidateQueries({ queryKey: ['products'] })
+		}
 	})
 
 	const onSubmit = (values: SchemaType) => {

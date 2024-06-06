@@ -5,6 +5,7 @@ import { CreateForm } from './CreateForm';
 import { ReactNode, useId } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Product, Store } from '~/shared/api/model';
+import { useDialogState } from '~/shared/lib/dialog';
 
 type CreateDialogProps = Dialog.RootProps & {
 	store: Store,
@@ -15,9 +16,19 @@ type CreateDialogProps = Dialog.RootProps & {
 
 export function CreateDialog({ onActionFulfilled, triggerElement, cancelButton, store, ...props }: CreateDialogProps) {
 	const formId = useId();
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
+
+	const onFormSubmit = (product: Product) => {
+		onActionFulfilled?.(product);
+		close();
+	}
 
 	return (
-		<Dialog.Root {...props} unmountOnExit lazyMount>
+		<Dialog.Root
+			{...props}
+			unmountOnExit lazyMount
+			open={isOpen} onOpenChange={handleOpenChange}
+		>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
 					{triggerElement}
@@ -40,9 +51,8 @@ export function CreateDialog({ onActionFulfilled, triggerElement, cancelButton, 
 
 					<CreateForm
 						className='gap-[1rem]'
-						id={formId}
-						store={store}
-						onActionFulfilled={onActionFulfilled}
+						id={formId} store={store}
+						onActionFulfilled={onFormSubmit}
 					/>
 
 					<Dialog.ContentFooter>
