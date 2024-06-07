@@ -8,7 +8,7 @@ export function ToggleEditModeButton() {
 
 	return (
 		<Button size='lg' onClick={() => setEnabled(e => !e)}>
-			{enabled ? 'Go Back' : 'Edit Items'}
+			{enabled ? 'Go Back' : 'Manage Items'}
 		</Button>
 	);
 }

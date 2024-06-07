@@ -18,7 +18,7 @@ export function Root({ product, className, ...props }: RootProps) {
 			<ark.div
 				{...props}
 				className={cn(
-					'flex flex-col gap-[1rem] items-start w-[16.25rem] max-w-[24.375rem] p-[0.5rem] pb-[1rem] ',
+					'flex flex-col gap-[1rem] items-start w-[16.25rem] max-w-[24.375rem] p-[0.5rem] pb-[1rem] overflow-hidden',
 					'border border-secondary rounded-[1.25rem]',
 					className
 				)}
@@ -29,7 +29,7 @@ export function Root({ product, className, ...props }: RootProps) {
 
 export function Content({ className, ...props }: HTMLArkProps<'div'>) {
 	return (
-		<ark.div className={cn('flex flex-col gap-[1rem] px-[0.75rem]', className)} {...props} />
+		<ark.div className={cn('flex flex-col gap-[1rem] px-[0.75rem] max-w-full', className)} {...props} />
 	)
 }
 
@@ -50,7 +50,7 @@ export function Description({ className, ...props }: HTMLArkProps<'p'>) {
 	const { description } = useProductStrictContext();
 
 	return (
-		<ark.p className={cn('text-black-60 leading-[1.3]', className)} {...props}>
+		<ark.p className={cn('text-black-60 leading-[1.3] truncate max-w-full', className)} {...props}>
 			{description}
 		</ark.p>
 	);

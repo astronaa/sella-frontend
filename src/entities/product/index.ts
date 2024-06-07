@@ -6,3 +6,5 @@ export { Row as ProductRow } from './ui/Row';
 export { Image as ProductImage } from './ui/Image';
 
 export type { ProductProp } from './ui/Prop';
+
+export * as productQueries from './api/queries';

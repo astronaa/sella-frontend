@@ -4,3 +4,5 @@ export { StoreProvider } from './ui/context';
 export { Link as StoreLink } from './ui/Link';
 
 export type { StoreProp } from './ui/Prop';
+
+export * as storeQueries from './api/queries';

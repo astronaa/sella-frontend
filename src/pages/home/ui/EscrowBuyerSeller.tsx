@@ -32,6 +32,7 @@ export function EscrowBuyerSeller() {
 
 				<VideoAnimationPlayer
 					src='/videos/ecrow.webm'
+					srcHevc='/videos/ecrow.mov'
 					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
 				/>
 

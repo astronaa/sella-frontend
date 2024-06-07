@@ -289,9 +289,8 @@ function ProductCreateDialogTest() {
 			</Button>
 
 			<ProductCreateDialog
-				store={store}
-				open={isOpen}
-				onOpenChange={handleOpenChange}
+				storeUrl={store.shortName}
+				open={isOpen} onOpenChange={handleOpenChange}
 			/>
 		</>
 	);
