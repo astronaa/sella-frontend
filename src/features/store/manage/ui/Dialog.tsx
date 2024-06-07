@@ -2,11 +2,11 @@
 
 import { Dialog } from '~/shared/ui/kit';
 import { EditForm } from './EditForm';
-import { ReactNode, useId } from 'react';
-import { Button } from '~/shared/ui/kit/button';
+import { ReactNode } from 'react';
 import { Store } from '~/shared/api/model';
 import { DeleteButton } from './DeleteButton';
 import { useDialogState } from '~/shared/lib/dialog';
+import { VSubmitButton } from '~/shared/ui/validation-inputs';
 
 type ManageDialogProps = Dialog.RootProps & {
 	store: Store,
@@ -21,7 +21,6 @@ export function ManageDialog({
 	onActionEditFulfilled,
 	...props
 }: ManageDialogProps) {
-	const formId = useId();
 	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onStoreEdit = (store: Store) => {
@@ -35,7 +34,7 @@ export function ManageDialog({
 	}
 
 	return (
-		<Dialog.Root 
+		<Dialog.Root
 			{...props} unmountOnExit lazyMount
 			open={isOpen} onOpenChange={handleOpenChange}
 		>
@@ -55,23 +54,25 @@ export function ManageDialog({
 						<Dialog.Title>Storefront Settings</Dialog.Title>
 					</Dialog.ContentHeading>
 
-					<EditForm
-						className='gap-[2rem]'
-						id={formId}
+					<EditForm.Root
 						store={store}
 						onActionFulfilled={onStoreEdit}
-					/>
-
-					<Dialog.ContentFooter>
-						<DeleteButton
-							storeUrl={store.shortName}
-							onActionFulfilled={onStoreDelete}
+					>
+						<EditForm.Controls
+							className='gap-[2rem]'
 						/>
 
-						<Button form={formId} className='w-full' size='lg'>
-							Save and Close
-						</Button>
-					</Dialog.ContentFooter>
+						<Dialog.ContentFooter>
+							<DeleteButton
+								storeUrl={store.shortName}
+								onActionFulfilled={onStoreDelete}
+							/>
+
+							<VSubmitButton className='w-full' size='lg'>
+								Save and Close
+							</VSubmitButton>
+						</Dialog.ContentFooter>
+					</EditForm.Root>
 				</Dialog.Content>
 			</Dialog.Positioner>
 		</Dialog.Root>

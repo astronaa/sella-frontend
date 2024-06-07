@@ -1,12 +1,13 @@
 'use client';
 
 import { Dialog } from '~/shared/ui/kit';
-import { CreateForm } from './CreateForm';
-import { ReactNode, useId } from 'react';
+import { ReactNode } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Product } from '~/shared/api/model';
 import { useDialogState } from '~/shared/lib/dialog';
 import { Portal } from '@ark-ui/react';
+import { CreateForm } from './CreateForm';
+import { VSubmitButton } from '~/shared/ui/validation-inputs';
 
 type CreateDialogProps = Dialog.RootProps & {
 	storeUrl: string,
@@ -20,7 +21,6 @@ type CreateDialogProps = Dialog.RootProps & {
 export function CreateDialog({
 	onActionFulfilled, triggerElement, cancelButton, storeUrl, title, description, ...props
 }: CreateDialogProps) {
-	const formId = useId();
 	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onFormSubmit = (product: Product) => {
@@ -54,24 +54,27 @@ export function CreateDialog({
 							</Dialog.Description>
 						</Dialog.ContentHeading>
 
-						<CreateForm
-							className='gap-[1rem]'
-							id={formId} storeUrl={storeUrl}
+						<CreateForm.Root
+							storeUrl={storeUrl}
 							onActionFulfilled={onFormSubmit}
-						/>
-
-						<Dialog.ContentFooter>
-							{cancelButton ?? (
-								<Dialog.CloseTrigger asChild>
-									<Button className='w-full' colorPalette='gray'>
-										Close
-									</Button>
-								</Dialog.CloseTrigger>
-							)}
-							<Button form={formId} className='w-full' size='lg'>
-								Continue
-							</Button>
-						</Dialog.ContentFooter>
+						>
+							<CreateForm.Controls
+								className='gap-[1rem]'
+							/>
+							
+							<Dialog.ContentFooter>
+								{cancelButton ?? (
+									<Dialog.CloseTrigger asChild>
+										<Button className='w-full' colorPalette='gray'>
+											Close
+										</Button>
+									</Dialog.CloseTrigger>
+								)}
+								<VSubmitButton className='w-full' size='lg'>
+									Create
+								</VSubmitButton>
+							</Dialog.ContentFooter>
+						</CreateForm.Root>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>

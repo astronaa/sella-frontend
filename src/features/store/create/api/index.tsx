@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { storeQueries } from '~/entities/store';
 import { apiClient } from "~/shared/api/client";
 import { FormError } from '~/shared/lib/errors';
-import { zodValidate } from '~/shared/lib/zod-final-form';
 
 export const schema = apiClient.stores.schemaCreate.merge(
 	z.object({ previewImage: z.instanceof(File) })
@@ -37,5 +36,3 @@ export async function createStore(values: SchemaType) {
 		previewImage: URL.createObjectURL(values.previewImage)
 	};
 }
-
-export const validateForm = zodValidate(schema);

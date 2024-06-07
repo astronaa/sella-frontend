@@ -1,0 +1,32 @@
+import { z } from "zod";
+import { productQueries } from "~/entities/product";
+import { apiClient } from "~/shared/api/client";
+
+export const schema = z.object({
+	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
+	price: z.coerce.number({ message: 'Price is required' }).min(1, 'Min price is 1 USDT'),
+	shortDescription: z.string({ required_error: 'Description is required' }),
+	description: z.string().optional(),
+	previewImage: z.instanceof(File).optional(),
+	galleryImages: z.array(z.instanceof(File)).optional()
+});
+
+export type SchemaType = z.infer<typeof schema>;
+
+export async function createProduct(storeUrl: string, values: SchemaType) {
+	const { data, error } = await apiClient.products.create(storeUrl, {
+		name: values.name,
+		price: Number(values.price),
+		description: values.description,
+		shortDescription: values.shortDescription
+	})
+
+	if (error)
+		throw error;
+
+	await apiClient.products.for(data.id).uploadImages(data, values);
+
+	productQueries.invalidateAll();
+
+	return data;
+}

@@ -1,13 +1,13 @@
 'use client';
 
 import { Dialog } from '~/shared/ui/kit';
-import { EditForm } from './EditForm';
-import { ReactNode, useId } from 'react';
-import { Button } from '~/shared/ui/kit/button';
+import { ReactNode } from 'react';
 import { Product } from '~/shared/api/model';
 import { DeleteButton } from './DeleteButton';
 import { Portal } from '@ark-ui/react';
 import { useDialogState } from '~/shared/lib/dialog';
+import { VSubmitButton } from '~/shared/ui/validation-inputs';
+import { EditForm } from './EditForm';
 
 type ManageDialogProps = Dialog.RootProps & {
 	product: Product,
@@ -15,7 +15,6 @@ type ManageDialogProps = Dialog.RootProps & {
 };
 
 export function ManageDialog({ product, triggerElement, ...props }: ManageDialogProps) {
-	const formId = useId();
 	const { isOpen, handleOpenChange, close } = useDialogState(props);
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,8 +27,8 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 	}
 
 	return (
-		<Dialog.Root 
-			{...props} 
+		<Dialog.Root
+			{...props}
 			unmountOnExit lazyMount
 			open={isOpen} onOpenChange={handleOpenChange}
 		>
@@ -50,23 +49,25 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 							<Dialog.Title>Product Settings</Dialog.Title>
 						</Dialog.ContentHeading>
 
-						<EditForm
-							className='gap-[2rem]'
-							id={formId}
+						<EditForm.Root
 							product={product}
 							onActionFulfilled={onProductEdit}
-						/>
-
-						<Dialog.ContentFooter>
-							<DeleteButton
-								productId={product.id}
-								onActionFulfilled={onProductDelete}
+						>
+							<EditForm.Controls
+								className='gap-[2rem]'
 							/>
+							
+							<Dialog.ContentFooter>
+								<DeleteButton
+									productId={product.id}
+									onActionFulfilled={onProductDelete}
+								/>
 
-							<Button form={formId} className='w-full' size='lg'>
-								Save and Close
-							</Button>
-						</Dialog.ContentFooter>
+								<VSubmitButton className='w-full' size='lg'>
+									Save and Close
+								</VSubmitButton>
+							</Dialog.ContentFooter>
+						</EditForm.Root>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>
