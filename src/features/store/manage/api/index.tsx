@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { Store } from '~/shared/api/model';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { apiClient } from "~/shared/api/client";
-import { queryClient } from "~/shared/config/query-client";
 import { FormError } from '~/shared/lib/errors';
+import { storeQueries } from '~/entities/store';
 
 export const schema = apiClient.stores.schemaCreate.merge(
 	z.object({
@@ -35,7 +35,7 @@ export async function updateStore(store: Store, { previewImage, ...data }: Schem
 	if (previewImage)
 		await apiClient.stores.for(store.shortName).setImage(previewImage);
 
-	queryClient.invalidateQueries({ queryKey: ['stores'] });
+	storeQueries.invalidateAll();
 
 	return { ...store, ...data };
 }

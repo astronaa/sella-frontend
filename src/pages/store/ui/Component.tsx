@@ -1,14 +1,9 @@
 import { fetchStore, fetchStoreProducts } from "../api";
-import { Button } from "~/shared/ui/kit/button";
-import { StoreCard } from "~/entities/store";
 import { ProductsStream } from "./ProductsStream";
 import { EditModeProvider } from "../model/edit-mode";
-import { ToggleEditModeButton } from "./ToggleEditModeButton";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
-import { StoreReportFlow } from "~/features/store/report";
-import { ProductCreateDialog } from "~/features/product/create";
-import { ManageDialog } from "./ManageDialog";
+import { Heading } from "./Heading";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
 	const store = await fetchStore(storeUrl);
@@ -17,37 +12,11 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 	return (
 		<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
 			<EditModeProvider>
-				<div className='flex mb-[4.5rem] items-end w-full gap-[1rem] justify-between \
-					max-lg:mb-[3rem] max-lg:flex-col max-lg:items-start'
-				>
-					<StoreCard.Root
-						store={store}
-						className='p-0 border-none flex-grow max-md:flex max-md:flex-col max-md:items-start'
-					>
-						<StoreCard.Image />
-
-						<StoreCard.Content>
-							<StoreCard.Title className='text-[3rem]/[1.1] max-md:text-[2.625rem]' />
-							<StoreCard.Description />
-							<StoreCard.Rating />
-						</StoreCard.Content>
-					</StoreCard.Root>
-
-					<div className='flex gap-[1rem] md:self-end'>
-						<ManageDialog store={store} />
-						<ProductCreateDialog
-							store={store}
-							triggerElement={
-								<Button colorPalette='gray' size='lg'>
-									Create Product
-								</Button>
-							}
-						/>
-
-						<ToggleEditModeButton />
-						<StoreReportFlow />
-					</div>
-				</div>
+				<Heading
+					storeUrl={storeUrl}
+					storeInitialData={store}
+					productsInitialData={products}
+				/>
 
 				<ProductsStream
 					className='mb-[6rem] max-md:mb-[5rem]'

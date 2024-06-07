@@ -10,7 +10,7 @@ import {
 import { HTMLAttributes } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
-import { Product, Store } from '~/shared/api/model';
+import { Product } from '~/shared/api/model';
 import { cn } from '~/shared/lib/cn';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { useMutation } from "@tanstack/react-query";
@@ -30,15 +30,15 @@ export type SchemaType = z.infer<typeof schema>
 
 type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
-	store: Store,
+	storeUrl: string,
 	onActionFulfilled?: (product: Product) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function CreateForm({ onActionFulfilled, store, className, ...props }: CreateFormProps) {
+export function CreateForm({ onActionFulfilled, storeUrl, className, ...props }: CreateFormProps) {
 	const { mutate: createProduct } = useMutation({
 		mutationFn: async (values: SchemaType) => {
-			const { data, error } = await apiClient.products.create(store.shortName, {
+			const { data, error } = await apiClient.products.create(storeUrl, {
 				name: values.name,
 				description: values.description,
 				price: Number(values.price),
@@ -54,7 +54,7 @@ export function CreateForm({ onActionFulfilled, store, className, ...props }: Cr
 		},
 		onSuccess: (data) => {
 			onActionFulfilled?.(data)
-			productQueries.invalidatePaged();
+			productQueries.invalidateAll();
 		}
 	})
 

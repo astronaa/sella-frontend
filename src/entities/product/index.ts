@@ -7,4 +7,4 @@ export { Image as ProductImage } from './ui/Image';
 
 export type { ProductProp } from './ui/Prop';
 
-export * as productQueries from './api';
+export * as productQueries from './api/queries';

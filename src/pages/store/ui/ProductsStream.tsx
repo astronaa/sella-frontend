@@ -3,17 +3,18 @@
 import { Product } from "~/shared/api/model";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { FlexTable } from "~/shared/ui/kit";
-import { IconButton } from "~/shared/ui/kit/button";
+import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ProductManageDialog } from "~/features/product/manage";
 import { ProductCard, ProductPrice, productQueries } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
-import { useCallback, useState } from "react";
+import { PropsWithChildren, useCallback, useState } from "react";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { ProductCreateDialog } from "~/features/product/create";
 
 interface ProductsStreamProps {
 	initialData?: { items: Product[], total: number }
@@ -27,7 +28,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 	const { enabled: editModeEnabled } = useEditModeContext();
 	const [page, setPage] = useState(INITIAL_PAGE);
 
-	const { data, isFetching } = productQueries.usePaged({
+	const { data, isFetching } = productQueries.useGetFromStore({
 		storeUrl, initialData,
 		page, limit: PRODUCT_ITEMS_PER_PAGE,
 	})
@@ -44,6 +45,15 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 					<Icons.PackageThin />
 
 					{`This store don't have any products yet`}
+
+					<ProductCreateDialog
+						storeUrl={storeUrl}
+						triggerElement={
+							<Button className='mt-[1rem]' size='lg'>
+								Add First Product
+							</Button>
+						}
+					/>
 				</NotFoundScreen>
 			)}
 
@@ -53,7 +63,16 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 						<ProductsEditTable
 							products={products}
 							loading={isFetching}
-						/>
+						>
+							<ProductCreateDialog
+								storeUrl={storeUrl}
+								triggerElement={
+									<Button colorPalette='gray' size='lg'>
+										Add Product
+									</Button>
+								}
+							/>
+						</ProductsEditTable>
 					</div>
 				</BleedingContainer>
 			) : (
@@ -77,7 +96,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 	);
 }
 
-interface ProductsListProps {
+interface ProductsListProps extends PropsWithChildren {
 	products: Product[],
 	loading?: boolean
 }
@@ -114,7 +133,10 @@ const tableConfig = [
 	{ width: '4.375rem' },
 ]
 
-function ProductsEditTable({ products, loading }: ProductsListProps) {
+function ProductsEditTable({ products, loading, children }: ProductsListProps) {
+	if (!products.length)
+		return null;
+
 	return (
 		<FlexTable.Root className='w-[max(100%,60rem)] px-[1rem]' config={tableConfig}>
 			<FlexTable.Head>
@@ -160,6 +182,8 @@ function ProductsEditTable({ products, loading }: ProductsListProps) {
 					</FlexTable.Row>
 				))}
 			</FlexTable.Body>
+
+			{children}
 		</FlexTable.Root>
 	);
 }

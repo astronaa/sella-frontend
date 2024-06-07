@@ -110,10 +110,14 @@ export function FlowDialog(props: Dialog.RootProps) {
 			{createdStore && (
 				<ProductCreateDialog
 					{...props}
-					store={createdStore}
-					open={isOpen('create-product')}
-					onOpenChange={onOpenChange}
+					storeUrl={createdStore.shortName}
+					title='First Item Upload'
+					description='Attach an image that best represents your item. Name your listing, craft a
+						catchy description, and set a price. Remember, you can change any details later on.'
+
+					open={isOpen('create-product')} onOpenChange={onOpenChange}
 					onActionFulfilled={openModalAction('all-set')}
+					
 					cancelButton={
 						<Button
 							className='w-full' colorPalette='gray'

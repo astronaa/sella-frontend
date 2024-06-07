@@ -6,6 +6,7 @@ import { ReactNode, useId } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Store } from '~/shared/api/model';
 import { DeleteButton } from './DeleteButton';
+import { useDialogState } from '~/shared/lib/dialog';
 
 type ManageDialogProps = Dialog.RootProps & {
 	store: Store,
@@ -21,21 +22,23 @@ export function ManageDialog({
 	...props
 }: ManageDialogProps) {
 	const formId = useId();
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onStoreEdit = (store: Store) => {
 		onActionEditFulfilled?.(store);
-
-		props?.onOpenChange?.({ open: false })
+		close();
 	}
 
 	const onStoreDelete = () => {
 		onActionDeleteFulfilled?.();
-
-		props?.onOpenChange?.({ open: false })
+		close();
 	}
 
 	return (
-		<Dialog.Root {...props} unmountOnExit lazyMount>
+		<Dialog.Root 
+			{...props} unmountOnExit lazyMount
+			open={isOpen} onOpenChange={handleOpenChange}
+		>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
 					{triggerElement}
