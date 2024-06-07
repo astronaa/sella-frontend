@@ -11,7 +11,7 @@ import { SchemaType, createStore, validateForm } from '../api';
 
 type CreateFormProps = HTMLAttributes<HTMLFormElement> & {
 	id: string;
-	onActionFulfilled?: (store?: Store) => void;
+	onActionFulfilled?: (store: Store) => void;
 };
 
 export function CreateForm({ onActionFulfilled, ...props }: CreateFormProps) {

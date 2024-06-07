@@ -1,21 +1,21 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
-import { Form } from 'react-final-form';
-import { z } from 'zod';
-import { Product, Store } from '~/shared/api/model';
-import { cn } from '~/shared/lib/cn';
-import { zodValidate } from '~/shared/lib/zod-final-form';
-
 import {
 	VImageUploader,
 	VTextAreaControl,
 	VTextControl,
 	VUploader
 } from '~/shared/ui/validation-inputs';
+
+import { HTMLAttributes } from 'react';
+import { Form } from 'react-final-form';
+import { z } from 'zod';
+import { Product, Store } from '~/shared/api/model';
+import { cn } from '~/shared/lib/cn';
+import { zodValidate } from '~/shared/lib/zod-final-form';
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
-import { queryClient } from '~/shared/config/query-client';
+import { productQueries } from '~/entities/product';
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -54,7 +54,7 @@ export function CreateForm({ onActionFulfilled, store, className, ...props }: Cr
 		},
 		onSuccess: (data) => {
 			onActionFulfilled?.(data)
-			queryClient.invalidateQueries({ queryKey: ['products'] })
+			productQueries.invalidatePaged();
 		}
 	})
 
