@@ -1,5 +1,3 @@
-'use client'
-
 import { FlexTable } from "~/shared/ui/kit";
 import { SalesResponse } from "../api/sales";
 import { ProductRow } from "~/entities/product";
@@ -14,8 +12,6 @@ import {
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
-import { apiClient } from "~/shared/api/client";
-import { useQuery } from "@tanstack/react-query";
 
 const config = [
 	{ width: '3.75rem' },
@@ -28,18 +24,7 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function SalesTable({ initialData }: { initialData?: SalesResponse }) {
-	const { data } = useQuery({
-		queryKey: ['sales'],
-		queryFn: async () => {
-			const { data } = await apiClient.sales.getAll()
-			return data
-		},
-		initialData,
-		staleTime: 10 * 60 * 1000
-	})
-
-
+export function SalesTable({ data }: { data?: SalesResponse }) {
 	if (!data?.items.length) {
 		return (
 			<NotFoundScreen>

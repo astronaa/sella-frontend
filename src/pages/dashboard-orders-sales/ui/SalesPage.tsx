@@ -1,10 +1,19 @@
+'use client'
+
 import { Heading } from "~/shared/ui/kit/heading";
 import { NavSelect } from "./NavSelect";
 import { SalesTable } from "./SalesTable";
 import { apiClient } from "~/shared/api/client";
+import { useQuery } from "@tanstack/react-query";
 
-export async function SalesPage() {
-	const { data } = await apiClient.sales.getAll();
+export function SalesPage() {
+	const { data } = useQuery({
+		queryKey: ['sales'],
+		queryFn: async () => {
+			const { data } = await apiClient.sales.getAll()
+			return data
+		},
+	})
 
 	return (
 		<div className='flex flex-col gap-[3rem] w-full max-w-content mx-auto px-[1rem]'>
@@ -18,8 +27,7 @@ export async function SalesPage() {
 				<div className='flex gap-[1.5rem] items-center \
 					max-sm:flex-col max-sm:items-start max-sm:w-full max-sm:gap-[0.25rem]'>
 					<p className='text-black-40'>
-						Total Orders: <span className='text-white'>
-							{/*//TODO*/}
+						Total Sales: <span className='text-white'>
 							{data?.total ?? 0}
 						</span>
 					</p>
@@ -32,7 +40,7 @@ export async function SalesPage() {
 				</div>
 			</div>
 
-			<SalesTable initialData={data} />
+			<SalesTable data={data} />
 		</div>
 	);
 }
