@@ -16,11 +16,11 @@ export const mapDtoToOrder = (obj: components['schemas']['Order']): Order => {
 			totalPaid: obj.price,
 		},
 		store: {
-			id: obj.product.store.id,
+			id: String(obj.product.store.id),
 			name: obj.product.store.name,
 			shortName: obj.product.store.url,
 			isVerified: true,//TODO no data from response
-			description: obj.product.store.description,
+			description: obj.product.store.description ?? null,
 			previewImage: mapMediaIdToUrl(obj.product.store.imageId ?? ''),
 			//TODO no data from response
 			rating: {
@@ -37,7 +37,9 @@ export const mapDtoToOrder = (obj: components['schemas']['Order']): Order => {
 			description: obj.product.description ?? null,
 			shortDescription: obj.product.shortDescription,
 			previewImage: obj.product.hasPreview ? previewImage : null,
-			galleryImages: obj.product.hasPreview ? galleryImages : mappedImages
+			galleryImages: obj.product.hasPreview ? galleryImages : mappedImages,
+			hasPreview: obj.product.hasPreview,
+			imageIds: obj.product.imageIds
 		},
 	}
 }

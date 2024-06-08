@@ -16,7 +16,8 @@ export const mapDtoToSale = (obj: components['schemas']['Order']): Sale => {
 			totalPaid: obj.price,
 		},
 		user: {
-			name: obj.buyer.username ?? '',
+			// name: obj.buyer.username ?? '',
+			name: 'testName',
 		},
 		// sellerId: obj.sellerId,
 		// productId: obj.productId,
@@ -36,7 +37,9 @@ export const mapDtoToSale = (obj: components['schemas']['Order']): Sale => {
 			description: obj.product.description ?? null,
 			shortDescription: obj.product.shortDescription,
 			previewImage: obj.product.hasPreview ? previewImage : null,
-			galleryImages: obj.product.hasPreview ? galleryImages : mappedImages
+			galleryImages: obj.product.hasPreview ? galleryImages : mappedImages,
+			hasPreview: obj.product.hasPreview,
+			imageIds: obj.product.imageIds
 		},
 	}
 }
