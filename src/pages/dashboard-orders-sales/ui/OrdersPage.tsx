@@ -1,24 +1,72 @@
+'use client'
+
 import { Heading } from "~/shared/ui/kit/heading";
-import { fetchOrders } from "../api/orders";
 import { OrdersTable } from "./OrdersTable";
 import { NavSelect } from "./NavSelect";
+import { apiClient } from "~/shared/api/client";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { Pagination } from "~/shared/ui/kit/pagination";
+import { useState } from "react";
+import { PageChangeDetails } from "@zag-js/pagination";
+import { ITEMS_PER_PAGE } from "../config";
 
-export async function OrdersPage() {
-	const response = await fetchOrders();
+export function OrdersPage() {
+	const [page, setPage] = useState(1)
+
+	const { data, isLoading } = useQuery({
+		queryKey: ['orders', page],
+		queryFn: async () => {
+			const { data, error } = await apiClient.orders.getAll({
+				page, limit: ITEMS_PER_PAGE
+			})
+
+			if(error)
+				throw error;
+
+			return data
+		},
+		placeholderData: keepPreviousData
+	})
+
+	const total = data?.total ?? 0;
+	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
 
 	return (
 		<div className='flex flex-col gap-[3rem] w-full max-w-content mx-auto px-[1rem]'>
 			<div className='flex gap-[1rem] items-center w-full justify-between max-lg:flex-col max-lg:items-start'>
 				<Heading>
-					My Orders <span className='text-black-40'>
-						{response.total}
-					</span>
+					My Orders <span className='text-black-40'>{data?.total}</span>
 				</Heading>
 
-				<NavSelect />
+				<div className='flex gap-[1.5rem] items-center \
+					max-sm:flex-col max-sm:items-start max-sm:w-full max-sm:gap-[0.25rem]'
+				>
+					{data?.totalPrice && (
+						<p className='text-black-40 me-[1.5rem]'>
+							Total: <span className='text-white'>
+								{data?.totalPrice ?? 0} USDT
+							</span>
+						</p>
+					)}
+					<NavSelect />
+				</div>
 			</div>
 
-			<OrdersTable initialData={response} />
+			<OrdersTable 
+				data={data}
+				loading={isLoading}
+				startIndex={(page - 1) * ITEMS_PER_PAGE}
+			/>
+
+			{total > ITEMS_PER_PAGE && (
+				<Pagination
+					page={page}
+					onPageChange={handlePageChange}
+					className='px-[1rem]'
+					count={data?.total ?? 0}
+					pageSize={ITEMS_PER_PAGE}
+				/>
+			)}
 		</div>
 	);
 }

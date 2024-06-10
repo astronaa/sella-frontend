@@ -1,5 +1,6 @@
 import { Product, Sale } from "~/shared/api/model";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const product: Product = {
 	id: '1',
 	name: 'Product Name',
@@ -14,158 +15,159 @@ const product: Product = {
 }
 
 export interface SalesResponse {
-	data: Sale[],
+	items: Sale[],
 	total: number,
-	totalSalesPaid: number,
-	totalOrders: number
+	totalPrice: number
+	// totalSalesPaid: number,
+	// totalOrders: number
 }
 
-export async function fetchSales(): Promise<SalesResponse> {
-	return {
-		data: [
-			{
-				id: 1,
-				user: {
-					name: 'Jonh Appleseed'	
-				},
-				product,
-				transaction: {
-					status: 'new',
-					fulfillmentStatus: '-',
-					totalPaid: 328,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 2,
-				user: {
-					name: 'Andrew Lawton'	
-				},
-				product,
-				transaction: {
-					status: 'new',
-					fulfillmentStatus: '-',
-					totalPaid: 279,
-					transactionUrl: '',
-					createdAt: new Date('May 2, 4:11 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 3,
-				user: {
-					name: 'Jonh Appleseed'	
-				},
-				product,
-				transaction: {
-					status: 'new',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 328,
-					transactionUrl: '',
-					createdAt: new Date('May 2, 4:10 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 4,
-				user: {
-					name: 'Andrew Lawton'	
-				},
-				product,
-				transaction: {
-					status: 'new',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 279,
-					transactionUrl: '',
-					createdAt: new Date('May 2, 1:42 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 5,
-				user: {
-					name: 'Jonh Appleseed'	
-				},
-				product,
-				transaction: {
-					status: 'new',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 328,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 6,
-				user: {
-					name: 'Andrew Lawton'	
-				},
-				product,
-				transaction: {
-					status: 'paid',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 279,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 7,
-				user: {
-					name: 'Jonh Appleseed'	
-				},
-				product,
-				transaction: {
-					status: 'paid',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 328,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 8,
-				user: {
-					name: 'Andrew Lawton'	
-				},
-				product,
-				transaction: {
-					status: 'paid',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 279,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 9,
-				user: {
-					name: 'Jonh Appleseed'	
-				},
-				product,
-				transaction: {
-					status: 'paid',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 328,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			},
-			{
-				id: 10,
-				user: {
-					name: 'Andrew Lawton'	
-				},
-				product,
-				transaction: {
-					status: 'paid',
-					fulfillmentStatus: 'fulfilled',
-					totalPaid: 279,
-					transactionUrl: '',
-					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
-				}
-			}
-		],
-		total: 20,
-		totalOrders: 20,
-		totalSalesPaid: 4510
-	}
-} 
+// export async function fetchSales(): Promise<SalesResponse> {
+// 	return {
+// 		data: [
+// 			{
+// 				id: 1,
+// 				user: {
+// 					name: 'Jonh Appleseed'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'new',
+// 					fulfillmentStatus: '-',
+// 					totalPaid: 328,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 2,
+// 				user: {
+// 					name: 'Andrew Lawton'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'new',
+// 					fulfillmentStatus: '-',
+// 					totalPaid: 279,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 2, 4:11 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 3,
+// 				user: {
+// 					name: 'Jonh Appleseed'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'new',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 328,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 2, 4:10 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 4,
+// 				user: {
+// 					name: 'Andrew Lawton'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'new',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 279,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 2, 1:42 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 5,
+// 				user: {
+// 					name: 'Jonh Appleseed'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'new',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 328,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 6,
+// 				user: {
+// 					name: 'Andrew Lawton'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'paid',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 279,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 7,
+// 				user: {
+// 					name: 'Jonh Appleseed'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'paid',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 328,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 8,
+// 				user: {
+// 					name: 'Andrew Lawton'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'paid',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 279,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 9,
+// 				user: {
+// 					name: 'Jonh Appleseed'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'paid',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 328,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			},
+// 			{
+// 				id: 10,
+// 				user: {
+// 					name: 'Andrew Lawton'
+// 				},
+// 				product,
+// 				transaction: {
+// 					status: 'paid',
+// 					fulfillmentStatus: 'fulfilled',
+// 					totalPaid: 279,
+// 					transactionUrl: '',
+// 					createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
+// 				}
+// 			}
+// 		],
+// 		total: 20,
+// 		totalOrders: 20,
+// 		totalSalesPaid: 4510
+// 	}
+// }
