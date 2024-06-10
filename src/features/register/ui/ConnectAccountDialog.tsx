@@ -16,7 +16,14 @@ export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwi
 	const windowRef = useRef<Window | null>(null);
 
 	const handleConnect = () => {
-		windowRef.current = window.open(apiClient.auth.getTwitterAuthUrl(), '_blank', 'popup')
+		const width = 350, height = 500;	
+		const left = (window.innerWidth - width) / 2;
+		const top = (window.innerHeight - height) / 2;
+
+		windowRef.current = window.open(
+			apiClient.auth.getTwitterAuthUrl(), '_blank',
+			`popup,width=${width},height=${height},left=${left},top=${top}`
+		);
 	}
 
 	const onActionFulfilledCb = useCallbackRef(onActionFulfilled);
@@ -25,7 +32,7 @@ export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwi
 		const listener = (e: MessageEvent) => {
 			if (e.origin !== window.location.origin) return
 
-			if(e.data.type == 'twitter-auth-result') {
+			if (e.data.type == 'twitter-auth-result') {
 				windowRef.current?.close();
 				invalidateUserGetQuery();
 				onActionFulfilledCb()

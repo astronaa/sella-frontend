@@ -2,8 +2,9 @@
 
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "../icons";
-import { HTMLAttributes, InputHTMLAttributes, useRef, useState } from "react";
+import { HTMLAttributes, InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import { IconButton } from "../kit/button";
+import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 
 export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
@@ -22,13 +23,13 @@ export function ImageUploader({ className, label, onChange, accept, initialImage
 		onChange?.(image);
 	}
 
-	const resetImage = () => {
+	const resetImage = useCallbackRef(() => {
 		setImagePreview(defaultValue);
 		onChange?.(undefined);
 
 		if (inputRef.current)
 			inputRef.current.value = '';
-	}
+	});
 
 	const clearImage = () => {
 		setImagePreview(null);
@@ -45,6 +46,10 @@ export function ImageUploader({ className, label, onChange, accept, initialImage
 
 		changePreview(file)
 	};
+
+	useEffect(() => {
+		resetImage();
+	}, [defaultValue, resetImage])
 
 	return (
 		<div
