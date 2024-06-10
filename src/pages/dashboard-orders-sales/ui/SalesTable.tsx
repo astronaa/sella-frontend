@@ -3,7 +3,6 @@ import { SalesResponse } from "../api/sales";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
-import { Pagination } from "~/shared/ui/kit/pagination";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 
 import {
@@ -12,6 +11,7 @@ import {
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
+import { Skeletons } from "~/app/dashboard/ui/Skeletons";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,11 +24,11 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function SalesTable({ data }: { data?: SalesResponse }) {
-	if (!data?.items.length) {
+export function SalesTable({ data, loading }: { data?: SalesResponse, loading?: boolean }) {
+	if (!loading && !data?.items.length) {
 		return (
 			<NotFoundScreen>
-				<Icons.PackageThin />
+				<Icons.PackageThin/>
 
 				{`You don't have any sales yet`}
 			</NotFoundScreen>
@@ -47,49 +47,47 @@ export function SalesTable({ data }: { data?: SalesResponse }) {
 						<span>Status</span>
 						<span>Fulfillment Status</span>
 						<span>Total Paid</span>
-						<span />
+						<span/>
 					</FlexTable.Head>
 
 					<FlexTable.Body className='text-[0.875rem]'>
-						{data?.items.map((sale, index) => (
-							<FlexTable.Row key={sale.id}>
-								<span>{index + 1}</span>
-								<span>
-									{dayJs(sale.transaction.createdAt).format('MMM DD, hh:mm A')}
-								</span>
-								<span className='text-white'>
-									<ProductRow product={sale.product} />
-								</span>
-								<span className='text-black-60'>
-									{sale.user.name}
-								</span>
-								<span>
-									<TransactionStatusBadge
-										status={sale.transaction.status}
-									/>
-								</span>
-								<span>
-									<Badge className='capitalize'>
-										{sale.transaction.fulfillmentStatus}
-									</Badge>
-								</span>
-								<span className='text-accent-100'>
-									{sale.product.price} USDT
-								</span>
-								<span className='sticky right-0'>
-									<TransactionActionButton transaction={sale.transaction} />
-								</span>
-							</FlexTable.Row>
-						))}
+						{loading
+							? (
+								<Skeletons />
+							)
+							: data?.items.map((sale, index) => (
+								<FlexTable.Row key={sale.id}>
+									<span>{index + 1}</span>
+									<span>
+										{dayJs(sale.transaction.createdAt).format('MMM DD, hh:mm A')}
+									</span>
+									<span className='text-white'>
+										<ProductRow product={sale.product}/>
+									</span>
+									<span className='text-black-60'>
+										{sale.user.name}
+									</span>
+									<span>
+										<TransactionStatusBadge
+											status={sale.transaction.status}
+										/>
+									</span>
+									<span>
+										<Badge className='capitalize'>
+											{sale.transaction.fulfillmentStatus}
+										</Badge>
+									</span>
+									<span className='text-accent-100'>
+										{sale.product.price} USDT
+									</span>
+									<span className='sticky right-0'>
+										<TransactionActionButton transaction={sale.transaction}/>
+									</span>
+								</FlexTable.Row>
+							))}
 					</FlexTable.Body>
 				</FlexTable.Root>
 			</div>
-
-			<Pagination
-				className='px-[1rem]'
-				count={data.total}
-				pageSize={10}
-			/>
 		</BleedingContainer>
 	);
 }

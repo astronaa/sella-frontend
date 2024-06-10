@@ -5,15 +5,29 @@ import { OrdersTable } from "./OrdersTable";
 import { NavSelect } from "./NavSelect";
 import { apiClient } from "~/shared/api/client";
 import { useQuery } from "@tanstack/react-query";
+import { Pagination } from "~/shared/ui/kit/pagination";
+import { ITEMS_PER_PAGE } from "~/app/dashboard/config";
+import { useState } from "react";
+import { PageChangeDetails } from "@zag-js/pagination";
+
+const INITIAL_PAGE = 1
 
 export function OrdersPage() {
+	const [page, setPage] = useState(INITIAL_PAGE)
+
 	const { data } = useQuery({
-		queryKey: ['sales'],
+		queryKey: ['sales', page],
 		queryFn: async () => {
-			const { data } = await apiClient.orders.getAll()
+			const { data } = await apiClient.orders.getAll({
+				page,
+				limit: ITEMS_PER_PAGE
+			})
 			return data
 		},
 	})
+
+	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
+
 
 	return (
 		<div className='flex flex-col gap-[3rem] w-full max-w-content mx-auto px-[1rem]'>
@@ -41,6 +55,13 @@ export function OrdersPage() {
 			</div>
 
 			<OrdersTable data={data} />
+
+			<Pagination
+				onPageChange={handlePageChange}
+				className='px-[1rem]'
+				count={data?.total ?? 0}
+				pageSize={ITEMS_PER_PAGE}
+			/>
 		</div>
 	);
 }

@@ -3,7 +3,6 @@ import { OrdersResponse } from "../api/orders";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
-import { Pagination } from "~/shared/ui/kit/pagination";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 
 import {
@@ -12,6 +11,7 @@ import {
 } from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
+import { Skeletons } from "~/app/dashboard/ui/Skeletons";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,8 +24,8 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function OrdersTable({ data }: { data?: OrdersResponse }) {
-	if (!data?.items.length) {
+export function OrdersTable({ data, loading }: { data?: OrdersResponse, loading?: boolean }) {
+	if (!loading && !data?.items.length) {
 		return (
 			<NotFoundScreen>
 				<Icons.PackageThin />
@@ -51,44 +51,43 @@ export function OrdersTable({ data }: { data?: OrdersResponse }) {
 					</FlexTable.Head>
 
 					<FlexTable.Body className='text-[0.875rem]'>
-						{data.items.map((o, index) => (
-							<FlexTable.Row key={o.id}>
-								<span>{index + 1}</span>
-								<span>
-									{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
-								</span>
-								<span className='text-white'>
-									<ProductRow product={o.product} />
-								</span>
-								<span className='text-black-60'>
-									{o.store.name}
-								</span>
-								<span>
-									<TransactionStatusBadge
-										status={o.transaction.status}
-									/>
-								</span>
-								<span>
-									<Badge className='capitalize'>
-										{o.transaction.fulfillmentStatus}
-									</Badge>
-								</span>
-								<span className='text-accent-100'>
-									{o.transaction.totalPaid} USDT
-								</span>
-								<span className='sticky right-0'>
-									<TransactionActionButton transaction={o.transaction} />
-								</span>
-							</FlexTable.Row>
-						))}
+						{loading
+							? (
+								<Skeletons />
+							)
+							: data?.items.map((o, index) => (
+								<FlexTable.Row key={o.id}>
+									<span>{index + 1}</span>
+									<span>
+										{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
+									</span>
+									<span className='text-white'>
+										<ProductRow product={o.product} />
+									</span>
+									<span className='text-black-60'>
+										{o.store.name}
+									</span>
+									<span>
+										<TransactionStatusBadge
+											status={o.transaction.status}
+										/>
+									</span>
+									<span>
+										<Badge className='capitalize'>
+											{o.transaction.fulfillmentStatus}
+										</Badge>
+									</span>
+									<span className='text-accent-100'>
+										{o.transaction.totalPaid} USDT
+									</span>
+									<span className='sticky right-0'>
+										<TransactionActionButton transaction={o.transaction} />
+									</span>
+								</FlexTable.Row>
+							))}
 					</FlexTable.Body>
 				</FlexTable.Root>
 			</div>
-
-			<Pagination
-				className='px-[1rem]'
-				count={data.total} pageSize={10}
-			/>
 		</BleedingContainer>
 	);
 }

@@ -5,15 +5,28 @@ import { NavSelect } from "./NavSelect";
 import { SalesTable } from "./SalesTable";
 import { apiClient } from "~/shared/api/client";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { PageChangeDetails } from "@zag-js/pagination";
+import { Pagination } from "~/shared/ui/kit/pagination";
+import { ITEMS_PER_PAGE } from "~/app/dashboard/config";
+
+const INITIAL_PAGE = 1
 
 export function SalesPage() {
-	const { data } = useQuery({
-		queryKey: ['sales'],
+	const [page, setPage] = useState(INITIAL_PAGE)
+
+	const { data, isLoading } = useQuery({
+		queryKey: ['sales', page],
 		queryFn: async () => {
-			const { data } = await apiClient.sales.getAll()
+			const { data } = await apiClient.sales.getAll({
+				page,
+				limit: ITEMS_PER_PAGE
+			})
 			return data
 		},
 	})
+
+	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
 
 	return (
 		<div className='flex flex-col gap-[3rem] w-full max-w-content mx-auto px-[1rem]'>
@@ -40,7 +53,14 @@ export function SalesPage() {
 				</div>
 			</div>
 
-			<SalesTable data={data} />
+			<SalesTable data={data} loading={isLoading} />
+
+			<Pagination
+				onPageChange={handlePageChange}
+				className='px-[1rem]'
+				count={data?.total ?? 0}
+				pageSize={ITEMS_PER_PAGE}
+			/>
 		</div>
 	);
 }
