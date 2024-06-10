@@ -1,17 +1,17 @@
+import {
+	TransactionStatusBadge,
+	TransactionActionButton
+} from "./TransactionElements";
+
 import { FlexTable } from "~/shared/ui/kit";
 import { SalesResponse } from "../api/sales";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
-
-import {
-	TransactionStatusBadge,
-	TransactionActionButton
-} from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
-import { Skeletons } from "~/app/dashboard/ui/Skeletons";
+import { TableSkeletons } from "./TableSkeletons";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,11 +24,17 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function SalesTable({ data, loading }: { data?: SalesResponse, loading?: boolean }) {
-	if (!loading && !data?.items.length) {
+interface SalesTableProps {
+	data?: SalesResponse, 
+	loading?: boolean,
+	startIndex: number
+}
+
+export function SalesTable({ data, loading, startIndex }: SalesTableProps) {
+	if (data && !data.items.length) {
 		return (
 			<NotFoundScreen>
-				<Icons.PackageThin/>
+				<Icons.PackageThin />
 
 				{`You don't have any sales yet`}
 			</NotFoundScreen>
@@ -47,22 +53,20 @@ export function SalesTable({ data, loading }: { data?: SalesResponse, loading?: 
 						<span>Status</span>
 						<span>Fulfillment Status</span>
 						<span>Total Paid</span>
-						<span/>
+						<span />
 					</FlexTable.Head>
 
 					<FlexTable.Body className='text-[0.875rem]'>
 						{loading
-							? (
-								<Skeletons />
-							)
+							? <TableSkeletons />
 							: data?.items.map((sale, index) => (
 								<FlexTable.Row key={sale.id}>
-									<span>{index + 1}</span>
+									<span>{startIndex + index + 1}</span>
 									<span>
 										{dayJs(sale.transaction.createdAt).format('MMM DD, hh:mm A')}
 									</span>
 									<span className='text-white'>
-										<ProductRow product={sale.product}/>
+										<ProductRow product={sale.product} />
 									</span>
 									<span className='text-black-60'>
 										{sale.user.name}
@@ -81,10 +85,11 @@ export function SalesTable({ data, loading }: { data?: SalesResponse, loading?: 
 										{sale.product.price} USDT
 									</span>
 									<span className='sticky right-0'>
-										<TransactionActionButton transaction={sale.transaction}/>
+										<TransactionActionButton transaction={sale.transaction} />
 									</span>
 								</FlexTable.Row>
-							))}
+							))
+						}
 					</FlexTable.Body>
 				</FlexTable.Root>
 			</div>

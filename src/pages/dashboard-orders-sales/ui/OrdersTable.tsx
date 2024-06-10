@@ -1,17 +1,17 @@
+import {
+	TransactionStatusBadge,
+	TransactionActionButton
+} from "./TransactionElements";
+
 import { FlexTable } from "~/shared/ui/kit";
 import { OrdersResponse } from "../api/orders";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
-
-import {
-	TransactionStatusBadge,
-	TransactionActionButton
-} from "./TransactionElements";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
-import { Skeletons } from "~/app/dashboard/ui/Skeletons";
+import { TableSkeletons } from "./TableSkeletons";
 
 const config = [
 	{ width: '3.75rem' },
@@ -24,8 +24,14 @@ const config = [
 	{ width: '4.375rem' },
 ]
 
-export function OrdersTable({ data, loading }: { data?: OrdersResponse, loading?: boolean }) {
-	if (!loading && !data?.items.length) {
+interface OrdersTableProps {
+	data?: OrdersResponse, 
+	loading?: boolean,
+	startIndex: number
+}
+
+export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
+	if (data && !data.items.length) {
 		return (
 			<NotFoundScreen>
 				<Icons.PackageThin />
@@ -52,12 +58,10 @@ export function OrdersTable({ data, loading }: { data?: OrdersResponse, loading?
 
 					<FlexTable.Body className='text-[0.875rem]'>
 						{loading
-							? (
-								<Skeletons />
-							)
+							? <TableSkeletons />
 							: data?.items.map((o, index) => (
 								<FlexTable.Row key={o.id}>
-									<span>{index + 1}</span>
+									<span>{startIndex + index + 1}</span>
 									<span>
 										{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
 									</span>
