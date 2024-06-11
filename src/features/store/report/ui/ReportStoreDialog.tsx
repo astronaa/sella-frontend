@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
 import { zodValidate } from '~/shared/lib/zod-final-form';
@@ -10,8 +10,9 @@ import { VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
 import { FormApi } from "final-form";
 import { ToggleGroupField } from './ToggleGroupField';
-import {apiClient} from "~/shared/api/client";
-import {components} from "~/shared/api/openapi";
+import { apiClient } from "~/shared/api/client";
+import { ANOTHER_REASON_ID, reportReasons, schemaReport } from "~/shared/api/client/stores/schemas";
+import { useDialogState } from "~/shared/lib/dialog";
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
@@ -19,18 +20,15 @@ type ReportStoreDialogProps = Dialog.RootProps & {
 	storeUrl: string
 };
 
-const ANOTHER_REASON = 'SomethingElse'
 
-type Reasons = components["schemas"]["ReportStoreDto"]["tag"]
-
-const options: { id: Reasons[number], label: string }[] = [
+const options: { id: typeof reportReasons[number], label: string }[] = [
 	{ id: 'Spam', label: 'Spam' },
 	{ id: 'Nudity', label: 'Nudity' },
 	{ id: 'Scam', label: 'Scam' },
 	{ id: 'Illegal', label: 'Illegal' },
 	{ id: 'Violence', label: 'Violence' },
 	{ id: 'HateSpeech', label: 'Hate Speech' },
-	{ id: ANOTHER_REASON, label: 'Something Else' },
+	{ id: ANOTHER_REASON_ID, label: 'Something Else' },
 ]
 
 const initialValues = {
@@ -38,41 +36,26 @@ const initialValues = {
 	description: ''
 }
 
-const schema = z.object({
-	description: z.string().optional(),
-	reason: z.array(z.custom<Reasons[number]>()).nonempty({ message: 'Reason required' })
-}).superRefine(({ description, reason }, refinementContext) => {
-	if (reason.includes(ANOTHER_REASON) && !description) {
-		return refinementContext.addIssue({
-			code: z.ZodIssueCode.custom,
-			message: 'Description required',
-			path: ['description'],
-		});
-	}
-});
+const schema = schemaReport
 
 type SchemeType = z.infer<typeof schema>
 
 export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
-	const open = !!props?.open;
-
-	const [isDescriptionShow, setIsDescriptionShow] = useState(false)
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onSubmit = async (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
-		await apiClient.stores.for(storeUrl).report({
-			reasons: values.reason,
-			description: values.description
-		})
+		await apiClient.stores.for(storeUrl).report(values)
 		form.reset()
 		onActionFulfilled?.()
-		props.onOpenChange?.({ open: false })
+		close()
 	}
 
 	return (
 		<>
 			<Dialog.Root
 				{...props}
-				open={open}
+				open={isOpen}
+				onOpenChange={handleOpenChange}
 			>
 				<Dialog.Backdrop />
 
@@ -97,14 +80,11 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 
 									<div className='flex flex-col gap-[2rem] w-full'>
 										<ToggleGroupField
-											name='reason'
+											name='reasons'
 											options={options}
-											onValueChange={({ value }) => {
-												setIsDescriptionShow(value.includes(ANOTHER_REASON))
-											}}
 										/>
 
-										<Collapsible.Root open={isDescriptionShow}>
+										<Collapsible.Root open={form.getFieldState('reasons')?.value?.includes(ANOTHER_REASON_ID)}>
 											<Collapsible.Content>
 												<VTextControl.Root name='description'>
 													<VTextControl.Label>Reason</VTextControl.Label>
