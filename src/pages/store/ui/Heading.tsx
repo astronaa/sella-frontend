@@ -7,6 +7,7 @@ import { ManageDialog } from "./ManageDialog";
 import { Product, Store } from "~/shared/api/model";
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
 import { productQueries } from "~/entities/product";
+import { useUserGetQuery } from "~/entities/user";
 
 interface HeadingProps { 
 	storeUrl: string; 
@@ -27,6 +28,8 @@ export function Heading({ storeUrl, storeInitialData, productsInitialData }: Hea
 		initialData: productsInitialData
 	})
 
+	const { data: user } = useUserGetQuery();
+
 	return (
 		<div className='flex mb-[4.5rem] items-end w-full gap-[1rem] justify-between \
 			max-lg:mb-[3rem] max-lg:flex-col max-lg:items-start'
@@ -44,12 +47,15 @@ export function Heading({ storeUrl, storeInitialData, productsInitialData }: Hea
 				</StoreCard.Content>
 			</StoreCard.Root>
 
-			<div className='flex gap-[1rem] md:self-end'>
-				<ManageDialog store={store} />
+			{!!user && (
+				<div className='flex gap-[1rem] md:self-end'>
+					<ManageDialog store={store} />
+					
+					{products.total > 0 && <ToggleEditModeButton />}
 
-				{products.total > 0 && <ToggleEditModeButton />}
-				<StoreReportFlow />
-			</div>
+					<StoreReportFlow />
+				</div>
+			)}
 		</div>
 	);
 }

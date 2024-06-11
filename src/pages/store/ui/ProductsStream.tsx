@@ -15,6 +15,7 @@ import { PageChangeDetails } from "@zag-js/pagination";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
+import { useUserGetQuery } from "~/entities/user";
 
 interface ProductsStreamProps {
 	initialData?: { items: Product[], total: number }
@@ -33,6 +34,8 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 		page, limit: PRODUCT_ITEMS_PER_PAGE,
 	})
 
+	const { data: user } = useUserGetQuery();
+
 	const products = data?.items ?? []
 	const total = data?.total ?? 0;
 
@@ -46,14 +49,16 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 
 					{`This store don't have any products yet`}
 
-					<ProductCreateDialog
-						storeUrl={storeUrl}
-						triggerElement={
-							<Button className='mt-[1rem]' size='lg'>
-								Add First Product
-							</Button>
-						}
-					/>
+					{!!user && (
+						<ProductCreateDialog
+							storeUrl={storeUrl}
+							triggerElement={
+								<Button className='mt-[1rem]' size='lg'>
+									Add First Product
+								</Button>
+							}
+						/>
+					)}
 				</NotFoundScreen>
 			)}
 
