@@ -10,21 +10,26 @@ import { VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
 import { FormApi } from "final-form";
 import { ToggleGroupField } from './ToggleGroupField';
+import {apiClient} from "~/shared/api/client";
+import {components} from "~/shared/api/openapi";
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
 	cancelButton?: ReactNode
+	storeUrl: string
 };
 
-const ANOTHER_REASON = '7'
+const ANOTHER_REASON = 'SomethingElse'
 
-const options = [
-	{ id: '1', label: 'Spam' },
-	{ id: '2', label: 'Nudity' },
-	{ id: '3', label: 'Scam' },
-	{ id: '4', label: 'Illegal' },
-	{ id: '5', label: 'Violence' },
-	{ id: '6', label: 'Hate Speech' },
+type Reasons = components["schemas"]["ReportStoreDto"]["tag"]
+
+const options: { id: Reasons[number], label: string }[] = [
+	{ id: 'Spam', label: 'Spam' },
+	{ id: 'Nudity', label: 'Nudity' },
+	{ id: 'Scam', label: 'Scam' },
+	{ id: 'Illegal', label: 'Illegal' },
+	{ id: 'Violence', label: 'Violence' },
+	{ id: 'HateSpeech', label: 'Hate Speech' },
 	{ id: ANOTHER_REASON, label: 'Something Else' },
 ]
 
@@ -35,7 +40,7 @@ const initialValues = {
 
 const schema = z.object({
 	description: z.string().optional(),
-	reason: z.array(z.string()).nonempty({ message: 'Reason required' })
+	reason: z.array(z.custom<Reasons[number]>()).nonempty({ message: 'Reason required' })
 }).superRefine(({ description, reason }, refinementContext) => {
 	if (reason.includes(ANOTHER_REASON) && !description) {
 		return refinementContext.addIssue({
@@ -48,13 +53,16 @@ const schema = z.object({
 
 type SchemeType = z.infer<typeof schema>
 
-export function ReportStoreDialog({ onActionFulfilled, cancelButton, ...props }: ReportStoreDialogProps) {
+export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
 	const open = !!props?.open;
 
 	const [isDescriptionShow, setIsDescriptionShow] = useState(false)
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onSubmit = (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
+	const onSubmit = async (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
+		await apiClient.stores.for(storeUrl).report({
+			reasons: values.reason,
+			description: values.description
+		})
 		form.reset()
 		onActionFulfilled?.()
 		props.onOpenChange?.({ open: false })

@@ -6,7 +6,7 @@ import { Icons } from "~/shared/ui/icons";
 import { ReportStoreDialog } from "./ReportStoreDialog";
 import { ReportSuccessDialog } from "./ReportSuccessDialog";
 
-export function ReportFlow() {
+export function ReportFlow({ storeUrl }: { storeUrl: string }) {
 	const { isOpen, open, handleOpenChange } = useDialogState();
 	const { isOpen: isOpenSucess, toggle: toggleSucess } = useDialogState();
 
@@ -25,6 +25,7 @@ export function ReportFlow() {
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 				onActionFulfilled={toggleSucess}
+				storeUrl={storeUrl}
 			/>
 
 			<ReportSuccessDialog

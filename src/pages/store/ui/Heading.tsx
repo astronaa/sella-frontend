@@ -48,7 +48,7 @@ export function Heading({ storeUrl, storeInitialData, productsInitialData }: Hea
 				<ManageDialog store={store} />
 
 				{products.total > 0 && <ToggleEditModeButton />}
-				<StoreReportFlow />
+				<StoreReportFlow storeUrl={storeUrl} />
 			</div>
 		</div>
 	);
