@@ -71,13 +71,21 @@ export function Body({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	);
 }
 
+export function RowFullSpan({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	return (
+		<div
+			{...props}
+			className={cn('flex w-full items-center rounded-[1rem] py-[0.5rem] text-black-40 odd:bg-white/[.04] h-[3.375rem]', className)}
+		/>
+	);
+}
+
 export function Row({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const { config } = useTableContext();
 
 	return (
-		<div
-			{...props}
-			className={cn('flex w-full items-center rounded-[1rem] py-[0.5rem] text-black-40 odd:bg-white/[.04]', className)}
+		<RowFullSpan
+			{...props} className={className}
 		>
 			{Children.map(children, (child, index) => (
 				isValidElement<HTMLElement>(child) && (
@@ -94,6 +102,6 @@ export function Row({ className, children, ...props }: HTMLAttributes<HTMLDivEle
 					})
 				)
 			))}
-		</div>
+		</RowFullSpan>
 	);
 }

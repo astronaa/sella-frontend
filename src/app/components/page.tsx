@@ -183,7 +183,8 @@ const store: Store = {
 		likes: 10,
 		dislikes: 2,
 		reviewsCount: 575
-	}
+	},
+	ownerUsername: 'store owner'
 }
 
 function StoreCardTest() {

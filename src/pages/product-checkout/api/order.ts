@@ -11,7 +11,8 @@ const store: Store = {
 		likes: 45,
 		dislikes: 16,
 		reviewsCount: 673,
-	}
+	},
+	ownerUsername: 'store owner'
 }
 
 const product: Product = {
@@ -34,11 +35,11 @@ export async function fetchOrder(orderId: OrderId): Promise<Order> {
 		store,
 		product,
 		transaction: {
-			status: 'new',
-			fulfillmentStatus: '-',
+			status: 'New',
+			fulfillmentStatus: 'Failed',
 			totalPaid: 328,
 			transactionUrl: '',
 			createdAt: new Date('May 3, 4:27 PM 2024').toISOString(),
 		}
 	}
-} 
+}

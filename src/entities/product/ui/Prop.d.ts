@@ -1,6 +1,5 @@
 import {
 	Product,
-	ProductCarousel,
 	ProductRate,
 	ProductReview,
 } from "~/shared/api/model";
@@ -8,8 +7,6 @@ import {
 export interface ProductProp {
   product: Product
 }
-
-export type ProductCarouseProps = ProductCarousel;
 
 export interface ProductRateProps {
   rates: ProductRate;

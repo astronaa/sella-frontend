@@ -2,7 +2,9 @@ import { Product } from "../../model";
 import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 
-export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): Product => {
+type Schemes = components['schemas'];
+
+export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['Product']): Product => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 
 	const imagesConfig = obj.hasPreview ? {
@@ -22,6 +24,7 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 		category: 'category',
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
+		// @ts-expect-error expecting openapi updates
 		storeUrl: obj.storeUrl,
 		...imagesConfig
 	};

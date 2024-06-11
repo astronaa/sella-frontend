@@ -11,6 +11,7 @@ export interface Store {
 	isVerified: boolean,
 	description: string | null,
 	previewImage: ImageEntry | null,
+	ownerUsername: string,
 
 	rating: {
 		likes: number,
@@ -35,6 +36,12 @@ export interface Product {
 	price: number
 }
 
+export interface ProductRate {
+	total: number,
+	likes: number,
+	dislikes: number,
+}
+
 export interface ProductCarousel {
 	images: StaticImageData[],
 	description: string,
@@ -46,18 +53,18 @@ export interface ProductRate {
 	dislikes: number,
 }
 
-export type TransactionStatus = 'new' | 'paid'
-export type TransactionFulfillmentStatus = 'new' | 'paid'
+export type TransactionStatus = "New" | "Paid" | "Delivered" | "Canceled"
+export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Failed"
 
 export interface Transaction {
-	status: 'new' | 'paid',
-	fulfillmentStatus: 'fulfilled' | '-',
+	status: TransactionStatus,
+	fulfillmentStatus: TransactionFulfillmentStatus,
 	totalPaid: number,
 	transactionUrl: string,
 	createdAt: string
 }
 
-export type OrderId = number;
+export type OrderId = string;
 
 export interface Order {
 	id: OrderId
@@ -66,7 +73,7 @@ export interface Order {
 	transaction: Transaction
 }
 
-export type SaleId = number;
+export type SaleId = string;
 
 export interface Sale {
 	id: SaleId
