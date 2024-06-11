@@ -1,12 +1,12 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { z } from 'zod';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
-import { VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
+import { VSubmitButton, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
 import { FormApi } from "final-form";
 import { ToggleGroupField } from './ToggleGroupField';
@@ -22,13 +22,13 @@ type ReportStoreDialogProps = Dialog.RootProps & {
 
 
 const options: { id: typeof reportReasons[number], label: string }[] = [
-	{ id: 'Spam', label: 'Spam' },
-	{ id: 'Nudity', label: 'Nudity' },
-	{ id: 'Scam', label: 'Scam' },
-	{ id: 'Illegal', label: 'Illegal' },
-	{ id: 'Violence', label: 'Violence' },
-	{ id: 'HateSpeech', label: 'Hate Speech' },
-	{ id: ANOTHER_REASON_ID, label: 'Something Else' },
+	{id: 'Spam', label: 'Spam'},
+	{id: 'Nudity', label: 'Nudity'},
+	{id: 'Scam', label: 'Scam'},
+	{id: 'Illegal', label: 'Illegal'},
+	{id: 'Violence', label: 'Violence'},
+	{id: 'HateSpeech', label: 'Hate Speech'},
+	{id: ANOTHER_REASON_ID, label: 'Something Else'},
 ]
 
 const initialValues = {
@@ -40,8 +40,8 @@ const schema = schemaReport
 
 type SchemeType = z.infer<typeof schema>
 
-export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
-	const { isOpen, handleOpenChange, close } = useDialogState(props)
+export function ReportStoreDialog({onActionFulfilled, cancelButton, storeUrl, ...props}: ReportStoreDialogProps) {
+	const {isOpen, handleOpenChange, close} = useDialogState(props)
 
 	const onSubmit = async (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
 		await apiClient.stores.for(storeUrl).report(values)
@@ -57,23 +57,24 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 				open={isOpen}
 				onOpenChange={handleOpenChange}
 			>
-				<Dialog.Backdrop />
+				<Dialog.Backdrop/>
 
 				<Dialog.Positioner>
 					<Dialog.Content className='w-[34.375rem]'>
-						<Dialog.CloseButton />
+						<Dialog.CloseButton/>
 						<Form
 							onSubmit={onSubmit}
 							initialValues={initialValues}
 							validate={zodValidate(schema)}
 						>
-							{({ form }) => (
+							{() => (
 								<>
 									<Dialog.ContentHeading>
 										<Dialog.Title>Report Shop</Dialog.Title>
 										<Dialog.Description>
 											Your report is anonymous, except if you&apos;re reporting an
-											intellectual property infringement. Your report is anonymous, except if you&apos;re [need text
+											intellectual property infringement. Your report is anonymous, except if
+											you&apos;re [need text
 											here].
 										</Dialog.Description>
 									</Dialog.ContentHeading>
@@ -84,19 +85,25 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 											options={options}
 										/>
 
-										<Collapsible.Root open={form.getFieldState('reasons')?.value?.includes(ANOTHER_REASON_ID)}>
-											<Collapsible.Content>
-												<VTextControl.Root name='description'>
-													<VTextControl.Label>Reason</VTextControl.Label>
-													<VTextAreaControl.Input
-														className='resize-none h-auto'
-														rows={4}
-														placeholder='Help us understand the problem'
-													/>
-													<VTextControl.ErrorText className='text-center' />
-												</VTextControl.Root>
-											</Collapsible.Content>
-										</Collapsible.Root>
+										<Field name='reasons'>{
+											({ input: { value } }) => (
+												<Collapsible.Root
+													open={value?.includes(ANOTHER_REASON_ID)}>
+													<Collapsible.Content>
+														<VTextControl.Root name='description'>
+															<VTextControl.Label>Reason</VTextControl.Label>
+															<VTextAreaControl.Input
+																className='resize-none h-auto'
+																rows={4}
+																placeholder='Help us understand the problem'
+															/>
+															<VTextControl.ErrorText className='text-center'/>
+														</VTextControl.Root>
+													</Collapsible.Content>
+												</Collapsible.Root>
+											)
+										}
+										</Field>
 									</div>
 
 									<Dialog.ContentFooter>
@@ -107,9 +114,9 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 												</Button>
 											</Dialog.CloseTrigger>
 										)}
-										<Button onClick={form.submit} className='w-full' size='lg'>
+										<VSubmitButton className='w-full' size='lg'>
 											Submit Report
-										</Button>
+										</VSubmitButton>
 									</Dialog.ContentFooter>
 								</>
 							)}
