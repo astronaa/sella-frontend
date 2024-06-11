@@ -130,9 +130,9 @@ export function Rating({ className, ...props }: HTMLArkProps<"div">) {
 	);
 }
 
-export function Composed(props: ComponentProps<typeof Root>) {
+export function Composition() {
 	return (
-		<Root {...props}>
+		<>
 			<ImageDesktop />
 			<Content>
 				<Title>
@@ -141,6 +141,14 @@ export function Composed(props: ComponentProps<typeof Root>) {
 				<Description />
 				<Rating />
 			</Content>
+		</>
+	);
+}
+
+export function Composed(props: ComponentProps<typeof Root>) {
+	return (
+		<Root {...props}>
+			<Composition />
 		</Root>
 	);
 }

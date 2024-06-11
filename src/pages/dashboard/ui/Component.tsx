@@ -57,9 +57,13 @@ export function Component() {
 					))
 				) : (
 					stores?.map(s => (
-						<StoreLink key={s.id} store={s} >
-							<StoreCard.Composed store={s} />
-						</StoreLink>
+						<StoreCard.Root 
+							asChild key={s.id} store={s} 
+						>
+							<StoreLink>
+								<StoreCard.Composition />
+							</StoreLink>	
+						</StoreCard.Root>
 					))
 				)}
 			</div>

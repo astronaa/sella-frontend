@@ -6,7 +6,7 @@ import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ProductManageDialog } from "~/features/product/manage";
-import { ProductCard, ProductPrice, productQueries } from "~/entities/product";
+import { ProductCard, ProductLink, ProductPrice, productQueries } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
@@ -89,6 +89,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 
 			{total > PRODUCT_ITEMS_PER_PAGE && (
 				<Pagination
+					page={page}
 					onPageChange={handlePageChange}
 					className='w-min'
 					count={total}
@@ -114,14 +115,19 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 			loading && 'opacity-50'
 		)}>
 			{products.map(p => (
-				<ProductCard.Root key={p.id} product={p} className='w-full mx-auto h-full'>
-					<ProductCard.Image className='max-md:h-[15.875rem]' />
+				<ProductCard.Root 
+					product={p} key={p.id} 
+					className='w-full mx-auto h-full' asChild
+				>
+					<ProductLink product={p}>
+						<ProductCard.Image className='max-md:h-[15.875rem]' />
 
-					<ProductCard.Content>
-						<ProductCard.Title />
-						<ProductCard.Description />
-						<ProductCard.Price />
-					</ProductCard.Content>
+						<ProductCard.Content>
+							<ProductCard.Title />
+							<ProductCard.Description />
+							<ProductCard.Price />
+						</ProductCard.Content>
+					</ProductLink>
 				</ProductCard.Root>
 			))}
 		</div>

@@ -22,6 +22,7 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 		category: 'category',
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
+		storeUrl: obj.storeUrl,
 		...imagesConfig
 	};
 };

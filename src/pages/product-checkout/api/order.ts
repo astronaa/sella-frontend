@@ -24,6 +24,7 @@ const product: Product = {
 	category: 'Category',
 	price: 2.99,
 	imageIds: [],
+	storeUrl: '@teststore',
 	hasPreview: false
 }
 

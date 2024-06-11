@@ -21,7 +21,7 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { RadioGroup, ToggleGroup, Select, Tabs } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import { StoreReportFlow } from "~/features/store/report"
+import { StoreReportFlow } from "~/features/store/report";
 
 export default function Home() {
 	return (
@@ -212,6 +212,7 @@ const product: Product = {
 	category: 'Category',
 	price: 2.99,
 	imageIds: [],
+	storeUrl: '@teststore',
 	hasPreview: false
 }
 

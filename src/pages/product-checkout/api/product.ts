@@ -11,6 +11,7 @@ export async function fetchProduct(productId: ProductId): Promise<Product> {
 		category: 'Category',
 		price: 2.99,
 		imageIds: [],
+		storeUrl: '@teststore',
 		hasPreview: false
 	}
 }

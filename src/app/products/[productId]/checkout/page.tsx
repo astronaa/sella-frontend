@@ -1,7 +1,7 @@
 import { PageProductCreateOrder } from "~/pages/product-checkout";
+import { RouteProps } from "../route-props";
 
-interface PageProps {
-	params: { productId: string },
+interface PageProps extends RouteProps {
 	searchParams: { tab?: string }
 }
 

@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
 export type StoreId = string;
@@ -26,11 +28,22 @@ export interface Product {
 	shortDescription: string,
 	category: string,
 	imageIds: ImageEntry[],
+	storeUrl: string,
 	hasPreview: boolean,
 	previewImage: ImageEntry | null,
 	galleryImages: ImageEntry[],
-
 	price: number
+}
+
+export interface ProductCarousel {
+	images: StaticImageData[],
+	description: string,
+}
+
+export interface ProductRate {
+	total: number,
+	likes: number,
+	dislikes: number,
 }
 
 export type TransactionStatus = 'new' | 'paid'
@@ -71,4 +84,12 @@ export interface User {
 	twitterId: string | null,
 	telegramId: string | null,
 	createdAt: string
+}
+
+export interface ProductReview {
+	user: string,
+	avatar?: string,
+	quote: string,
+	rate: string,
+	date: string
 }
