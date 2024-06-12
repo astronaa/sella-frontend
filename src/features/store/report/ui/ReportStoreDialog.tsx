@@ -8,7 +8,6 @@ import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 import { VSubmitButton, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
-import { FormApi } from "final-form";
 import { ToggleGroupField } from './ToggleGroupField';
 import { apiClient } from "~/shared/api/client";
 import { ANOTHER_REASON_ID, reportReasons, schemaReport } from "~/shared/api/client/stores/schemas";
@@ -20,52 +19,45 @@ type ReportStoreDialogProps = Dialog.RootProps & {
 	storeUrl: string
 };
 
-
 const options: { id: typeof reportReasons[number], label: string }[] = [
-	{id: 'Spam', label: 'Spam'},
-	{id: 'Nudity', label: 'Nudity'},
-	{id: 'Scam', label: 'Scam'},
-	{id: 'Illegal', label: 'Illegal'},
-	{id: 'Violence', label: 'Violence'},
-	{id: 'HateSpeech', label: 'Hate Speech'},
-	{id: ANOTHER_REASON_ID, label: 'Something Else'},
+	{ id: 'Spam', label: 'Spam' },
+	{ id: 'Nudity', label: 'Nudity' },
+	{ id: 'Scam', label: 'Scam' },
+	{ id: 'Illegal', label: 'Illegal' },
+	{ id: 'Violence', label: 'Violence' },
+	{ id: 'HateSpeech', label: 'Hate Speech' },
+	{ id: ANOTHER_REASON_ID, label: 'Something Else' },
 ]
 
-const initialValues = {
-	reason: [],
-	description: ''
-}
-
 const schema = schemaReport
-
 type SchemeType = z.infer<typeof schema>
+const validate = zodValidate(schema);
 
-export function ReportStoreDialog({onActionFulfilled, cancelButton, storeUrl, ...props}: ReportStoreDialogProps) {
-	const {isOpen, handleOpenChange, close} = useDialogState(props)
+export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
-	const onSubmit = async (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
-		await apiClient.stores.for(storeUrl).report(values)
-		form.reset()
-		onActionFulfilled?.()
-		close()
+	const onSubmit = async (values: SchemeType) => {
+		await apiClient.stores.for(storeUrl).report(values);
+		onActionFulfilled?.();
+		close();
 	}
 
 	return (
 		<>
 			<Dialog.Root
 				{...props}
-				open={isOpen}
-				onOpenChange={handleOpenChange}
+				open={isOpen} onOpenChange={handleOpenChange}
+				unmountOnExit lazyMount
 			>
-				<Dialog.Backdrop/>
+				<Dialog.Backdrop />
 
 				<Dialog.Positioner>
 					<Dialog.Content className='w-[34.375rem]'>
-						<Dialog.CloseButton/>
+						<Dialog.CloseButton />
 						<Form
 							onSubmit={onSubmit}
-							initialValues={initialValues}
-							validate={zodValidate(schema)}
+							validate={validate}
+							subscription={{}}
 						>
 							{() => (
 								<>
@@ -97,7 +89,7 @@ export function ReportStoreDialog({onActionFulfilled, cancelButton, storeUrl, ..
 																rows={4}
 																placeholder='Help us understand the problem'
 															/>
-															<VTextControl.ErrorText className='text-center'/>
+															<VTextControl.ErrorText className='text-center' />
 														</VTextControl.Root>
 													</Collapsible.Content>
 												</Collapsible.Root>
