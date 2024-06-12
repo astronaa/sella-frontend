@@ -44,7 +44,7 @@ export function ChatMessageBubble({ message, className, ...props }: ChatMessageB
 				<p>{message.body}</p>
 			</div>
 
-			<span className='absolute right-[10px] bottom-[10px] text-black-40 text-[0.875rem] italic'>
+			<span className='absolute right-[0.625rem] bottom-[0.625rem] text-black-40 text-[0.875rem] italic'>
 				{dayJs(message.createdAt).format('HH:mm')}
 			</span>
 		</div>

@@ -23,12 +23,14 @@ export async function ExploreMarketPlace() {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 						{data?.items.map(store => (
-							<StoreLink key={store.id} store={store}>
-								<StoreCard.Composed
-									store={store}
-									className='w-full mx-auto'
-								/>
-							</StoreLink>
+							<StoreCard.Root
+								key={store.id} store={store} asChild
+								className='w-full mx-auto'
+							>
+								<StoreLink>
+									<StoreCard.Composition />
+								</StoreLink>
+							</StoreCard.Root>
 						))}
 					</div>
 				</div>

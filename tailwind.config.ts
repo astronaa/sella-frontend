@@ -27,9 +27,7 @@ const config = {
 				'black-06': '#0F0F0F',
 
 				'red-100': '#F44336',
-
 				'green-100': '#60B04D',
-
 				'error-100': '#E25728'
 			},
 			fontFamily: {

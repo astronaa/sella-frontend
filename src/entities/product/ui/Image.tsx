@@ -12,7 +12,7 @@ export function Image({ className, product: p, ...props }: Omit<PreviewImageProp
 		<PreviewImage
 			alt={`Image of ${title}`}
 			width={300} height={300}
-			src={imageUrl} {...props}
+			src={imageUrl ?? null} {...props}
 			className={cn('flex-shrink-0 w-full shadow-sm', className)}
 		/>
 	);

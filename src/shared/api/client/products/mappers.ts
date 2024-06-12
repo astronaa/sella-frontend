@@ -2,7 +2,9 @@ import { Product } from "../../model";
 import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 
-export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): Product => {
+type Schemes = components['schemas'];
+
+export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['BaseProductDto']) => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 
 	const imagesConfig = obj.hasPreview ? {
@@ -16,12 +18,17 @@ export const mapDtoToProduct = (obj: components['schemas']['ProductInfoDto']): P
 	return {
 		id: obj.id,
 		name: obj.name,
-		price: Number(obj.price),
-		description: obj.description ?? null,
-		shortDescription: obj.shortDescription,
-		category: 'category',
+		price: 'price' in obj ? Number(obj.price) : undefined,
+		description: 'description' in obj ? obj.description : null,
+		shortDescription: 'shortDescription' in obj ? obj.shortDescription : undefined,
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
-		...imagesConfig
-	};
+		storeUrl: 'storeUrl' in obj ? obj.storeUrl : undefined,
+		...imagesConfig,
+		rating: 'rating' in obj ? {
+			likes: obj.rating.positive,
+			dislikes: obj.rating.negative,
+			reviewsCount: obj.rating.total
+		} : undefined
+	} satisfies Product;
 };

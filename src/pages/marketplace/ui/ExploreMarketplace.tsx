@@ -10,12 +10,11 @@ import { resolvedTwConfig } from "~/shared/lib/resolved-tw-config";
 import { Heading } from "~/shared/ui/kit/heading";
 import { useQuery } from "@tanstack/react-query";
 import { PageChangeDetails } from "@zag-js/pagination";
-import { Skeleton } from "~/shared/ui/kit/skeleton";
-import { STORE_ITEMS_PER_PAGE } from "~/pages/marketplace/config";
+import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 import { fetchMarketplaceStores } from "../api/stores";
 
 type ExploreMarketplaceProps = HTMLAttributes<HTMLDivElement> & {
-	initialData?: { items: Store[], total: number }
+	initialData: { items: Store[], total: number }
 }
 
 const INITIAL_PAGE = 1
@@ -24,12 +23,13 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 	const [page, setPage] = useState(INITIAL_PAGE)
 
 	const { data, isFetching } = useQuery({
-		initialData: { data: initialData, error: undefined },
+		initialData: initialData,
 		queryKey: ['stores', page],
 		queryFn: async () => fetchMarketplaceStores(page),
 		staleTime: 5_000
 	})
 
+	const total = data.total;
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
 	return (
@@ -59,32 +59,35 @@ export function ExploreMarketplace({ initialData, className, ...props }: Explore
 				/>
 
 				<div className="flex flex-col gap-[2rem] max-w-content m-auto w-full max-xl:items-center">
-					<div className="grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1 w-full">
-						{data.data?.items.map((store) => (
-							<Skeleton 
-								asChild key={store.id}
-								loading={isFetching} 
+					<div
+						className={cn(
+							"grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1 w-full transition-opacity duration-300",
+							isFetching && 'opacity-50'
+						)}
+					>
+						{data.items.map((store) => (
+							<StoreCard.Root
+								asChild key={store.id} store={store}
+								className='rounded-[1.25rem] w-full mx-auto'
 							>
-								<StoreLink 
-									store={store}
-									className='rounded-[1.25rem] w-full mx-auto'
-								>
-									<StoreCard.Composed
-										store={store}
-									/>
+								<StoreLink>
+									<StoreCard.Composition />
 								</StoreLink>
-							</Skeleton>
+							</StoreCard.Root>
 						))}
 					</div>
 
-					<Pagination
-						onPageChange={handlePageChange}
-						className='w-min'
-						count={data.data?.total ?? 0}
-						pageSize={STORE_ITEMS_PER_PAGE}
-						defaultPage={INITIAL_PAGE}
-						siblingCount={1}
-					/>
+					{total > ITEMS_PER_PAGE && (
+						<Pagination
+							page={page}
+							onPageChange={handlePageChange}
+							className='w-min'
+							count={total}
+							pageSize={ITEMS_PER_PAGE}
+							defaultPage={INITIAL_PAGE}
+							siblingCount={1}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

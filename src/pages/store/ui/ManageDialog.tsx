@@ -2,11 +2,12 @@
 
 import { Button } from "~/shared/ui/kit/button";
 import { StoreManageDialog } from "~/features/store/manage";
-import { StoreProp } from "~/entities/store";
+import { getStorePathname, useStoreStrictContext } from "~/entities/store";
 import { useRouter } from "next/navigation";
 
-export function ManageDialog({ store }: StoreProp) {
+export function ManageDialog() {
 	const router = useRouter();
+	const store = useStoreStrictContext();
 
 	return (
 		<StoreManageDialog
@@ -19,7 +20,7 @@ export function ManageDialog({ store }: StoreProp) {
 			onActionDeleteFulfilled={() => router.push(`/dashboard`)}
 			onActionEditFulfilled={newStore => {
 				if(store.shortName != newStore.shortName)
-					router.push(`/stores/${newStore.shortName}`)
+					router.push(getStorePathname(newStore.shortName))
 			}}
 		/>
 	);

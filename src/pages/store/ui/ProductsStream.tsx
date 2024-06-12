@@ -6,7 +6,7 @@ import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ProductManageDialog } from "~/features/product/manage";
-import { ProductCard, ProductPrice, productQueries } from "~/entities/product";
+import { ProductCard, ProductLink, ProductPrice, productQueries } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
@@ -15,24 +15,25 @@ import { PageChangeDetails } from "@zag-js/pagination";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
+import { useUserGetQuery } from "~/entities/user";
+import { useStoreStrictContext } from "~/entities/store";
 
 interface ProductsStreamProps {
 	initialData?: { items: Product[], total: number }
 	className?: string
-	storeUrl: string
 }
 
-const INITIAL_PAGE = 1
-
-export function ProductsStream({ initialData, storeUrl, className }: ProductsStreamProps) {
+export function ProductsStream({ initialData, className }: ProductsStreamProps) {
+	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeContext();
-	const [page, setPage] = useState(INITIAL_PAGE);
+	const [page, setPage] = useState(1);
 
 	const { data, isFetching } = productQueries.useGetFromStore({
-		storeUrl, initialData,
+		storeUrl: store.shortName, initialData,
 		page, limit: PRODUCT_ITEMS_PER_PAGE,
 	})
 
+	const { data: user } = useUserGetQuery();
 	const products = data?.items ?? []
 	const total = data?.total ?? 0;
 
@@ -46,14 +47,16 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 
 					{`This store don't have any products yet`}
 
-					<ProductCreateDialog
-						storeUrl={storeUrl}
-						triggerElement={
-							<Button className='mt-[1rem]' size='lg'>
-								Add First Product
-							</Button>
-						}
-					/>
+					{!!user && user.username == store.ownerUsername && (
+						<ProductCreateDialog
+							storeUrl={store.shortName}
+							triggerElement={
+								<Button className='mt-[1rem]' size='lg'>
+									Add First Product
+								</Button>
+							}
+						/>
+					)}
 				</NotFoundScreen>
 			)}
 
@@ -65,7 +68,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 							loading={isFetching}
 						>
 							<ProductCreateDialog
-								storeUrl={storeUrl}
+								storeUrl={store.shortName}
 								triggerElement={
 									<Button colorPalette='gray' size='lg'>
 										Add Product
@@ -84,11 +87,11 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 
 			{total > PRODUCT_ITEMS_PER_PAGE && (
 				<Pagination
+					page={page}
 					onPageChange={handlePageChange}
 					className='w-min'
 					count={total}
 					pageSize={PRODUCT_ITEMS_PER_PAGE}
-					defaultPage={INITIAL_PAGE}
 					siblingCount={1}
 				/>
 			)}
@@ -109,14 +112,19 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 			loading && 'opacity-50'
 		)}>
 			{products.map(p => (
-				<ProductCard.Root key={p.id} product={p} className='w-full mx-auto h-full'>
-					<ProductCard.Image className='max-md:h-[15.875rem]' />
+				<ProductCard.Root 
+					product={p} key={p.id} 
+					className='w-full mx-auto h-full' asChild
+				>
+					<ProductLink product={p}>
+						<ProductCard.Image className='max-md:h-[15.875rem]' />
 
-					<ProductCard.Content>
-						<ProductCard.Title />
-						<ProductCard.Description />
-						<ProductCard.Price />
-					</ProductCard.Content>
+						<ProductCard.Content>
+							<ProductCard.Title />
+							<ProductCard.Description />
+							<ProductCard.Price />
+						</ProductCard.Content>
+					</ProductLink>
 				</ProductCard.Root>
 			))}
 		</div>

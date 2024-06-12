@@ -1,6 +1,7 @@
 import "./globals.css";
 import '@park-ui/tailwind-plugin/preset.css'
 import '@rainbow-me/rainbowkit/styles.css';
+import 'react-indiana-drag-scroll/dist/style.css';
 
 import type { Metadata } from "next";
 

@@ -14,7 +14,7 @@ export type RootProps = HTMLArkProps<'div'> & ProductProp;
 
 export function Root({ product, className, ...props }: RootProps) {
 	return (
-		<ProductProvider value={product}>
+		<ProductProvider product={product}>
 			<ark.div
 				{...props}
 				className={cn(
@@ -66,17 +66,26 @@ export function Category({ className, ...props }: HTMLArkProps<'p'>) {
 	);
 }
 
-export { Image, Price };
-
-export function Composed(props: ComponentProps<typeof Root>) {
+export function Composition() {
 	return (
-		<Root {...props}>
+		<>
 			<Image />
 			<Content>
 				<Title />
 				<Description />
 				<Price />
 			</Content>
+		</>
+	)
+}
+
+export function Composed(props: ComponentProps<typeof Root>) {
+	return (
+		<Root {...props}>
+			<Composition />
 		</Root>
 	);
 }
+
+export { Image, Price };
+export { Rating } from './Rating';

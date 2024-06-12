@@ -1,7 +1,6 @@
 import { mapPaginationPayloadToDto, PayloadPagination } from "~/shared/api/client/pagination";
 import { authFetchClient } from "~/shared/api/client/fetch-client";
-import { mapDtoToOrder } from "~/shared/api/client/orders/mappres";
-
+import { mapDtoToOrder } from "~/shared/api/client/orders/mappers";
 
 export function createOrdersClient() {
 	return {

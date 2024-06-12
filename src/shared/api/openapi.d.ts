@@ -258,7 +258,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["StoreController_getStoreReportByUrl"];
         put?: never;
         post: operations["StoreController_reportStoreByUrl"];
         delete?: never;
@@ -430,6 +430,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/chats/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getOrCreateChat"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/messages/{chatId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getMessages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/messages/{chatId}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ChatController_markMessagesAsRead"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/explore": {
         parameters: {
             query?: never;
@@ -542,6 +590,7 @@ export interface components {
             username?: string;
             email?: string;
             twitterId?: string;
+            twitterUsername?: string;
             telegramId?: string;
             refCode: string;
             invitedBy?: string;
@@ -592,14 +641,25 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             rating: components["schemas"]["RatingDto"];
+            ownerUsername: string;
         };
         CreateStoreDto: {
             name: string;
             description?: string;
             url: string;
         };
-        StoreResponseDto: {
-            data: components["schemas"]["StoreInfoDto"][];
+        StoresInfoDto: {
+            /** Format: uuid */
+            imageId?: string;
+            name: string;
+            description?: string;
+            url: string;
+            /** Format: date-time */
+            createdAt: string;
+            rating: components["schemas"]["RatingDto"];
+        };
+        AllStoresResponseDto: {
+            data: components["schemas"]["StoresInfoDto"][];
             total: number;
         };
         UpdateStoreDto: {
@@ -651,6 +711,25 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
+        ChatResponseDto: {
+            chatId: string;
+            buyerId: number;
+            sellerId: number;
+            productName: string;
+        };
+        MessageDto: {
+            id: string;
+            chatId: string;
+            senderId: number;
+            sender: components["schemas"]["User"];
+            store: components["schemas"]["Store"];
+            content: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            readAt: string;
+            fileIds: string[];
+        };
         GetExploreResponseDto: {
             data: components["schemas"]["Store"][];
             total: number;
@@ -666,26 +745,22 @@ export interface components {
         OrderCreateResultDto: {
             id: string;
         };
-        Product: {
+        BaseStoreDto: {
+            name: string;
+            url: string;
+            /** Format: uuid */
+            imageId?: string;
+        };
+        BaseProductDto: {
             id: string;
             name: string;
-            description?: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
             hasPreview: boolean;
-            store: components["schemas"]["Store"];
-            storeId: number;
-            /** Format: date-time */
-            createdAt: string;
+            imageIds: string[];
         };
-        Order: {
+        OrderInfoDto: {
             id: string;
-            buyerId: number;
-            buyer: components["schemas"]["User"];
-            sellerId: number;
-            productId: string;
-            product: components["schemas"]["Product"];
+            store: components["schemas"]["BaseStoreDto"];
+            product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
             status: "New" | "Paid" | "Delivered" | "Canceled";
             /** @enum {string} */
@@ -694,8 +769,30 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
-        OrderResponseDto: {
-            data: components["schemas"]["Order"][];
+        OrdersResponseDto: {
+            data: components["schemas"]["OrderInfoDto"][];
+            total: number;
+            totalPrice: number;
+        };
+        BaseUserDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId?: string;
+        };
+        SalesInfoDto: {
+            id: string;
+            buyer: components["schemas"]["BaseUserDto"];
+            product: components["schemas"]["BaseProductDto"];
+            /** @enum {string} */
+            status: "New" | "Paid" | "Delivered" | "Canceled";
+            /** @enum {string} */
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            price: number;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        SalesResponseDto: {
+            data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
         };
@@ -1188,7 +1285,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["StoreResponseDto"];
+                    "application/json": components["schemas"]["AllStoresResponseDto"];
                 };
             };
         };
@@ -1219,6 +1316,31 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
+            };
+        };
+    };
+    StoreController_getStoreReportByUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Store report successfully retrieved */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ReportStoreDto"];
+                };
+            };
+            /** @description Report was not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };
@@ -1492,7 +1614,7 @@ export interface operations {
                 productId: string;
                 page: number;
                 pageSize: number;
-                sort: string;
+                sort: "newest" | "oldest" | "highestRating" | "lowestRating";
             };
             header?: never;
             path?: never;
@@ -1589,6 +1711,101 @@ export interface operations {
             };
         };
     };
+    ChatController_getOrCreateChat: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Chat retrieved or created successfully. Returns chat information */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ChatResponseDto"];
+                };
+            };
+            /** @description Invalid product ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ChatController_getMessages: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path: {
+                chatId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns messages in chat */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["MessageDto"];
+                };
+            };
+            /** @description Invalid chat ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ChatController_markMessagesAsRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chatId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Marks messages as read in chat */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Invalid chat ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     ExploreController_getExplore: {
         parameters: {
             query: {
@@ -1658,7 +1875,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["OrderResponseDto"];
+                    "application/json": components["schemas"]["OrdersResponseDto"];
                 };
             };
         };
@@ -1679,7 +1896,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["OrderResponseDto"];
+                    "application/json": components["schemas"]["SalesResponseDto"];
                 };
             };
         };

@@ -51,7 +51,7 @@ export function createProductsClient() {
 				}
 			},
 			async uploadImages(
-				initialState: Pick<Product, 'imageIds' | 'hasPreview'>,
+				initialState: Required<Pick<Product, 'imageIds' | 'hasPreview'>>,
 				payload: PayloadUploadImages,
 			) {
 				if (payload.previewImage === undefined && payload.galleryImages === undefined)
