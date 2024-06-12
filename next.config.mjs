@@ -2,7 +2,13 @@
 
 const nextConfig = {
 	images: {
-		domains: ['sella.veydlin.com']
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'sella.veydlin.com',
+				pathname: '/api/media/**'
+			}
+		]
 	},
 	webpack(config) {
 		// Grab the existing rule that handles SVG imports

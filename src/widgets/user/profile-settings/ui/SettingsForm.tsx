@@ -106,8 +106,11 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 	const initialValues = useMemo(() => ({
 		wallet: address,
-		...user
-	}), [address, user]);
+		email: user?.email,
+		username: user?.username,
+		avatarImage: user?.avatarImage,
+		telegramId: user?.telegramId
+	}), [address, user?.email, user?.avatarImage, user?.username, user?.telegramId]);
 
 	return (
 		<Form

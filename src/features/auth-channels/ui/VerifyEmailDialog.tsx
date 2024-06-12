@@ -19,7 +19,7 @@ const PIN_DIGITS_COUNT = 4;
 
 export function VerifyEmailDialog({ onActionFulfilled, email, ...props }: VerifyEmailDialogProps) {
 	const [codeValue, setCodeValue] = useState<string[]>([]);
-	const isValueValid = codeValue.length == PIN_DIGITS_COUNT && codeValue.every(c => c.length);
+	const isValueValid = codeValue.length == PIN_DIGITS_COUNT && codeValue.every(c => !!c?.length);
 
 	const { mutateAsync: verifyEmail, error } = useMutation<null, { message: string }, string>({
 		mutationFn: async (code: string) => {
