@@ -2,11 +2,12 @@
 
 import { Button } from "~/shared/ui/kit/button";
 import { StoreManageDialog } from "~/features/store/manage";
-import { StoreProp, getStorePathname } from "~/entities/store";
+import { getStorePathname, useStoreStrictContext } from "~/entities/store";
 import { useRouter } from "next/navigation";
 
-export function ManageDialog({ store }: StoreProp) {
+export function ManageDialog() {
 	const router = useRouter();
+	const store = useStoreStrictContext();
 
 	return (
 		<StoreManageDialog

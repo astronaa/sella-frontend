@@ -9679,6 +9679,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-indiana-drag-scroll@npm:^3.0.3-alpha":
+  version: 3.0.3-alpha
+  resolution: "react-indiana-drag-scroll@npm:3.0.3-alpha"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/15dbcfa86df2254d024532c5fb240a31dc7e2a443f597cf0999f0a3816c4d71d2ebc60864705296116a0e6b98c1833d1273b58e4decad5db206acc35d55d101f
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -9748,15 +9758,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/6d66f3bdb65e1ec79089f80314da97c9a005087a04ee034255a5de129a4c0d9fd0bf99fa7bf642781ac2dc745ca687aae3de082bd8afdd0d117bc953241e15ad
-  languageName: node
-  linkType: hard
-
-"react-use-draggable-scroll@npm:^0.4.7":
-  version: 0.4.7
-  resolution: "react-use-draggable-scroll@npm:0.4.7"
-  peerDependencies:
-    react: ">=16"
-  checksum: 10c0/ca276ab9d7eaea96d907699368b84c9102a8eefc379b24079ebd05d3d8b2f0fb083a7300d85daa8866e190e8f30bac91c2e0b48ff9c2d20d7302fbf39b3b7bff
   languageName: node
   linkType: hard
 
@@ -10167,7 +10168,7 @@ __metadata:
     react: "npm:^18"
     react-dom: "npm:^18"
     react-final-form: "npm:^6.5.9"
-    react-use-draggable-scroll: "npm:^0.4.7"
+    react-indiana-drag-scroll: "npm:^3.0.3-alpha"
     tailwind-merge: "npm:^2.3.0"
     tailwind-variants: "npm:^0.2.1"
     tailwindcss: "npm:^3.4.1"

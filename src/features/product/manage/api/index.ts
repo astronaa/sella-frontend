@@ -30,7 +30,7 @@ export async function manageProduct(productId: ProductId, values: SchemaType) {
 	await apiClient.products.for(productId).uploadImages(data, {
 		previewImage: values.previewImage,
 		galleryImages: [
-			...values.galleryImagesUrls.map(mapMediaUrlToId), 
+			...values.galleryImagesUrls.map(mapMediaUrlToId),
 			...values.galleryImages ?? []
 		]
 	});

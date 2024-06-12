@@ -1,5 +1,4 @@
 export * as ProductCard from "./ui/Card";
-export * as ProductRate from "./ui/Rate";
 
 export { 
 	ProductProvider, 
@@ -12,11 +11,10 @@ export {
 	getPathname as getProductPathname
 } from './ui/Link';
 
-
 export { Price as ProductPrice } from "./ui/Price";
 export { Row as ProductRow } from "./ui/Row";
 export { Image as ProductImage } from "./ui/Image";
-export { Payment } from "./ui/Payment";
+export { Rating as ProductRating } from './ui/Rating';
 
 export type { ProductProp } from './ui/Prop';
 

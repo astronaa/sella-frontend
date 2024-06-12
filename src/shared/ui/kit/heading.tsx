@@ -25,6 +25,7 @@ const styles = tv(
 		variants: {
 			size: {
 				xs: 'text-[1.125rem]/[1.3]',
+				sm: 'text-[2rem]/[1.1] max-md:text-[1.5rem]/[1.1]',
 				md: 'text-[3rem]/[1.1] max-md:text-[2.25rem]/[1.1]',
 				lg: 'text-[3.375rem]/[1.1] max-md:text-[2.625rem]/[1.1]',
 				xl: 'text-[4.5rem]/[1.1] max-md:text-[3rem]/[1.1]'

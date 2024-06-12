@@ -66,8 +66,6 @@ export function Category({ className, ...props }: HTMLArkProps<'p'>) {
 	);
 }
 
-export { Image, Price };
-
 export function Composition() {
 	return (
 		<>
@@ -88,3 +86,6 @@ export function Composed(props: ComponentProps<typeof Root>) {
 		</Root>
 	);
 }
+
+export { Image, Price };
+export { Rating } from './Rating';

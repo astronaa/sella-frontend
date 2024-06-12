@@ -1,19 +1,17 @@
-import { StaticImageData } from "next/image";
-
 type ImageEntry = string // url for now, but could be an object with different variants of resoultion or quality
 
 export type StoreId = string;
 
 export interface Store {
 	id: StoreId,
-	name: string,
+	name?: string,
 	shortName: string,
-	isVerified: boolean,
-	description: string | null,
-	previewImage: ImageEntry | null,
-	ownerUsername: string,
+	isVerified?: boolean,
+	description?: string | null,
+	previewImage?: ImageEntry | null,
+	ownerUsername?: string,
 
-	rating: {
+	rating?: {
 		likes: number,
 		dislikes: number,
 		reviewsCount: number,
@@ -24,27 +22,22 @@ export type ProductId = string;
 
 export interface Product {
 	id: ProductId,
-	name: string,
-	description: string | null,
-	shortDescription: string,
-	category: string,
-	imageIds: ImageEntry[],
-	storeUrl: string,
-	hasPreview: boolean,
-	previewImage: ImageEntry | null,
-	galleryImages: ImageEntry[],
-	price: number
-}
-
-export interface ProductRate {
-	total: number,
-	likes: number,
-	dislikes: number,
-}
-
-export interface ProductCarousel {
-	images: StaticImageData[],
-	description: string,
+	name?: string,
+	description?: string | null,
+	shortDescription?: string,
+	category?: string,
+	imageIds?: ImageEntry[],
+	storeUrl?: string,
+	hasPreview?: boolean,
+	previewImage?: ImageEntry | null,
+	galleryImages?: ImageEntry[],
+	price?: number,
+	
+	rating?: {
+		likes: number,
+		dislikes: number,
+		reviewsCount: number,
+	}
 }
 
 export interface ProductRate {
@@ -78,25 +71,28 @@ export type SaleId = string;
 export interface Sale {
 	id: SaleId
 	product: Product,
-	user: { name: string },
+	user: User,
 	transaction: Transaction
 }
 
 export interface User {
-	id: number,
+	id?: number,
 	avatarImage: ImageEntry | null,
-	address: string,
+	address?: string,
 	username: string | null,
-	email: string | null,
-	twitterId: string | null,
-	telegramId: string | null,
-	createdAt: string
+	email?: string | null,
+	twitterId?: string | null,
+	telegramId?: string | null,
+	createdAt?: string
 }
 
-export interface ProductReview {
-	user: string,
-	avatar?: string,
-	quote: string,
-	rate: string,
-	date: string
+export interface Review {
+	id: string,
+	body: string,
+	isPositive: boolean,
+	createdAt: string,
+	user: {
+		username: string,
+		profilePicture: string | null
+	}
 }

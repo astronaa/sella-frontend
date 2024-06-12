@@ -3,7 +3,7 @@ import { Order } from "~/shared/api/model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "../stores/mappers";
 
-export const mapDtoToOrder = (obj: components['schemas']['Order']): Order => {
+export const mapDtoToOrder = (obj: components['schemas']['OrderInfoDto']): Order => {
 	return {
 		id: obj.id,
 		transaction: {
@@ -13,7 +13,7 @@ export const mapDtoToOrder = (obj: components['schemas']['Order']): Order => {
 			transactionUrl: '',
 			totalPaid: obj.price,
 		},
-		store: mapDtoToStore(obj.product.store),
+		store: mapDtoToStore(obj.store),
 		product: mapDtoToProduct(obj.product),
 	}
 }

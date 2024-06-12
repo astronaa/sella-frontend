@@ -1,8 +1,9 @@
 import { components } from "~/shared/api/openapi";
 import { Sale } from "~/shared/api/model";
 import { mapDtoToProduct } from "../products/mappers";
+import { mapDtoToUserShort } from "../users/mappers";
 
-export const mapDtoToSale = (obj: components['schemas']['Order']): Sale => {
+export const mapDtoToSale = (obj: components['schemas']['SalesInfoDto']): Sale => {
 	return {
 		id: obj.id,
 		transaction: {
@@ -12,10 +13,7 @@ export const mapDtoToSale = (obj: components['schemas']['Order']): Sale => {
 			transactionUrl: '',
 			totalPaid: obj.price,
 		},
-		user: {
-			// name: obj.buyer.username ?? '',
-			name: 'testName',
-		},
+		user: mapDtoToUserShort(obj.buyer),
 		product: mapDtoToProduct(obj.product),
 	}
 }

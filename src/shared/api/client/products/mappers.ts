@@ -4,7 +4,7 @@ import { mapMediaIdToUrl } from "../shared/mappers";
 
 type Schemes = components['schemas'];
 
-export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['Product']): Product => {
+export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['BaseProductDto']) => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 
 	const imagesConfig = obj.hasPreview ? {
@@ -18,14 +18,17 @@ export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['Produc
 	return {
 		id: obj.id,
 		name: obj.name,
-		price: Number(obj.price),
-		description: obj.description ?? null,
-		shortDescription: obj.shortDescription,
-		category: 'category',
+		price: 'price' in obj ? Number(obj.price) : undefined,
+		description: 'description' in obj ? obj.description : null,
+		shortDescription: 'shortDescription' in obj ? obj.shortDescription : undefined,
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
-		// @ts-expect-error expecting openapi updates
-		storeUrl: obj.storeUrl,
-		...imagesConfig
-	};
+		storeUrl: 'storeUrl' in obj ? obj.storeUrl : undefined,
+		...imagesConfig,
+		rating: 'rating' in obj ? {
+			likes: obj.rating.positive,
+			dislikes: obj.rating.negative,
+			reviewsCount: obj.rating.total
+		} : undefined
+	} satisfies Product;
 };

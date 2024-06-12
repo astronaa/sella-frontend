@@ -16,26 +16,24 @@ import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
 import { useUserGetQuery } from "~/entities/user";
+import { useStoreStrictContext } from "~/entities/store";
 
 interface ProductsStreamProps {
 	initialData?: { items: Product[], total: number }
 	className?: string
-	storeUrl: string
 }
 
-const INITIAL_PAGE = 1
-
-export function ProductsStream({ initialData, storeUrl, className }: ProductsStreamProps) {
+export function ProductsStream({ initialData, className }: ProductsStreamProps) {
+	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeContext();
-	const [page, setPage] = useState(INITIAL_PAGE);
+	const [page, setPage] = useState(1);
 
 	const { data, isFetching } = productQueries.useGetFromStore({
-		storeUrl, initialData,
+		storeUrl: store.shortName, initialData,
 		page, limit: PRODUCT_ITEMS_PER_PAGE,
 	})
 
 	const { data: user } = useUserGetQuery();
-
 	const products = data?.items ?? []
 	const total = data?.total ?? 0;
 
@@ -49,9 +47,9 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 
 					{`This store don't have any products yet`}
 
-					{!!user && (
+					{!!user && user.username == store.ownerUsername && (
 						<ProductCreateDialog
-							storeUrl={storeUrl}
+							storeUrl={store.shortName}
 							triggerElement={
 								<Button className='mt-[1rem]' size='lg'>
 									Add First Product
@@ -70,7 +68,7 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 							loading={isFetching}
 						>
 							<ProductCreateDialog
-								storeUrl={storeUrl}
+								storeUrl={store.shortName}
 								triggerElement={
 									<Button colorPalette='gray' size='lg'>
 										Add Product
@@ -94,7 +92,6 @@ export function ProductsStream({ initialData, storeUrl, className }: ProductsStr
 					className='w-min'
 					count={total}
 					pageSize={PRODUCT_ITEMS_PER_PAGE}
-					defaultPage={INITIAL_PAGE}
 					siblingCount={1}
 				/>
 			)}

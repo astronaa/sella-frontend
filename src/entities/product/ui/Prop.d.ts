@@ -1,7 +1,7 @@
 import {
 	Product,
 	ProductRate,
-	ProductReview,
+	Review,
 } from "~/shared/api/model";
 
 export interface ProductProp {
@@ -13,7 +13,7 @@ export interface ProductRateProps {
 }
 
 export interface ProductReviewProps {
-	review: ProductReview
+	review: Review
 }
 
 export interface PaymentProps {

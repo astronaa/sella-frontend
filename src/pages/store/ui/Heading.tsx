@@ -1,30 +1,24 @@
 'use client';
 
-import { StoreCard, storeQueries } from "~/entities/store";
+import { StoreCard, useStoreStrictContext } from "~/entities/store";
 import { ToggleEditModeButton } from "./ToggleEditModeButton";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
-import { Product, Store } from "~/shared/api/model";
+import { Product } from "~/shared/api/model";
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
 import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 
-interface HeadingProps { 
-	storeUrl: string; 
-	storeInitialData: Store,
+interface HeadingProps {
 	productsInitialData?: { items: Product[], total: number }
 }
 
-export function Heading({ storeUrl, storeInitialData, productsInitialData }: HeadingProps) {
-	const { data: store } = storeQueries.useGetOne({
-		storeUrl, 
-		initialData: storeInitialData,
-		staleTime: Infinity
-	})
+export function Heading({ productsInitialData }: HeadingProps) {
+	const store = useStoreStrictContext();
 
 	const { data: products } = productQueries.useGetFromStore({
-		storeUrl,
-		page: 1, limit: PRODUCT_ITEMS_PER_PAGE,
+		storeUrl: store.shortName,
+		limit: PRODUCT_ITEMS_PER_PAGE,
 		initialData: productsInitialData
 	})
 
@@ -49,11 +43,14 @@ export function Heading({ storeUrl, storeInitialData, productsInitialData }: Hea
 
 			{!!user && (
 				<div className='flex gap-[1rem] md:self-end'>
-					<ManageDialog store={store} />
-					
-					{products.total > 0 && <ToggleEditModeButton />}
-
-					<StoreReportFlow />
+					{store.ownerUsername == user.username ? (
+						<>
+							<ManageDialog />
+							{products.total > 0 && <ToggleEditModeButton />}
+						</>
+					) : (
+						<StoreReportFlow />
+					)}
 				</div>
 			)}
 		</div>
