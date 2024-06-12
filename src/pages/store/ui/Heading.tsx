@@ -49,7 +49,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 							{products.total > 0 && <ToggleEditModeButton />}
 						</>
 					) : (
-						<StoreReportFlow />
+						<StoreReportFlow storeUrl={store.shortName} />
 					)}
 				</div>
 			)}

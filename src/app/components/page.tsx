@@ -67,7 +67,7 @@ export default function Home() {
 						<ProductCreateDialogTest />
 						<ProductManageDialogTest />
 						<RegisterFlowDialogTest />
-						<StoreReportFlow />
+						<StoreReportFlow storeUrl='test'/>
 					</div>
 				</div>
 			</div>

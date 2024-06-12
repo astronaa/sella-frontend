@@ -1,70 +1,53 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
-import { Form } from 'react-final-form';
+import { ReactNode } from 'react';
+import { Field, Form } from 'react-final-form';
 import { z } from 'zod';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
-import { VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
+import { VSubmitButton, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
-import { FormApi } from "final-form";
 import { ToggleGroupField } from './ToggleGroupField';
+import { apiClient } from "~/shared/api/client";
+import { ANOTHER_REASON_ID, reportReasons, schemaReport } from "~/shared/api/client/stores/schemas";
+import { useDialogState } from "~/shared/lib/dialog";
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
 	cancelButton?: ReactNode
+	storeUrl: string
 };
 
-const ANOTHER_REASON = '7'
-
-const options = [
-	{ id: '1', label: 'Spam' },
-	{ id: '2', label: 'Nudity' },
-	{ id: '3', label: 'Scam' },
-	{ id: '4', label: 'Illegal' },
-	{ id: '5', label: 'Violence' },
-	{ id: '6', label: 'Hate Speech' },
-	{ id: ANOTHER_REASON, label: 'Something Else' },
+const options: { id: typeof reportReasons[number], label: string }[] = [
+	{ id: 'Spam', label: 'Spam' },
+	{ id: 'Nudity', label: 'Nudity' },
+	{ id: 'Scam', label: 'Scam' },
+	{ id: 'Illegal', label: 'Illegal' },
+	{ id: 'Violence', label: 'Violence' },
+	{ id: 'HateSpeech', label: 'Hate Speech' },
+	{ id: ANOTHER_REASON_ID, label: 'Something Else' },
 ]
 
-const initialValues = {
-	reason: [],
-	description: ''
-}
-
-const schema = z.object({
-	description: z.string().optional(),
-	reason: z.array(z.string()).nonempty({ message: 'Reason required' })
-}).superRefine(({ description, reason }, refinementContext) => {
-	if (reason.includes(ANOTHER_REASON) && !description) {
-		return refinementContext.addIssue({
-			code: z.ZodIssueCode.custom,
-			message: 'Description required',
-			path: ['description'],
-		});
-	}
-});
-
+const schema = schemaReport
 type SchemeType = z.infer<typeof schema>
+const validate = zodValidate(schema);
 
-export function ReportStoreDialog({ onActionFulfilled, cancelButton, ...props }: ReportStoreDialogProps) {
-	const open = !!props?.open;
+export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
+	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
-	const [isDescriptionShow, setIsDescriptionShow] = useState(false)
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onSubmit = (values: SchemeType, form: FormApi<SchemeType, typeof initialValues>) => {
-		form.reset()
-		onActionFulfilled?.()
-		props.onOpenChange?.({ open: false })
+	const onSubmit = async (values: SchemeType) => {
+		await apiClient.stores.for(storeUrl).report(values);
+		onActionFulfilled?.();
+		close();
 	}
 
 	return (
 		<>
 			<Dialog.Root
 				{...props}
-				open={open}
+				open={isOpen} onOpenChange={handleOpenChange}
+				unmountOnExit lazyMount
 			>
 				<Dialog.Backdrop />
 
@@ -73,42 +56,46 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, ...props }:
 						<Dialog.CloseButton />
 						<Form
 							onSubmit={onSubmit}
-							initialValues={initialValues}
-							validate={zodValidate(schema)}
+							validate={validate}
+							subscription={{}}
 						>
-							{({ form }) => (
+							{() => (
 								<>
 									<Dialog.ContentHeading>
 										<Dialog.Title>Report Shop</Dialog.Title>
 										<Dialog.Description>
 											Your report is anonymous, except if you&apos;re reporting an
-											intellectual property infringement. Your report is anonymous, except if you&apos;re [need text
+											intellectual property infringement. Your report is anonymous, except if
+											you&apos;re [need text
 											here].
 										</Dialog.Description>
 									</Dialog.ContentHeading>
 
 									<div className='flex flex-col gap-[2rem] w-full'>
 										<ToggleGroupField
-											name='reason'
+											name='reasons'
 											options={options}
-											onValueChange={({ value }) => {
-												setIsDescriptionShow(value.includes(ANOTHER_REASON))
-											}}
 										/>
 
-										<Collapsible.Root open={isDescriptionShow}>
-											<Collapsible.Content>
-												<VTextControl.Root name='description'>
-													<VTextControl.Label>Reason</VTextControl.Label>
-													<VTextAreaControl.Input
-														className='resize-none h-auto'
-														rows={4}
-														placeholder='Help us understand the problem'
-													/>
-													<VTextControl.ErrorText className='text-center' />
-												</VTextControl.Root>
-											</Collapsible.Content>
-										</Collapsible.Root>
+										<Field name='reasons'>{
+											({ input: { value } }) => (
+												<Collapsible.Root
+													open={value?.includes(ANOTHER_REASON_ID)}>
+													<Collapsible.Content>
+														<VTextControl.Root name='description'>
+															<VTextControl.Label>Reason</VTextControl.Label>
+															<VTextAreaControl.Input
+																className='resize-none h-auto'
+																rows={4}
+																placeholder='Help us understand the problem'
+															/>
+															<VTextControl.ErrorText className='text-center' />
+														</VTextControl.Root>
+													</Collapsible.Content>
+												</Collapsible.Root>
+											)
+										}
+										</Field>
 									</div>
 
 									<Dialog.ContentFooter>
@@ -119,9 +106,9 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, ...props }:
 												</Button>
 											</Dialog.CloseTrigger>
 										)}
-										<Button onClick={form.submit} className='w-full' size='lg'>
+										<VSubmitButton className='w-full' size='lg'>
 											Submit Report
-										</Button>
+										</VSubmitButton>
 									</Dialog.ContentFooter>
 								</>
 							)}
