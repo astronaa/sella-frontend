@@ -11,7 +11,8 @@ const store: Store = {
 		likes: 45,
 		dislikes: 16,
 		reviewsCount: 673,
-	}
+	},
+	ownerUsername: 'store owner'
 }
 
 const product: Product = {
@@ -24,6 +25,7 @@ const product: Product = {
 	category: 'Category',
 	price: 2.99,
 	imageIds: [],
+	storeUrl: '@teststore',
 	hasPreview: false
 }
 

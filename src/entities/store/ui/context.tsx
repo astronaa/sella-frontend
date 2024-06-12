@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
 import { Store } from "~/shared/api/model";
 import { invariant } from "~/shared/lib/asserts";
+import { StoreProp } from "./Prop";
 
 const context = createContext<Store | null>(null);
 
@@ -24,4 +25,10 @@ export function useStoreContextOrProp(s?: Store) {
 	return product;
 }
 
-export const StoreProvider = context.Provider;
+export function StoreProvider({ store, children }: PropsWithChildren<StoreProp>) {
+	return (
+		<context.Provider value={store}>
+			{children}
+		</context.Provider>
+	)
+}

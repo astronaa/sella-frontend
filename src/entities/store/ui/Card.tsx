@@ -14,7 +14,7 @@ export type RootProps = HTMLArkProps<'div'> & StoreProp;
 
 export function Root({ store, className, ...props }: RootProps) {
 	return (
-		<StoreProvider value={store}>
+		<StoreProvider store={store}>
 			<ark.div
 				{...props}
 				className={cn(
@@ -34,7 +34,7 @@ export function Image({ className, ...props }: Omit<PreviewImageProps, 'src' | '
 			width={200}
 			height={200}
 			alt={`Image of ${title}`}
-			src={imageUrl}
+			src={imageUrl ?? null}
 			{...props}
 			className={cn('rounded-full flex-shrink-0 shadow-sm', className)}
 		/>
@@ -106,6 +106,9 @@ export function Description({ className, ...props }: HTMLArkProps<'p'>) {
 export function Rating({ className, ...props }: HTMLArkProps<"div">) {
 	const { rating } = useStoreStrictContext();
 
+	if(!rating)
+		return null;
+
 	return (
 		<ark.div
 			className={cn("flex items-center gap-[0.75rem]", className)}
@@ -130,9 +133,9 @@ export function Rating({ className, ...props }: HTMLArkProps<"div">) {
 	);
 }
 
-export function Composed(props: ComponentProps<typeof Root>) {
+export function Composition() {
 	return (
-		<Root {...props}>
+		<>
 			<ImageDesktop />
 			<Content>
 				<Title>
@@ -141,6 +144,14 @@ export function Composed(props: ComponentProps<typeof Root>) {
 				<Description />
 				<Rating />
 			</Content>
+		</>
+	);
+}
+
+export function Composed(props: ComponentProps<typeof Root>) {
+	return (
+		<Root {...props}>
+			<Composition />
 		</Root>
 	);
 }

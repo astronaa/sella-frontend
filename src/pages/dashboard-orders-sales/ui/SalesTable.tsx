@@ -69,7 +69,7 @@ export function SalesTable({ data, loading, startIndex }: SalesTableProps) {
 										<ProductRow product={sale.product} />
 									</span>
 									<span className='text-black-60'>
-										{sale.user.name}
+										{sale.user.username}
 									</span>
 									<span>
 										<TransactionStatusBadge

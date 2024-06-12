@@ -641,14 +641,25 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             rating: components["schemas"]["RatingDto"];
+            ownerUsername: string;
         };
         CreateStoreDto: {
             name: string;
             description?: string;
             url: string;
         };
+        StoresInfoDto: {
+            /** Format: uuid */
+            imageId?: string;
+            name: string;
+            description?: string;
+            url: string;
+            /** Format: date-time */
+            createdAt: string;
+            rating: components["schemas"]["RatingDto"];
+        };
         AllStoresResponseDto: {
-            data: components["schemas"]["StoreInfoDto"][];
+            data: components["schemas"]["StoresInfoDto"][];
             total: number;
         };
         UpdateStoreDto: {
@@ -734,26 +745,22 @@ export interface components {
         OrderCreateResultDto: {
             id: string;
         };
-        Product: {
+        BaseStoreDto: {
+            name: string;
+            url: string;
+            /** Format: uuid */
+            imageId?: string;
+        };
+        BaseProductDto: {
             id: string;
             name: string;
-            description?: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
             hasPreview: boolean;
-            store: components["schemas"]["Store"];
-            storeId: number;
-            /** Format: date-time */
-            createdAt: string;
+            imageIds: string[];
         };
-        Order: {
+        OrderInfoDto: {
             id: string;
-            buyerId: number;
-            buyer: components["schemas"]["User"];
-            sellerId: number;
-            productId: string;
-            product: components["schemas"]["Product"];
+            store: components["schemas"]["BaseStoreDto"];
+            product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
             status: "New" | "Paid" | "Delivered" | "Canceled";
             /** @enum {string} */
@@ -762,8 +769,30 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
-        OrderResponseDto: {
-            data: components["schemas"]["Order"][];
+        OrdersResponseDto: {
+            data: components["schemas"]["OrderInfoDto"][];
+            total: number;
+            totalPrice: number;
+        };
+        BaseUserDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId?: string;
+        };
+        SalesInfoDto: {
+            id: string;
+            buyer: components["schemas"]["BaseUserDto"];
+            product: components["schemas"]["BaseProductDto"];
+            /** @enum {string} */
+            status: "New" | "Paid" | "Delivered" | "Canceled";
+            /** @enum {string} */
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            price: number;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        SalesResponseDto: {
+            data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
         };
@@ -1585,7 +1614,7 @@ export interface operations {
                 productId: string;
                 page: number;
                 pageSize: number;
-                sort: string;
+                sort: "newest" | "oldest" | "highestRating" | "lowestRating";
             };
             header?: never;
             path?: never;
@@ -1846,7 +1875,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["OrderResponseDto"];
+                    "application/json": components["schemas"]["OrdersResponseDto"];
                 };
             };
         };
@@ -1867,7 +1896,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["OrderResponseDto"];
+                    "application/json": components["schemas"]["SalesResponseDto"];
                 };
             };
         };

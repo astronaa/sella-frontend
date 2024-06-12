@@ -7,12 +7,12 @@ const QUERY_KEY = 'products'
 
 interface GetFromStoreQueryOptions {
 	storeUrl: string,
-	page: number,
-	limit: number,
+	page?: number,
+	limit?: number,
 	initialData?: { items: Product[], total: number } | undefined
 }
 
-const getFromStoreQueryOptions = ({ storeUrl, page, limit, initialData }: GetFromStoreQueryOptions) =>
+const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData }: GetFromStoreQueryOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, page, { storeUrl, limit }],
 		queryFn: async () => {
