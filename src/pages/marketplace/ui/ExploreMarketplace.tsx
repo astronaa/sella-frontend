@@ -8,10 +8,9 @@ import { StoreCard, StoreLink } from "~/entities/store";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { resolvedTwConfig } from "~/shared/lib/resolved-tw-config";
 import { Heading } from "~/shared/ui/kit/heading";
-import { useQuery } from "@tanstack/react-query";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
-import { fetchMarketplaceStores } from "../api/stores";
+import { storeQueries } from '~/entities/store'
 
 type ExploreMarketplaceProps = HTMLAttributes<HTMLDivElement> & {
 	initialData: { items: Store[], total: number }
@@ -22,11 +21,11 @@ const INITIAL_PAGE = 1
 export function ExploreMarketplace({ initialData, className, ...props }: ExploreMarketplaceProps) {
 	const [page, setPage] = useState(INITIAL_PAGE)
 
-	const { data, isFetching } = useQuery({
-		initialData: initialData,
-		queryKey: ['stores', page],
-		queryFn: async () => fetchMarketplaceStores(page),
-		staleTime: 5_000
+	const { data, isFetching } = storeQueries.useGetAll({
+		page,
+		limit: ITEMS_PER_PAGE,
+		staleTime: 5_000,
+		initialData
 	})
 
 	const total = data.total;

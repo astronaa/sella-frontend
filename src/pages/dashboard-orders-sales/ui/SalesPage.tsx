@@ -3,30 +3,16 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { NavSelect } from "./NavSelect";
 import { SalesTable } from "./SalesTable";
-import { apiClient } from "~/shared/api/client";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { ITEMS_PER_PAGE } from "../config";
+import { salesQueries } from "~/entities/sale";
 
 export function SalesPage() {
 	const [page, setPage] = useState(1)
 
-	const { data, isLoading } = useQuery({
-		queryKey: ['sales', page],
-		queryFn: async () => {
-			const { data, error } = await apiClient.sales.getAll({
-				page, limit: ITEMS_PER_PAGE
-			})
-
-			if(error)
-				throw error;
-
-			return data
-		},
-		placeholderData: keepPreviousData
-	})
+	const { data, isLoading } = salesQueries.useGetSales({ page, limit: ITEMS_PER_PAGE })
 
 	const total = data?.total ?? 0;
 	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)

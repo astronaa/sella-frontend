@@ -4,25 +4,14 @@ import { Button } from "~/shared/ui/kit/button";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCreateDialog } from "~/features/store/create";
-import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "~/shared/api/client";
 import { storeMock } from "~/shared/api/client/stores/mock";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { Icons } from "~/shared/ui/icons";
+import { storeQueries } from '~/entities/store'
 
 export function Component() {
-	const { data: stores, isLoading } = useQuery({
-		queryKey: ['stores'],
-		queryFn: async () => {
-			const { data, error } = await apiClient.stores.getForCurrentUser();
-
-			if (error)
-				throw error;
-
-			return data;
-		}
-	});
+	const { data: stores, isLoading } = storeQueries.useGetForUser()
 
 	return (
 		<div className='flex flex-col w-full gap-[3rem] max-w-content mx-auto px-[1rem]'>

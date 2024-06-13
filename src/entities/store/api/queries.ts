@@ -11,6 +11,13 @@ interface GetOneQueryOptions {
 	staleTime?: number
 }
 
+interface GetAllQueryOptions {
+	initialData?: { items: Store[], total: number },
+	staleTime?: number
+	page: number
+	limit: number
+}
+
 const getOneQueryOptions = ({ initialData, storeUrl, staleTime }: GetOneQueryOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, storeUrl],
@@ -28,6 +35,42 @@ const getOneQueryOptions = ({ initialData, storeUrl, staleTime }: GetOneQueryOpt
 
 export function useGetOne(args: GetOneQueryOptions) {
 	return useQuery(getOneQueryOptions(args))
+}
+
+const getAllQueryOptions = ({ initialData = { items: [], total: 0 }, page, limit, staleTime }: GetAllQueryOptions) =>
+	queryOptions({
+		queryKey: [QUERY_KEY, page],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.getAll({ page, limit })
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+		initialData,
+		staleTime
+	})
+
+export function useGetAll(args: GetAllQueryOptions) {
+	return useQuery(getAllQueryOptions(args))
+}
+
+const getForUserQueryOptions = () =>
+	queryOptions({
+		queryKey: [QUERY_KEY],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.getForCurrentUser();
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+	})
+
+export function useGetForUser() {
+	return useQuery(getForUserQueryOptions())
 }
 
 export function invalidateAll() {
