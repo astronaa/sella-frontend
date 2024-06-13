@@ -3,30 +3,16 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { OrdersTable } from "./OrdersTable";
 import { NavSelect } from "./NavSelect";
-import { apiClient } from "~/shared/api/client";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { useState } from "react";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "../config";
+import { ordersQueries } from "~/entities/order";
 
 export function OrdersPage() {
 	const [page, setPage] = useState(1)
 
-	const { data, isLoading } = useQuery({
-		queryKey: ['orders', page],
-		queryFn: async () => {
-			const { data, error } = await apiClient.orders.getAll({
-				page, limit: ITEMS_PER_PAGE
-			})
-
-			if(error)
-				throw error;
-
-			return data
-		},
-		placeholderData: keepPreviousData
-	})
+	const { data, isLoading } = ordersQueries.useGetOrders({ page, limit: ITEMS_PER_PAGE })
 
 	const total = data?.total ?? 0;
 	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
