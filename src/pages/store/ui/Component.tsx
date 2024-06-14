@@ -11,7 +11,7 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 	const products = await fetchStoreProducts(storeUrl);
 
 	return (
-		<StoreOnPageProvider storeInitialData={store}>
+		<StoreOnPageProvider initialData={store}>
 			<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
 				<EditModeProvider>
 					<Heading productsInitialData={products} />

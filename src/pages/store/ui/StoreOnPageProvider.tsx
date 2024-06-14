@@ -5,13 +5,13 @@ import { StoreProvider, storeQueries } from "~/entities/store";
 import { Store } from "~/shared/api/model";
 
 interface StoreOnPageProviderProps extends PropsWithChildren {
-	storeInitialData: Store
+	initialData: Store
 }
 
-export function StoreOnPageProvider({ storeInitialData, children }: StoreOnPageProviderProps) {
+export function StoreOnPageProvider({ initialData, children }: StoreOnPageProviderProps) {
 	const { data: store } = storeQueries.useGetOne({
-		storeUrl: storeInitialData.shortName,
-		initialData: storeInitialData,
+		storeUrl: initialData.shortName,
+		initialData,
 		staleTime: Infinity
 	})
 

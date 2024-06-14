@@ -6,7 +6,7 @@ import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ProductManageDialog } from "~/features/product/manage";
-import { ProductCard, ProductLink, ProductPrice, productQueries } from "~/entities/product";
+import { ProductCard, ProductImage, ProductLink, ProductPrice, productQueries } from "~/entities/product";
 import { useEditModeContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
@@ -163,7 +163,11 @@ function ProductsEditTable({ products, loading, children }: ProductsListProps) {
 				{products.map((p, index) => (
 					<FlexTable.Row key={p.id} >
 						<span>{index + 1}</span>
-						<span className='text-white'>
+						<span className='text-white flex gap-[0.5rem] items-center'>
+							<ProductImage 
+								product={p}
+								className='size-[2rem]'
+							/>
 							{p.name}
 						</span>
 						<span>

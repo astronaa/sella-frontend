@@ -11,3 +11,5 @@ export default function Page({ params }: PageProps) {
 		/>
 	);
 }
+
+export const revalidate = 0;

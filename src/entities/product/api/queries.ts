@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
-import { Product } from "~/shared/api/model";
+import { Product, ProductId } from "~/shared/api/model";
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
@@ -14,7 +14,7 @@ interface GetFromStoreQueryOptions {
 
 const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData }: GetFromStoreQueryOptions) =>
 	queryOptions({
-		queryKey: [QUERY_KEY, page, { storeUrl, limit }],
+		queryKey: [QUERY_KEY, { page, storeUrl, limit }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({ page, limit });
 
@@ -31,6 +31,28 @@ const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData 
 export function useGetFromStore(args: GetFromStoreQueryOptions) {
 	return useQuery({
 		...getFromStoreQueryOptions(args)
+	})
+}
+
+interface GetOneQueryOptions {
+	productId: ProductId,
+	initialData: Product,
+	staleTime?: number
+}
+
+export function useGetOne({ productId, staleTime, initialData }: GetOneQueryOptions) {
+	return useQuery({
+		queryKey: [QUERY_KEY, { id: productId }],
+		queryFn: async () => {
+			const { data, error } = await apiClient.products.for(productId).get();
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+		staleTime,
+		initialData,
 	})
 }
 

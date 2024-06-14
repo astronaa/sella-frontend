@@ -1,4 +1,3 @@
-import { ProductProvider } from "~/entities/product";
 import { ProductContent } from "./ProductContent";
 import { ReviewsStream } from "./ReviewsStream";
 import { PreviewImage } from "~/shared/ui/image";
@@ -7,13 +6,14 @@ import { Button } from "~/shared/ui/kit/button";
 import { ProductId } from "~/shared/api/model";
 import { fetchProductPage, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
+import { ProductOnPageProvider } from "./ProductOnPageProvider";
 
 export async function Component({ productId }: { productId: ProductId }) {
 	const product = await fetchProductPage(productId);
 	const reviews = await fetchProductReviews(productId);
 
 	return (
-		<ProductProvider product={product}>
+		<ProductOnPageProvider initialData={product}>
 			<div className="flex flex-col items-start gap-16 mx-auto max-w-content px-[1rem]">
 				<div className='flex max-xl:flex-col gap-[2.5rem] w-full'>
 					<ProductContent
@@ -32,7 +32,7 @@ export async function Component({ productId }: { productId: ProductId }) {
 					initialData={reviews}
 				/>
 			</div>
-		</ProductProvider>
+		</ProductOnPageProvider>
 	);
 }
 
