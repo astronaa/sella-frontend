@@ -47,11 +47,11 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 				</div>
 
 				<div className='relative'>
-					<ScrollContainer className='flex gap-[1.5rem] w-full relative'>
+					<ScrollContainer className='flex gap-[1.5rem] relative mx-[-4rem] w-[calc(100%+4rem*2)] px-[4rem]'>
 						{mockCategories.map(c => (
 							<div
 								key={c}
-								className='flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] 
+								className='flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none 
 									rounded-[0.75rem] bg-white/[.04] flex-shrink-0 transition hover:bg-white/[.06]'
 							>
 								<PreviewImage
@@ -65,8 +65,12 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 						))}
 					</ScrollContainer>
 					<div
-						className='absolute right-0 top-0 bottom-0 w-[9.375rem] 
-							bg-gradient-to-r from-transparent to-black-06 to-90%'
+						className='absolute right-[-4rem] top-0 bottom-0 w-[4rem] 
+							bg-gradient-to-r from-transparent to-black-06 to-90% pointer-events-none'
+					/>
+					<div
+						className='absolute left-[-4rem] top-0 bottom-0 w-[4rem] 
+							bg-gradient-to-l from-transparent to-black-06 to-90% pointer-events-none'
 					/>
 				</div>
 			</div>
