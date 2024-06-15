@@ -13,7 +13,7 @@
     "openapi": "node gen-openapi.mjs"
   },
   "dependencies": {
-    "@ark-ui/react": "^2.2.3",
+    "@ark-ui/react": "^3.3.0",
     "@dotlottie/react-player": "^1.6.19",
     "@park-ui/cli": "^0.6.0",
     "@park-ui/tailwind-plugin": "^0.20.1",

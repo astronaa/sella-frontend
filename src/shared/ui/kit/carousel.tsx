@@ -58,6 +58,11 @@ export const NextTrigger = withContext(Carousel.NextTrigger, "nextTrigger");
 export const PrevTrigger = withContext(Carousel.PrevTrigger, "prevTrigger");
 export const Viewport = withContext(Carousel.Viewport, "viewport");
 
+export {
+	CarouselContext as Context,
+	type CarouselContextProps as ContextProps,
+} from '@ark-ui/react/carousel'
+
 export type RootProps = ComponentProps<typeof Root>;
 export type ControlProps = ComponentProps<typeof Control>
 export type IndicatorProps = ComponentProps<typeof Indicator>

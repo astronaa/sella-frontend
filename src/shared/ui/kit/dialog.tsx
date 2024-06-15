@@ -64,6 +64,11 @@ BaseCloseButton.displayName = 'Dialog.CloseButton';
 
 export const CloseButton = withContext(BaseCloseButton, 'closeButton');
 
+export {
+	DialogContext as Context,
+	type DialogContextProps as ContextProps,
+} from '@ark-ui/react/dialog'
+
 export type RootProps = ComponentProps<typeof Root>
 export type BackdropProps = ComponentProps<typeof Backdrop>
 export type CloseTriggerProps = ComponentProps<typeof CloseTrigger>

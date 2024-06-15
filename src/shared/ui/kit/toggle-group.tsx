@@ -9,8 +9,8 @@ const styles = tv(
 	{
 		base: 'toggleGroup',
 		defaultVariants: { size: 'md', variant: 'solid' },
-		slots: { 
-			root: 'flex', 
+		slots: {
+			root: 'flex',
 			item: 'transition'
 		},
 		variants: {
@@ -27,9 +27,9 @@ const styles = tv(
 				unstyled: {}
 			},
 			size: {
-				md: { 
-					root: 'gap-[0.5rem]', 
-					item: 'px-[1rem] py-[0.625rem]' 
+				md: {
+					root: 'gap-[0.5rem]',
+					item: 'px-[1rem] py-[0.625rem]'
 				},
 			},
 		},
@@ -40,6 +40,11 @@ const { withProvider, withContext } = createStyleContext(styles)
 
 export const Root = withProvider(ToggleGroup.Root, 'root')
 export const Item = withContext(ToggleGroup.Item, 'item')
+
+export {
+	ToggleGroupContext as Context,
+	type ToggleGroupContextProps as ContextProps,
+} from '@ark-ui/react/toggle-group'
 
 export type RootProps = ComponentProps<typeof Root>
 export type ItemProps = ComponentProps<typeof Item>
