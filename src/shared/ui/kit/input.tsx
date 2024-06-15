@@ -46,16 +46,17 @@ type InputVariantProps = VariantProps<typeof styles>
 const styles = tv(
 	{
 		base: [
-			'bg-white/[.04] text-white border border-transparent outline-none transition leading-[normal]',
+			'bg-white/[.04] text-white border border-transparent outline-none transition leading-[normal] placeholder-black-40',
 			'hover:bg-white/[.06]',
 			'filled:bg-[#141414] filled:border-secondary',
 			'data-[error]:text-error-100 data-[error]:border-error-100 filled:data-[error]:border-error-100 data-[error]:placeholder-error-100',
 			'data-[error]:selection:text-white data-[error]:selection:bg-error-100'
 		],
-		defaultVariants: { size: 'default' },
+		defaultVariants: { size: 'md' },
 		variants: {
 			size: {
-				default: 'rounded-[0.625rem] min-h-[3.125rem] min-w-[3.125rem] px-[1rem] py-[0.85rem]',
+				sm: 'rounded-[0.75rem] min-h-[2.375rem] min-w-[2.375rem] px-[1rem] py-[0.5313rem]',
+				md: 'rounded-[0.625rem] min-h-[3.125rem] min-w-[3.125rem] px-[1rem] py-[0.85rem]',
 				xl: 'rounded-[0.625rem] min-h-[4.375rem] min-w-[4.375rem] px-[1.625rem] text-[2rem]',
 				'2xl': 'rounded-[0.625rem] min-h-[6.25rem] min-w-[4.75rem] px-[1.625rem] text-[2rem]'
 			}
