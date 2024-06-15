@@ -111,6 +111,13 @@ export const Positioner = withContext(BasePositioner, 'positioner')
 export const Trigger = withContext(Select.Trigger, 'trigger')
 export const ValueText = withContext(Select.ValueText, 'valueText')
 
+export {
+	SelectContext as Context,
+	SelectHiddenSelect as HiddenSelect,
+	type SelectContextProps as ContextProps,
+	type SelectHiddenSelectProps as HiddenSelectProps,
+} from '@ark-ui/react/select'
+
 export type RootProps = ComponentProps<typeof Root>
 export type ClearTriggerProps = ComponentProps<typeof ClearTrigger>
 export type ContentProps = ComponentProps<typeof Content>

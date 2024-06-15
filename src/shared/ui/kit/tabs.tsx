@@ -47,9 +47,13 @@ export const Indicator = withContext(Tabs.Indicator,'indicator')
 export const List = withContext(Tabs.List, 'list')
 export const Trigger = withContext(Tabs.Trigger, 'trigger')
 
+export { 
+	TabsContext as Context, 
+	type TabsContextProps as ContextProps 
+} from '@ark-ui/react/tabs'
+
 export type RootProps = ComponentProps<typeof Root>
 export type ContentProps = ComponentProps<typeof Content>
 export type IndicatorProps = ComponentProps<typeof Indicator>
 export type ListProps = ComponentProps<typeof List>
 export type TriggerProps = ComponentProps<typeof Trigger>
-

@@ -58,6 +58,11 @@ export const ItemText = withContext(ArkRadioGroup.ItemText, 'itemText')
 export const ItemAddon = withContext(ark.div, 'itemAddon')
 export const Label = withContext(ArkRadioGroup.Label, 'label')
 
+export {
+	RadioGroupContext as Context,
+	type RadioGroupContextProps as ContextProps,
+} from '@ark-ui/react/radio-group'
+
 export type RootProps = ComponentProps<typeof Root>
 export type IndicatorProps = ComponentProps<typeof Indicator>
 export type ItemProps = ComponentProps<typeof Item>
