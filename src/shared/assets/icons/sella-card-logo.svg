@@ -1,0 +1,6 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M40 40V0H80L40 40Z" fill="currentColor"/>
+    <path d="M40 0V40H0C0 17.9111 17.9111 0 40 0Z" fill="currentColor"/>
+    <path d="M40 40V80H0L40 40Z" fill="currentColor"/>
+    <path d="M40 80V40H80C80 62.0889 62.0889 80 40 80Z" fill="currentColor"/>
+</svg>

@@ -327,7 +327,7 @@ export interface paths {
         get: operations["ProductsController_getProduct"];
         put?: never;
         post?: never;
-        delete?: never;
+        delete: operations["ProductsController_deleteProduct"];
         options?: never;
         head?: never;
         patch: operations["ProductsController_updateProduct"];
@@ -612,25 +612,21 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
+        StoreProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+            shortDescription: string;
+        };
+        ProductsResponseDto: {
+            data: components["schemas"]["StoreProductDto"][];
+            total: number;
+        };
         RatingDto: {
             total: number;
             positive: number;
             negative: number;
-        };
-        ProductInfoDto: {
-            id: string;
-            name: string;
-            description?: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
-            hasPreview: boolean;
-            storeUrl: string;
-            rating: components["schemas"]["RatingDto"];
-        };
-        ProductsResponseDto: {
-            data: components["schemas"]["ProductInfoDto"][];
-            total: number;
         };
         StoreInfoDto: {
             /** Format: uuid */
@@ -671,6 +667,17 @@ export interface components {
             /** @description List of enum values */
             tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
             message?: string;
+        };
+        ProductInfoDto: {
+            id: string;
+            name: string;
+            description?: string;
+            shortDescription: string;
+            price: number;
+            imageIds: string[];
+            hasPreview: boolean;
+            storeUrl: string;
+            rating: components["schemas"]["RatingDto"];
         };
         ProductCreateDto: {
             name: string;
@@ -1475,6 +1482,40 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ProductInfoDto"];
                 };
+            };
+            /** @description Product not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductsController_deleteProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Product deleted successfully. */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductInfoDto"];
+                };
+            };
+            /** @description User cannot delete this product */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
             /** @description Product not found */
             404: {

@@ -27,6 +27,17 @@ import Refresh from '../../assets/icons/refresh.svg';
 
 import CurrencyUsdt from '../../assets/icons/currency/usdt.svg';
 
+import Scales from '../../assets/icons/scales.svg';
+import Users from '../../assets/icons/users.svg';
+import Route from '../../assets/icons/route.svg';
+import Percent from '../../assets/icons/percent.svg';
+import Lightning from '../../assets/icons/lightning.svg';
+import Link from '../../assets/icons/link.svg';
+import Coins from '../../assets/icons/coins.svg';
+import Refresh01 from '../../assets/icons/refresh01.svg';
+import Gift from '../../assets/icons/gift.svg';
+import SellaCardLogo from '../../assets/icons/sella-card-logo.svg';
+
 export const Icons = {
 	Add,
 	Check,
@@ -54,6 +65,17 @@ export const Icons = {
 	ChevronDown,
 	AlertOctagon,
 	Refresh,
-	
-	CurrencyUsdt
+
+	CurrencyUsdt,
+
+	Scales,
+	Users,
+	Route,
+	Percent,
+	Lightning,
+	Link,
+	Coins,
+	Refresh01,
+	Gift,
+	SellaCardLogo,
 }
