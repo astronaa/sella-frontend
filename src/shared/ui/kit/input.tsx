@@ -50,7 +50,8 @@ const styles = tv(
 			'hover:bg-white/[.06]',
 			'filled:bg-[#141414] filled:border-secondary',
 			'data-[error]:text-error-100 data-[error]:border-error-100 filled:data-[error]:border-error-100 data-[error]:placeholder-error-100',
-			'data-[error]:selection:text-white data-[error]:selection:bg-error-100'
+			'data-[error]:selection:text-white data-[error]:selection:bg-error-100',
+			'leading-[1.1]'
 		],
 		defaultVariants: { size: 'md' },
 		variants: {
