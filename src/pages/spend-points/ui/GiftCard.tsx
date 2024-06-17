@@ -1,4 +1,4 @@
-import { Background } from "~/pages/home/ui/SectionBackground";
+import { Background } from "src/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 
 export function GiftCard({
@@ -15,8 +15,12 @@ export function GiftCard({
 			<div className='text-5xl text-white'>${price}</div>
 
 			<div>
-				<div className='text-accent-100'>{points}</div>
+				<div className='flex items-center gap-1 text-accent-100'>
+					<div>{points}</div>
+					<Icons.PointsIcon />
+				</div>
 				<div className='text-sm	text-black-40'>Sella Gift Card</div>
+
 			</div>
 
 			<Icons.SellaCardLogo className='absolute right-5 bottom-5 text-accent-100' />

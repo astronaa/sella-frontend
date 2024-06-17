@@ -17,7 +17,7 @@ export function MarketingCard({ title, items }: {
 				{items.map(({ Icon, text }) => (
 					<div key={text} className='flex gap-[0.375rem] text-black-40 font-semibold'>
 						<Icon className='w-[1.25rem] h-[1.25rem]'/>
-						<span>{text}</span>
+						<span className='text-[15px] font-[500]'>{text}</span>
 					</div>
 				))}
 			</div>

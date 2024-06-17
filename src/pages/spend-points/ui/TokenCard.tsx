@@ -18,7 +18,10 @@ export function TokenCard({
 			<div className='text-5xl text-black'>${price}</div>
 
 			<div>
-				<div className='text-black'>{points}</div>
+				<div className='flex items-center gap-1 text-black'>
+					<div>{points}</div>
+					<Icons.PointsIcon />
+				</div>
 				<div className='text-sm	text-black'>Sella Tokens</div>
 			</div>
 

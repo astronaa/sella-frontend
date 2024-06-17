@@ -1,5 +1,5 @@
 import { FeaturesList } from "./Features";
-import { Background } from "./SectionBackground";
+import { Background } from "~/shared/ui/gradient-background";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";

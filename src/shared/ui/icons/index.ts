@@ -37,6 +37,8 @@ import Coins from '../../assets/icons/coins.svg';
 import Refresh01 from '../../assets/icons/refresh01.svg';
 import Gift from '../../assets/icons/gift.svg';
 import SellaCardLogo from '../../assets/icons/sella-card-logo.svg';
+import PointsIcon from '../../assets/icons/point-icon.svg';
+import Lock from '../../assets/icons/lock.svg';
 
 export const Icons = {
 	Add,
@@ -78,4 +80,6 @@ export const Icons = {
 	Refresh01,
 	Gift,
 	SellaCardLogo,
+	PointsIcon,
+	Lock,
 }

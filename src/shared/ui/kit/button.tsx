@@ -54,6 +54,7 @@ const styles = tv(
 			colorPalette: {
 				accent: [],
 				gray: [],
+				lightgray: [],
 				red: [],
 				green: [],
 				social: []
@@ -75,6 +76,13 @@ const styles = tv(
 					'bg-white/[.08] text-white',
 					'hocus:bg-white/[.10]',
 					'data-[selected]:bg-accent-100 data-[selected]:hocus:bg-accent-100/80 data-[selected]:text-black-100'
+				]
+			},
+			{
+				colorPalette: 'lightgray',
+				variant: 'solid',
+				className: [
+					'bg-black-60 text-black disabled:opacity-100',
 				]
 			},
 			{
