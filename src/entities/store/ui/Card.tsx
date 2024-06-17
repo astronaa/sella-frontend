@@ -14,7 +14,7 @@ export type RootProps = HTMLArkProps<'div'> & StoreProp;
 
 export function Root({ store, className, ...props }: RootProps) {
 	return (
-		<StoreProvider store={store}>
+		<StoreProvider value={store}>
 			<ark.div
 				{...props}
 				className={cn(

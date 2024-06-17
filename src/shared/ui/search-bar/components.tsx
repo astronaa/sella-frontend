@@ -3,7 +3,7 @@ import { Input as BaseInput, InputGroup } from "../kit/input";
 import { Icons } from "../icons";
 import { cn } from "~/shared/lib/cn";
 import { useControllableState } from "~/shared/lib/use-controllable-state";
-import { SearchBarContextProvider, useSearchBarContext } from "./context";
+import { SearchBarProvider, useSearchBarStrictContext } from "./context";
 
 export interface RootProps extends Omit<
 	ComponentProps<typeof InputGroup>,
@@ -22,18 +22,18 @@ export function Root({ children, defaultValue = '', value: v, onChange, ...props
 	}), [value, setValue]);
 
 	return (
-		<SearchBarContextProvider value={contextValue}>
+		<SearchBarProvider value={contextValue}>
 			<InputGroup {...props}>
 				{children}
 
 				<RightElement />
 			</InputGroup>
-		</SearchBarContextProvider>
+		</SearchBarProvider>
 	);
 }
 
 function RightElement() {
-	const { value, setValue } = useSearchBarContext();
+	const { value, setValue } = useSearchBarStrictContext();
 
 	return (
 		<span
@@ -55,7 +55,7 @@ function RightElement() {
 export function Input(
 	{ className, ...props }: Omit<ComponentProps<typeof BaseInput>, 'value' | 'onChange' | 'defaultValue'>
 ) {
-	const { value, setValue } = useSearchBarContext();
+	const { value, setValue } = useSearchBarStrictContext();
 
 	return (
 		<BaseInput

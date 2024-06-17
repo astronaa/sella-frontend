@@ -124,7 +124,7 @@ function InteractivePopover({ children }: PropsWithChildren) {
 			open={open}
 			onOpenChange={change => handleOpenChange(change.open)}
 			positioning={{ strategy: 'fixed', gutter: 0 }}
-			autoFocus={false}
+			autoFocus={false} unmountOnExit lazyMount
 			onInteractOutside={e => {
 				const target = e.detail.originalEvent.target as HTMLElement;
 

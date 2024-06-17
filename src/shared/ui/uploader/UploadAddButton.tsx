@@ -1,5 +1,5 @@
 import { formatFileSize } from "~/shared/lib/format-file-size";
-import { useUploadContext } from "./Upload";
+import { useUploadStrictContext } from "./Upload";
 import { ButtonProps, IconButton } from "../kit/button";
 import { Icons } from "../icons";
 import { cn } from "~/shared/lib/cn";
@@ -9,7 +9,7 @@ export function UploadAddButton({ className, ...props }: ButtonProps) {
 		inputRef, name, accept,
 		multiple, setFiles, files,
 		maxSizePerFile
-	} = useUploadContext();
+	} = useUploadStrictContext();
 
 	const validateFile = (file: File) => {
 		if (maxSizePerFile && file.size > maxSizePerFile)
