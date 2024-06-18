@@ -6,3 +6,4 @@ export * as FlexTable from './flex-table';
 export * as Select from './select';
 export * as Tabs from './tabs';
 export * as Carousel from './carousel'
+export * as Clipboard from './clipboard'
