@@ -10,8 +10,8 @@ import { storeQueries } from '~/entities/store';
 import { Store } from "~/shared/api/model";
 import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
-import ScrollContainer from "react-indiana-drag-scroll";
 import { PreviewImage } from "~/shared/ui/image";
+import { Scrollable } from "~/shared/ui/scrollable";
 
 interface StoresStreamProps {
 	initialData: { items: Store[]; total: number; };
@@ -47,23 +47,25 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 				</div>
 
 				<div className='relative'>
-					<ScrollContainer className='flex gap-[1.5rem] relative mx-[-4rem] w-[calc(100%+4rem*2)] px-[4rem]'>
-						{mockCategories.map(c => (
-							<div
-								key={c}
-								className='flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none 
-									rounded-[0.75rem] bg-white/[.04] flex-shrink-0 transition hover:bg-white/[.06]'
-							>
-								<PreviewImage
-									src={null}
-									className='size-[5rem] rounded-full bg-white/[.06] border-none'
-									alt={`Category ${c} image`}
-								/>
+					<Scrollable.Root className='mx-[-4rem] w-[calc(100%+4rem*2)]'>
+						<Scrollable.Container className='gap-[1.5rem] relative px-[4rem]'>
+							{mockCategories.map(c => (
+								<div
+									key={c}
+									className='flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none 
+										rounded-[0.75rem] bg-white/[.04] flex-shrink-0 transition hover:bg-white/[.06]'
+								>
+									<PreviewImage
+										src={null}
+										className='size-[5rem] rounded-full bg-white/[.06] border-none'
+										alt={`Category ${c} image`}
+									/>
 
-								<span>{c}</span>
-							</div>
-						))}
-					</ScrollContainer>
+									<span>{c}</span>
+								</div>
+							))}
+						</Scrollable.Container>
+					</Scrollable.Root>
 					<div
 						className='absolute right-[-4rem] top-0 bottom-0 w-[4rem] 
 							bg-gradient-to-r from-transparent to-black-06 to-90% pointer-events-none'
