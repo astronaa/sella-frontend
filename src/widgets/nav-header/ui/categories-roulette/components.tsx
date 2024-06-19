@@ -22,7 +22,7 @@ export function Root({ children }: PropsWithChildren) {
 	);
 }
 
-export function Button({ className, ...props }: ButtonProps) {
+export function Button({ className, children, ...props }: ButtonProps) {
 	const { setOpen, open } = useCategoriesRouletteStrictContext();
 	const active = open || !!props?.active
 
@@ -39,7 +39,7 @@ export function Button({ className, ...props }: ButtonProps) {
 			<Icons.Menu
 				className={cn('size-[1.25rem] flex-shrink-0 transition', !active && 'text-accent-100')}
 			/>
-			Categories
+			{children}
 		</BaseButton>
 	);
 }

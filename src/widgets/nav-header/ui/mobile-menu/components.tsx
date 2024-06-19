@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { PhoneNavbarContent } from "./PhoneNavbarContent";
 import { ButtonProps, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
+import { cn } from "~/shared/lib/cn";
 
 export function Root({ children }: PropsWithChildren) {
 	const [open, setOpen] = useState(false);
@@ -28,14 +29,14 @@ export function Root({ children }: PropsWithChildren) {
 	);
 }
 
-export function Button(props: ButtonProps) {
+export function Button({ className, ...props }: ButtonProps) {
 	const { open, setOpen } = useMobileMenuStrictContext();
 
 	return (
 		<IconButton
 			colorPalette='gray'
 			variant="outline" size='sm'
-			className="lg:hidden [&_svg]:size-[1.5rem]"
+			className={cn("lg:hidden [&_svg]:size-[1.5rem]", !open && 'border-none', className)}
 			{...props}
 			onClick={() => setOpen(o => !o)}
 		>

@@ -46,24 +46,30 @@ function RightElement() {
 			{value.length ? (
 				<Icons.Close className='size-[1.25rem] text-black-60' />
 			) : (
-				<Icons.Search className='size-[1rem] text-black-40' />
+				<Icons.Search className='size-[1rem] text-black-60' />
 			)}
 		</span>
 	);
 }
 
-export function Input(
-	{ className, ...props }: Omit<ComponentProps<typeof BaseInput>, 'value' | 'onChange' | 'defaultValue'>
-) {
+export type InputProps = Omit<
+	ComponentProps<typeof BaseInput>,
+	'value' | 'onChange' | 'defaultValue'
+>;
+
+export function Input({ className, ...props }: InputProps) {
 	const { value, setValue } = useSearchBarStrictContext();
 
 	return (
 		<BaseInput
 			size='sm' {...props}
 			value={value} onChange={e => setValue(e.target.value)}
-			className={cn('border border-secondary pe-[2.5rem] w-full', className)}
+			className={cn(
+				'border pe-[2.5rem] w-full',
+				'border-secondary bg-white/[.06] placeholder:text-black-60',
+				'focus:bg-white/[.06] filled:bg-white/[.06]',
+				className
+			)}
 		/>
 	);
 }
-
-export type InputProps = ComponentProps<typeof Input>

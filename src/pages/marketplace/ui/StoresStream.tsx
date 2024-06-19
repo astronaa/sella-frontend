@@ -47,8 +47,8 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 				</div>
 
 				<div className='relative'>
-					<Scrollable.Root className='mx-[-4rem] w-[calc(100%+4rem*2)]'>
-						<Scrollable.Container className='gap-[1.5rem] relative px-[4rem]'>
+					<Scrollable.Root className='mx-[-1rem] w-[calc(100%+1rem*2)]'>
+						<Scrollable.Container className='gap-[1.5rem] relative px-[1rem]'>
 							{mockCategories.map(c => (
 								<div
 									key={c}
@@ -67,11 +67,11 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 						</Scrollable.Container>
 					</Scrollable.Root>
 					<div
-						className='absolute right-[-4rem] top-0 bottom-0 w-[4rem] 
+						className='absolute right-[-1rem] top-0 bottom-0 w-[2rem] 
 							bg-gradient-to-r from-transparent to-black-06 to-90% pointer-events-none'
 					/>
 					<div
-						className='absolute left-[-4rem] top-0 bottom-0 w-[4rem] 
+						className='absolute left-[-1rem] top-0 bottom-0 w-[2rem] 
 							bg-gradient-to-l from-transparent to-black-06 to-90% pointer-events-none'
 					/>
 				</div>

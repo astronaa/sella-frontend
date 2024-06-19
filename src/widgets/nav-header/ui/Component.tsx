@@ -1,10 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { HTMLAttributes, PropsWithChildren, useEffect } from "react";
 import { cn } from "~/shared/lib/cn";
-import { AppLogo } from "~/shared/ui/logo";
-import { NavItems } from "./NavItems";
 import { UserNavBar } from "./user-nav-bar";
 import { Collapsible, Popover } from "~/shared/ui/kit";
 import { SearchPanel, useSearchPanelStrictContext } from "~/features/search-panel";
@@ -14,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { CategoriesRoulette } from "./categories-roulette";
 import { useCategoriesRouletteStrictContext } from "./categories-roulette/contex";
+import { HeaderDesktopView, HeaderTabletView, HeaderMobileView } from "./HeaderViews";
 
 export function Component(props: HTMLAttributes<HTMLDivElement>) {
 	return (
@@ -43,34 +41,17 @@ function Header({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 					'backdrop-blur-[3rem] bg-black-08/[.80]',
 					'border border-secondary', mobileMenuOpen && "border-transparent bg-transparent backdrop-blur-none",
 					popupOpen && "border-b-transparent rounded-b-none",
+					'max-md:gap-0',
 					className
 				)}
 			>
-				<div className='flex items-center gap-[2rem] max-lg:justify-between w-full'>
-					<Link href='/'>
-						<AppLogo />
-					</Link>
-
-					<div className='flex'>
-						<CategoriesRoulette.Button
-							className='border border-secondary rounded-r-none'
-						/>
-						<SearchPanel.SearchBarRoot className='w-full max-w-[18.75rem]'>
-							<SearchPanel.SearchBarInput
-								className='rounded-l-none border-l-0'
-								placeholder='Search products, stores'
-							/>
-						</SearchPanel.SearchBarRoot>
-					</div>
-
-					<NavItems className='max-lg:hidden' />
-				</div>
+				<HeaderDesktopView />
+				<HeaderTabletView />
+				<HeaderMobileView />
 
 				<UserNavBar
 					className='max-lg:hidden'
 				/>
-
-				<MobileMenu.Button />
 			</div>
 		</Popover.Anchor>
 	);
@@ -102,13 +83,13 @@ function InteractivePopover({ children }: PropsWithChildren) {
 	} = useCategoriesRouletteStrictContext();
 
 	useEffect(() => {
-		if(searchOpen)
+		if (searchOpen)
 			setCategoriesOpen(false);
 
 	}, [searchOpen, setCategoriesOpen])
 
 	useEffect(() => {
-		if(categoriesOpen)
+		if (categoriesOpen)
 			setSearchOpen(false);
 	}, [categoriesOpen, setSearchOpen])
 
@@ -151,7 +132,9 @@ function InteractivePopover({ children }: PropsWithChildren) {
 						className='mx-[-1rem] w-[calc(100%+1rem*2)]'
 					>
 						<Collapsible.Content>
-							<CategoriesRoulette.Content className='px-[1rem]' />
+							<CategoriesRoulette.Content
+								className='px-[1rem]'
+							/>
 						</Collapsible.Content>
 					</Collapsible.Root>
 

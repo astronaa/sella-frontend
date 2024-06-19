@@ -11,6 +11,8 @@ import { productMock } from "~/shared/api/client/products/mock";
 import { ProductCard } from "~/entities/product";
 import { storeMock } from "~/shared/api/client/stores/mock";
 import { StoreCard } from "~/entities/store";
+import { Input as BaseInput, InputProps } from "~/shared/ui/kit/input";
+import { Scrollable } from "~/shared/ui/scrollable";
 
 export function Root({ children }: PropsWithChildren) {
 	const [open, setOpen] = useState(false);
@@ -33,6 +35,27 @@ export function Root({ children }: PropsWithChildren) {
 		<SearchPanelProvider value={value}>
 			{children}
 		</SearchPanelProvider>
+	);
+}
+
+export function Input(props: InputProps) {
+	const { setSearchText, setOpen } = useSearchPanelStrictContext();
+	const debouncedSetSearchText = useDebounce(setSearchText, 300);
+
+	return (
+		<BaseInput
+			{...props}
+			onClick={e => {
+				setOpen(true);
+				props?.onClick?.(e);
+			}}
+			onChange={event => {
+				const value = event.target.value;
+				value.length ? debouncedSetSearchText(value) : setSearchText(value);
+
+				props?.onChange?.(event);
+			}}
+		/>
 	);
 }
 
@@ -71,13 +94,18 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 					<a href='#' className='text-accent-100'>Show all results</a>
 				</div>
 
-				<div className='flex w-full gap-[1rem] justify-between'>
-					{Array(4).fill(productMock).map((p, index) => (
-						<ProductCard.Composed
-							key={index} product={p} 
-						/>
-					))}
-				</div>
+				<Scrollable.Root
+					scrollOptions={{ dragFree: false }}
+				>
+					<Scrollable.Container className='gap-[1rem] justify-between'>
+						{Array(4).fill(productMock).map((p, index) => (
+							<ProductCard.Composed
+								key={index} product={p}
+								className='flex-shrink-0'
+							/>
+						))}
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</div>
 
 			<div className='flex flex-col gap-[1rem] w-full'>
@@ -91,7 +119,7 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 				<div className='flex w-full gap-[1rem] justify-between'>
 					{Array(2).fill(storeMock).map((s, index) => (
 						<StoreCard.Composed
-							key={index} store={s} 
+							key={index} store={s}
 						/>
 					))}
 				</div>

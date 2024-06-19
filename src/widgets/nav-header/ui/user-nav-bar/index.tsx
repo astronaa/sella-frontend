@@ -13,7 +13,11 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 	const isAuthorized = !!user && address;
 
 	return (
-		<Skeleton className='rounded-[1rem]' loading={user === undefined}>
+		<Skeleton 
+			asChild
+			className='rounded-[1rem]' 
+			loading={user === undefined}
+		>
 			{!!isAuthorized ? (
 				<AuthorizedBar {...props} />
 			) : (
