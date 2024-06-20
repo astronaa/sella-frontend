@@ -1,8 +1,10 @@
-import { OrderId, ProductId } from "../../model";
+import { OrderId } from "../orders/model";
+import { ProductId } from "../products/model";
 import { authFetchClient } from "../fetch-client";
-import { PayloadPagination, mapPaginationPayloadToDto } from "../pagination";
+import { PayloadPagination } from "../shared/schemas";
 import { mapDtoToReview } from "./mappers";
 import { PayloadGetAll, schemaGetAll, sortTypes } from "./schemas";
+import { mapPaginationPayloadToDto } from "../shared/mappers";
 
 export function createReviewsClient() {
 	return {

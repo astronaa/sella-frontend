@@ -1,4 +1,4 @@
-import { Order } from "~/shared/api/model";
+import { Order } from "~/shared/api/client";
 import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";

@@ -7,9 +7,9 @@ import { useDebounce } from "../../../shared/lib/use-debounce";
 import { useControllableState } from "~/shared/lib/use-controllable-state";
 import { cn } from "~/shared/lib/cn";
 import { Heading } from "~/shared/ui/kit/heading";
-import { productMock } from "~/shared/api/client/products/mock";
+import { productMock } from "~/shared/api/client"
 import { ProductCard } from "~/entities/product";
-import { storeMock } from "~/shared/api/client/stores/mock";
+import { storeMock } from "~/shared/api/client"
 import { StoreCard } from "~/entities/store";
 import { Input as BaseInput, InputProps } from "~/shared/ui/kit/input";
 import { Scrollable } from "~/shared/ui/scrollable";

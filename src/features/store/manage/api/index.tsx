@@ -1,7 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import { Store } from '~/shared/api/model';
+import { Store } from "~/shared/api/client"
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { apiClient } from "~/shared/api/client";
 import { FormError } from '~/shared/lib/errors';

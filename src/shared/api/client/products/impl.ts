@@ -7,7 +7,7 @@ import {
 	schemaUploadImages
 } from "./schemas";
 
-import { Product, ProductId } from "../../model";
+import { Product, ProductId } from "./model";
 import { authFetchClient } from "../fetch-client";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
@@ -41,6 +41,7 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
+					// @ts-expect-error expecting openapi update
 					body: payload
 				});
 
@@ -85,7 +86,9 @@ export function createProductsClient() {
 
 				const patch = async (payload: { imageIds: string[], hasPreview: boolean }) => {
 					const { error } = await authFetchClient.PATCH('/api/products/{id}', {
-						params: { path: { id: productId } }, body: payload
+						params: { path: { id: productId } },
+						// @ts-expect-error expecting openapi update
+						body: payload
 					});
 					return !error;
 				}

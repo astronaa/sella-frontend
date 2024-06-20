@@ -9,7 +9,7 @@ import {
 
 import { zodValidate } from "~/shared/lib/zod-final-form";
 import { manageProduct, SchemaType, schema } from "../../api";
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
 import { Form, useField } from "react-final-form";
 import { cn } from "~/shared/lib/cn";

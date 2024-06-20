@@ -8,3 +8,10 @@ export const schemaFile = (maxSize = Infinity) => (
 		})
 		.nullable()
 )
+
+export const schemaPaginationPayload = z.object({
+	page: z.coerce.number(),
+	limit: z.coerce.number()
+})
+
+export type PayloadPagination = z.infer<typeof schemaPaginationPayload>;

@@ -4,7 +4,7 @@ import { Dialog } from '~/shared/ui/kit';
 import { CreateForm } from './CreateForm';
 import { ReactNode } from 'react';
 import { Button } from '~/shared/ui/kit/button';
-import { Store } from "~/shared/api/model";
+import { Store } from "~/shared/api/client"
 import { useDialogState } from '~/shared/lib/dialog';
 import { VSubmitButton } from '~/shared/ui/validation-inputs';
 

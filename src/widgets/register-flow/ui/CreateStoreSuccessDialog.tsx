@@ -1,7 +1,7 @@
 'use client';
 
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { Store } from '~/shared/api/model';
+import { Store } from "~/shared/api/client"
 import { Button } from '~/shared/ui/kit/button';
 import { Dialog } from '~/shared/ui/kit';
 

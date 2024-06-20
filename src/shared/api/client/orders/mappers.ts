@@ -1,5 +1,5 @@
 import { components } from "~/shared/api/openapi";
-import { Order } from "~/shared/api/model";
+import { Order } from "./model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "../stores/mappers";
 

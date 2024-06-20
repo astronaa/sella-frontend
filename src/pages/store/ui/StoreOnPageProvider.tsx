@@ -2,7 +2,7 @@
 
 import { PropsWithChildren } from "react";
 import { StoreProvider, storeQueries } from "~/entities/store";
-import { Store } from "~/shared/api/model";
+import { Store } from "~/shared/api/client"
 
 interface StoreOnPageProviderProps extends PropsWithChildren {
 	initialData: Store

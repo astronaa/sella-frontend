@@ -1,8 +1,8 @@
-import { OrderId } from "~/shared/api/model";
 import { ChatFrame } from "../chat/Frame";
 import { PageLayout, PossibleTabs } from "../PageLayout";
 import { fetchOrder } from "../../api/order";
 import { OrderFlowCard } from "./OrderFlowCard";
+import { OrderId } from "~/shared/api/client";
 
 interface PageProcessOrderProps {
 	orderId: OrderId,

@@ -1,4 +1,4 @@
-import { StoreId } from "~/shared/api/model";
+import { StoreId } from "~/shared/api/client"
 import { fetchProduct } from "../../api/product";
 import { ChatFrame } from "../chat/Frame";
 import { PageLayout, PossibleTabs } from "../PageLayout";

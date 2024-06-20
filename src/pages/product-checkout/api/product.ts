@@ -1,4 +1,4 @@
-import { Product, ProductId } from "~/shared/api/model";
+import { Product, ProductId } from "~/shared/api/client"
 
 export async function fetchProduct(productId: ProductId): Promise<Product> {
 	return {

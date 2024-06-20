@@ -10,7 +10,6 @@ import { VSubmitButton, VTextAreaControl, VTextControl } from '~/shared/ui/valid
 import { Collapsible } from "~/shared/ui/kit";
 import { ToggleGroupField } from './ToggleGroupField';
 import { apiClient } from "~/shared/api/client";
-import { ANOTHER_REASON_ID, reportReasons, schemaReport } from "~/shared/api/client/stores/schemas";
 import { useDialogState } from "~/shared/lib/dialog";
 
 type ReportStoreDialogProps = Dialog.RootProps & {
@@ -18,6 +17,10 @@ type ReportStoreDialogProps = Dialog.RootProps & {
 	cancelButton?: ReactNode
 	storeUrl: string
 };
+
+const {
+	ANOTHER_REASON_ID, reportReasons, schemaReport
+} = apiClient.stores;
 
 const options: { id: typeof reportReasons[number], label: string }[] = [
 	{ id: 'Spam', label: 'Spam' },

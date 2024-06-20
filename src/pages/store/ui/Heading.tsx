@@ -3,7 +3,7 @@
 import { StoreCard, useStoreStrictContext } from "~/entities/store";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
 import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";

@@ -1,6 +1,7 @@
-import { authFetchClient } from "~/shared/api/client/fetch-client";
-import { mapPaginationPayloadToDto, PayloadPagination } from "~/shared/api/client/pagination";
-import { mapDtoToSale } from "~/shared/api/client/sales/mappers";
+import { authFetchClient } from "../fetch-client";
+import { mapPaginationPayloadToDto } from "../shared/mappers";
+import { PayloadPagination } from "../shared/schemas";
+import { mapDtoToSale } from "./mappers";
 
 export function createSalesClient() {
 	return {

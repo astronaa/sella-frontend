@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
-import { Product, ProductId } from "~/shared/api/model";
+import { Product, ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'

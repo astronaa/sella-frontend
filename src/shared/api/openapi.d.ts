@@ -327,7 +327,7 @@ export interface paths {
         get: operations["ProductsController_getProduct"];
         put?: never;
         post?: never;
-        delete?: never;
+        delete: operations["ProductsController_deleteProduct"];
         options?: never;
         head?: never;
         patch: operations["ProductsController_updateProduct"];
@@ -391,6 +391,22 @@ export interface paths {
         get: operations["ReviewsController_getReviewForOrder"];
         put?: never;
         post: operations["ReviewsController_createReview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/telegram/webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["TelegramController_handleWebhook"];
         delete?: never;
         options?: never;
         head?: never;
@@ -542,6 +558,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/orders/{id}/payment-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["OrdersController_changePaymentStatus"];
+        trace?: never;
+    };
+    "/api/orders/payment-methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_getPaymentMethods"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/quests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["QuestsController_getQuests"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/quests/{id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["QuestsController_completeQuest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/product/{id}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductReportsController_getByProductId"];
+        put?: never;
+        post: operations["ProductReportsController_reportStoreByUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -583,6 +679,24 @@ export interface components {
         NonceResponseDto: {
             nonce: number;
         };
+        QuestAttribute: {
+            url?: string;
+            xId?: string;
+            postId?: string;
+            friends?: number;
+        };
+        Quest: {
+            id: string;
+            title: string;
+            description: string;
+            /** @enum {string} */
+            type: "followOnX" | "addSella" | "retweetOnX" | "likeOnX" | "commentOnX" | "followOnTelegram" | "createFirstStore" | "referFriends" | "commentOnMedium" | "commeOnReddit";
+            questRequired: components["schemas"]["Quest"];
+            attribute?: components["schemas"]["QuestAttribute"];
+            points: number;
+            /** Format: date-time */
+            createdAt: string;
+        };
         User: {
             id: number;
             profilePictureId?: string;
@@ -594,8 +708,10 @@ export interface components {
             telegramId?: string;
             refCode: string;
             invitedBy?: string;
+            points: number;
             /** Format: date-time */
             lastOnline: string;
+            completedQuests: components["schemas"]["Quest"][];
             /** Format: date-time */
             createdAt: string;
         };
@@ -612,25 +728,22 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
+        StoreProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+            price: number;
+            shortDescription: string;
+        };
+        ProductsResponseDto: {
+            data: components["schemas"]["StoreProductDto"][];
+            total: number;
+        };
         RatingDto: {
             total: number;
             positive: number;
             negative: number;
-        };
-        ProductInfoDto: {
-            id: string;
-            name: string;
-            description?: string;
-            shortDescription: string;
-            price: number;
-            imageIds: string[];
-            hasPreview: boolean;
-            storeUrl: string;
-            rating: components["schemas"]["RatingDto"];
-        };
-        ProductsResponseDto: {
-            data: components["schemas"]["ProductInfoDto"][];
-            total: number;
         };
         StoreInfoDto: {
             /** Format: uuid */
@@ -642,11 +755,13 @@ export interface components {
             createdAt: string;
             rating: components["schemas"]["RatingDto"];
             ownerUsername: string;
+            tagNames: string[];
         };
         CreateStoreDto: {
             name: string;
             description?: string;
             url: string;
+            tagNames: string[];
         };
         StoresInfoDto: {
             /** Format: uuid */
@@ -666,18 +781,34 @@ export interface components {
             name?: string;
             description?: string;
             url?: string;
+            tagNames: string[];
         };
         ReportStoreDto: {
             /** @description List of enum values */
             tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
             message?: string;
         };
-        ProductCreateDto: {
+        ProductInfoDto: {
+            id: string;
             name: string;
+            hasPreview: boolean;
+            imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
             storeUrl: string;
+            rating: components["schemas"]["RatingDto"];
+            /** @default false */
+            isFrozen: boolean;
+            tagNames: string[];
+        };
+        ProductCreateDto: {
+            name: string;
+            description?: string;
+            shortDescription?: string;
+            price: number;
+            storeUrl: string;
+            tagNames: string[];
         };
         ProductUpdateDto: {
             name?: string;
@@ -686,6 +817,7 @@ export interface components {
             price?: number;
             imageIds?: string[];
             hasPreview?: boolean;
+            tagNames: string[];
         };
         ProductAddImageResultDto: {
             imageIds: string[];
@@ -741,9 +873,11 @@ export interface components {
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
             price: number;
+            paymentType: string;
         };
-        OrderCreateResultDto: {
+        CreatedOrderDto: {
             id: string;
+            tokenAmount: number;
         };
         BaseStoreDto: {
             name: string;
@@ -795,6 +929,21 @@ export interface components {
             data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
+        };
+        ChangePaymentStatusDto: {
+            /** @enum {string} */
+            paymentStatus: "New" | "Paid" | "Delivered" | "Canceled";
+        };
+        PaymentMethod: Record<string, never>;
+        QuestsResponseDto: {
+            data: components["schemas"]["Quest"][];
+        };
+        CompleteQuestResponseDto: {
+            completed: boolean;
+        };
+        ReportProductDto: {
+            tags: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
+            message?: string;
         };
     };
     responses: never;
@@ -1483,6 +1632,40 @@ export interface operations {
             };
         };
     };
+    ProductsController_deleteProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Product deleted successfully. */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductInfoDto"];
+                };
+            };
+            /** @description User cannot delete this product */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     ProductsController_updateProduct: {
         parameters: {
             query?: never;
@@ -1672,6 +1855,22 @@ export interface operations {
             };
         };
     };
+    TelegramController_handleWebhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Handle webhook telegram */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     TwitterController_auth: {
         parameters: {
             query: {
@@ -1844,7 +2043,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["OrderCreateResultDto"];
+                    "application/json": components["schemas"]["CreatedOrderDto"];
                 };
             };
             /** @description Invalid order data */
@@ -1898,6 +2097,148 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["SalesResponseDto"];
                 };
+            };
+        };
+    };
+    OrdersController_changePaymentStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangePaymentStatusDto"];
+            };
+        };
+        responses: {
+            /** @description Successfully changed payment status */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    OrdersController_getPaymentMethods: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully sent payment methods */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["PaymentMethod"][];
+                };
+            };
+        };
+    };
+    QuestsController_getQuests: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved list quests successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["QuestsResponseDto"];
+                };
+            };
+        };
+    };
+    QuestsController_completeQuest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Complete Quest successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["CompleteQuestResponseDto"];
+                };
+            };
+            /** @description Request data sent was not valid by schema */
+            400: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["BadRequestDto"];
+                };
+            };
+        };
+    };
+    ProductReportsController_getByProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Product report successfully retrieved */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ReportProductDto"];
+                };
+            };
+            /** @description Report was not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ProductReportsController_reportStoreByUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReportProductDto"];
+            };
+        };
+        responses: {
+            /** @description Product successfully reported */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User has already reported this product */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description Product not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };

@@ -1,4 +1,4 @@
-import { Order, OrderId, Product, Store } from "~/shared/api/model";
+import { Order, OrderId, Product, Store } from "~/shared/api/client"
 
 const store: Store = {
 	id: '1',

@@ -3,7 +3,7 @@ import { ReviewsStream } from "./ReviewsStream";
 import { PreviewImage } from "~/shared/ui/image";
 import { Icons } from "~/shared/ui/icons";
 import { Button } from "~/shared/ui/kit/button";
-import { ProductId } from "~/shared/api/model";
+import { ProductId } from "~/shared/api/client"
 import { fetchProductPage, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";

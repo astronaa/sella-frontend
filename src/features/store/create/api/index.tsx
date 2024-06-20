@@ -15,7 +15,8 @@ export async function createStore(values: SchemaType) {
 	const { data, error } = await apiClient.stores.create({
 		shortName: values.shortName,
 		name: values.name,
-		description: values.description
+		description: values.description,
+		tagNames: []
 	});
 
 	if (error?.statusCode == 409) {

@@ -9,7 +9,7 @@ import { RegisterSetupProfileDialog, RegisterConnectTwitterDialog } from '~/feat
 import { StoreCreateDialog } from '~/features/store/create';
 import { AuthChannelsSetupTwoFaDialog } from '~/features/auth-channels';
 import { CreateStoreSuccessDialog } from './CreateStoreSuccessDialog';
-import { Store } from '~/shared/api/model';
+import { Store } from "~/shared/api/client"
 import { ProductCreateDialog } from '~/features/product/create';
 import { AllSetDialog } from './AllSetDialog';
 import { useRegisterFlow, useRegisterFlowWalletGuard } from '~/shared/model/register-flow';

@@ -1,7 +1,7 @@
 import { components } from "~/shared/api/openapi";
-import { Sale } from "~/shared/api/model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToUserShort } from "../users/mappers";
+import { Sale } from "./model";
 
 export const mapDtoToSale = (obj: components['schemas']['SalesInfoDto']): Sale => {
 	return {
