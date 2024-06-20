@@ -16,7 +16,7 @@ export function ProductOnPageProvider({ initialData, children }: ProductOnPagePr
 	})
 
 	return (
-		<ProductProvider product={product}>
+		<ProductProvider value={product}>
 			{children}
 		</ProductProvider>
 	);

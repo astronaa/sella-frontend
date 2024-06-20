@@ -1,8 +1,8 @@
 'use client';
 
-import { Children, HTMLAttributes, cloneElement, createContext, isValidElement, useContext, useMemo } from "react";
-import { invariant } from "~/shared/lib/asserts";
+import { Children, HTMLAttributes, cloneElement, isValidElement, useMemo } from "react";
 import { cn } from "~/shared/lib/cn";
+import { createContextFactory } from "~/shared/lib/create-context-factory";
 
 type TableConfig = { width: string }[];
 
@@ -14,29 +14,28 @@ interface ContextProps {
 	config: TableConfig
 }
 
-const context = createContext<ContextProps | null>(null);
+const create = createContextFactory('flexTable');
 
-function useTableContext() {
-	const value = useContext(context);
-	invariant(value, 'Usage of useTableContext outside context');
-	return value;
-}
+const {
+	FlexTableProvider,
+	useFlexTableStrictContext
+} = create<ContextProps>();
 
 export function Root({ config, className, children, ...props }: RootProps) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const contextValue = useMemo(() => ({ config }), config.map(c => c.width));
 
 	return (
-		<context.Provider value={contextValue}>
+		<FlexTableProvider value={contextValue}>
 			<div {...props} className={cn('flex flex-col gap-[1.5rem]', className)}>
 				{children}
 			</div>
-		</context.Provider>
+		</FlexTableProvider>
 	);
 }
 
 export function Head({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
-	const { config } = useTableContext();
+	const { config } = useFlexTableStrictContext();
 
 	return (
 		<div
@@ -81,7 +80,7 @@ export function RowFullSpan({ className, ...props }: HTMLAttributes<HTMLDivEleme
 }
 
 export function Row({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
-	const { config } = useTableContext();
+	const { config } = useFlexTableStrictContext();
 
 	return (
 		<RowFullSpan

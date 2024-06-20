@@ -1,6 +1,6 @@
 import { useField } from "react-final-form";
 import { ToggleGroup } from '~/shared/ui/kit';
-import { ControlProps, ControlProvider } from "./ControlProvider";
+import { ControlProps, FormControlProvider } from "./ControlProvider";
 import { ComponentProps } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -8,7 +8,7 @@ export function Root({ name, id, onValueChange, ...props }: ToggleGroup.RootProp
 	const { input: { value, onChange } } = useField(name);
 
 	return (
-		<ControlProvider id={id} name={name}>
+		<FormControlProvider id={id} name={name}>
 			<ToggleGroup.Root
 				value={value}
 				onValueChange={(v) => {
@@ -17,7 +17,7 @@ export function Root({ name, id, onValueChange, ...props }: ToggleGroup.RootProp
 				}}
 				{...props}
 			/>
-		</ControlProvider>
+		</FormControlProvider>
 	)
 }
 

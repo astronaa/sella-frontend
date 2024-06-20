@@ -16,7 +16,7 @@ export function StoreOnPageProvider({ initialData, children }: StoreOnPageProvid
 	})
 
 	return (
-		<StoreProvider store={store}>
+		<StoreProvider value={store}>
 			{children}
 		</StoreProvider>
 	);

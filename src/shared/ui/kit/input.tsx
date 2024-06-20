@@ -4,15 +4,15 @@ import { tv, type VariantProps } from 'tailwind-variants'
 import { cn } from '~/shared/lib/cn'
 
 export interface InputProps extends InputVariantProps, Omit<HTMLArkProps<'input'>, 'size'> {
-	error?: boolean
+	error?: boolean,
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-	const { size, className, placeholder = '', error = false, ...rest } = props
+	const { size, className, variant, placeholder = '', error = false, ...rest } = props
 
 	return (
 		<ark.input
-			className={styles({ size, className })}
+			className={styles({ size, className, variant })}
 			placeholder={placeholder}
 			data-error={error ? true : undefined}
 			ref={ref} {...rest}
@@ -46,16 +46,27 @@ type InputVariantProps = VariantProps<typeof styles>
 const styles = tv(
 	{
 		base: [
-			'bg-white/[.04] text-white border border-transparent outline-none transition leading-[normal]',
-			'hover:bg-white/[.06]',
-			'filled:bg-[#141414] filled:border-secondary',
-			'data-[error]:text-error-100 data-[error]:border-error-100 filled:data-[error]:border-error-100 data-[error]:placeholder-error-100',
-			'data-[error]:selection:text-white data-[error]:selection:bg-error-100'
+			'text-white outline-none transition leading-[normal] placeholder-black-40 truncate bg-transparent'
 		],
-		defaultVariants: { size: 'default' },
+		defaultVariants: { 
+			variant: 'filled', 
+			size: 'md' 
+		},
 		variants: {
+			variant: {
+				filled: [
+					'bg-white/[.04] text-white border border-transparent outline-none transition leading-[normal] placeholder-black-40',
+					'hover:bg-white/[.06]',
+					'filled:bg-[#141414] filled:border-secondary',
+					'data-[error]:text-error-100 data-[error]:border-error-100 filled:data-[error]:border-error-100 data-[error]:placeholder-error-100',
+					'data-[error]:selection:text-white data-[error]:selection:bg-error-100',
+					'leading-[1.1]'
+				],
+				unstyled: []
+			},
 			size: {
-				default: 'rounded-[0.625rem] min-h-[3.125rem] min-w-[3.125rem] px-[1rem] py-[0.85rem]',
+				sm: 'rounded-[0.75rem] min-h-[2.375rem] min-w-[2.375rem] px-[1rem] py-[0.5313rem]',
+				md: 'rounded-[0.625rem] min-h-[3.125rem] min-w-[3.125rem] px-[1rem] py-[0.85rem]',
 				xl: 'rounded-[0.625rem] min-h-[4.375rem] min-w-[4.375rem] px-[1.625rem] text-[2rem]',
 				'2xl': 'rounded-[0.625rem] min-h-[6.25rem] min-w-[4.75rem] px-[1.625rem] text-[2rem]'
 			}
@@ -66,6 +77,6 @@ const styles = tv(
 
 export function InputGroup({ className, ...props }: HTMLArkProps<'div'>) {
 	return (
-		<ark.div {...props} className={cn('relative md:w-auto w-full', className)} />
+		<ark.div {...props} className={cn('relative', className)} />
 	);
 }

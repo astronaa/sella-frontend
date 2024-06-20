@@ -20,6 +20,7 @@
 
 body {
   color: white;
+  overscroll-behavior-y: none;
 }
 
 @layer utilities {

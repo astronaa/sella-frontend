@@ -7,23 +7,23 @@ import { HTMLAttributes } from "react";
 import { useField } from "react-final-form";
 import { Input as BaseInput, InputGroup, InputProps } from "../kit/input";
 import { ValidationStatusIcon } from "./ValidationStatusIcon";
-import { ControlProvider, useControlContext, ControlProps } from "./ControlProvider";
+import { FormControlProvider, useFormControlStrictContext, ControlProps } from "./ControlProvider";
 import { extractErrorFromFieldState, shouldRenderFieldError } from './error';
 
 export function Root({ name, id, children, className, ...props }: HTMLAttributes<HTMLDivElement> & ControlProps) {
 	return (
-		<ControlProvider id={id} name={name}>
+		<FormControlProvider id={id} name={name}>
 			<div {...props} className={cn('flex flex-col gap-[0.5rem]', className)}>
 				{children}
 			</div>
-		</ControlProvider>
+		</FormControlProvider>
 	);
 }
 
 export type LabelProps = Omit<HTMLAttributes<HTMLLabelElement>, 'htmlFor'>;
 
 export function Label({ children, ...props }: LabelProps) {
-	const { id } = useControlContext();
+	const { id } = useFormControlStrictContext();
 
 	return (
 		<label htmlFor={id} {...props}>
@@ -33,7 +33,7 @@ export function Label({ children, ...props }: LabelProps) {
 }
 
 export function LabelOrError({ children, className, ...props }: LabelProps) {
-	const { id, name } = useControlContext();
+	const { id, name } = useFormControlStrictContext();
 	const { meta: fieldState } = useField(name);
 	const error = extractErrorFromFieldState(fieldState);
 	const shouldRender = shouldRenderFieldError(fieldState);
@@ -46,7 +46,7 @@ export function LabelOrError({ children, className, ...props }: LabelProps) {
 }
 
 export function ErrorText({ className, ...props }: Omit<HTMLAttributes<HTMLSpanElement>, 'children'>) {
-	const { name } = useControlContext();
+	const { name } = useFormControlStrictContext();
 	const { meta: fieldState } = useField(name);
 	const error = extractErrorFromFieldState(fieldState);
 	const shouldRender = shouldRenderFieldError(fieldState);
@@ -67,7 +67,7 @@ export function Description({ className, children, ...props }: HTMLAttributes<HT
 }
 
 export function Input({ children, className, ...props }: Omit<InputProps, 'error' | 'id'>) {
-	const { id, name } = useControlContext();
+	const { id, name } = useFormControlStrictContext();
 	const { meta: fieldState, input: { onChange, ...fieldProps } } = useField(name);
 	const shouldRender = shouldRenderFieldError(fieldState);
 

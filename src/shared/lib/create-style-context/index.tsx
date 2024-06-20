@@ -12,6 +12,18 @@ export const createStyleContext = <
 >(createStyles: StylesFunction) => {
 	const StyleContext = createContext<ReturnType<typeof createStyles> | null>(null)
 
+	const withRootProvider = <C extends ElementType>(Component: C) => {
+		const StyledComponent = (props: ComponentProps<C> & VariantProps<StylesFunction>) => {
+			const styles = createStyles(props)
+			return (
+				<StyleContext.Provider value={styles}>
+					<Component {...props} />
+				</StyleContext.Provider>
+			)
+		}
+		return StyledComponent
+	}
+
 	const withProvider = <C extends ElementType>(Component: C, slot?: Slot) => {
 		const Comp = forwardRef((props: ComponentProps<C> & VariantProps<StylesFunction>, ref) => {
 			const styles = createStyles(props)
@@ -51,5 +63,6 @@ export const createStyleContext = <
 	return {
 		withProvider,
 		withContext,
+		withRootProvider
 	}
 }

@@ -4,7 +4,7 @@ import { InputGroup, TextArea, TextAreaProps } from "../kit/input";
 import { useField } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
 import { ValidationStatusIcon } from "./ValidationStatusIcon";
-import { useControlContext } from "./ControlProvider";
+import { useFormControlStrictContext } from "./ControlProvider";
 import { shouldRenderFieldError } from "./error";
 
 export {
@@ -13,7 +13,7 @@ export {
 } from './TextControl'
 
 export function Input({ children, className, ...props }: Omit<TextAreaProps, 'error' | 'id'>) {
-	const { id, name } = useControlContext();
+	const { id, name } = useFormControlStrictContext();
 	const { meta: fieldState, input: { onChange, ...fieldProps } } = useField(name);
 	const shouldRender = shouldRenderFieldError(fieldState);
 

@@ -74,7 +74,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ark-ui/react@npm:3.3.0":
+"@ark-ui/react@npm:^3.3.0":
   version: 3.3.0
   resolution: "@ark-ui/react@npm:3.3.0"
   dependencies:
@@ -6091,6 +6091,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"embla-carousel-react@npm:^8.1.5":
+  version: 8.1.5
+  resolution: "embla-carousel-react@npm:8.1.5"
+  dependencies:
+    embla-carousel: "npm:8.1.5"
+    embla-carousel-reactive-utils: "npm:8.1.5"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0
+  checksum: 10c0/a8c64e948f7bbe11a5d62ca4ebd70030a7a0dea2d772ab0c545026f2facea493bd5ddabccdb915922ed41f8af44d61140ae485521fb3495af8e13d7e43405aed
+  languageName: node
+  linkType: hard
+
+"embla-carousel-reactive-utils@npm:8.1.5":
+  version: 8.1.5
+  resolution: "embla-carousel-reactive-utils@npm:8.1.5"
+  peerDependencies:
+    embla-carousel: 8.1.5
+  checksum: 10c0/813a358f7372ddeb7a49e637e21b1580bda42797f97cbb8f7a2ad63a1803b0f2a9d2ecd5f0c088bd2447bb0a6c932f31e5c820698d83324a23548bd9242deb41
+  languageName: node
+  linkType: hard
+
+"embla-carousel@npm:8.1.5":
+  version: 8.1.5
+  resolution: "embla-carousel@npm:8.1.5"
+  checksum: 10c0/5fa18cf332654ce3f380874e41caa6a520a04c5d43f2832f1d797b74e822f271de61f27346155fc3a8321633f1968b7b808ad0d56152305c8696ff5d12d3200f
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -9691,16 +9719,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-indiana-drag-scroll@npm:^3.0.3-alpha":
-  version: 3.0.3-alpha
-  resolution: "react-indiana-drag-scroll@npm:3.0.3-alpha"
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/15dbcfa86df2254d024532c5fb240a31dc7e2a443f597cf0999f0a3816c4d71d2ebc60864705296116a0e6b98c1833d1273b58e4decad5db206acc35d55d101f
-  languageName: node
-  linkType: hard
-
 "react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -10153,7 +10171,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sella-store-dapp@workspace:."
   dependencies:
-    "@ark-ui/react": "npm:3.3.0"
+    "@ark-ui/react": "npm:^3.3.0"
     "@dotlottie/react-player": "npm:^1.6.19"
     "@park-ui/cli": "npm:^0.6.0"
     "@park-ui/tailwind-plugin": "npm:^0.20.1"
@@ -10168,6 +10186,7 @@ __metadata:
     autoprefixer: "npm:^10.4.19"
     clsx: "npm:^2.1.1"
     dayjs: "npm:^1.11.11"
+    embla-carousel-react: "npm:^8.1.5"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.3"
     final-form: "npm:^4.20.10"
@@ -10180,7 +10199,6 @@ __metadata:
     react: "npm:^18"
     react-dom: "npm:^18"
     react-final-form: "npm:^6.5.9"
-    react-indiana-drag-scroll: "npm:^3.0.3-alpha"
     tailwind-merge: "npm:^2.3.0"
     tailwind-variants: "npm:^0.2.1"
     tailwindcss: "npm:^3.4.1"

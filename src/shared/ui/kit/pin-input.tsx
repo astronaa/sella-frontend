@@ -51,7 +51,7 @@ const styles = tv(
 		},
 		variants: {
 			size: {
-				default: {
+				md: {
 					root: 'pinInput__root--size_md',
 					label: 'pinInput__label--size_md',
 					input: 'pinInput__input--size_md',

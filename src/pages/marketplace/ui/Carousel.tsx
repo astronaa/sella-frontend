@@ -1,21 +1,12 @@
 'use client'
 
 import { PreviewImage } from "~/shared/ui/image";
-import { cn } from "~/shared/lib/cn";
-import ScrollContainer from "react-indiana-drag-scroll";
-import { ark, HTMLArkProps } from "@ark-ui/react";
+import { Scrollable } from "~/shared/ui/scrollable";
 
-export function Carousel({ className, ...props }: HTMLArkProps<'div'>) {
+export function Carousel(props: Scrollable.RootProps) {
 	return (
-		<ark.div
-			{...props}
-			asChild
-			className={cn(
-				"flex w-full space-x-3 overflow-x-scroll scrollbar-hide",
-				className
-			)}
-		>
-			<ScrollContainer>
+		<Scrollable.Root {...props}>
+			<Scrollable.Container className='gap-[1rem]'>
 				{Array.from({ length: 10 }).map((_, index) => (
 					<div
 						key={index}
@@ -24,7 +15,7 @@ export function Carousel({ className, ...props }: HTMLArkProps<'div'>) {
 						<PreviewImage className='w-full' src={null} alt='item' />
 					</div>
 				))}
-			</ScrollContainer>
-		</ark.div>
+			</Scrollable.Container >
+		</Scrollable.Root>
 	);
 }
