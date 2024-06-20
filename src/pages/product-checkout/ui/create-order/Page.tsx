@@ -6,10 +6,11 @@ import { OrderFlowCard } from "./OrderFlowCard";
 
 interface PageCreateOrderProps {
 	storeId: StoreId,
-	initialTab?: PossibleTabs
+	initialTab?: PossibleTabs,
+	method?: string
 }
 
-export async function PageCreateOrder({ storeId, initialTab = 'chat' }: PageCreateOrderProps) {
+export async function PageCreateOrder({ storeId, initialTab = 'chat', method = 'eth' }: PageCreateOrderProps) {
 	const product = await fetchProduct(String(storeId));
 
 	return (
@@ -21,7 +22,10 @@ export async function PageCreateOrder({ storeId, initialTab = 'chat' }: PageCrea
 				product={product}
 				className='w-full'
 			/>
-			<OrderFlowCard product={product} />
+			<OrderFlowCard
+				product={product}
+				method={method}
+			/>
 		</PageLayout>
 	)
 }

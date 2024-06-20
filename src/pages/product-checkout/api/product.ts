@@ -1,17 +1,10 @@
-import { Product, ProductId } from "~/shared/api/client"
+import { Product, ProductId, apiClient } from "~/shared/api/client"
 
 export async function fetchProduct(productId: ProductId): Promise<Product> {
-	return {
-		id: productId,
-		name: 'Product Name',
-		description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-		shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-		previewImage: null,
-		galleryImages: [],
-		category: 'Category',
-		price: 2.99,
-		imageIds: [],
-		storeUrl: '@teststore',
-		hasPreview: false
-	}
+	const product = await apiClient.products.for(productId).get();
+
+	if(product.error)
+		throw product.error
+
+	return product.data;
 }

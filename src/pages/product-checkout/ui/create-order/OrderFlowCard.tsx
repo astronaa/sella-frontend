@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { ProductProp } from "~/entities/product";
 import { OrderCreateCard } from "~/features/order/create";
 
-export function OrderFlowCard({ product }: ProductProp) {
+interface Props extends ProductProp {
+	method?: string
+}
+
+export function OrderFlowCard({ product, method }: Props) {
 	const router = useRouter();
 	const context = useTabsContext();
 
@@ -14,6 +18,8 @@ export function OrderFlowCard({ product }: ProductProp) {
 			product={product}
 			onActionFulfilled={() => router.push(`/orders/1?tab=${context.value}`)}
 			className='w-full'
+			// @ts-expect-error TODO: add zod contract for parsing the value
+			defaultValue={method}
 		/>
 	);
 }

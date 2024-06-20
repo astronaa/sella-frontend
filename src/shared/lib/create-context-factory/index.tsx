@@ -54,7 +54,8 @@ export function createContextFactory<Name extends string>(name: Name) {
 		}
 
 		function useContextOrProp(prop?: Data) {
-			const value = useReactContext(context) ?? prop;
+			const contextValue = useReactContext(context) 
+			const value = prop ?? contextValue;
 
 			if (!value) {
 				const error = new Error(errorMessage ?? (

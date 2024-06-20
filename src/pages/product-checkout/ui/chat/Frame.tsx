@@ -40,18 +40,18 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 			{...props}
 			className={cn(
 				'flex flex-col justify-between border border-secondary bg-white/[.04]',
-				'rounded-[1.25rem] p-[1rem] gap-[1rem] h-[44.875rem]',
+				'rounded-[1.25rem] p-[1rem] pt-0 gap-[1rem] h-[44.875rem]',
 				className
 			)}
 		>
 			<PageProductCard 
 				product={product} 
-				className='w-full max-w-full max-lg:hidden'
+				className='w-full max-w-full max-lg:hidden mt-[1rem]'
 			/>
 
 			<ChatMessagesStream
 				initialMessages={messages}
-				className='flex-grow overflow-y-auto'
+				className='flex-grow overflow-y-auto pt-[1rem]'
 			/>
 
 			<div className='flex gap-[1rem] w-full'>

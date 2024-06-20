@@ -1,1 +1,4 @@
-export { Card as OrderCreateCard } from './ui/Card';
+export { 
+	BaseCard as OrderCreateBaseCard,
+	Card as OrderCreateCard
+} from './ui/Card';

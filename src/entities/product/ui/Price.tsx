@@ -20,7 +20,7 @@ export function Price({ className, product: p, ...props }: HTMLArkProps<'div'> &
 	return (
 		<ark.div className={cn('flex items-center gap-[0.375rem] text-accent-100', className)} {...props}>
 			<span>{price.toFixed(2)}</span>
-			{Icon && <Icon className='size-[1rem]' />}
+			{Icon && <Icon className='size-[1em] ps-[0.15em]' />}
 		</ark.div>
 	);
 }
