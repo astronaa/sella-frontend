@@ -37,7 +37,7 @@ export function CreateDialog({ onActionFulfilled, cancelButton, triggerElement, 
 			<Dialog.Backdrop />
 
 			<Dialog.Positioner>
-				<Dialog.Content className='w-[34.375rem]'>
+				<Dialog.Content className='w-[38.375rem]'>
 					<Dialog.CloseButton />
 
 					<Dialog.ContentHeading>

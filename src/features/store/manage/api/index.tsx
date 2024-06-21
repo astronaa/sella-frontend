@@ -7,7 +7,7 @@ import { apiClient } from "~/shared/api/client";
 import { FormError } from '~/shared/lib/errors';
 import { storeQueries } from '~/entities/store';
 
-export const schema = apiClient.stores.schemaCreate.merge(
+export const schema = apiClient.stores.schemaUpdate.merge(
 	z.object({
 		previewImage: z.instanceof(File).optional()
 	})
@@ -16,12 +16,9 @@ export const schema = apiClient.stores.schemaCreate.merge(
 export type SchemaType = z.infer<typeof schema>;
 
 export async function updateStore(store: Store, { previewImage, ...data }: SchemaType) {
-	const { error, response } = await apiClient.stores.for(store.shortName)
-		.update({
-			name: data.name,
-			shortName: data.shortName,
-			description: data.description
-		});
+	const { error, response } = await apiClient.stores
+		.for(store.shortName)
+		.update(data);
 
 	if (response.status == 409) {
 		throw new FormError({
