@@ -10,6 +10,7 @@ import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { NavHeader } from "~/widgets/nav-header";
 import { Footer } from "~/widgets/footer";
 import { Providers } from "./_providers";
+import {Toaster} from "~/widgets/toaster";
 
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
@@ -35,9 +36,9 @@ export default function RootLayout({
 						{children}
 					</div>
 					<Footer />
-
 					<RegisterFlowDialog />
 					<UserProfileSettingsDialog />
+					<Toaster/>
 				</Providers>
 			</body>
 		</html>

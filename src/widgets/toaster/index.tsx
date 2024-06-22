@@ -1,0 +1,1 @@
+export { Component as Toaster } from './ui/Component';

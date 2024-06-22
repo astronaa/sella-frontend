@@ -7,3 +7,4 @@ export * as Select from './select';
 export * as Tabs from './tabs';
 export * as Carousel from './carousel';
 export * as Popover from './popover';
+export * as Toast from './toast';
