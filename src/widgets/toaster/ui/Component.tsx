@@ -1,6 +1,6 @@
 'use client'
 
-import {toaster} from "~/shared/lib/toaster";
+import {toaster} from "~/shared/ui/toaster";
 import { Toast } from "~/shared/ui/kit";
 import {IconButton} from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
