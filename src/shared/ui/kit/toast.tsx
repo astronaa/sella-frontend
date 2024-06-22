@@ -3,6 +3,7 @@
 import { Toast } from '@ark-ui/react/toast'
 import { type VariantProps, tv } from 'tailwind-variants'
 import { createStyleContext } from '~/shared/lib/create-style-context'
+import './toast.css'
 
 const toast = tv(
 	{
