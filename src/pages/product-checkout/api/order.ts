@@ -3,7 +3,7 @@ import { Order, OrderId, Product, Store } from "~/shared/api/model";
 const store: Store = {
 	id: '1',
 	name: "First Store",
-	shortName: "@storename",
+	url: "@storename",
 	isVerified: true,
 	description: "Market, Limit, Stop Limit, and Auction Mode orders.",
 	previewImage: null,

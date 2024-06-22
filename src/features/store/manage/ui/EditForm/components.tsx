@@ -77,7 +77,7 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					<VTextControl.ErrorText />
 				</VTextControl.Root>
 
-				<VTextControl.Root className='w-full' name='shortName'>
+				<VTextControl.Root className='w-full' name='url'>
 					<VTextControl.Label>Store URL</VTextControl.Label>
 					<StoreInputAddon>
 						{({ Component: Addon, inputClassName }) => (

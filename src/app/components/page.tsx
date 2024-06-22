@@ -175,7 +175,7 @@ function ValidationTest() {
 const store: Store = {
 	id: '1',
 	name: 'Store Name',
-	shortName: '@storename',
+	url: '@storename',
 	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 	isVerified: true,
 	previewImage: null,
@@ -291,7 +291,7 @@ function ProductCreateDialogTest() {
 			</Button>
 
 			<ProductCreateDialog
-				storeUrl={store.shortName}
+				storeUrl={store.url}
 				open={isOpen} onOpenChange={handleOpenChange}
 			/>
 		</>

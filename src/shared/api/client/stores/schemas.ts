@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const schemaCreate = z.object({
 	name: z.string().min(3, 'Min length is 3'),
-	shortName: z.string()
+	url: z.string()
 		.regex(/^[a-zA-Z0-9_-]+$/, { message: 'URL can only contain letters, numbers, underscores, and hyphens' })
 		.min(3, 'Min length is 3'),
 	description: z.string().optional().nullable()

@@ -65,7 +65,7 @@ export function createStoresClient() {
 			const { data, error, response } = await authFetchClient.POST('/api/stores', {
 				body: {
 					name: payload.name,
-					url: payload.shortName,
+					url: payload.url,
 					description: payload.description ?? undefined
 				}
 			});
@@ -116,7 +116,7 @@ export function createStoresClient() {
 					body: {
 						name: payload.name,
 						description: payload.description ?? undefined,
-						url: payload.shortName
+						url: payload.url
 					},
 					parseAs: 'text'
 				});

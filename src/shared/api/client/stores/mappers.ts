@@ -13,7 +13,7 @@ export const mapDtoToStore = (obj:
 	isVerified: false,
 	name: obj.name,
 	previewImage: obj.imageId ? mapMediaIdToUrl(obj.imageId) : null,
-	shortName: obj.url,
+	url: obj.url,
 	ownerUsername: obj.ownerUsername,
 	rating: obj.rating ? {
 		likes: obj.rating.positive,

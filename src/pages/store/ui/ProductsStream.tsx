@@ -29,7 +29,7 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 	const [page, setPage] = useState(1);
 
 	const { data, isFetching } = productQueries.useGetFromStore({
-		storeUrl: store.shortName, initialData,
+		storeUrl: store.url, initialData,
 		page, limit: PRODUCT_ITEMS_PER_PAGE,
 	})
 
@@ -49,7 +49,7 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 
 					{!!user && user.username == store.ownerUsername && (
 						<ProductCreateDialog
-							storeUrl={store.shortName}
+							storeUrl={store.url}
 							triggerElement={
 								<Button className='mt-[1rem]' size='lg'>
 									Add First Product
@@ -68,7 +68,7 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 							loading={isFetching}
 						>
 							<ProductCreateDialog
-								storeUrl={store.shortName}
+								storeUrl={store.url}
 								triggerElement={
 									<Button colorPalette='gray' size='lg'>
 										Add Product

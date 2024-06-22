@@ -17,7 +17,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 	const store = useStoreStrictContext();
 
 	const { data: products } = productQueries.useGetFromStore({
-		storeUrl: store.shortName,
+		storeUrl: store.url,
 		limit: PRODUCT_ITEMS_PER_PAGE,
 		initialData: productsInitialData
 	})
@@ -49,7 +49,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 							{products.total > 0 && <EditMode.Button />}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.shortName} />
+						<StoreReportFlow storeUrl={store.url} />
 					)}
 				</div>
 			)}

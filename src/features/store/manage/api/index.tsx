@@ -16,16 +16,16 @@ export const schema = apiClient.stores.schemaCreate.merge(
 export type SchemaType = z.infer<typeof schema>;
 
 export async function updateStore(store: Store, { previewImage, ...data }: SchemaType) {
-	const { error, response } = await apiClient.stores.for(store.shortName)
+	const { error, response } = await apiClient.stores.for(store.url)
 		.update({
 			name: data.name,
-			shortName: data.shortName,
+			url: data.url,
 			description: data.description
 		});
 
 	if (response.status == 409) {
 		throw new FormError({
-			field: 'shortName',
+			field: 'url',
 			message: error?.message as unknown as string
 		});
 	}
@@ -33,7 +33,7 @@ export async function updateStore(store: Store, { previewImage, ...data }: Schem
 		throw error;
 
 	if (previewImage)
-		await apiClient.stores.for(store.shortName).setImage(previewImage);
+		await apiClient.stores.for(store.url).setImage(previewImage);
 
 	storeQueries.invalidateAll();
 
