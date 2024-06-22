@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useProductStrictContext } from "~/entities/product";
 import { OrderCreateBaseCard } from "~/features/order/create";
+import { objToSearchParams } from "~/shared/lib/search-params";
 import { Button } from "~/shared/ui/kit/button";
 
 export function CheckoutWidget() {
@@ -16,12 +17,12 @@ export function CheckoutWidget() {
 			{value => (
 				<div className="flex flex-col gap-4">
 					<Button variant="solid" asChild>
-						<Link href={`${product.id}/checkout?method=${value}&tab=order-actions`}>
+						<Link href={`${product.id}/checkout?${objToSearchParams({ tab: 'order-actions', ...value })}`}>
 							Checkout
 						</Link>
 					</Button>
 					<Button colorPalette="gray" asChild>
-						<Link href={`${product.id}/checkout?method=${value}&tab=chat`}>
+						<Link href={`${product.id}/checkout?${objToSearchParams({ tab: 'chat', ...value })}`}>
 							Chat with a seller
 						</Link>
 					</Button>

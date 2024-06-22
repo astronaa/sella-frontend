@@ -3,10 +3,14 @@
 import { useTabsContext } from "@ark-ui/react";
 import { useRouter } from "next/navigation";
 import { ProductProp } from "~/entities/product";
-import { OrderCreateCard } from "~/features/order/create";
+
+import { 
+	OrderCreateCard, 
+	OrderCreatePayload 
+} from "~/features/order/create";
 
 interface Props extends ProductProp {
-	method?: string
+	method?: OrderCreatePayload
 }
 
 export function OrderFlowCard({ product, method }: Props) {
@@ -18,7 +22,6 @@ export function OrderFlowCard({ product, method }: Props) {
 			product={product}
 			onActionFulfilled={() => router.push(`/orders/1?tab=${context.value}`)}
 			className='w-full'
-			// @ts-expect-error TODO: add zod contract for parsing the value
 			defaultValue={method}
 		/>
 	);
