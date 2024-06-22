@@ -510,6 +510,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/orders/payment-methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_getPaymentMethods"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_getOrderInfo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/orders": {
         parameters: {
             query?: never;
@@ -572,22 +604,6 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["OrdersController_changePaymentStatus"];
-        trace?: never;
-    };
-    "/api/orders/payment-methods": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["OrdersController_getPaymentMethods"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/api/quests": {
@@ -817,7 +833,7 @@ export interface components {
             price?: number;
             imageIds?: string[];
             hasPreview?: boolean;
-            tagNames: string[];
+            tagNames?: string[];
         };
         ProductAddImageResultDto: {
             imageIds: string[];
@@ -866,18 +882,21 @@ export interface components {
             data: components["schemas"]["Store"][];
             total: number;
         };
-        OrderCreateDto: {
-            productId: string;
-            /** @enum {string} */
-            status: "New" | "Paid" | "Delivered" | "Canceled";
-            /** @enum {string} */
-            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
-            price: number;
-            paymentType: string;
+        Token: {
+            /** @description The name of the token */
+            name: string;
+            /** @description The address of the token */
+            address: string;
         };
-        CreatedOrderDto: {
-            id: string;
-            tokenAmount: number;
+        PaymentMethod: {
+            /** @description The name of the blockchain */
+            name: string;
+            /** @enum {string} */
+            value: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            /** @description The contract address of the escrow contract */
+            contractAddress: string;
+            /** @description List of tokens associated with the blockchain */
+            tokens: components["schemas"]["Token"][];
         };
         BaseStoreDto: {
             name: string;
@@ -902,6 +921,19 @@ export interface components {
             price: number;
             /** Format: date-time */
             createdAt: string;
+        };
+        OrderCreateDto: {
+            productId: string;
+            /** @enum {string} */
+            status: "New" | "Paid" | "Delivered" | "Canceled";
+            /** @enum {string} */
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            price: number;
+            paymentType: string;
+        };
+        CreatedOrderDto: {
+            id: string;
+            tokenAmount: number;
         };
         OrdersResponseDto: {
             data: components["schemas"]["OrderInfoDto"][];
@@ -934,7 +966,6 @@ export interface components {
             /** @enum {string} */
             paymentStatus: "New" | "Paid" | "Delivered" | "Canceled";
         };
-        PaymentMethod: Record<string, never>;
         QuestsResponseDto: {
             data: components["schemas"]["Quest"][];
         };
@@ -2026,6 +2057,49 @@ export interface operations {
             };
         };
     };
+    OrdersController_getPaymentMethods: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully sent payment methods */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["PaymentMethod"][];
+                };
+            };
+        };
+    };
+    OrdersController_getOrderInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved order info successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["OrderInfoDto"];
+                };
+            };
+            /** @description Order not found */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     OrdersController_createOrder: {
         parameters: {
             query?: never;
@@ -2119,24 +2193,6 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
-            };
-        };
-    };
-    OrdersController_getPaymentMethods: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully sent payment methods */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["PaymentMethod"][];
-                };
             };
         };
     };

@@ -2,8 +2,11 @@ import { Children, PropsWithChildren } from "react";
 import { Tabs } from "~/shared/ui/kit";
 import { PageProductCard } from "./PageProductCard";
 import { ProductProp } from "~/entities/product";
+import { z } from "zod";
 
-export type PossibleTabs = 'chat' | 'order-actions'
+export const schemaPossibleTabs = z.enum(['chat', 'order-actions']);
+
+export type PossibleTabs = z.infer<typeof schemaPossibleTabs>
 
 interface PageLayoutProps extends ProductProp {
 	initialTab?: PossibleTabs

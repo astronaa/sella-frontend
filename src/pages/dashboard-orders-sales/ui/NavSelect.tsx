@@ -9,7 +9,7 @@ export function NavSelect() {
 	const items = [
 		{ label: 'My Orders', value: '/dashboard/orders' },
 		{ label: 'My Sales', value: '/dashboard/sales' },
-	]
+	] as const
 
 	const pathname = usePathname();
 	const router = useRouter();

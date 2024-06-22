@@ -9,6 +9,17 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "@stylistic/js/indent": ["error", "tab", { "SwitchCase": 1 }]
+    "@stylistic/js/indent": ["error", "tab", { "SwitchCase": 1 }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["~/shared/api/client/*", "!~/shared/api/client/index.ts"],
+            "message": "Please import from public api instead (~/shared/api/client)"
+          }
+        ]
+      }
+    ]
   }
 }
