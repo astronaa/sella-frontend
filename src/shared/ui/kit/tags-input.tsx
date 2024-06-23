@@ -10,11 +10,11 @@ const tagsInput = tv(
 		slots: {
 			root: 'tagsInput__root',
 			label: 'tagsInput__label',
-			control: 'tagsInput__control bg-white/[.04] rounded-[0.625rem] transition hover:bg-white/[.06] border-transparent focus-within:border-transparent focus-within:shadow-none text-white p-[0.75rem] gap-[0.75rem]',
+			control: 'tagsInput__control bg-white/[.04] rounded-[0.625rem] transition hover:bg-white/[.06] border-transparent focus-within:border-transparent focus-within:shadow-none text-white p-[0.65rem] gap-[0.75rem] min-h-[3.125rem]',
 			input: 'tagsInput__input placeholder-black-40 text-white',
 			clearTrigger: 'tagsInput__clearTrigger',
 			item: 'tagsInput__item',
-			itemPreview: 'tagsInput__itemPreview gap-[0.5rem] rounded-[0.5rem] bg-white/[.06] border-none px-[1rem] py-[0.5rem]',
+			itemPreview: 'tagsInput__itemPreview gap-[0.5rem] rounded-[0.5rem] bg-white/[.06] border-none px-[1rem] py-[0.4rem]',
 			itemInput: 'tagsInput__itemInput',
 			itemText: 'tagsInput__itemText text-white',
 			itemDeleteTrigger: 'tagsInput__itemDeleteTrigger',

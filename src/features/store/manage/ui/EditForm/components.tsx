@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader,
+	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl
 } from "~/shared/ui/validation-inputs";
@@ -98,6 +98,12 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				/>
 				<VTextAreaControl.ErrorText />
 			</VTextAreaControl.Root>
+
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
 		</div>
 	);
 }

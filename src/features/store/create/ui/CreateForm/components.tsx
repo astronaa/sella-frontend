@@ -15,6 +15,7 @@ import { cn } from "~/shared/lib/cn";
 import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
+import {VTagsInput} from "~/shared/ui/validation-inputs";
 
 const validate = zodValidate(schema);
 
@@ -24,6 +25,7 @@ export interface RootProps extends PropsWithChildren {
 
 export function Root({ onActionFulfilled, children }: RootProps) {
 	const onSubmit = async (values: SchemaType) => {
+		console.log(values)
 		try {
 			const result = await createStore(values);
 			onActionFulfilled?.(result);
@@ -58,20 +60,20 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
 				<VTextControl.Root className='w-full' name='name'>
 					<VTextControl.Label>Store Name</VTextControl.Label>
-					<VTextControl.Input placeholder="Store Name" />
-					<VTextControl.ErrorText />
+					<VTextControl.Input placeholder="Store Name"/>
+					<VTextControl.ErrorText/>
 				</VTextControl.Root>
 
 				<VTextControl.Root className='w-full' name='url'>
 					<VTextControl.Label>Store URL</VTextControl.Label>
 					<StoreInputAddon>
-						{({ Component: Addon, inputClassName }) => (
+						{({Component: Addon, inputClassName}) => (
 							<VTextControl.Input className={inputClassName}>
-								<Addon />
+								<Addon/>
 							</VTextControl.Input>
 						)}
 					</StoreInputAddon>
-					<VTextControl.ErrorText />
+					<VTextControl.ErrorText/>
 				</VTextControl.Root>
 			</div>
 
@@ -81,8 +83,14 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					className='h-[6.25rem]'
 					placeholder="Can be one sentence, a short paragraph"
 				/>
-				<VTextAreaControl.ErrorText />
+				<VTextAreaControl.ErrorText/>
 			</VTextAreaControl.Root>
+
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
 		</div>
 	);
 }
