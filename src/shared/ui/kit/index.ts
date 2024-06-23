@@ -8,3 +8,4 @@ export * as Tabs from './tabs';
 export * as Carousel from './carousel';
 export * as Popover from './popover';
 export * as Toast from './toast';
+export * as TagsInput from './tags-input';
