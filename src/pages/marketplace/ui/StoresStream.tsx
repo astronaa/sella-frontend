@@ -7,7 +7,7 @@ import { Pagination } from "~/shared/ui/kit/pagination";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 import { storeQueries } from '~/entities/store';
-import { Store } from "~/shared/api/model";
+import { Store } from "~/shared/api/client"
 import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
 import { PreviewImage } from "~/shared/ui/image";

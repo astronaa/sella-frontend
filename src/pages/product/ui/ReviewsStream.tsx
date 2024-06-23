@@ -10,7 +10,7 @@ import { Select } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
 import { INITIAL_PAGE, INITIAL_SORT, ITEMS_PER_PAGE } from "../config";
-import { Review } from "~/shared/api/model";
+import { Review } from "~/shared/api/client"
 import { dayJs } from "~/shared/lib/dayjs";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 
@@ -90,16 +90,18 @@ export function ReviewsStream({ className, initialData, ...props }: ReviewsStrea
 			{data?.pages.map(p => (
 				p.items.map(r => (
 					<div key={r.id} className="flex flex-col px-4 py-6 gap-6 rounded-[1.25rem] border border-white/[.04]">
-						<div className="flex gap-2 items-center">
-							<PreviewImage
-								alt={`Image of ${r.user.username}`}
-								src={r.user.profilePicture}
-								className="size-8 rounded-full flex-shrink-0 shadow-sm"
-							/>
-							<div className="text-white text-[1.125rem]/[1.4625rem] font-semibold">
-								{r.user.username}
+						{r.user && (
+							<div className="flex gap-2 items-center">
+								<PreviewImage
+									alt={`Image of ${r.user.username}`}
+									src={r.user.avatarImage}
+									className="size-8 rounded-full flex-shrink-0 shadow-sm"
+								/>
+								<div className="text-white text-[1.125rem]/[1.4625rem] font-semibold">
+									{r.user.username}
+								</div>
 							</div>
-						</div>
+						)}
 						<div className="text-black-74 text-[1rem]/[1.3rem] font-normal">
 							{r.body}
 						</div>

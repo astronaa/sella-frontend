@@ -4,7 +4,7 @@ import { Button } from "~/shared/ui/kit/button";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCreateDialog } from "~/features/store/create";
-import { storeMock } from "~/shared/api/client/stores/mock";
+import { storeMock } from "~/shared/api/client"
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { Icons } from "~/shared/ui/icons";

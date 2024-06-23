@@ -1,5 +1,5 @@
 import { components } from "~/shared/api/openapi";
-import { Review } from "../../model";
+import { Review } from "./model";
 import { mapDtoToUserShort } from "../users/mappers";
 
 export const mapDtoToReview = (obj: components['schemas']['ReviewDto']): Review => ({
@@ -7,6 +7,5 @@ export const mapDtoToReview = (obj: components['schemas']['ReviewDto']): Review 
 	body: obj.text,
 	createdAt: obj.createdAt,
 	isPositive: obj.isPositive,
-	// @ts-expect-error expecting openapi changes
 	user: obj.user ? mapDtoToUserShort(obj.user) : null
 })

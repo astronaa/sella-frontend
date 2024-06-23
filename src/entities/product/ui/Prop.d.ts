@@ -1,15 +1,8 @@
-import {
-	Product,
-	ProductRate,
-	Review,
-} from "~/shared/api/model";
+import { Review } from "~/shared/api/client"
+import { Product } from "~/shared/api/client"
 
 export interface ProductProp {
-  product: Product
-}
-
-export interface ProductRateProps {
-  rates: ProductRate;
+	product: Product
 }
 
 export interface ProductReviewProps {

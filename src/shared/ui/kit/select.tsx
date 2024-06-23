@@ -1,6 +1,6 @@
 'use client'
 
-import { Select } from '@ark-ui/react/select'
+import { Select, SelectCollectionItem } from '@ark-ui/react/select'
 import { forwardRef, type ComponentProps } from 'react'
 import { tv } from 'tailwind-variants'
 import { createStyleContext } from '~/shared/lib/create-style-context'
@@ -55,29 +55,28 @@ const styles = tv(
 )
 const { withProvider, withContext } = createStyleContext(styles)
 
-const BaseRoot = forwardRef<
-	HTMLDivElement,
-	ComponentProps<typeof Select.Root>
->(({ positioning, ...props }, ref) => (
-	<Select.Root
-		ref={ref} {...props}
-		positioning={{
-			gutter: 0,
-			getAnchorRect(element) {
-				const rect = element?.getBoundingClientRect() ?? null;
-				if (rect) {
-					rect.height = 0;
-					rect.x -= 4;
-					rect.y -= 4;
-				}
-				return rect;
-			},
-			...positioning
-		}}
-	/>
-))
-
-BaseRoot.displayName = 'BaseSelectRoot';
+function BaseRoot<T extends SelectCollectionItem>({
+	positioning, ...props }: ComponentProps<typeof Select.Root<T>>
+) {
+	return (
+		<Select.Root<T>
+			{...props}
+			positioning={{
+				gutter: 0,
+				getAnchorRect(element) {
+					const rect = element?.getBoundingClientRect() ?? null;
+					if (rect) {
+						rect.height = 0;
+						rect.x -= 4;
+						rect.y -= 4;
+					}
+					return rect;
+				},
+				...positioning
+			}}
+		/>
+	)
+}
 
 const preferedZIndex = Number(resolvedTwConfig.theme.zIndex['dropdown']) - 1;
 

@@ -5,6 +5,7 @@ import { createUsersClient } from "./users/impl";
 import { createSalesClient } from "./sales/impl";
 import { createOrdersClient } from "./orders/impl";
 import { createReviewsClient } from "./reviews/impl";
+import { createChatsClient } from "./chats/impl";
 
 export function createApiClient() {
 	return {
@@ -14,6 +15,7 @@ export function createApiClient() {
 		products: createProductsClient(),
 		sales: createSalesClient(),
 		orders: createOrdersClient(),
-		reviews: createReviewsClient()
+		reviews: createReviewsClient(),
+		chats: createChatsClient()
 	}
 }

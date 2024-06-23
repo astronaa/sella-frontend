@@ -3,7 +3,7 @@
 import { Dialog } from '~/shared/ui/kit';
 import { EditForm } from './EditForm';
 import { ReactNode } from 'react';
-import { Store } from '~/shared/api/model';
+import { Store } from "~/shared/api/client"
 import { DeleteButton } from './DeleteButton';
 import { useDialogState } from '~/shared/lib/dialog';
 import { VSubmitButton } from '~/shared/ui/validation-inputs';

@@ -1,7 +1,8 @@
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { apiClient } from "~/shared/api/client";
-import { ProductId, Review } from "~/shared/api/model";
+import { Review } from "~/shared/api/client"
+import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'reviews'

@@ -2,8 +2,7 @@ import { ProductContent } from "./ProductContent";
 import { ReviewsStream } from "./ReviewsStream";
 import { PreviewImage } from "~/shared/ui/image";
 import { Icons } from "~/shared/ui/icons";
-import { Button } from "~/shared/ui/kit/button";
-import { ProductId } from "~/shared/api/model";
+import { ProductId } from "~/shared/api/client"
 import { fetchProductPage, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
@@ -23,7 +22,6 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<TwitterWidget />
-						<CategoriesRow />
 					</div>
 				</div>
 
@@ -33,19 +31,6 @@ export async function Component({ productId }: { productId: ProductId }) {
 				/>
 			</div>
 		</ProductOnPageProvider>
-	);
-}
-
-function CategoriesRow() {
-	return (
-		<div className="flex items-center gap-4">
-			<Button colorPalette="gray">
-				Category
-			</Button>
-			<Button colorPalette="gray">
-				Category
-			</Button>
-		</div>
 	);
 }
 

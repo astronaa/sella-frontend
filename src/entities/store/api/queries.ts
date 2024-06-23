@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { apiClient } from "~/shared/api/client";
-import { PayloadPagination } from "~/shared/api/client/pagination";
-import { Store } from "~/shared/api/model"
+import { PayloadPagination } from "~/shared/api/client"
+import { Store } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'stores'

@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";

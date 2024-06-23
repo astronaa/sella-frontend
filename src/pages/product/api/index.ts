@@ -1,5 +1,5 @@
 import { apiClient } from "~/shared/api/client";
-import { ProductId } from "~/shared/api/model";
+import { ProductId } from "~/shared/api/client"
 import { INITIAL_PAGE, INITIAL_SORT, ITEMS_PER_PAGE } from "../config";
 
 export async function fetchProductPage(productId: ProductId) {

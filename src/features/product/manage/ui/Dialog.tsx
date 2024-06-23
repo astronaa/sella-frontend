@@ -2,7 +2,7 @@
 
 import { Dialog } from '~/shared/ui/kit';
 import { ReactNode } from 'react';
-import { Product } from '~/shared/api/model';
+import { Product } from "~/shared/api/client"
 import { DeleteButton } from './DeleteButton';
 import { Portal } from '@ark-ui/react';
 import { useDialogState } from '~/shared/lib/dialog';

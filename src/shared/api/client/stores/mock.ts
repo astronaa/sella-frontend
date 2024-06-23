@@ -1,4 +1,4 @@
-import { Store } from "../../model";
+import { Store } from "./model";
 
 export const storeMock: Store = {
 	id: '1',

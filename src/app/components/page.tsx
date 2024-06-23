@@ -7,7 +7,8 @@ import { VTextControl } from "~/shared/ui/validation-inputs";
 import { z } from "zod";
 import { Form } from "react-final-form";
 import { zodValidate } from "~/shared/lib/zod-final-form";
-import { Product, Store } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
+import { Store } from "~/shared/api/client"
 import { StoreCard } from "~/entities/store";
 import { ProductCard } from "~/entities/product";
 import { Pagination } from "~/shared/ui/kit/pagination";

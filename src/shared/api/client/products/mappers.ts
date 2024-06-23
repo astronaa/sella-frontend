@@ -1,4 +1,4 @@
-import { Product } from "../../model";
+import { Product } from "./model";
 import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 
@@ -24,6 +24,8 @@ export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['BasePr
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
 		storeUrl: 'storeUrl' in obj ? obj.storeUrl : undefined,
+		isFrozen: 'isFrozen' in obj ? obj.isFrozen : undefined,
+		tagNames: 'tagNames' in obj ? obj.tagNames : undefined,
 		...imagesConfig,
 		rating: 'rating' in obj ? {
 			likes: obj.rating.positive,

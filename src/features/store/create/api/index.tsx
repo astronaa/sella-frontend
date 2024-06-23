@@ -12,11 +12,7 @@ export const schema = apiClient.stores.schemaCreate.merge(
 export type SchemaType = z.infer<typeof schema>;
 
 export async function createStore(values: SchemaType) {
-	const { data, error } = await apiClient.stores.create({
-		url: values.url,
-		name: values.name,
-		description: values.description
-	});
+	const { data, error } = await apiClient.stores.create(values);
 
 	if (error?.statusCode == 409) {
 		throw new FormError({

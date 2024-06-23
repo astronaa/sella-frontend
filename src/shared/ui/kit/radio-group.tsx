@@ -61,6 +61,7 @@ export const Label = withContext(ArkRadioGroup.Label, 'label')
 export {
 	RadioGroupContext as Context,
 	type RadioGroupContextProps as ContextProps,
+	RadioGroupItemHiddenInput as ItemHiddenInput
 } from '@ark-ui/react/radio-group'
 
 export type RootProps = ComponentProps<typeof Root>

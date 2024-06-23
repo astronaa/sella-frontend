@@ -1,4 +1,4 @@
-import { Store } from "~/shared/api/model";
+import { Store } from "~/shared/api/client"
 
 export interface StoreProp {
 	store: Store

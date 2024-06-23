@@ -1,4 +1,4 @@
-import { Transaction } from "~/shared/api/model";
+import { Transaction } from "~/shared/api/client"
 import { Badge } from "~/shared/ui/kit/badge";
 import { IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";

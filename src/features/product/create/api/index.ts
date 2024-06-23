@@ -18,7 +18,8 @@ export async function createProduct(storeUrl: string, values: SchemaType) {
 		name: values.name,
 		price: Number(values.price),
 		description: values.description,
-		shortDescription: values.shortDescription
+		shortDescription: values.shortDescription,
+		tagNames: []
 	})
 
 	if (error)
