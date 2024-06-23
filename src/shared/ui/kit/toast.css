@@ -1,12 +1,6 @@
 .toast__root {
-	background: var(--colors-bg-default);
-	border-radius: var(--radii-l3);
-	box-shadow: var(--shadows-lg);
-	min-width: var(--sizes-xs);
 	height: var(--height);
-	opacity: var(--opacity);
 	overflow-wrap: anywhere;
-	padding: var(--spacing-4);
 	position: relative;
 	scale: var(--scale);
 	translate: var(--x) var(--y) 0;
@@ -18,28 +12,4 @@
 	transition-property: translate,scale,opacity,height;
 	--transition-easing: var(--easings-default);
 	transition-timing-function: var(--easings-default)
-}
-
-.toast__title {
-	color: var(--colors-fg-default);
-	font-weight: var(--font-weights-semibold)
-}
-
-.toast__description,.toast__title {
-	font-size: var(--font-sizes-sm);
-	line-height: 1.25rem
-}
-
-.toast__description {
-	color: var(--colors-fg-muted)
-}
-
-.toast__actionTrigger {
-	margin-top: var(--spacing-2)
-}
-
-.toast__closeTrigger {
-	position: absolute;
-	top: var(--spacing-3);
-	right: var(--spacing-3)
 }

@@ -17,7 +17,7 @@ const toast = tv(
 			description: 'toast__description font-normal',
 		},
 		variants: {
-			variant: {info:{root: 'border-white/[.02] bg-white/[.02]', title: 'text-white', description: 'text-white'},error: {root: 'border-red-100/[.06] bg-red-100/[.06]', title: 'text-red-100', description: 'text-red-100'}}
+			variant: {info:{root: 'border-white/[.02] bg-black-06', title: 'text-white', description: 'text-white'},error: {root: 'border-red-100/[.06] bg-[#1D1211]', title: 'text-red-100', description: 'text-red-100'}}
 		},
 	},
 	{ twMerge: false },
