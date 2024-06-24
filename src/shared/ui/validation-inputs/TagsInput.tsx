@@ -10,7 +10,9 @@ export function VTagsInput({ placeholder, ...props }: TagsInputRootProps & {plac
 	const { input: { onChange, ...fieldProps } } = useField(name);
 
 	return (
-		<TagsInput.Root id={id} {...props} defaultValue={[]} value={fieldProps.value} onFocus={fieldProps.onFocus} onBlur={fieldProps.onBlur} onValueChange={({value}) => onChange(value)}>
+		<TagsInput.Root id={id} {...props} defaultValue={[]} value={fieldProps.value} onValueChange={({value}) => {
+			onChange(value)
+		}}>
 			<TagsInput.Context>
 				{(api) => (
 					<>
@@ -27,7 +29,7 @@ export function VTagsInput({ placeholder, ...props }: TagsInputRootProps & {plac
 									</TagsInput.ItemPreview>
 								</TagsInput.Item>
 							))}
-							<TagsInput.Input placeholder={placeholder} />
+							<TagsInput.Input placeholder={placeholder} onBlur={fieldProps.onBlur} onFocus={fieldProps.onFocus} />
 						</TagsInput.Control>
 					</>
 				)}
