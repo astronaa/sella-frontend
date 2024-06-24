@@ -10,7 +10,7 @@ export function VTagsInput({ placeholder, ...props }: TagsInputRootProps & {plac
 	const { input: { onChange, ...fieldProps } } = useField(name);
 
 	return (
-		<TagsInput.Root id={id} {...props} defaultValue={[]} value={fieldProps.value} onValueChange={({value}) => {
+		<TagsInput.Root id={id} {...props} value={fieldProps.value || []} onValueChange={({value}) => {
 			onChange(value)
 		}}>
 			<TagsInput.Context>
