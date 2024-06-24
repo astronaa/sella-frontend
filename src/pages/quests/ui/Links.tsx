@@ -5,7 +5,7 @@ import { cn } from "~/shared/lib/cn";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-	{ id: '1', label: 'Social tasks', link: '/dashboard/quests' },
+	{ id: '1', label: 'Social tasks', link: '/dashboard/quests/social-tasks' },
 	{ id: '2', label: 'Milestones', link: '/dashboard/quests/test' },
 	{ id: '3', label: 'Decentralized management', link: '/dashboard/quests/management' },
 ]
