@@ -14,44 +14,43 @@ export function ClipboardInput() {
 
 	return (
 		<Skeleton loading={isLoading} className='rounded-[1rem]'>
-			<Clipboard.Root value={`sella.me/${data?.refCode}`}
-			>
-				{({ isCopied }) => (
-					<div className='flex gap-4'>
-						<StoreInputAddon>
-							{({ Component: Addon, inputClassName }) => (
-								<InputGroup
-									className={cn('relative after:absolute after:content-["Copied!"] w-[23.5rem] min-w-[18rem]',
-										'after:text-accent-100 after:transform after:-translate-y-1/2',
-										'after:top-1/2 after:right-[1rem]',
-										{ 'after:hidden': !isCopied }
-									)}
-								>
+			<Clipboard.Root value={`sella.me/${data?.refCode}`}>
+				<div className='flex gap-4'>
+					<StoreInputAddon>
+						{({ Component: Addon, inputClassName }) => (
+							<InputGroup>
+								<Clipboard.Input asChild>
 									<Input
 										className={cn(
 											"rounded-[1.25rem] border border-secondary w-full h-full",
 											inputClassName,
-											'text-black-40'
+											'text-black-40',
+											'relative after:absolute after:content-["Copied!"] w-[23.5rem] min-w-[18rem]',
+											'after:text-accent-100 after:transform after:-translate-y-1/2',
+											'after:top-1/2 after:right-[1rem] after:opacity-0',
+											'data-[copied]:after:opacity-100'
 										)}
 										value={data?.refCode}
 										readOnly
 									/>
-									<Addon className='text-white'/>
-								</InputGroup>
-							)}
-						</StoreInputAddon>
+								</Clipboard.Input>
+								<Addon className='text-white'/>
+							</InputGroup>
+						)}
+					</StoreInputAddon>
 
-						<Clipboard.Trigger asChild>
-							<IconButton
-								size='lg'
-								variant='solid'
-								className='rounded-[20px]'
-							>
-								{isCopied ? <Icons.Check/> : <Icons.Copy/>}
-							</IconButton>
-						</Clipboard.Trigger>
-					</div>
-				)}
+					<Clipboard.Trigger asChild>
+						<IconButton
+							size='lg'
+							variant='solid'
+							className='rounded-[20px]'
+						>
+							<Clipboard.Indicator copied={<Icons.Check/>}>
+								<Icons.Copy/>
+							</Clipboard.Indicator>
+						</IconButton>
+					</Clipboard.Trigger>
+				</div>
 			</Clipboard.Root>
 		</Skeleton>
 	)
