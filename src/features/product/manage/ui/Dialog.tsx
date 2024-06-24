@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog } from '~/shared/ui/kit';
+import {Dialog, Tabs} from '~/shared/ui/kit';
 import { ReactNode } from 'react';
 import { Product } from "~/shared/api/client"
 import { DeleteButton } from './DeleteButton';
@@ -43,31 +43,40 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 
 				<Dialog.Positioner>
 					<Dialog.Content className='items-start w-[37.5rem] p-[2.1875rem] gap-[2rem]'>
-						<Dialog.CloseButton />
+						<Tabs.Root defaultValue="1" className="gap-[1.5rem]">
+							<Dialog.CloseButton />
 
-						<Dialog.ContentHeading>
-							<Dialog.Title>Product Settings</Dialog.Title>
-						</Dialog.ContentHeading>
+							<Dialog.ContentHeading>
+								<Dialog.Title>Product Settings</Dialog.Title>
+								<Tabs.List className="w-full">
+									<Tabs.Trigger value='1'>
+									General Settings
+									</Tabs.Trigger>
+									<Tabs.Trigger value='2'>
+									Images & Description
+									</Tabs.Trigger>
+									<Tabs.Indicator />
+								</Tabs.List>
+							</Dialog.ContentHeading>
 
-						<EditForm.Root
-							product={product}
-							onActionFulfilled={onProductEdit}
-						>
-							<EditForm.Controls
-								className='gap-[2rem]'
-							/>
-							
-							<Dialog.ContentFooter>
-								<DeleteButton
-									productId={product.id}
-									onActionFulfilled={onProductDelete}
-								/>
+							<EditForm.Root
+								product={product}
+								onActionFulfilled={onProductEdit}
+							>
+								<Tabs.Content value="1"><EditForm.General className='gap-[1rem]'/></Tabs.Content>
+								<Tabs.Content value="2"><EditForm.Description className='gap-[1rem]'/></Tabs.Content>
+								<Dialog.ContentFooter>
+									<DeleteButton
+										productId={product.id}
+										onActionFulfilled={onProductDelete}
+									/>
 
-								<VSubmitButton className='w-full' size='lg'>
+									<VSubmitButton className='w-full' size='lg'>
 									Save and Close
-								</VSubmitButton>
-							</Dialog.ContentFooter>
-						</EditForm.Root>
+									</VSubmitButton>
+								</Dialog.ContentFooter>
+							</EditForm.Root>
+						</Tabs.Root>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>

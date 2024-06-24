@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader,
+	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl,
 	VUploader
@@ -11,10 +11,8 @@ import { zodValidate } from "~/shared/lib/zod-final-form";
 import { manageProduct, SchemaType, schema } from "../../api";
 import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
-import { Form, useField } from "react-final-form";
+import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-import { IconButton } from "~/shared/ui/kit/button";
-import { Icons } from "~/shared/ui/icons";
 
 const validate = zodValidate(schema);
 
@@ -52,23 +50,20 @@ export function Root({ product, onActionFulfilled, children }: RootProps) {
 	)
 }
 
-export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-	const { input: { value: previewImageUrl } } = useField<string>('previewImageUrl');
-
+export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
 				<VImageUploader
 					label='Attach Preview' name='previewImage'
 					className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
-					initialImageSrc={previewImageUrl ?? undefined}
 				/>
-				<div className='flex flex-col justify-between w-full max-md:gap-[2rem]'>
+				<div className='flex flex-col justify-between max-md:gap-[1rem]'>
 					<VTextControl.Root className='w-full' name='name'>
 						<VTextControl.LabelOrError>
 							Product Name
 						</VTextControl.LabelOrError>
-						<VTextControl.Input />
+						<VTextControl.Input placeholder='Enter product name' />
 					</VTextControl.Root>
 
 					<VTextControl.Root className='w-full' name='price'>
@@ -83,6 +78,17 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				</div>
 			</div>
 
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
+		</div>
+	);
+}
+export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
+	return (
+		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>
 				<VTextControl.LabelOrError>
 					Product Description
@@ -100,44 +106,18 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				/>
 			</VTextAreaControl.Root>
 
-			<ImagesUploader />
-		</div>
-	);
-}
-
-function ImagesUploader() {
-	const {
-		input: { value: images, onChange: setImages }
-	} = useField<string[]>('galleryImagesUrls')
-
-	return (
-		<VUploader.Root
-			name='galleryImages' multiple
-			rootProps={{ className: 'w-full' }}
-		>
-			<VUploader.LabelOrError>
-				Product Images
-			</VUploader.LabelOrError>
-
-			<VUploader.Previews
-				className='grid-cols-6'
-				prevSlot={images.map(imgUrl => (
-					<VUploader.FilePreview
-						key={imgUrl}
-						file={{ name: 'image.jpg', url: imgUrl }}
-						renderActionBar={
-							<IconButton
-								variant='action' size='xs' type='button'
-								onClick={() => setImages(images.filter(i => i !== imgUrl))}
-							>
-								<Icons.Close className='size-[1.25rem]' />
-							</IconButton>
-						}
-					/>
-				))}
+			<VUploader.Root
+				name='galleryImages' multiple
+				rootProps={{ className: 'w-full' }}
 			>
-				<VUploader.AddButton />
-			</VUploader.Previews>
-		</VUploader.Root>
-	);
+				<VUploader.LabelOrError>
+					Product Images
+				</VUploader.LabelOrError>
+
+				<VUploader.Previews>
+					<VUploader.AddButton />
+				</VUploader.Previews>
+			</VUploader.Root>
+		</div>
+	)
 }
