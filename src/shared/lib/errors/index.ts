@@ -1,9 +1,7 @@
 export class FormError {
-	field: string | undefined;
-	message: string;
+	fields: Record<string, string>;
 
-	constructor({ field, message }: { field?: string; message: string | string[]; }) {
-		this.field = field;
-		this.message = Array.isArray(message) ? message[0] : message;
+	constructor(fields: Record<string, string>) {
+		this.fields = fields;
 	}
 }

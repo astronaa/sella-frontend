@@ -15,6 +15,7 @@ import { cn } from "~/shared/lib/cn";
 import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
+import {toaster} from "~/shared/ui/toaster";
 
 const validate = zodValidate(schema);
 
@@ -35,8 +36,10 @@ export function Root({ onActionFulfilled, children, store }: RootProps) {
 			onActionFulfilled?.(result);
 		}
 		catch (error) {
-			if (error instanceof FormError && error.field) {
-				return { [error.field]: error.message }
+			if (error instanceof FormError) {
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.create({type: 'error', title: 'Error updating Store', description: error.message})
 			}
 		}
 	}

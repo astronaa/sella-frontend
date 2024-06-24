@@ -15,6 +15,7 @@ import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
+import {toaster} from "~/shared/ui/toaster";
 
 export const schema = z.object({
 	username: apiClient.auth.schemaUsername,
@@ -72,15 +73,23 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
-				if (error)
-					throw new FormError({ field: 'username', message: error.message });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
-				if (error)
-					throw new FormError({ field: 'email', message: error.message });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 
 				openVerifyDialog();
 
@@ -99,8 +108,11 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		catch (error) {
 			onActionRejected?.();
 
-			if (error instanceof FormError && error.field)
-				return { [error.field]: error.message }
+			if (error instanceof FormError){
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.create({type: 'error', title: 'Error updating Settings', description: error.message})
+			}
 		}
 	};
 

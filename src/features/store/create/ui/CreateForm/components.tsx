@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader,
+	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl
 } from "~/shared/ui/validation-inputs";
@@ -15,7 +15,7 @@ import { cn } from "~/shared/lib/cn";
 import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
-import {VTagsInput} from "~/shared/ui/validation-inputs";
+import {toaster} from "~/shared/ui/toaster";
 
 const validate = zodValidate(schema);
 
@@ -25,14 +25,15 @@ export interface RootProps extends PropsWithChildren {
 
 export function Root({ onActionFulfilled, children }: RootProps) {
 	const onSubmit = async (values: SchemaType) => {
-		console.log(values)
 		try {
 			const result = await createStore(values);
 			onActionFulfilled?.(result);
 		}
 		catch (error) {
-			if (error instanceof FormError && error.field) {
-				return { [error.field]: error.message }
+			if (error instanceof FormError) {
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.error({title: 'Error creating Store', description: error.message})
 			}
 		}
 	}
@@ -49,7 +50,7 @@ export function Root({ onActionFulfilled, children }: RootProps) {
 
 export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
+		<div {...props} className={cn('flex flex-col w-full gap-[1.5rem]', className)}>
 			<DividerWithElement className='gap-[1rem] mb-[1rem]'>
 				<VImageUploader
 					label='Storefront Image' name='previewImage'
@@ -60,14 +61,14 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
 				<VTextControl.Root className='w-full' name='name'>
 					<VTextControl.Label>Store Name</VTextControl.Label>
-					<VTextControl.Input placeholder="Store Name"/>
-					<VTextControl.ErrorText/>
+					<VTextControl.Input placeholder="Store Name" />
+					<VTextControl.ErrorText />
 				</VTextControl.Root>
 
 				<VTextControl.Root className='w-full' name='url'>
 					<VTextControl.Label>Store URL</VTextControl.Label>
 					<StoreInputAddon>
-						{({Component: Addon, inputClassName}) => (
+						{({ Component: Addon, inputClassName }) => (
 							<VTextControl.Input className={inputClassName}>
 								<Addon/>
 							</VTextControl.Input>
