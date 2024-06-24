@@ -413,6 +413,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/featured-tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["TagController_getFeaturedTags"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/twitter/auth": {
         parameters: {
             query?: never;
@@ -662,7 +678,7 @@ export interface components {
             username: string;
         };
         BadRequestDto: {
-            message: string[];
+            message: Record<string, string | undefined>;
             error: string;
             statusCode: number;
         };
@@ -859,6 +875,11 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
+        FeaturedTagDto: {
+            name: string;
+            /** Format: uuid */
+            imageId?: string;
+        };
         ChatResponseDto: {
             chatId: string;
             buyerId: number;
@@ -919,6 +940,9 @@ export interface components {
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
             price: number;
+            tokenAmount: number;
+            /** @enum {string} */
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
@@ -954,6 +978,9 @@ export interface components {
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
             price: number;
+            tokenAmount: number;
+            /** @enum {string} */
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1899,6 +1926,24 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    TagController_getFeaturedTags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Featured tags retrieved successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["FeaturedTagDto"][];
+                };
             };
         };
     };
