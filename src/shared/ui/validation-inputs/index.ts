@@ -6,3 +6,4 @@ export * as VToggleGroup from './ToggleGroup'
 export { VImageUploader } from './ImageUploader';
 export { VSubmitButton } from './SubmitButton';
 export { VTagsInput } from './TagsInput';
+export { VCheckbox } from './Checkbox';
