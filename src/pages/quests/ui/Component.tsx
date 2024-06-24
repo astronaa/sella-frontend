@@ -1,17 +1,13 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { MarketingCard } from "~/pages/quests/ui/MarketingCard";
 import { Icons } from "~/shared/ui/icons";
-import { StoreInputAddon } from "~/entities/store";
-import { Input, InputGroup } from "~/shared/ui/kit/input";
-import { cn } from "~/shared/lib/cn";
-import { Button, IconButton } from "~/shared/ui/kit/button";
-import { Clipboard } from "~/shared/ui/kit";
+import { Button } from "~/shared/ui/kit/button";
 import { ReactNode } from "react";
 import { Links } from "~/pages/quests/ui/Links";
+import { ClipboardInput } from "~/pages/quests/ui/ClipboardInput";
+import Link from "next/link";
 
 export async function Component({ children }: { children: ReactNode }) {
-	const code = "FJ78H234G"
-
 	return (
 		<div className='px-4'>
 			<div className='max-w-content m-auto flex flex-col gap-12'>
@@ -20,31 +16,7 @@ export async function Component({ children }: { children: ReactNode }) {
 				</Heading>
 
 				<div className='border border-secondary p-[1rem] rounded-[1.25rem] flex gap-4 items-center justify-between'>
-					<Clipboard.Root value={`sella.me/${code}`}>
-						<div className='flex gap-4'>
-							<StoreInputAddon>
-								{({ Component: Addon, inputClassName }) => (
-									<InputGroup>
-										<Input
-											className={cn(
-												"rounded-[1.25rem] border border-secondary w-full h-full",
-												inputClassName,
-												'text-black-40'
-											)}
-											value={code}
-											readOnly
-										/>
-										<Addon className='text-white'/>
-									</InputGroup>
-								)}
-							</StoreInputAddon>
-
-							<Clipboard.Trigger asChild>
-								<IconButton size='lg' variant='solid' className='rounded-[20px]'><Icons.Copy/></IconButton>
-							</Clipboard.Trigger>
-						</div>
-					</Clipboard.Root>
-
+					<ClipboardInput/>
 
 					<div className='flex gap-8 font-[500]'>
 						<div>
@@ -99,9 +71,11 @@ export async function Component({ children }: { children: ReactNode }) {
 								<Icons.PointsIcon/>
 							</div>
 
-							<Button size='sm' variant='solid'>
-								Earn Points
-							</Button>
+							<Link href='/dashboard/quests/spend-points'>
+								<Button size='sm' variant='solid'>
+									Spend Points
+								</Button>
+							</Link>
 						</div>
 					</div>
 

@@ -5,9 +5,9 @@ import { cn } from "~/shared/lib/cn";
 import { usePathname } from "next/navigation";
 
 const tabs = [
-	{ id: '1', label: 'Social tasks', link: 'social-tasks' },
-	{ id: '2', label: 'Milestones', link: '/' },
-	{ id: '3', label: 'Decentralized management', link: 'management' },
+	{ id: '1', label: 'Social tasks', link: '/dashboard/quests' },
+	{ id: '2', label: 'Milestones', link: '/dashboard/quests/test' },
+	{ id: '3', label: 'Decentralized management', link: '/dashboard/quests/management' },
 ]
 
 export function Links() {
@@ -19,7 +19,7 @@ export function Links() {
 				<NextLink
 					href={tab.link}
 					className={cn('px-4 py-2 rounded-[0.75rem] text-black-60', {
-						'text-white bg-white/[.06] rounded-[0.75rem]': tab.link === pathname?.split('/').pop()
+						'text-white bg-white/[.06] rounded-[0.75rem]': tab.link === pathname
 					})}
 					key={tab.id}
 				>

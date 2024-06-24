@@ -15,7 +15,7 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<Skeleton className='rounded-[1rem]' loading={user === undefined}>
 			{!!isAuthorized ? (
-				<AuthorizedBar {...props} />
+				<AuthorizedBar address={address} {...props} />
 			) : (
 				<NotAuthorizedBar {...props} />
 			)}

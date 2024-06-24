@@ -36,9 +36,9 @@ export function Management() {
 
 			<div className='bg-white/[.02] border border-secondary p-8 rounded-[1.25rem] flex flex-col gap-12'>
 				<div className='flex flex-col gap-4'>
-					<div className='text-white text-4xl font-[500]'>Resolve Dispute</div>
-					<div className='text-black-60 max-w-[28.75rem]'>Become part of Sella’s Decentralized Management and
-						steer the platform towards success!
+					<div className='text-white text-4xl font-[500]'>Reports</div>
+					<div className='text-black-60 max-w-[28.75rem]'>
+						Act as the platform’s vanguard, shield users from malicious actors and earn points for doing so!
 					</div>
 				</div>
 
