@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { productQueries } from "~/entities/product";
 import { apiClient } from "~/shared/api/client";
+import {FormError} from "~/shared/lib/errors";
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -22,8 +23,12 @@ export async function createProduct(storeUrl: string, values: SchemaType) {
 		tagNames: []
 	})
 
-	if (error)
-		throw error;
+	if(error){
+		if (error.statusCode == 400) {
+			throw new FormError(error.message as Record<string, string>);
+		}
+		throw new Error(error.message as unknown as string);
+	}
 
 	await apiClient.products.for(data.id).uploadImages(data, values);
 

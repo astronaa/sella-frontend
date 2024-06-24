@@ -9,6 +9,8 @@ import { Portal } from '@ark-ui/react';
 import { CreateForm } from './CreateForm';
 import { VSubmitButton } from '~/shared/ui/validation-inputs';
 import {createProduct, SchemaType} from "~/features/product/create/api";
+import {FormError} from "~/shared/lib/errors";
+import {toaster} from "~/shared/ui/toaster";
 
 type CreateDialogProps = Dialog.RootProps & {
 	storeUrl: string,
@@ -29,8 +31,13 @@ export function CreateDialog({
 			const result = await createProduct(storeUrl, values);
 			onActionFulfilled?.(result);
 			close();
+		} catch(error) {
+			if (error instanceof FormError) {
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.error({title: 'Error creating Product', description: error.message})
+			}
 		}
-		catch { }
 	}
 
 	return (

@@ -13,6 +13,8 @@ import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
 import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
+import {FormError} from "~/shared/lib/errors";
+import {toaster} from "~/shared/ui/toaster";
 
 const validate = zodValidate(schema);
 
@@ -27,7 +29,13 @@ export function Root({ product, onActionFulfilled, children }: RootProps) {
 			const result = await manageProduct(product.id, values);
 			onActionFulfilled?.(result);
 		}
-		catch { }
+		catch (error) {
+			if (error instanceof FormError) {
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.error({title: 'Error updating Product', description: error.message})
+			}
+		}
 	}
 
 	const initialValues = useMemo(() => {
