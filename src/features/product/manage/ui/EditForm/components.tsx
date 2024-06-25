@@ -11,10 +11,12 @@ import { zodValidate } from "~/shared/lib/zod-final-form";
 import { manageProduct, SchemaType, schema } from "../../api";
 import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
-import { Form } from "react-final-form";
+import {Form, useField} from "react-final-form";
 import { cn } from "~/shared/lib/cn";
 import {FormError} from "~/shared/lib/errors";
 import {toaster} from "~/shared/ui/toaster";
+import {IconButton} from "~/shared/ui/kit/button";
+import { Icons } from "~/shared/ui/icons";
 
 const validate = zodValidate(schema);
 
@@ -59,12 +61,14 @@ export function Root({ product, onActionFulfilled, children }: RootProps) {
 }
 
 export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	const { input: { value: previewImageUrl } } = useField<string>('previewImageUrl');
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
 				<VImageUploader
 					label='Attach Preview' name='previewImage'
 					className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
+					initialImageSrc={previewImageUrl ?? undefined}
 				/>
 				<div className='flex flex-col justify-between max-md:gap-[1rem]'>
 					<VTextControl.Root className='w-full' name='name'>
@@ -95,6 +99,8 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 	);
 }
 export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
+	const { input: { value: galleryImagesUrls } } = useField<string>('galleryImagesUrls');
+	console.log(galleryImagesUrls)
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>
@@ -114,18 +120,43 @@ export function Description({ className, ...props }: HTMLAttributes<HTMLDivEleme
 				/>
 			</VTextAreaControl.Root>
 
-			<VUploader.Root
-				name='galleryImages' multiple
-				rootProps={{ className: 'w-full' }}
-			>
-				<VUploader.LabelOrError>
-					Product Images
-				</VUploader.LabelOrError>
-
-				<VUploader.Previews>
-					<VUploader.AddButton />
-				</VUploader.Previews>
-			</VUploader.Root>
+			<ImagesUploader/>
 		</div>
+	)
+}
+function ImagesUploader() {
+	const {
+		input: { value: images, onChange: setImages }
+	} = useField<string[]>('galleryImagesUrls')
+
+	return (
+		<VUploader.Root
+			name='galleryImages' multiple
+			rootProps={{ className: 'w-full' }}
+		>
+			<VUploader.LabelOrError>
+				Product Images
+			</VUploader.LabelOrError>
+
+			<VUploader.Previews
+				className='grid-cols-6'
+				prevSlot={images.map(imgUrl => (
+					<VUploader.FilePreview
+						key={imgUrl}
+						file={{ name: 'image.jpg', url: imgUrl }}
+						renderActionBar={
+							<IconButton
+								variant='action' size='xs' type='button'
+								onClick={() => setImages(images.filter(i => i !== imgUrl))}
+							>
+								<Icons.Close className='size-[1.25rem]' />
+							</IconButton>
+						}
+					/>
+				))}
+			>
+				<VUploader.AddButton />
+			</VUploader.Previews>
+		</VUploader.Root>
 	)
 }
