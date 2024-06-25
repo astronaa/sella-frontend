@@ -99,8 +99,6 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 	);
 }
 export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
-	const { input: { value: galleryImagesUrls } } = useField<string>('galleryImagesUrls');
-	console.log(galleryImagesUrls)
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>
