@@ -20,7 +20,8 @@ export async function updateStore(store: Store, { previewImage, ...data }: Schem
 		.update({
 			name: data.name,
 			url: data.url,
-			description: data.description
+			description: data.description,
+			tagNames: data.tagNames
 		});
 
 	if(error){
