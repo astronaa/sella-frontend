@@ -9,7 +9,8 @@ export const schema = z.object({
 	shortDescription: z.string({ required_error: 'Description is required' }),
 	description: z.string().optional(),
 	previewImage: z.instanceof(File).optional(),
-	galleryImages: z.array(z.instanceof(File)).optional()
+	galleryImages: z.array(z.instanceof(File)).optional(),
+	tagNames: z.array(z.string()).optional().default([])
 });
 
 export type SchemaType = z.infer<typeof schema>;
@@ -20,7 +21,7 @@ export async function createProduct(storeUrl: string, values: SchemaType) {
 		price: Number(values.price),
 		description: values.description,
 		shortDescription: values.shortDescription,
-		tagNames: []
+		tagNames: values.tagNames
 	})
 
 	if(error){
