@@ -1,7 +1,7 @@
 'use client'
 
 import { StoreInputAddon } from "~/entities/store";
-import { Input, InputGroup } from "~/shared/ui/kit/input";
+import { Input, InputAddon, InputGroup } from "~/shared/ui/kit/input";
 import { cn } from "~/shared/lib/cn";
 import { IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
@@ -16,7 +16,7 @@ export function ClipboardInput() {
 		<Skeleton loading={isLoading} className='rounded-[1rem]'>
 			<Clipboard.Root value={`sella.me/${data?.refCode}`}>
 				{({ isCopied }) => (
-					<div className='flex gap-4'>
+					<Clipboard.Control className='flex gap-4'>
 						<StoreInputAddon>
 							{({ Component: Addon, inputClassName }) => (
 								<InputGroup>
@@ -32,7 +32,9 @@ export function ClipboardInput() {
 										/>
 									</Clipboard.Input>
 									{isCopied && (
-										<span className='text-accent-100 absolute transform -translate-y-1/2 top-1/2 right-[1rem]'>Copied!</span>
+										<InputAddon className='text-accent-100 right-[1rem]'>
+											Copied!
+										</InputAddon>
 									)}
 									<Addon className='text-white'/>
 								</InputGroup>
@@ -50,7 +52,7 @@ export function ClipboardInput() {
 								</Clipboard.Indicator>
 							</IconButton>
 						</Clipboard.Trigger>
-					</div>
+					</Clipboard.Control>
 				)}
 			</Clipboard.Root>
 		</Skeleton>

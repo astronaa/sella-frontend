@@ -69,3 +69,12 @@ export function InputGroup({ className, ...props }: HTMLArkProps<'div'>) {
 		<ark.div {...props} className={cn('relative md:w-auto w-full', className)} />
 	);
 }
+
+export function InputAddon({ className, ...props }: HTMLArkProps<'span'>) {
+	return (
+		<ark.span 
+			{...props} 
+			className={cn('flex items-center absolute h-full top-0', className)} 
+		/>
+	);
+}
