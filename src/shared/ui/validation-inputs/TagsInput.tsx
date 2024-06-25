@@ -1,7 +1,7 @@
 import {useFormControlStrictContext} from "~/shared/ui/validation-inputs/ControlProvider";
 import {useField} from "react-final-form";
 import {TagsInputRootProps} from "@ark-ui/react/tags-input";
-import {IconButton} from "~/shared/ui/kit/button";
+import {Button} from "~/shared/ui/kit/button";
 import {Icons} from "~/shared/ui/icons";
 import { TagsInput } from "../kit";
 
@@ -22,9 +22,9 @@ export function VTagsInput({ placeholder, ...props }: TagsInputRootProps & {plac
 									<TagsInput.ItemPreview>
 										<TagsInput.ItemText>{value}</TagsInput.ItemText>
 										<TagsInput.ItemDeleteTrigger asChild>
-											<IconButton variant="ghost" size="xs">
-												<Icons.Close className='size-[1rem] text-black-40' />
-											</IconButton>
+											<Button variant="subtle" size="xs">
+												<Icons.Close className='text-black-40' />
+											</Button>
 										</TagsInput.ItemDeleteTrigger>
 									</TagsInput.ItemPreview>
 								</TagsInput.Item>

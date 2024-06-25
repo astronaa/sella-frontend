@@ -14,7 +14,7 @@ const tagsInput = tv(
 			input: 'tagsInput__input placeholder-black-40 text-white',
 			clearTrigger: 'tagsInput__clearTrigger',
 			item: 'tagsInput__item',
-			itemPreview: 'tagsInput__itemPreview gap-[0.5rem] rounded-[0.5rem] bg-white/[.06] border-none px-[1rem] py-[0.4rem]',
+			itemPreview: 'tagsInput__itemPreview gap-[0.5rem] rounded-[0.75rem] bg-white/[.06] border-none px-[1rem] pr-[0.75rem] py-[0.4rem]',
 			itemInput: 'tagsInput__itemInput',
 			itemText: 'tagsInput__itemText text-white',
 			itemDeleteTrigger: 'tagsInput__itemDeleteTrigger',
