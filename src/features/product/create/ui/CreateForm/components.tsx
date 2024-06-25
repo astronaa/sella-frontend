@@ -7,23 +7,22 @@ import {
 	VUploader
 } from "~/shared/ui/validation-inputs";
 
-import { zodValidate } from "~/shared/lib/zod-final-form";
-import { SchemaType, schema } from "../../api";
+import { SchemaType } from "../../api";
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-
-const validate = zodValidate(schema);
+import {ValidationErrors} from "final-form";
 
 export interface RootProps extends PropsWithChildren {
 	storeUrl: string;
 	onSubmit: (product: SchemaType) => void;
+	validate: (values: SchemaType) => ValidationErrors
 }
 
-export function Root({ onSubmit, children }: RootProps) {
+export function Root({ onSubmit, validate, children }: RootProps) {
 	return (
 		<Form
-			onSubmit={onSubmit} 
+			onSubmit={onSubmit}
 			validate={validate}
 		>
 			{() => children}

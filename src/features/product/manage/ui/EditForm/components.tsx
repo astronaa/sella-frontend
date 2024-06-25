@@ -7,38 +7,24 @@ import {
 	VUploader
 } from "~/shared/ui/validation-inputs";
 
-import { zodValidate } from "~/shared/lib/zod-final-form";
-import { manageProduct, SchemaType, schema } from "../../api";
+import { SchemaType } from "../../api";
 import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
 import {Form, useField} from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-import {FormError} from "~/shared/lib/errors";
-import {toaster} from "~/shared/ui/toaster";
 import {IconButton} from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
+import {ValidationErrors} from "final-form";
 
-const validate = zodValidate(schema);
 
 export interface RootProps extends PropsWithChildren {
 	product: Product;
-	onActionFulfilled?: (product: Product) => void;
+	onSubmit: (product: SchemaType) => void;
+	validate: (values: SchemaType) => ValidationErrors
 }
 
-export function Root({ product, onActionFulfilled, children }: RootProps) {
-	const onSubmit = async (values: SchemaType) => {
-		try {
-			const result = await manageProduct(product.id, values);
-			onActionFulfilled?.(result);
-		}
-		catch (error) {
-			if (error instanceof FormError) {
-				return error.fields
-			}else if (error instanceof Error){
-				toaster.error({title: 'Error updating Product', description: error.message})
-			}
-		}
-	}
+export function Root({ product, onSubmit, validate, children }: RootProps) {
+
 
 	const initialValues = useMemo(() => {
 		const {

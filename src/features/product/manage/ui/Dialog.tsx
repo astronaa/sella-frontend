@@ -1,27 +1,57 @@
 'use client';
 
 import {Dialog, Tabs} from '~/shared/ui/kit';
-import { ReactNode } from 'react';
+import {ReactNode, useRef, useState} from 'react';
 import { Product } from "~/shared/api/client"
 import { DeleteButton } from './DeleteButton';
 import { Portal } from '@ark-ui/react';
 import { useDialogState } from '~/shared/lib/dialog';
 import { VSubmitButton } from '~/shared/ui/validation-inputs';
 import { EditForm } from './EditForm';
+import {manageProduct, schema, SchemaType} from "~/features/product/manage/api";
+import {FormError} from "~/shared/lib/errors";
+import {toaster} from "~/shared/ui/toaster";
+import {zodValidate} from "~/shared/lib/zod-final-form";
 
 type ManageDialogProps = Dialog.RootProps & {
 	product: Product,
 	triggerElement?: ReactNode
 };
 
+const zValidate = zodValidate(schema);
+
+
 export function ManageDialog({ product, triggerElement, ...props }: ManageDialogProps) {
+	const [selectedTab, setSelectedTab] = useState('1')
+	const validationErrorsRef = useRef<object>()
 	const { isOpen, handleOpenChange, close } = useDialogState(props);
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const onProductEdit = (data: Product) => {
-		close();
+	const goToInvalidTab = (errorFields: object) => {
+		if(('price' in errorFields || 'name' in errorFields || 'tagNames' in errorFields) && !('shortDescription' in errorFields || 'description' in errorFields)){
+			setSelectedTab('1')
+		}else if(('shortDescription' in errorFields || 'description' in errorFields) && !('price' in errorFields || 'name' in errorFields || 'tagNames' in errorFields)){
+			setSelectedTab('2')
+		}
 	}
-
+	const onSubmit = async (values: SchemaType) => {
+		try {
+			await manageProduct(product.id, values);
+			close();
+		}
+		catch (error) {
+			if (error instanceof FormError) {
+				goToInvalidTab(error.fields)
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.error({title: 'Error updating Product', description: error.message})
+			}
+		}
+	}
+	const validate = (values: object) => {
+		const errors = zValidate(values)
+		validationErrorsRef.current = errors
+		return errors
+	}
 	const onProductDelete = () => {
 		close();
 	}
@@ -43,7 +73,9 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 
 				<Dialog.Positioner>
 					<Dialog.Content className='items-start w-[37.5rem] p-[2.1875rem] gap-[2rem]'>
-						<Tabs.Root defaultValue="1" className="gap-[1.5rem]">
+						<Tabs.Root defaultValue="1" className="gap-[1.5rem]" value={selectedTab} onValueChange={(e) => {
+							setSelectedTab(e.value)
+						}}>
 							<Dialog.CloseButton />
 
 							<Dialog.ContentHeading>
@@ -61,7 +93,8 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 
 							<EditForm.Root
 								product={product}
-								onActionFulfilled={onProductEdit}
+								onSubmit={onSubmit}
+								validate={validate}
 							>
 								<Tabs.Content value="1"><EditForm.General className='gap-[1rem]'/></Tabs.Content>
 								<Tabs.Content value="2"><EditForm.Description className='gap-[1rem]'/></Tabs.Content>
@@ -71,7 +104,11 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 										onActionFulfilled={onProductDelete}
 									/>
 
-									<VSubmitButton className='w-full' size='lg'>
+									<VSubmitButton className='w-full' size='lg' onClick={() => {
+										if(validationErrorsRef.current) {
+											goToInvalidTab(validationErrorsRef.current)
+										}
+									}}>
 									Save and Close
 									</VSubmitButton>
 								</Dialog.ContentFooter>
