@@ -21,7 +21,7 @@ export type SchemaType = z.infer<typeof schema>
 export async function manageProduct(productId: ProductId, values: SchemaType) {
 	const { data, error } = await apiClient.products.for(productId).update({
 		name: values.name,
-		description: values.description ?? undefined,
+		description: values.description ?? '',
 		price: Number(values.price),
 		shortDescription: values.shortDescription
 	})
