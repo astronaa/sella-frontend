@@ -22,7 +22,7 @@ export function VTagsInput({ placeholder, ...props }: TagsInputRootProps & {plac
 									<TagsInput.ItemPreview>
 										<TagsInput.ItemText>{value}</TagsInput.ItemText>
 										<TagsInput.ItemDeleteTrigger asChild>
-											<Button variant="subtle" size="xs">
+											<Button variant="unstyled">
 												<Icons.Close className='text-black-40' />
 											</Button>
 										</TagsInput.ItemDeleteTrigger>
