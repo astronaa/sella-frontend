@@ -34,9 +34,10 @@ export function CreateDialog({
 
 
 	const goToInvalidTab = (errorFields: object) => {
-		if(('price' in errorFields || 'name' in errorFields || 'tagNames' in errorFields) && !('shortDescription' in errorFields || 'description' in errorFields)){
+		const keys = Object.keys(errorFields);
+		if(keys.some(k => ['price', 'name', 'tagNames'].includes(k)) && !keys.some(k => ['description', 'shortDescription'].includes(k))){
 			setSelectedTab('1')
-		}else if(('shortDescription' in errorFields || 'description' in errorFields) && !('price' in errorFields || 'name' in errorFields || 'tagNames' in errorFields)){
+		}else if(keys.some(k => ['description', 'shortDescription'].includes(k)) && !keys.some(k => ['price', 'name', 'tagNames'].includes(k))){
 			setSelectedTab('2')
 		}
 	}
