@@ -365,6 +365,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/products/{id}/chat": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_getOrCreateChat"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/products/{productId}/reviews": {
         parameters: {
             query?: never;
@@ -413,6 +429,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/featured-tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["TagController_getFeaturedTags"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/{chatId}/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getMessages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/{chatId}/messages/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ChatController_markMessagesAsRead"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/twitter/auth": {
         parameters: {
             query?: never;
@@ -440,54 +504,6 @@ export interface paths {
         get: operations["TwitterController_callback"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ChatController_getOrCreateChat"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats/messages/{chatId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ChatController_getMessages"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/chats/messages/{chatId}/read": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["ChatController_markMessagesAsRead"];
         delete?: never;
         options?: never;
         head?: never;
@@ -662,7 +678,7 @@ export interface components {
             username: string;
         };
         BadRequestDto: {
-            message: string[];
+            message: Record<string, string | undefined>;
             error: string;
             statusCode: number;
         };
@@ -715,9 +731,9 @@ export interface components {
         };
         User: {
             id: number;
-            profilePictureId?: string;
+            profilePictureId: string;
             address: string;
-            username?: string;
+            username: string;
             email?: string;
             twitterId?: string;
             twitterUsername?: string;
@@ -838,6 +854,20 @@ export interface components {
         ProductAddImageResultDto: {
             imageIds: string[];
         };
+        ChatResponseDto: {
+            chatId: string;
+            buyerId: number;
+            sellerId: number;
+            isFrozen: boolean;
+            productName: string;
+        };
+        ChatAccessResponseDto: {
+            accessToken: string;
+        };
+        ChatResponseWithMetaDto: {
+            result: components["schemas"]["ChatResponseDto"];
+            metadata: components["schemas"]["ChatAccessResponseDto"];
+        };
         CommentUserDto: {
             username: string;
             profilePictureId?: string;
@@ -859,11 +889,10 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
-        ChatResponseDto: {
-            chatId: string;
-            buyerId: number;
-            sellerId: number;
-            productName: string;
+        FeaturedTagDto: {
+            name: string;
+            /** Format: uuid */
+            imageId?: string;
         };
         MessageDto: {
             id: string;
@@ -919,6 +948,9 @@ export interface components {
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
             price: number;
+            tokenAmount: number;
+            /** @enum {string} */
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
@@ -954,6 +986,9 @@ export interface components {
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
             price: number;
+            tokenAmount: number;
+            /** @enum {string} */
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1822,6 +1857,40 @@ export interface operations {
             };
         };
     };
+    ProductsController_getOrCreateChat: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Chat retrieved or created successfully. Returns chat information with metadata */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ChatResponseWithMetaDto"];
+                };
+            };
+            /** @description Invalid product ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     ReviewsController_getCommentsByProductId: {
         parameters: {
             query: {
@@ -1902,76 +1971,21 @@ export interface operations {
             };
         };
     };
-    TwitterController_auth: {
-        parameters: {
-            query: {
-                /** @description URL to redirect user to after successful authentication */
-                successUrl: string;
-                /** @description URL to redirect user to after failed authentication */
-                failureUrl: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful redirect link creation */
-            302: {
-                headers: Record<string, unknown>;
-                content?: never;
-            };
-        };
-    };
-    TwitterController_callback: {
-        parameters: {
-            query: {
-                oauth_token: string;
-                oauth_verifier: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: Record<string, unknown>;
-                content?: never;
-            };
-        };
-    };
-    ChatController_getOrCreateChat: {
+    TagController_getFeaturedTags: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                /**
-                 * @description Product id
-                 * @example 123e4567-e89b-12d3-a456-426614174000
-                 */
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Chat retrieved or created successfully. Returns chat information */
+            /** @description Featured tags retrieved successfully */
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ChatResponseDto"];
+                    "application/json": components["schemas"]["FeaturedTagDto"][];
                 };
-            };
-            /** @description Invalid product ID */
-            400: {
-                headers: Record<string, unknown>;
-                content?: never;
-            };
-            /** @description User is not authorized */
-            403: {
-                headers: Record<string, unknown>;
-                content?: never;
             };
         };
     };
@@ -2031,6 +2045,45 @@ export interface operations {
             };
             /** @description User is not authorized */
             403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    TwitterController_auth: {
+        parameters: {
+            query: {
+                /** @description URL to redirect user to after successful authentication */
+                successUrl: string;
+                /** @description URL to redirect user to after failed authentication */
+                failureUrl: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful redirect link creation */
+            302: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    TwitterController_callback: {
+        parameters: {
+            query: {
+                oauth_token: string;
+                oauth_verifier: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
                 headers: Record<string, unknown>;
                 content?: never;
             };

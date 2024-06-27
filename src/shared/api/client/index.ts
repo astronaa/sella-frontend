@@ -10,6 +10,7 @@ export * from './sales/model';
 export * from './stores/model';
 export * from './stores/mock'
 export * from './users/model';
+export * from './chats/model';
 
 export * from './shared/models';
 export * from './shared/schemas';

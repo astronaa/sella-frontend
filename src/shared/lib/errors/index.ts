@@ -2,8 +2,14 @@ export class FormError {
 	field: string | undefined;
 	message: string;
 
-	constructor({ field, message }: { field?: string; message: string | string[]; }) {
+	constructor({ field, message }: { field?: string; message: string | string[] | Record<string, string | undefined>; }) {
 		this.field = field;
-		this.message = Array.isArray(message) ? message[0] : message;
+
+		if(Array.isArray(message))
+			this.message = message[0];
+		else if(typeof message == 'string')
+			this.message = message;
+		else 
+			this.message = Object.values(message)[0] ?? '';
 	}
 }
