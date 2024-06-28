@@ -34,12 +34,17 @@ export function createChatsClient() {
 					}
 				});
 
+				interface PLEASE_REPLACE_AFTER_OPENAPI_UPDATE_ExpectedData {
+					data: NonNullable<(typeof data)>[],
+					total: number
+				}
+
+				const expectedData = data as unknown as PLEASE_REPLACE_AFTER_OPENAPI_UPDATE_ExpectedData;
+
 				return data ? {
 					data: {
-						// @ts-expect-error expecting openapi changes
-						items: data.data.map(mapDtoToChatMessage),
-						// @ts-expect-error expecting openapi changes
-						total: data.total,
+						items: expectedData.data.map(mapDtoToChatMessage),
+						total: expectedData.total,
 					}
 				} : {	
 					data, error 

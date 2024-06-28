@@ -1,5 +1,5 @@
-export type TransactionStatus = "New" | "Paid" | "Delivered" | "Canceled";
-export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Failed";
+export type TransactionStatus = "Unpaid" | "Hold" | "Released" | "Refunded";
+export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
 
 export interface Transaction {
 	status: TransactionStatus;

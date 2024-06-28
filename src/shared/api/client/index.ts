@@ -11,6 +11,7 @@ export * from './stores/model';
 export * from './stores/mock'
 export * from './users/model';
 export * from './chats/model';
+export * from './chats/mappers';
 
 export * from './shared/models';
 export * from './shared/schemas';

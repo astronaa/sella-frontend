@@ -210,7 +210,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["StoreController_getProductsByStoreUrl"];
+        get: operations["StoresController_getProductsByStoreUrl"];
         put?: never;
         post?: never;
         delete?: never;
@@ -226,13 +226,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["StoreController_getStoreByUrl"];
+        get: operations["StoresController_getStoreByUrl"];
         put?: never;
         post?: never;
-        delete: operations["StoreController_deleteStore"];
+        delete: operations["StoresController_deleteStore"];
         options?: never;
         head?: never;
-        patch: operations["StoreController_updateStore"];
+        patch: operations["StoresController_updateStore"];
         trace?: never;
     };
     "/api/stores": {
@@ -242,9 +242,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["StoreController_getAllStores"];
+        get: operations["StoresController_getAllStores"];
         put?: never;
-        post: operations["StoreController_createStore"];
+        post: operations["StoresController_createStore"];
         delete?: never;
         options?: never;
         head?: never;
@@ -258,9 +258,9 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["StoreController_getStoreReportByUrl"];
+        get: operations["StoresController_getStoreReportByUrl"];
         put?: never;
-        post: operations["StoreController_reportStoreByUrl"];
+        post: operations["StoresController_reportStoreByUrl"];
         delete?: never;
         options?: never;
         head?: never;
@@ -280,7 +280,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch: operations["StoreController_changeStoreImage"];
+        patch: operations["StoresController_changeStoreImage"];
         trace?: never;
     };
     "/api/stores/{url}/exists": {
@@ -291,7 +291,7 @@ export interface paths {
             cookie?: never;
         };
         /** @description Check if url taken */
-        get: operations["StoreController_storeExists"];
+        get: operations["StoresController_storeExists"];
         put?: never;
         post?: never;
         delete?: never;
@@ -606,22 +606,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/{id}/payment-status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch: operations["OrdersController_changePaymentStatus"];
-        trace?: never;
-    };
     "/api/quests": {
         parameters: {
             query?: never;
@@ -766,6 +750,7 @@ export interface components {
             hasPreview: boolean;
             imageIds: string[];
             price: number;
+            description: string | null;
             shortDescription: string;
         };
         ProductsResponseDto: {
@@ -820,7 +805,19 @@ export interface components {
             tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
             message?: string;
         };
-        ProductInfoDto: {
+        BaseStoreDto: {
+            name: string;
+            url: string;
+            /** Format: uuid */
+            imageId?: string;
+        };
+        StoreOwnerDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId?: string;
+            rating: components["schemas"]["RatingDto"];
+        };
+        ProductDetailsDTO: {
             id: string;
             name: string;
             hasPreview: boolean;
@@ -828,18 +825,37 @@ export interface components {
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
             isFrozen: boolean;
             tagNames: string[];
+            store: components["schemas"]["BaseStoreDto"];
+            storeOwner: components["schemas"]["StoreOwnerDto"];
         };
         ProductCreateDto: {
             name: string;
             description?: string;
-            shortDescription?: string;
+            shortDescription: string;
             price: number;
             storeUrl: string;
+            holdPeriod: number;
+            tagNames: string[];
+        };
+        ProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+            description?: string;
+            shortDescription: string;
+            price: number;
+            holdPeriod: number;
+            storeUrl: string;
+            rating: components["schemas"]["RatingDto"];
+            /** @default false */
+            isFrozen: boolean;
             tagNames: string[];
         };
         ProductUpdateDto: {
@@ -850,6 +866,9 @@ export interface components {
             imageIds?: string[];
             hasPreview?: boolean;
             tagNames?: string[];
+            holdPeriod?: number;
+            /** @default false */
+            isFrozen: boolean;
         };
         ProductAddImageResultDto: {
             imageIds: string[];
@@ -927,12 +946,6 @@ export interface components {
             /** @description List of tokens associated with the blockchain */
             tokens: components["schemas"]["Token"][];
         };
-        BaseStoreDto: {
-            name: string;
-            url: string;
-            /** Format: uuid */
-            imageId?: string;
-        };
         BaseProductDto: {
             id: string;
             name: string;
@@ -944,9 +957,9 @@ export interface components {
             store: components["schemas"]["BaseStoreDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "New" | "Paid" | "Delivered" | "Canceled";
+            status: "Unpaid" | "Hold" | "Released" | "Refunded";
             /** @enum {string} */
-            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
             tokenAmount: number;
             /** @enum {string} */
@@ -956,11 +969,6 @@ export interface components {
         };
         OrderCreateDto: {
             productId: string;
-            /** @enum {string} */
-            status: "New" | "Paid" | "Delivered" | "Canceled";
-            /** @enum {string} */
-            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
-            price: number;
             paymentType: string;
         };
         CreatedOrderDto: {
@@ -982,9 +990,9 @@ export interface components {
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "New" | "Paid" | "Delivered" | "Canceled";
+            status: "Unpaid" | "Hold" | "Released" | "Refunded";
             /** @enum {string} */
-            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Failed";
+            fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
             tokenAmount: number;
             /** @enum {string} */
@@ -996,10 +1004,6 @@ export interface components {
             data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
-        };
-        ChangePaymentStatusDto: {
-            /** @enum {string} */
-            paymentStatus: "New" | "Paid" | "Delivered" | "Canceled";
         };
         QuestsResponseDto: {
             data: components["schemas"]["Quest"][];
@@ -1374,7 +1378,7 @@ export interface operations {
             };
         };
     };
-    StoreController_getProductsByStoreUrl: {
+    StoresController_getProductsByStoreUrl: {
         parameters: {
             query: {
                 page: number;
@@ -1388,7 +1392,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Returns array of products for store */
+            /** @description Returns array of products for stores */
             200: {
                 headers: Record<string, unknown>;
                 content: {
@@ -1397,7 +1401,7 @@ export interface operations {
             };
         };
     };
-    StoreController_getStoreByUrl: {
+    StoresController_getStoreByUrl: {
         parameters: {
             query?: never;
             header?: never;
@@ -1408,7 +1412,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Returns store by given url address */
+            /** @description Returns stores by given url address */
             200: {
                 headers: Record<string, unknown>;
                 content: {
@@ -1422,7 +1426,7 @@ export interface operations {
             };
         };
     };
-    StoreController_deleteStore: {
+    StoresController_deleteStore: {
         parameters: {
             query?: never;
             header?: never;
@@ -1438,14 +1442,14 @@ export interface operations {
                 headers: Record<string, unknown>;
                 content?: never;
             };
-            /** @description User does not own store */
+            /** @description User does not own stores */
             403: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
         };
     };
-    StoreController_updateStore: {
+    StoresController_updateStore: {
         parameters: {
             query?: never;
             header?: never;
@@ -1472,7 +1476,7 @@ export interface operations {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
-            /** @description User does not own store */
+            /** @description User does not own stores */
             403: {
                 headers: Record<string, unknown>;
                 content?: never;
@@ -1484,7 +1488,7 @@ export interface operations {
             };
         };
     };
-    StoreController_getAllStores: {
+    StoresController_getAllStores: {
         parameters: {
             query: {
                 page: number;
@@ -1505,7 +1509,7 @@ export interface operations {
             };
         };
     };
-    StoreController_createStore: {
+    StoresController_createStore: {
         parameters: {
             query?: never;
             header?: never;
@@ -1518,7 +1522,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Store created successfully, new store was return in message body */
+            /** @description Store created successfully, new stores was return in message body */
             201: {
                 headers: Record<string, unknown>;
                 content: {
@@ -1534,7 +1538,7 @@ export interface operations {
             };
         };
     };
-    StoreController_getStoreReportByUrl: {
+    StoresController_getStoreReportByUrl: {
         parameters: {
             query?: never;
             header?: never;
@@ -1559,7 +1563,7 @@ export interface operations {
             };
         };
     };
-    StoreController_reportStoreByUrl: {
+    StoresController_reportStoreByUrl: {
         parameters: {
             query?: never;
             header?: never;
@@ -1588,7 +1592,7 @@ export interface operations {
             };
         };
     };
-    StoreController_changeStoreImage: {
+    StoresController_changeStoreImage: {
         parameters: {
             query?: never;
             header?: never;
@@ -1606,12 +1610,12 @@ export interface operations {
             };
         };
         responses: {
-            /** @description User successfully changed store image */
+            /** @description User successfully changed stores image */
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
             };
-            /** @description User does not own store */
+            /** @description User does not own stores */
             403: {
                 headers: Record<string, unknown>;
                 content?: never;
@@ -1625,7 +1629,7 @@ export interface operations {
             };
         };
     };
-    StoreController_storeExists: {
+    StoresController_storeExists: {
         parameters: {
             query?: never;
             header?: never;
@@ -1688,7 +1692,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductInfoDto"];
+                    "application/json": components["schemas"]["ProductDetailsDTO"];
                 };
             };
             /** @description Product not found */
@@ -1717,7 +1721,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductInfoDto"];
+                    "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description User cannot delete this product */
@@ -1755,7 +1759,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductInfoDto"];
+                    "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */
@@ -1792,7 +1796,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ProductInfoDto"];
+                    "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */
@@ -1800,7 +1804,7 @@ export interface operations {
                 headers: Record<string, unknown>;
                 content?: never;
             };
-            /** @description User does not own this store */
+            /** @description User does not own this stores */
             403: {
                 headers: Record<string, unknown>;
                 content?: never;
@@ -2224,28 +2228,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["SalesResponseDto"];
                 };
-            };
-        };
-    };
-    OrdersController_changePaymentStatus: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ChangePaymentStatusDto"];
-            };
-        };
-        responses: {
-            /** @description Successfully changed payment status */
-            200: {
-                headers: Record<string, unknown>;
-                content?: never;
             };
         };
     };

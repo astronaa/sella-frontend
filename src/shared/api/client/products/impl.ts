@@ -16,7 +16,11 @@ export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
 			const { data, error } = await authFetchClient.POST('/api/products', {
-				body: { storeUrl, ...payload }
+				body: { 
+					storeUrl, 
+					holdPeriod: 60,
+					...payload 
+				}
 			});
 
 			return data ? {
@@ -41,6 +45,7 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
+					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 
@@ -86,6 +91,7 @@ export function createProductsClient() {
 				const patch = async (payload: { imageIds: string[], hasPreview: boolean }) => {
 					const { error } = await authFetchClient.PATCH('/api/products/{id}', {
 						params: { path: { id: productId } },
+						// @ts-expect-error expecting openapi changes
 						body: payload
 					});
 					return !error;

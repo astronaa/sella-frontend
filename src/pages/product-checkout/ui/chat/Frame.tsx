@@ -1,12 +1,34 @@
+'use client'
+
 import { HTMLAttributes } from "react";
 import { ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
-import { Button } from "~/shared/ui/kit/button";
 import { Input } from "~/shared/ui/kit/input";
 import { ChatMessagesStream } from "./MessagesStream";
 import { PageProductCard } from "../PageProductCard";
+import { useChatSocketForProduct } from "../../api/chat/socket";
+import { Field, Form } from "react-final-form";
+import { zodValidate } from "~/shared/lib/zod-final-form";
+import { z } from "zod";
+import { VSubmitButton } from "~/shared/ui/validation-inputs";
+import { FormApi } from "final-form";
+
+const schema = z.object({
+	message: z.string().min(1)
+});
+
+type SchemaType = z.infer<typeof schema>;
+
+const validator = zodValidate(schema);
 
 export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
+	const { sendMessage } = useChatSocketForProduct(product.id);
+
+	const onSubmit = (values: SchemaType, form: FormApi<SchemaType>) => {
+		sendMessage(values.message);
+		form.reset();
+	}
+
 	return (
 		<div
 			{...props}
@@ -26,16 +48,29 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 				className='flex-grow overflow-y-auto pt-[1rem]'
 			/>
 
-			<div className='flex gap-[1rem] w-full'>
-				<Input
-					className='w-full min-h-full rounded-[1.25rem]'
-					placeholder='Your Message'
-				/>
+			<Form
+				validate={validator}
+				onSubmit={onSubmit}
+				subscription={{}}
+			>
+				{() => (
+					<div className='flex gap-[1rem] w-full'>
+						<Field name='message'>
+							{props => (
+								<Input
+									className='w-full min-h-full rounded-[1.25rem]'
+									placeholder='Your Message'
+									{...props.input}
+								/>
+							)}
+						</Field>
 
-				<Button className='rounded-[1.25rem] px-[1.5rem]'>
-					Send
-				</Button>
-			</div>
+						<VSubmitButton className='rounded-[1.25rem] px-[1.5rem]'>
+							Send
+						</VSubmitButton>
+					</div>
+				)}
+			</Form>
 		</div>
 	);
 }
