@@ -31,9 +31,8 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 			onOpenChange={({ open }) => setOpen(open)}
 			unmountOnExit lazyMount
 		>
-			<Dialog.Backdrop />
-
 			<Portal>
+				<Dialog.Backdrop />
 				<Dialog.Positioner>
 					<Dialog.Content
 						className='items-start w-[37.5rem] gap-[2rem] pt-[1.5625rem] pb-[2.1875rem]'

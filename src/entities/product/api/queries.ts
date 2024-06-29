@@ -29,9 +29,7 @@ const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData 
 	})
 
 export function useGetFromStore(args: GetFromStoreQueryOptions) {
-	return useQuery({
-		...getFromStoreQueryOptions(args)
-	})
+	return useQuery(getFromStoreQueryOptions(args))
 }
 
 interface GetOneQueryOptions {
