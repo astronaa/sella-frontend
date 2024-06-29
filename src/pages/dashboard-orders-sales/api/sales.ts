@@ -1,4 +1,4 @@
-import { Sale } from "~/shared/api/model";
+import { Sale } from "~/shared/api/client"
 
 export interface SalesResponse {
 	items: Sale[],

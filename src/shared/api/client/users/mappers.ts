@@ -1,4 +1,4 @@
-import { User } from "../../model";
+import { User } from "./model";
 import { components } from "../../openapi";
 import { mapMediaIdToUrl } from "../shared/mappers";
 

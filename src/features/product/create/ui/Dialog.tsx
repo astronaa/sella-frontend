@@ -3,7 +3,7 @@
 import { Dialog } from '~/shared/ui/kit';
 import { ReactNode } from 'react';
 import { Button } from '~/shared/ui/kit/button';
-import { Product } from '~/shared/api/model';
+import { Product } from "~/shared/api/client"
 import { useDialogState } from '~/shared/lib/dialog';
 import { Portal } from '@ark-ui/react';
 import { CreateForm } from './CreateForm';

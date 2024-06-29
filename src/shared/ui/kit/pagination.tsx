@@ -13,17 +13,17 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>((props, ref) 
 
 	return (
 		<ArkPagination.Root ref={ref} className={root({ className })} {...rootProps}>
-			{({ pages }) => (
-				<>
-					<ArkPagination.PrevTrigger
-						asChild
-						className={prevTrigger({ className: 'max-md:hidden' })}
-					>
-						<IconButton size='sm' colorPalette='gray' aria-label="Next Page">
-							<ChevronLeftIcon />
-						</IconButton>
-					</ArkPagination.PrevTrigger>
-					{pages.map((page, index) =>
+			<ArkPagination.PrevTrigger
+				asChild
+				className={prevTrigger({ className: 'max-md:hidden' })}
+			>
+				<IconButton size='sm' colorPalette='gray' aria-label="Next Page">
+					<ChevronLeftIcon />
+				</IconButton>
+			</ArkPagination.PrevTrigger>
+			<ArkPagination.Context>
+				{({ pages }) => (
+					pages.map((page, index) =>
 						page.type === 'page' ? (
 							<ArkPagination.Item className={item()} key={index} {...page} asChild>
 								<Button className='px-[0.1rem]' size='sm' colorPalette='gray'>
@@ -35,17 +35,17 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>((props, ref) 
 								&#8230;
 							</ArkPagination.Ellipsis>
 						),
-					)}
-					<ArkPagination.NextTrigger
-						asChild
-						className={nextTrigger({ className: 'max-md:hidden' })}
-					>
-						<IconButton size='sm' colorPalette='gray' aria-label="Next Page">
-							<ChevronRightIcon />
-						</IconButton>
-					</ArkPagination.NextTrigger>
-				</>
-			)}
+					)
+				)}
+			</ArkPagination.Context>
+			<ArkPagination.NextTrigger
+				asChild
+				className={nextTrigger({ className: 'max-md:hidden' })}
+			>
+				<IconButton size='sm' colorPalette='gray' aria-label="Next Page">
+					<ChevronRightIcon />
+				</IconButton>
+			</ArkPagination.NextTrigger>
 		</ArkPagination.Root>
 	)
 })

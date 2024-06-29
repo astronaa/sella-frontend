@@ -1,34 +1,13 @@
 'use client';
 
-import { PropsWithChildren, createContext, useContext } from "react";
-import { Product } from "~/shared/api/model";
-import { invariant } from "~/shared/lib/asserts";
-import { ProductProp } from "./Prop";
+import { Product } from "~/shared/api/client"
+import { createContextFactory } from "~/shared/lib/create-context-factory";
 
-const context = createContext<Product | null>(null);
+const create = createContextFactory('product');
 
-export function useProductContext() {
-	return useContext(context);
-}
-
-export function useProductStrictContext() {
-	const value = useProductContext();
-	invariant(value, 'Usage useProductContext outside context');
-
-	return value;
-}
-
-export function useProductContextOrProp(p?: Product) {
-	const product = useProductContext() ?? p;
-	invariant(!!product, 'Usage of product component outside context or without passed product prop');
-
-	return product;
-}
-
-export function ProductProvider({ product, children }: PropsWithChildren<ProductProp>) {
-	return (
-		<context.Provider value={product}>
-			{children}
-		</context.Provider>
-	)
-}
+export const {
+	ProductProvider,
+	useProductContext,
+	useProductContextOrProp,
+	useProductStrictContext
+} = create<Product>();

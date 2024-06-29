@@ -4,7 +4,7 @@ import { useField } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
 import { Uploader } from "../uploader";
 import { HTMLAttributes } from "react";
-import { ControlProps, ControlProvider } from "./ControlProvider";
+import { ControlProps, FormControlProvider } from "./ControlProvider";
 
 export {
 	Label, LabelOrError,
@@ -23,7 +23,7 @@ export function Root({ children, name, id, rootProps, ...props }: RootProps) {
 	const { input: { onChange } } = useField(name)
 
 	return (
-		<ControlProvider name={name} id={id}>
+		<FormControlProvider name={name} id={id}>
 			<Uploader.Root
 				name={name} {...props}
 				onChange={files => {
@@ -35,6 +35,6 @@ export function Root({ children, name, id, rootProps, ...props }: RootProps) {
 					{children}
 				</div>
 			</Uploader.Root>
-		</ControlProvider>
+		</FormControlProvider>
 	);
 }

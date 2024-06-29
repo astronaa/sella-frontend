@@ -1,6 +1,9 @@
-import { mapPaginationPayloadToDto, PayloadPagination } from "~/shared/api/client/pagination";
-import { authFetchClient } from "~/shared/api/client/fetch-client";
-import { mapDtoToOrder } from "~/shared/api/client/orders/mappers";
+import { authFetchClient } from "../fetch-client";
+import { mapPaginationPayloadToDto } from "../shared/mappers";
+import { PayloadPagination } from "../shared/schemas";
+import { mapDtoToOrder, mapDtoToPaymentMethod } from "./mappers";
+import { OrderId } from "./model";
+import { PayloadCreate, schemaCreate, schemaPaymentMethod } from "./schemas";
 
 export function createOrdersClient() {
 	return {
@@ -21,6 +24,41 @@ export function createOrdersClient() {
 			} : {
 				data, error
 			}
-		}
+		},
+
+		async create(payload: PayloadCreate) {
+			return await authFetchClient.POST('/api/orders', {
+				// @ts-expect-error expecting openapi changes
+				body: payload
+			});
+		},
+
+		async getPaymentMethods() {
+			const { data, error } = await authFetchClient.GET('/api/orders/payment-methods');
+
+			return data ? {
+				data: data.map(mapDtoToPaymentMethod),
+				error
+			} : {
+				data, error
+			}
+		},
+
+		for: (orderId: OrderId) => ({
+			async get() {
+				const { data, error } = await authFetchClient.GET('/api/orders/{id}', {
+					params: { path: { id: orderId } }
+				});
+
+				return data ? {
+					data: mapDtoToOrder(data), error
+				} : {
+					data, error
+				}
+			}
+		}),
+
+		schemaCreate,
+		schemaPaymentMethod
 	}
 }

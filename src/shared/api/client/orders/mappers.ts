@@ -1,9 +1,11 @@
 import { components } from "~/shared/api/openapi";
-import { Order } from "~/shared/api/model";
+import { Order, OrderPaymentMethod } from "./model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "../stores/mappers";
 
-export const mapDtoToOrder = (obj: components['schemas']['OrderInfoDto']): Order => {
+type Schemas = components['schemas'];
+
+export const mapDtoToOrder = (obj: Schemas['OrderInfoDto']): Order => {
 	return {
 		id: obj.id,
 		transaction: {
@@ -17,3 +19,7 @@ export const mapDtoToOrder = (obj: components['schemas']['OrderInfoDto']): Order
 		product: mapDtoToProduct(obj.product),
 	}
 }
+
+export const mapDtoToPaymentMethod = (obj: Schemas['PaymentMethod']): OrderPaymentMethod => (
+	obj
+);

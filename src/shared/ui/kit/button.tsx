@@ -75,7 +75,8 @@ const styles = tv(
 				className: [
 					'bg-white/[.08] text-white',
 					'hocus:bg-white/[.10]',
-					'data-[selected]:bg-accent-100 data-[selected]:hocus:bg-accent-100/80 data-[selected]:text-black-100'
+					'data-[selected]:bg-accent-100 data-[selected]:hocus:bg-accent-100/80',
+					'data-[selected]:text-black-100'
 				]
 			},
 			{

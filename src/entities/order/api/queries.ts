@@ -1,17 +1,17 @@
-import { Order } from "~/shared/api/model";
+import { Order, OrderPaymentMethod } from "~/shared/api/client";
 import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'orders'
 
-interface GetOrdersQueryOptions {
+interface GetOrdersOptions {
 	page: number,
 	limit: number,
 	initialData?: { items: Order[], total: number, totalPrice: number } | undefined
 }
 
-const getOrdersQueryOptions = ({ page, limit, initialData }: GetOrdersQueryOptions) =>
+export const getOrdersOptions = ({ page, limit, initialData }: GetOrdersOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, page, { limit }],
 		queryFn: async () => {
@@ -28,10 +28,26 @@ const getOrdersQueryOptions = ({ page, limit, initialData }: GetOrdersQueryOptio
 		placeholderData: keepPreviousData
 	})
 
-export function useGetOrders(args: GetOrdersQueryOptions) {
-	return useQuery({
-		...getOrdersQueryOptions(args)
+export function useGetOrders(args: GetOrdersOptions) {
+	return useQuery(getOrdersOptions(args))
+}
+
+export const getPaymentMethodsOptions = () =>
+	queryOptions<OrderPaymentMethod[]>({
+		queryKey: [QUERY_KEY, 'payment-methods'],
+		queryFn: async () => {
+			const { data, error } = await apiClient.orders.getPaymentMethods();
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+		staleTime: Infinity
 	})
+
+export function useGetPaymentMethods() {
+	return useQuery(getPaymentMethodsOptions())
 }
 
 export function invalidateAll() {

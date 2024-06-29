@@ -27,7 +27,7 @@ export function ChatMessageBubble({ message, className, ...props }: ChatMessageB
 			{message.imageUrl !== undefined && (
 				<PreviewImage
 					src={message.imageUrl}
-					className='size-[2rem] rounded-full shadow-md'
+					className='size-[2rem] rounded-full shadow-md flex-shrink-0'
 					alt=''
 				/>
 			)}

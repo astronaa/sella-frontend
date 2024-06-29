@@ -8,7 +8,7 @@ import {
 
 import { zodValidate } from "~/shared/lib/zod-final-form";
 import { updateStore, SchemaType, schema } from "../../api";
-import { Store } from "~/shared/api/model";
+import { Store } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
 import { Form, useField } from "react-final-form";
 import { cn } from "~/shared/lib/cn";

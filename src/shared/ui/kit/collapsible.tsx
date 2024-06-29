@@ -23,6 +23,11 @@ export const Root = withProvider(Collapsible.Root, 'root')
 export const Content = withContext(Collapsible.Content, 'content')
 export const Trigger = withContext(Collapsible.Trigger, 'trigger')
 
+export {
+	CollapsibleContext as Context,
+	type CollapsibleContextProps as ContextProps,
+} from '@ark-ui/react/collapsible'
+
 export type RootProps = ComponentProps<typeof Root>
 export type ContentProps = ComponentProps<typeof Content>
 export type TriggerProps = ComponentProps<typeof Trigger>

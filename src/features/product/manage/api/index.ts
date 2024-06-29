@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { ProductId } from "~/shared/api/model";
+import { ProductId } from "~/shared/api/client"
 import { apiClient } from "~/shared/api/client";
-import { mapMediaUrlToId } from "~/shared/api/client/shared/mappers";
+import { mapMediaUrlToId } from "~/shared/api/client"
 import { productQueries } from "~/entities/product";
 
 export const schema = z.object({

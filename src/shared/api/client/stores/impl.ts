@@ -1,9 +1,5 @@
-import { authFetchClient } from "../fetch-client";
-import { PayloadPagination, mapPaginationPayloadToDto } from "../pagination";
-import { mapDtoToProduct } from "../products/mappers";
-import { mapDtoToStore } from "./mappers";
-
 import {
+	ANOTHER_REASON_ID,
 	PayloadCreate,
 	PayloadReport,
 	PayloadUpdate,
@@ -12,6 +8,12 @@ import {
 	schemaReport,
 	schemaUpdate
 } from "./schemas";
+
+import { authFetchClient } from "../fetch-client";
+import { PayloadPagination } from "../shared/schemas";
+import { mapDtoToProduct } from "../products/mappers";
+import { mapDtoToStore } from "./mappers";
+import { mapPaginationPayloadToDto } from "../shared/mappers";
 
 export function createStoresClient() {
 	return {
@@ -66,7 +68,8 @@ export function createStoresClient() {
 				body: {
 					name: payload.name,
 					url: payload.shortName,
-					description: payload.description ?? undefined
+					description: payload.description ?? undefined,
+					tagNames: payload.tagNames
 				}
 			});
 
@@ -116,7 +119,9 @@ export function createStoresClient() {
 					body: {
 						name: payload.name,
 						description: payload.description ?? undefined,
-						url: payload.shortName
+						url: payload.shortName,
+						// @ts-expect-error expecting openapi changes
+						tagNames: payload.tagNames
 					},
 					parseAs: 'text'
 				});
@@ -155,5 +160,6 @@ export function createStoresClient() {
 		schemaUpdate,
 		schemaReport,
 		reportReasons,
+		ANOTHER_REASON_ID
 	}
 }

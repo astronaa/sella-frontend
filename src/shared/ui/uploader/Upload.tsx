@@ -1,14 +1,12 @@
 import {
 	MutableRefObject,
 	PropsWithChildren,
-	createContext,
 	useCallback,
-	useContext,
 	useMemo,
 	useRef
 } from "react";
 
-import { invariant } from "~/shared/lib/asserts";
+import { createContextFactory } from "~/shared/lib/create-context-factory";
 import { useControllableState } from "~/shared/lib/use-controllable-state";
 
 interface UploadBaseProps {
@@ -26,17 +24,13 @@ interface UploadContext extends Required<UploadBaseProps> {
 	inputRef: MutableRefObject<HTMLInputElement | null>
 }
 
-const context = createContext<UploadContext | null>(null);
+const create = createContextFactory('upload');
 
-export function useUploadContextOptional() {
-	return useContext(context);
-}
-
-export function useUploadContext() {
-	const ctx = useUploadContextOptional();
-	invariant(ctx, 'Usage of useUploadContext outside context');
-	return ctx;
-}
+export const {
+	UploadProvider,
+	useUploadContext,
+	useUploadStrictContext
+} = create<UploadContext>()
 
 export type UploadProps = PropsWithChildren<UploadBaseProps> & {
 	value?: File[],
@@ -68,8 +62,8 @@ export function Upload({
 	}), [openFileBrowser, deleteFile, files, multiple, accept, name, inputRef, setFiles, maxSizePerFile]);
 
 	return (
-		<context.Provider value={contextValue}>
+		<UploadProvider value={contextValue}>
 			{children}
-		</context.Provider>
+		</UploadProvider>
 	);
 }

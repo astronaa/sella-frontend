@@ -1,4 +1,4 @@
-import { ProductId } from "~/shared/api/model";
+import { ProductId } from "~/shared/api/client"
 import { Button } from "~/shared/ui/kit/button";
 
 interface DeleteButtonProps {

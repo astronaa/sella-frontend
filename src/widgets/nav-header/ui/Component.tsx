@@ -1,92 +1,150 @@
 "use client";
 
-import Link from "next/link";
-import { HTMLAttributes, useEffect, useState } from "react";
+import { HTMLAttributes, PropsWithChildren, useEffect } from "react";
 import { cn } from "~/shared/lib/cn";
-import { AppLogo } from "~/shared/ui/logo";
-import { NavItems } from "./NavItems";
 import { UserNavBar } from "./user-nav-bar";
-import { IconButton } from "~/shared/ui/kit/button";
-import { Icons } from "~/shared/ui/icons";
-import { PhoneNavItems } from "./PhoneNavItems";
+import { Collapsible, Popover } from "~/shared/ui/kit";
+import { SearchPanel, useSearchPanelStrictContext } from "~/features/search-panel";
+import { MobileMenu, useMobileMenuStrictContext } from "./mobile-menu";
+import { usePopoverContext } from "@ark-ui/react";
 import { usePathname } from "next/navigation";
+import { useCallbackRef } from "~/shared/lib/use-callback-ref";
+import { CategoriesRoulette } from "./categories-roulette";
+import { useCategoriesRouletteStrictContext } from "./categories-roulette/contex";
+import { HeaderDesktopView, HeaderTabletView, HeaderMobileView } from "./HeaderViews";
 
-export function Component({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-	const [showPhoneNavbar, setShowPhoneNavbar] = useState(false);
+export function Component(props: HTMLAttributes<HTMLDivElement>) {
+	return (
+		<InteractiveProvider>
+			<Header {...props} />
+		</InteractiveProvider>
+	);
+}
 
-	const togglePhoneNavbar = () => {
-		setShowPhoneNavbar((prev) => !prev);
-	};
+function Header({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	const { open: mobileMenuOpen } = useMobileMenuStrictContext();
+	const { open: popupOpen, setOpen: setPopupOpen } = usePopoverContext();
 
 	const pathname = usePathname();
+	const setOpenCb = useCallbackRef(setPopupOpen);
 
 	useEffect(() => {
-		setShowPhoneNavbar(false);
-	}, [pathname]);
+		setOpenCb(false);
+	}, [pathname, setOpenCb])
 
 	return (
-		<>
+		<Popover.Anchor asChild>
 			<div
 				{...props}
 				className={cn(
-					'flex items-center justify-between gap-[1rem] p-[1rem] rounded-[1.25rem] h-[4.38rem]',
+					'flex items-center gap-[1rem] p-[1rem] rounded-[1.25rem] h-[4.38rem] relative transition-all',
 					'backdrop-blur-[3rem] bg-black-08/[.80]',
-					'border border-secondary', showPhoneNavbar && "border-transparent bg-transparent backdrop-blur-none",
+					'border border-secondary', mobileMenuOpen && "border-transparent bg-transparent backdrop-blur-none",
+					popupOpen && "border-b-transparent rounded-b-none",
+					'max-md:gap-0',
 					className
 				)}
 			>
-				<div className='flex items-center gap-[2rem] max-lg:justify-between w-full'>
-					<Link href='/'>
-						<AppLogo />
-					</Link>
-
-					<IconButton
-						colorPalette='gray'
-						variant="outline" size='sm'
-						className="lg:hidden [&_svg]:size-[1.5rem]"
-						onClick={togglePhoneNavbar}
-					>
-						{showPhoneNavbar ? (
-							<Icons.Close />
-						) : (
-							<Icons.Menu />
-						)}
-					</IconButton>
-
-					<NavItems className='max-lg:hidden' />
-				</div>
+				<HeaderDesktopView />
+				<HeaderTabletView />
+				<HeaderMobileView />
 
 				<UserNavBar
 					className='max-lg:hidden'
 				/>
 			</div>
-
-			{showPhoneNavbar && (
-				<PhoneNavbarContent
-					onClose={() => setShowPhoneNavbar(false)}
-				/>
-			)}
-		</>
+		</Popover.Anchor>
 	);
 }
 
-interface PhoneNavbarContentProps {
-	onClose: () => void
+function InteractiveProvider({ children }: PropsWithChildren) {
+	return (
+		<MobileMenu.Root>
+			<SearchPanel.Root>
+				<CategoriesRoulette.Root>
+					<InteractivePopover>
+						{children}
+					</InteractivePopover>
+				</CategoriesRoulette.Root>
+			</SearchPanel.Root>
+		</MobileMenu.Root>
+	);
 }
 
-function PhoneNavbarContent({ onClose }: PhoneNavbarContentProps) {
-	return (
-		<div className={cn(
-			"backdrop-blur-[3rem] bg-black-06/50 flex flex-col p-4 justify-between h-screen pt-36 pb-[2.875rem] fixed top-0 z-drawer w-full",
-			"lg:hidden",
-			""
-		)}>
-			<PhoneNavItems
-				onClose={onClose}
-				className="text-[2.5rem] gap-[2.25rem] pl-[1.25rem] font-semibold leading-[1]"
-			/>
+function InteractivePopover({ children }: PropsWithChildren) {
+	const {
+		open: searchOpen,
+		setOpen: setSearchOpen
+	} = useSearchPanelStrictContext();
 
-			<UserNavBar className='flex-col-reverse [&_button]:w-full' />
-		</div>
+	const {
+		open: categoriesOpen,
+		setOpen: setCategoriesOpen
+	} = useCategoriesRouletteStrictContext();
+
+	useEffect(() => {
+		if (searchOpen)
+			setCategoriesOpen(false);
+
+	}, [searchOpen, setCategoriesOpen])
+
+	useEffect(() => {
+		if (categoriesOpen)
+			setSearchOpen(false);
+	}, [categoriesOpen, setSearchOpen])
+
+	const open = categoriesOpen || searchOpen;
+
+	const handleOpenChange = (open: boolean) => {
+		setSearchOpen(open);
+		setCategoriesOpen(open);
+	}
+
+	return (
+		<Popover.Root
+			open={open}
+			onOpenChange={change => handleOpenChange(change.open)}
+			positioning={{ strategy: 'fixed', gutter: 0 }}
+			autoFocus={false} unmountOnExit lazyMount
+			onInteractOutside={e => {
+				const target = e.detail.originalEvent.target as HTMLElement;
+
+				if (target && target.closest('[data-scope="popover"][data-part="anchor"]')) {
+					e.stopPropagation();
+					e.preventDefault();
+				}
+			}}
+		>
+			{children}
+
+			<Popover.Positioner
+				className='w-[var(--reference-width)]'
+				style={{ minWidth: 'unset' }}
+			>
+				<Popover.Content
+					className='max-w-full w-full backdrop-blur-[3rem] bg-black-08/[.80] 
+						border border-secondary rounded-[1.25rem] rounded-t-none
+						flex flex-col gap-[2rem]
+					'
+				>
+					<Collapsible.Root
+						open={categoriesOpen}
+						className='mx-[-1rem] w-[calc(100%+1rem*2)]'
+					>
+						<Collapsible.Content>
+							<CategoriesRoulette.Content
+								className='px-[1rem]'
+							/>
+						</Collapsible.Content>
+					</Collapsible.Root>
+
+					<Collapsible.Root open={searchOpen}>
+						<Collapsible.Content>
+							<SearchPanel.Content />
+						</Collapsible.Content>
+					</Collapsible.Root>
+				</Popover.Content>
+			</Popover.Positioner>
+		</Popover.Root>
 	);
 }

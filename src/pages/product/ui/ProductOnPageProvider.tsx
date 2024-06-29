@@ -1,7 +1,7 @@
 'use client';
 
 import { PropsWithChildren } from "react";
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { ProductProvider, productQueries } from "~/entities/product";
 
 interface ProductOnPageProviderProps extends PropsWithChildren {
@@ -16,7 +16,7 @@ export function ProductOnPageProvider({ initialData, children }: ProductOnPagePr
 	})
 
 	return (
-		<ProductProvider product={product}>
+		<ProductProvider value={product}>
 			{children}
 		</ProductProvider>
 	);

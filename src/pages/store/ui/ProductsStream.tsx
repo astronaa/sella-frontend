@@ -1,13 +1,13 @@
 'use client';
 
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ProductManageDialog } from "~/features/product/manage";
 import { ProductCard, ProductImage, ProductLink, ProductPrice, productQueries } from "~/entities/product";
-import { useEditModeContext } from "../model/edit-mode";
+import { useEditModeStrictContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
 import { PropsWithChildren, useCallback, useState } from "react";
@@ -25,7 +25,7 @@ interface ProductsStreamProps {
 
 export function ProductsStream({ initialData, className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
-	const { enabled: editModeEnabled } = useEditModeContext();
+	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const [page, setPage] = useState(1);
 
 	const { data, isFetching } = productQueries.useGetFromStore({

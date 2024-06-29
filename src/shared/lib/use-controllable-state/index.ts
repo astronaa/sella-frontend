@@ -21,6 +21,10 @@ export interface UseControllableStateProps<T> {
 	shouldUpdate?: (prev: T, next: T) => boolean
 }
 
+export type WithControllableProps<T, P> 
+	= Omit<UseControllableStateProps<T>, 'shouldUpdate'>
+	& Omit<P, keyof UseControllableStateProps<T>>
+
 /**
  * The `useControllableState` hook returns the state and function that updates the state, just like React.useState does.
  *

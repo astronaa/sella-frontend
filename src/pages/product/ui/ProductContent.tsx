@@ -7,6 +7,7 @@ import { useProductStrictContext } from "~/entities/product";
 import { getStorePathname } from "~/entities/store";
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn";
+import { Button } from "~/shared/ui/kit/button";
 
 export function ProductContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const product = useProductStrictContext();
@@ -36,12 +37,20 @@ export function ProductContent({ className, ...props }: HTMLAttributes<HTMLDivEl
 				{images && (
 					<GalleryCarousel images={images} />
 				)}
-				<div className="font-normal text-black-74 flex flex-col gap-4">
+				<div className=" text-black-74 flex flex-col gap-[1.25rem]">
 					<p className="line-clamp-5 lg:line-clamp-none">
 						{Boolean(product.description) ? product.description : 'No description'}
 					</p>
+
+					<div className="flex flex-row gap-[1rem] flex-wrap">
+						{product.tagNames?.map(t => (
+							<Button key={t} colorPalette="gray" >
+								Category
+							</Button>
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }

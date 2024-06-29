@@ -1,13 +1,13 @@
 'use client';
 
 import { StoreCard, useStoreStrictContext } from "~/entities/store";
-import { ToggleEditModeButton } from "./ToggleEditModeButton";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
-import { Product } from "~/shared/api/model";
+import { Product } from "~/shared/api/client"
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
 import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
+import { EditMode } from "./edit-mode";
 
 interface HeadingProps {
 	productsInitialData?: { items: Product[], total: number }
@@ -46,7 +46,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 					{store.ownerUsername == user.username ? (
 						<>
 							<ManageDialog />
-							{products.total > 0 && <ToggleEditModeButton />}
+							{products.total > 0 && <EditMode.Button />}
 						</>
 					) : (
 						<StoreReportFlow storeUrl={store.shortName} />

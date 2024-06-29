@@ -1,6 +1,7 @@
-import { queryOptions, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { apiClient } from "~/shared/api/client";
-import { Store } from "~/shared/api/model"
+import { PayloadPagination } from "~/shared/api/client"
+import { Store } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'stores'
@@ -11,15 +12,14 @@ interface GetOneQueryOptions {
 	staleTime?: number
 }
 
-interface GetAllQueryOptions {
-	initialData?: { items: Store[], total: number },
-	staleTime?: number
-	page: number
-	limit: number
+interface GetAllQueryOptions extends PayloadPagination {
+	initialData?: { items: Store[], total: number }
 }
 
-const getOneQueryOptions = ({ initialData, storeUrl, staleTime }: GetOneQueryOptions) =>
-	queryOptions({
+type GetForExploreQueryOptions = GetAllQueryOptions;
+
+export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptions) {
+	return useQuery({
 		queryKey: [QUERY_KEY, storeUrl],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores.for(storeUrl).get()
@@ -32,13 +32,13 @@ const getOneQueryOptions = ({ initialData, storeUrl, staleTime }: GetOneQueryOpt
 		initialData,
 		staleTime
 	})
-
-export function useGetOne(args: GetOneQueryOptions) {
-	return useQuery(getOneQueryOptions(args))
 }
 
-const getAllQueryOptions = ({ initialData = { items: [], total: 0 }, page, limit, staleTime }: GetAllQueryOptions) =>
-	queryOptions({
+export function useGetAll({ 
+	page, limit,
+	initialData = { items: [], total: 0 }, 
+}: GetAllQueryOptions) {
+	return useQuery({
 		queryKey: [QUERY_KEY, page],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores.getAll({ page, limit })
@@ -49,15 +49,13 @@ const getAllQueryOptions = ({ initialData = { items: [], total: 0 }, page, limit
 			return data;
 		},
 		initialData,
-		staleTime
+		staleTime: 5000,
+		initialDataUpdatedAt: 0
 	})
-
-export function useGetAll(args: GetAllQueryOptions) {
-	return useQuery(getAllQueryOptions(args))
 }
 
-const getForUserQueryOptions = () =>
-	queryOptions({
+export function useGetForUser() {
+	return useQuery({
 		queryKey: [QUERY_KEY],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores.getForCurrentUser();
@@ -68,9 +66,26 @@ const getForUserQueryOptions = () =>
 			return data;
 		},
 	})
+}
 
-export function useGetForUser() {
-	return useQuery(getForUserQueryOptions())
+export function useGetForExplore({ 
+	page, limit,
+	initialData = { items: [], total: 0 }, 
+}: GetForExploreQueryOptions) {
+	return useQuery({
+		queryKey: [QUERY_KEY, 'explore', page],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.getForExplore({ page, limit })
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+		initialData,
+		staleTime: 5000,
+		initialDataUpdatedAt: 0
+	})
 }
 
 export function invalidateAll() {
