@@ -1,0 +1,1 @@
+export { Component as PageRootLayout } from './ui/Component';

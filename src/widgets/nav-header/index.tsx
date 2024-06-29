@@ -1,1 +1,1 @@
-export { Component as NavHeader } from './ui/Component';
+export * as NavHeader from './ui/components';

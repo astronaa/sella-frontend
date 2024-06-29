@@ -2,11 +2,11 @@
 
 import { create } from 'zustand'
 import { getAccount, signMessage } from '@wagmi/core'
-import { wagmiConfig } from '../config/rainbow-kit';
-import { apiClient } from '../api/client';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccountEffect } from 'wagmi';
 import { useEffect } from 'react';
+import { wagmiConfig } from '~/shared/config/rainbow-kit';
+import { apiClient } from '~/shared/api/client';
 
 type ModalTypes =
 	| 'wallet-connect'

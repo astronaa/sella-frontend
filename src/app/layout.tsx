@@ -7,12 +7,8 @@ import type { Metadata } from "next";
 import { cn } from "~/shared/lib/cn";
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
-import { NavHeader } from "~/widgets/nav-header";
-import { Footer } from "~/widgets/footer";
 import { Providers } from "./_providers";
-
-import { RegisterFlowDialog } from "~/widgets/register-flow";
-import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
+import { PageRootLayout } from "~/pages/root-layout";
 
 const fontVariables = [fontInter.variable, fontManrope.variable];
 
@@ -30,14 +26,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={cn(...fontVariables, 'bg-black-06 text-white font-inter')}>
 				<Providers>
-					<NavHeader className='sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header' />
-					<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
+					<PageRootLayout>
 						{children}
-					</div>
-					<Footer />
-
-					<RegisterFlowDialog />
-					<UserProfileSettingsDialog />
+					</PageRootLayout>
 				</Providers>
 			</body>
 		</html>
