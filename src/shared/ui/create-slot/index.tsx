@@ -42,9 +42,9 @@ export function createSlot<P extends object>(): SlotType<P> {
 	const Renderer: RendererType<P> = ({ children, ...restProps }) => {
 		const rootChildren = useSlotsContext();
 
-		const slotted = Children.toArray(rootChildren).find(child => {
-			return isValidElement(child) && child.type === Slot;
-		});
+		const slotted = Children.toArray(rootChildren).find(child => (
+			isValidElement(child) && child.type === Slot
+		));
 
 		if (!slotted || !isValidElement(slotted)) {
 			return <>{children}</>;

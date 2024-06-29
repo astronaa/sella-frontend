@@ -14,11 +14,11 @@ import { SlotsProvider } from "~/shared/ui/create-slot";
 
 export function Root({ children, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
-		<InteractiveProvider>
-			<SlotsProvider value={children}>
+		<SlotsProvider value={children}>
+			<InteractiveProvider>
 				<Header {...props} />
-			</SlotsProvider>
-		</InteractiveProvider>
+			</InteractiveProvider>
+		</SlotsProvider>
 	);
 }
 
