@@ -15,45 +15,45 @@ export function ClipboardInput() {
 	return (
 		<Skeleton loading={isLoading} className='rounded-[1rem]'>
 			<Clipboard.Root value={`sella.me/${data?.refCode}`}>
-				{({ isCopied }) => (
-					<Clipboard.Control className='flex gap-4'>
-						<StoreInputAddon>
-							{({ Component: Addon, inputClassName }) => (
-								<InputGroup>
-									<Clipboard.Input asChild>
-										<Input
-											className={cn(
-												"rounded-[1.25rem] border border-secondary w-full h-full",
-												inputClassName,
-												'text-black-40',
-											)}
-											value={data?.refCode}
-											readOnly
-										/>
-									</Clipboard.Input>
-									{isCopied && (
+				<Clipboard.Control className='flex gap-4'>
+					<StoreInputAddon>
+						{({ Component: Addon, inputClassName }) => (
+							<InputGroup>
+								<Clipboard.Input asChild>
+									<Input
+										className={cn(
+											"rounded-[1.25rem] border border-secondary w-full h-full",
+											inputClassName,
+											'text-black-40',
+										)}
+										value={data?.refCode}
+										readOnly
+									/>
+								</Clipboard.Input>
+								<Clipboard.Context>
+									{({ copied }) => copied && (
 										<InputAddon className='text-accent-100 right-[1rem]'>
 											Copied!
 										</InputAddon>
 									)}
-									<Addon className='text-white'/>
-								</InputGroup>
-							)}
-						</StoreInputAddon>
+								</Clipboard.Context>
+								<Addon className='text-white' />
+							</InputGroup>
+						)}
+					</StoreInputAddon>
 
-						<Clipboard.Trigger asChild>
-							<IconButton
-								size='lg'
-								variant='solid'
-								className='rounded-[20px]'
-							>
-								<Clipboard.Indicator copied={<Icons.Check/>}>
-									<Icons.Copy/>
-								</Clipboard.Indicator>
-							</IconButton>
-						</Clipboard.Trigger>
-					</Clipboard.Control>
-				)}
+					<Clipboard.Trigger asChild>
+						<IconButton
+							size='lg'
+							variant='solid'
+							className='rounded-[20px]'
+						>
+							<Clipboard.Indicator copied={<Icons.Check />}>
+								<Icons.Copy />
+							</Clipboard.Indicator>
+						</IconButton>
+					</Clipboard.Trigger>
+				</Clipboard.Control>
 			</Clipboard.Root>
 		</Skeleton>
 	)

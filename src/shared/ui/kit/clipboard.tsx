@@ -35,3 +35,8 @@ export type IndicatorProps = ComponentProps<typeof Indicator>
 export type InputProps = ComponentProps<typeof Input>
 export type LabelProps = ComponentProps<typeof Label>
 export type TriggerProps = ComponentProps<typeof Trigger>
+
+export {
+	ClipboardContext as Context,
+	type ClipboardContextProps as ContextProps
+} from '@ark-ui/react/clipboard'
