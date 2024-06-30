@@ -20,14 +20,12 @@ export async function updateStore(store: Store, { previewImage, ...data }: Schem
 		.for(store.shortName)
 		.update(data);
 
-	if (response.status == 409) {
-		throw new FormError({
-			field: 'shortName',
-			message: error?.message as unknown as string
-		});
+	if (error) {
+		if (response.status == 409)
+			throw new FormError({ shortName: String(error.message) });
+		else
+			throw error;
 	}
-	else if (error)
-		throw error;
 
 	if (previewImage)
 		await apiClient.stores.for(store.shortName).setImage(previewImage);

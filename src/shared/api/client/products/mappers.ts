@@ -4,7 +4,7 @@ import { mapMediaIdToUrl } from "../shared/mappers";
 
 type Schemes = components['schemas'];
 
-export const mapDtoToProduct = (obj: Schemes['ProductInfoDto'] | Schemes['BaseProductDto']) => {
+export const mapDtoToProduct = (obj: Schemes['ProductDto'] | Schemes['BaseProductDto']) => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 
 	const imagesConfig = obj.hasPreview ? {

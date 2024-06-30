@@ -1,5 +1,5 @@
-export type TransactionStatus = "New" | "Paid" | "Delivered" | "Canceled";
-export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Failed";
+export type TransactionStatus = "Unpaid" | "Hold" | "Released" | "Refunded";
+export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
 
 export interface Transaction {
 	status: TransactionStatus;
@@ -10,3 +10,20 @@ export interface Transaction {
 }
 
 export type ImageEntry = string;
+
+export const paymentMethodTypes = [
+	"ETH", "TRX", "MATIC", "USDT", "USDC", "DAI", "SELLA", "SEPOLIA"
+] as const;
+
+export type PaymentMethodTypes = typeof paymentMethodTypes[number];
+
+export interface PaymentMethod {
+	name: string;
+	value: PaymentMethodTypes;
+	contractAddress: string;
+
+	tokens: {
+		name: string;
+		address: string;
+	}[]
+}

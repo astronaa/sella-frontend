@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { formatFileSize } from "~/shared/lib/format-file-size";
+import { paymentMethodTypes } from "./models";
 
 export const schemaFile = (maxSize = Infinity) => (
 	z.instanceof(File)
@@ -15,3 +16,5 @@ export const schemaPaginationPayload = z.object({
 })
 
 export type PayloadPagination = z.infer<typeof schemaPaginationPayload>;
+
+export const schemaPaymentMethods = z.enum(paymentMethodTypes)

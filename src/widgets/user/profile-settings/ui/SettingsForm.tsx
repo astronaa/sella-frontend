@@ -77,14 +77,14 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
 				if (error)
-					throw new FormError({ field: 'username', message: error.message });
+					throw new FormError({ username: String(error.message) });
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
 				if (error)
-					throw new FormError({ field: 'email', message: error.message });
+					throw new FormError({ email: String(error.message) });
 
 				openVerifyDialog();
 
@@ -103,8 +103,8 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		catch (error) {
 			onActionRejected?.();
 
-			if (error instanceof FormError && error.field)
-				return { [error.field]: error.message }
+			if (error instanceof FormError)
+				return error.errorMap
 		}
 	};
 

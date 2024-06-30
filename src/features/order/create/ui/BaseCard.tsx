@@ -2,7 +2,6 @@
 
 import { cn } from "~/shared/lib/cn";
 import { HTMLAttributes } from "react";
-import { ordersQueries } from "~/entities/order";
 import { ProductPrice, ProductProp, ProductProvider } from "~/entities/product"
 import { MaybeRenderProp, transformRenderProps } from "~/shared/lib/render-props";
 import { WithControllableProps, useControllableState } from "~/shared/lib/use-controllable-state";
@@ -12,6 +11,7 @@ import { Button } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { ValueType, schema } from "../model/schema";
+import { paymentMethodsQueries } from "~/entities/payment-methods";
 
 export type BaseCardProps = WithControllableProps<
 	ValueType, Omit<HTMLAttributes<HTMLDivElement>, 'children'>
@@ -26,7 +26,7 @@ export function BaseCard({
 	children, title = 'Pay for the order',
 	...props
 }: BaseCardProps) {
-	const { data } = ordersQueries.useGetPaymentMethods();
+	const { data } = paymentMethodsQueries.useGetForProduct(product.id);
 
 	const [value, setValue] = useControllableState({
 		onChange, defaultValue, value: v

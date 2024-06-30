@@ -10,9 +10,15 @@ import { Button } from "~/shared/ui/kit/button";
 import { AdapterState } from "@tronweb3/tronwallet-abstract-adapter";
 import { useEffect } from "react";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
+import { apiClient } from "~/shared/api/client";
 
 export function ConnectDialog(props: Dialog.RootProps) {
 	const { open, setOpen } = useWalletConnectDialog();
+
+	const onWalletSelected = (address: string) => {
+		setOpen(false);
+		apiClient.users.setTronWallet(address);
+	}
 
 	return (
 		<Dialog.Root
@@ -36,7 +42,7 @@ export function ConnectDialog(props: Dialog.RootProps) {
 						</Dialog.ContentHeading>
 
 						<Form
-							onActionFulfilled={() => setOpen(false)}
+							onActionFulfilled={onWalletSelected}
 						/>
 					</Dialog.Content>
 				</Dialog.Positioner>
@@ -46,7 +52,7 @@ export function ConnectDialog(props: Dialog.RootProps) {
 }
 
 interface FormProps {
-	onActionFulfilled?: () => void
+	onActionFulfilled?: (address: string) => void
 }
 
 const adapterStatuses = new Map([

@@ -35,9 +35,8 @@ export function Root({ onActionFulfilled, children, store }: RootProps) {
 			onActionFulfilled?.(result);
 		}
 		catch (error) {
-			if (error instanceof FormError && error.field) {
-				return { [error.field]: error.message }
-			}
+			if (error instanceof FormError)
+				return error.errorMap
 		}
 	}
 
