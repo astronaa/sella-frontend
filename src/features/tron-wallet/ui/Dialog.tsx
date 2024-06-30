@@ -35,7 +35,7 @@ export function ConnectDialog(props: Dialog.RootProps) {
 							</Dialog.Description>
 						</Dialog.ContentHeading>
 
-						<Form 
+						<Form
 							onActionFulfilled={() => setOpen(false)}
 						/>
 					</Dialog.Content>
@@ -48,6 +48,13 @@ export function ConnectDialog(props: Dialog.RootProps) {
 interface FormProps {
 	onActionFulfilled?: () => void
 }
+
+const adapterStatuses = new Map([
+	[AdapterState.Connected, { label: 'Connected', level: 2 }],
+	[AdapterState.Disconnect, { label: 'Disconnected', level: 2 }],
+	[AdapterState.Loading, { label: 'Loading', level: 1 }],
+	[AdapterState.NotFound, { label: 'Not Found', level: 1 }],
+])
 
 function Form(props: FormProps) {
 	const { wallets, select, wallet } = useWallet();
@@ -68,20 +75,37 @@ function Form(props: FormProps) {
 
 	return (
 		<div className='flex flex-col w-full gap-[1rem]'>
-			{wallets.map(w => (
-				<Button
-					key={w.adapter.name}
-					colorPalette='gray' className='w-full'
-					disabled={w.state != AdapterState.Disconnect}
-					onClick={() => select(w.adapter.name)}
-				>
-					<img
-						className='size-[1rem] rounded-full'
-						src={w.adapter.icon}
-						alt=''
-					/> Connect {w.adapter.name} ({w.state})
-				</Button>
-			))}
+			{[...wallets]
+				.sort((a, b) => {
+					const levelA = adapterStatuses.get(a.state)?.level ?? 0;
+					const levelB = adapterStatuses.get(b.state)?.level ?? 0;
+
+					return levelB - levelA;
+				})
+				.map(w => (
+					<Button
+						key={w.adapter.name}
+						colorPalette='gray' size='lg'
+						className='w-full justify-between'
+						disabled={w.state != AdapterState.Disconnect}
+						onClick={() => select(w.adapter.name)}
+					>
+						<div className='flex items-center gap-[0.5rem]'>
+							<img
+								className='size-[1.5rem] rounded-full'
+								src={w.adapter.icon}
+								alt=''
+							/>
+
+							<span>Connect {w.adapter.name}</span>
+						</div>
+
+						<span className='text-black-40'>
+							{adapterStatuses.get(w.adapter.state)?.label}
+						</span>
+					</Button>
+				))
+			}
 		</div>
 	);
 }

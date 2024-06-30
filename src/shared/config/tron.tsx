@@ -30,7 +30,10 @@ export function TronWalletProvider({ children }: PropsWithChildren) {
 	}, []);
 
 	return (
-		<WalletProvider adapters={adapters}>
+		<WalletProvider 
+			adapters={adapters} 
+			disableAutoConnectOnLoad={false}
+		>
 			{children}
 		</WalletProvider>
 	);
