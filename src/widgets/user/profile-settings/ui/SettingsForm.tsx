@@ -14,6 +14,7 @@ import { usePromiseResolver } from '~/shared/lib/use-promise-resolver';
 import { zodValidate } from '~/shared/lib/zod-final-form';
 import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
+import { InputAddon } from '~/shared/ui/kit/input';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
 import {toaster} from "~/shared/ui/toaster";
 
@@ -236,9 +237,9 @@ function TelegramControl({ name }: { name: string }) {
 				placeholder="Your @telegram"
 				readOnly
 			>
-				<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
+				<InputAddon className='left-0 ps-[1rem]'>
 					<Icons.Telegram className='size-[1.25rem]' />
-				</span>
+				</InputAddon>
 			</VTextControl.Input>
 			<VTextControl.ErrorText />
 		</VTextControl.Root>

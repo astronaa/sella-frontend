@@ -1,6 +1,11 @@
-export function Background() {
+import { HTMLAttributes } from "react";
+import { cn } from "~/shared/lib/cn";
+
+export function Background({
+	                           className
+}: HTMLAttributes<HTMLDivElement>) {
 	return (
-		<div className="absolute top-0 left-0 w-full h-full bg-[#ffffff0f]">
+		<div className={cn("absolute top-0 left-0 w-full h-full bg-[#ffffff0f]", className)}>
 			<div
 				className="absolute size-full opacity-50 max-md:hidden"
 				style={{

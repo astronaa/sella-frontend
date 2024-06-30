@@ -7,15 +7,23 @@ import { Icons } from "~/shared/ui/icons";
 import { IconButton } from "~/shared/ui/kit/button";
 import { NavIconButton } from "./NavIconButton";
 import { useUserGetQuery } from "~/entities/user";
-import { useAccount } from "wagmi";
+import { useBalance } from "wagmi";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
 import { useUserProfileSettingsDialog } from "~/shared/model/user-profile";
+import { usePathname } from "next/navigation";
 
-export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+type Props = HTMLAttributes<HTMLDivElement> & {
+	address: `0x${string}`
+}
+
+export function AuthorizedBar({ className, address, ...props }: Props) {
+	const pathname = usePathname()
 	const { data: user } = useUserGetQuery();
-	const { address } = useAccount();
 	const { openAccountModal } = useAccountModal();
 	const { open, setOpen } = useUserProfileSettingsDialog();
+	const { data: balance } = useBalance({ address })
+
+	const isQuestsRoute = pathname?.includes('/quests')
 
 	return (
 		<div {...props}
@@ -34,9 +42,18 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 					<span className='truncate max-w-full'>
 						{user?.username ?? 'unnamed'}
 					</span>
-					<span className='text-black-40'>
-						{address && truncateStrFromMiddle(address)}
-					</span>
+
+					{isQuestsRoute && balance
+						? (
+							<span className='text-accent-100 text-nowrap'>
+								{`${balance.decimals} ${balance.symbol}`}
+							</span>
+						) : (
+							<span className='text-black-40'>
+								{address && truncateStrFromMiddle(address)}
+							</span>
+						)
+					}
 				</button>
 			)}
 
@@ -50,6 +67,13 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 
 				<NavIconButton href='/dashboard' end>
 					<Icons.Building />
+				</NavIconButton>
+
+				<NavIconButton
+					href='/dashboard/quests'
+					activeOnHrefs={['/dashboard/quests']}
+				>
+					<Icons.Coins />
 				</NavIconButton>
 
 				<IconButton

@@ -19,7 +19,7 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 			loading={user === undefined}
 		>
 			{!!isAuthorized ? (
-				<AuthorizedBar {...props} />
+				<AuthorizedBar address={address} {...props} />
 			) : (
 				<NotAuthorizedBar {...props} />
 			)}

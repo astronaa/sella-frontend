@@ -1,4 +1,4 @@
-import { Background } from "./SectionBackground";
+import { Background } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
