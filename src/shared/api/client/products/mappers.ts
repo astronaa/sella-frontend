@@ -26,6 +26,7 @@ export const mapDtoToProduct = (obj: Schemes['ProductDto'] | Schemes['BaseProduc
 		storeUrl: 'storeUrl' in obj ? obj.storeUrl : undefined,
 		isFrozen: 'isFrozen' in obj ? obj.isFrozen : undefined,
 		tagNames: 'tagNames' in obj ? obj.tagNames : undefined,
+		holdPeriod: 'holdPeriod' in obj ? obj.holdPeriod : undefined,
 		...imagesConfig,
 		rating: 'rating' in obj ? {
 			likes: obj.rating.positive,
