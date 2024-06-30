@@ -54,7 +54,7 @@ export function createProductsClient() {
 				initialState: Required<Pick<Product, 'imageIds' | 'hasPreview'>>,
 				payload: PayloadUploadImages,
 			) {
-				if (payload.previewImage === undefined && (payload.galleryImages === undefined || !payload.galleryImages.length))
+				if (payload.previewImage === undefined && payload.galleryImages === undefined)
 					return false;
 
 				const syncImages = async (input: (File | string)[]) => {
