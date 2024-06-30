@@ -4,7 +4,7 @@ import {useFormControlStrictContext} from "~/shared/ui/validation-inputs/Control
 
 export function VCheckbox({ ...props }: CheckboxProps){
 	const { name } = useFormControlStrictContext();
-	const { input: { ...fieldProps } } = useField(name);
+	const { input: { ...fieldProps } } = useField(name, {type: 'checkbox'});
 
 	return (
 		<Checkbox {...props} {...fieldProps} />

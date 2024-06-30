@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	VCheckbox,
 	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl,
@@ -15,6 +16,7 @@ import { cn } from "~/shared/lib/cn";
 import {IconButton} from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import {ValidationErrors} from "final-form";
+import {Divider} from "~/shared/ui/kit/divider";
 
 
 export interface RootProps extends PropsWithChildren {
@@ -32,7 +34,6 @@ export function Root({ product, onSubmit, validate, children }: RootProps) {
 			galleryImages: galleryImagesUrls,
 			...rest
 		} = product;
-
 		return { previewImageUrl, galleryImagesUrls, ...rest }
 	}, [product]);
 
@@ -79,6 +80,13 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
 				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
+
+			<Divider/>
+			<VTextControl.Root name="isFrozen" className="flex-row items-center justify-between">
+				<VTextControl.Label>Out of stock</VTextControl.Label>
+				<VCheckbox>Hide from search and store</VCheckbox>
 				<VTextAreaControl.ErrorText/>
 			</VTextControl.Root>
 		</div>

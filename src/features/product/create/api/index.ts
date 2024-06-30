@@ -21,7 +21,9 @@ export async function createProduct(storeUrl: string, values: SchemaType) {
 		price: Number(values.price),
 		description: values.description,
 		shortDescription: values.shortDescription,
-		tagNames: values.tagNames
+		tagNames: values.tagNames,
+		// @ts-expect-error: holdPeriod not implemented yet
+		holdPeriod: 60
 	})
 
 	if(error){
