@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from "~/shared/api/client"
+import { Product, productMock } from "~/shared/api/client"
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
@@ -18,6 +18,7 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -38,14 +39,14 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	})
 
 	const { data: user } = useUserGetQuery();
-	const products = data?.items ?? []
+	const products = data?.items;
 	const total = data?.total ?? 0;
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
-			{!products.length && (
+			{products && !products.length && (
 				<NotFoundScreen>
 					<Icons.PackageThin />
 
@@ -104,7 +105,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 }
 
 interface ProductsListProps extends PropsWithChildren {
-	products: Product[],
+	products?: Product[],
 	loading?: boolean
 }
 
@@ -115,7 +116,20 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 			'max-md:grid-cols-1 max-lg:grid-cols-2 max-xl:grid-cols-3',
 			loading && 'opacity-50'
 		)}>
-			{products.map(p => (
+			{loading && !products && (
+				Array.from({ length: 4 }).map((_, index) => (
+					<Skeleton 
+						key={index} loading={true}
+						className='rounded-[1.25rem]'
+					>
+						<ProductCard.Composed
+							product={productMock}
+						/>
+					</Skeleton>
+				))
+			)}
+
+			{products?.map(p => (
 				<ProductCard.Root
 					product={p} key={p.id}
 					className='w-full mx-auto h-full' asChild
@@ -146,7 +160,7 @@ const tableConfig = [
 ]
 
 function ProductsEditTable({ products, loading, children }: ProductsListProps) {
-	if (!products.length)
+	if (!products || !products.length)
 		return null;
 
 	return (
