@@ -99,7 +99,7 @@ export function ManageDialog({ product, triggerElement, ...props }: ManageDialog
 							>
 								<Tabs.Content value="1"><EditForm.General className='gap-[1rem]'/></Tabs.Content>
 								<Tabs.Content value="2"><EditForm.Description className='gap-[1rem]'/></Tabs.Content>
-								<Dialog.ContentFooter>
+								<Dialog.ContentFooter className="mt-[2rem]">
 									<DeleteButton
 										productId={product.id}
 										onActionFulfilled={onProductDelete}
