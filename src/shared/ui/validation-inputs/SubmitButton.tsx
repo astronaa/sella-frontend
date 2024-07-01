@@ -11,7 +11,12 @@ export function VSubmitButton(props: ButtonProps) {
 		<Button
 			{...props}
 			disabled={submitting || !!props?.disabled}
-			onClick={submit}
+			onClick={(e) => {
+				if(props.onClick){
+					props.onClick(e)
+				}
+				submit()
+			}}
 		/>
 	);
 }

@@ -19,13 +19,13 @@ export function Heading({ productsInitialData }: HeadingProps) {
 
 	const { data: products } = useQuery({
 		...productQueries.getFromStoreOptions({
-			storeUrl: store.shortName,
+			storeUrl: store.url,
 			limit: PRODUCT_ITEMS_PER_PAGE,
 		}),
 		initialData: productsInitialData,
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
-	})	
+	})
 
 	const { data: user } = useUserGetQuery();
 
@@ -54,7 +54,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 							{products.total > 0 && <EditMode.Button />}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.shortName} />
+						<StoreReportFlow storeUrl={store.url} />
 					)}
 				</div>
 			)}

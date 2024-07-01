@@ -64,7 +64,7 @@ export function ManageDialog({
 
 						<Dialog.ContentFooter>
 							<DeleteButton
-								storeUrl={store.shortName}
+								storeUrl={store.url}
 								onActionFulfilled={onStoreDelete}
 							/>
 

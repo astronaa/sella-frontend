@@ -10,7 +10,7 @@ interface StoreOnPageProviderProps extends PropsWithChildren {
 
 export function StoreOnPageProvider({ initialData, children }: StoreOnPageProviderProps) {
 	const { data: store } = storeQueries.useGetOne({
-		storeUrl: initialData.shortName,
+		storeUrl: initialData.url,
 		initialData,
 		staleTime: Infinity
 	})
