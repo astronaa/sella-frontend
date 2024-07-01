@@ -16,13 +16,9 @@ export const schema = apiClient.stores.schemaUpdate.merge(
 export type SchemaType = z.infer<typeof schema>;
 
 export async function updateStore(store: Store, { previewImage, ...data }: SchemaType) {
-	const { error } = await apiClient.stores.for(store.url)
-		.update({
-			name: data.name,
-			url: data.url,
-			description: data.description,
-			tagNames: data.tagNames
-		});
+	const { error } = await apiClient.stores
+		.for(store.url)
+		.update(data);
 
 	if(error){
 		if (error.statusCode == 400) {

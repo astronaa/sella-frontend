@@ -10,20 +10,3 @@ export interface Order {
 	store: Store;
 	transaction: Transaction;
 }
-
-export const orderPaymentMethodTypes = [
-	"ETH", "TRX", "MATIC", "USDT", "USDC", "DAI", "SELLA"
-] as const;
-
-export type OrderPaymentMethodTypes = typeof orderPaymentMethodTypes[number];
-
-export interface OrderPaymentMethod {
-	name: string;
-	value: OrderPaymentMethodTypes;
-	contractAddress: string;
-
-	tokens: {
-		name: string;
-		address: string;
-	}[]
-}

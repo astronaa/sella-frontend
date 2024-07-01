@@ -1,0 +1,24 @@
+import { Header } from "./Header";
+import { Footer } from "~/widgets/footer";
+import { PropsWithChildren } from "react";
+import { RegisterFlowDialog } from "~/widgets/register-flow";
+import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
+import { TronWalletConnectDialog } from "~/features/tron-wallet";
+
+export function Component({ children }: PropsWithChildren) {
+	return (
+		<>
+			<Header />
+
+			<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
+				{children}
+			</div>
+
+			<Footer />
+
+			<RegisterFlowDialog />
+			<UserProfileSettingsDialog />
+			<TronWalletConnectDialog />
+		</>
+	);
+}

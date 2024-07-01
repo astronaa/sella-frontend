@@ -13,8 +13,8 @@ const styles = tv(
 		base: 'dialog',
 		slots: {
 			trigger: 'dialog__trigger',
-			backdrop: 'dialog__backdrop bg-black/10 backdrop-blur-[0.5rem]',
-			positioner: 'dialog__positioner max-sm:items-end',
+			backdrop: 'dialog__backdrop bg-black/10 backdrop-blur-[0.5rem] z-dialog',
+			positioner: 'dialog__positioner max-sm:items-end z-dialog',
 			content: `dialog__content bg-[#141414] border border-white/[.02] flex flex-col items-center
 				overflow-y-auto max-md:max-w-[100%] max-md:max-h-[90vh]`,
 			contentHeading: 'flex flex-col items-center',

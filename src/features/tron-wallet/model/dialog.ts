@@ -7,7 +7,7 @@ interface StoreType {
 	setOpen: (open: boolean) => void,
 }
 
-export const useUserProfileSettingsDialog = create<StoreType>(set => ({
+export const useWalletConnectDialog = create<StoreType>(set => ({
 	open: false,
 	setOpen: open => set({ open })
 }));

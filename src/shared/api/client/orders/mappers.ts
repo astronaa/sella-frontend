@@ -1,5 +1,5 @@
 import { components } from "~/shared/api/openapi";
-import { Order, OrderPaymentMethod } from "./model";
+import { Order } from "./model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "../stores/mappers";
 
@@ -19,7 +19,3 @@ export const mapDtoToOrder = (obj: Schemas['OrderInfoDto']): Order => {
 		product: mapDtoToProduct(obj.product),
 	}
 }
-
-export const mapDtoToPaymentMethod = (obj: Schemas['PaymentMethod']): OrderPaymentMethod => (
-	obj
-);

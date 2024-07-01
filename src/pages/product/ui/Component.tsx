@@ -3,12 +3,12 @@ import { ReviewsStream } from "./ReviewsStream";
 import { PreviewImage } from "~/shared/ui/image";
 import { Icons } from "~/shared/ui/icons";
 import { ProductId } from "~/shared/api/client"
-import { fetchProductPage, fetchProductReviews } from "../api";
+import { fetchProduct, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
 
 export async function Component({ productId }: { productId: ProductId }) {
-	const product = await fetchProductPage(productId);
+	const product = await fetchProduct(productId);
 	const reviews = await fetchProductReviews(productId);
 
 	return (

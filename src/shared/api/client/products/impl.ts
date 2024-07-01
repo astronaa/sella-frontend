@@ -11,12 +11,15 @@ import { Product, ProductId } from "./model";
 import { authFetchClient } from "../fetch-client";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
+import { mapDtoToPaymentMethod } from "../shared/mappers";
 
 export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
 			const { data, error } = await authFetchClient.POST('/api/products', {
-				body: { storeUrl, ...payload }
+				body: {
+					storeUrl, holdPeriod: 60, ...payload,
+				}
 			});
 
 			return data ? {
@@ -41,6 +44,7 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
+					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 
@@ -86,6 +90,7 @@ export function createProductsClient() {
 				const patch = async (payload: { imageIds: string[], hasPreview: boolean }) => {
 					const { error } = await authFetchClient.PATCH('/api/products/{id}', {
 						params: { path: { id: productId } },
+						// @ts-expect-error expecting openapi changes
 						body: payload
 					});
 					return !error;
@@ -130,6 +135,19 @@ export function createProductsClient() {
 					})
 				}
 				return false;
+			},
+
+			async getPaymentMethods() {
+				const { data, error } = await authFetchClient.GET('/api/products/{id}/payment-methods', {
+					params: { path: { id: productId } }
+				});
+
+				return data ? {
+					data: data.map(mapDtoToPaymentMethod),
+					error
+				} : {
+					data, error
+				}
 			},
 		}),
 

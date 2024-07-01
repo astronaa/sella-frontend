@@ -5,8 +5,8 @@ import { Icons } from "~/shared/ui/icons";
 
 export function TransactionStatusBadge({ status }: { status: Transaction['status']; }) {
 	switch (status) {
-		case 'New':
-			return <Badge colorPalette='accent'>New</Badge>;
+		case 'Released':
+			return <Badge colorPalette='accent'>Released</Badge>;
 		default:
 			return (
 				<Badge className='capitalize'>

@@ -21,7 +21,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
 
 Button.displayName = 'Button'
 
-export const IconButton = forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => (
+export type IconButtonProps = ButtonProps;
+
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({ className, ...props }, ref) => (
 	<Button ref={ref} {...props} className={cn('px-0 border border-secondary', className)} />
 ));
 

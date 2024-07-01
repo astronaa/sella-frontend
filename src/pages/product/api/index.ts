@@ -2,7 +2,7 @@ import { apiClient } from "~/shared/api/client";
 import { ProductId } from "~/shared/api/client"
 import { INITIAL_PAGE, INITIAL_SORT, ITEMS_PER_PAGE } from "../config";
 
-export async function fetchProductPage(productId: ProductId) {
+export async function fetchProduct(productId: ProductId) {
 	const product = await apiClient.products.for(productId).get();
 
 	if(product.error)
@@ -10,6 +10,8 @@ export async function fetchProductPage(productId: ProductId) {
 
 	return product.data;
 }
+
+export type ProductInitialData = Awaited<ReturnType<typeof fetchProduct>>;
 
 export async function fetchProductReviews(productId: ProductId) {
 	const reviews = await apiClient.reviews

@@ -17,10 +17,12 @@ import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
 import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
+import { useQuery } from "@tanstack/react-query";
+import { ProductsInitialData } from "../api";
 
 interface ProductsStreamProps {
-	initialData?: { items: Product[], total: number }
-	className?: string
+	className?: string,
+	initialData: ProductsInitialData
 }
 
 export function ProductsStream({ initialData, className }: ProductsStreamProps) {
@@ -28,9 +30,14 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const [page, setPage] = useState(1);
 
-	const { data, isFetching } = productQueries.useGetFromStore({
-		storeUrl: store.url, initialData,
-		page, limit: PRODUCT_ITEMS_PER_PAGE,
+	const { data, isFetching } = useQuery({
+		...productQueries.getFromStoreOptions({
+			storeUrl: store.url,
+			limit: PRODUCT_ITEMS_PER_PAGE,
+		}),
+		initialData,
+		staleTime: 5000,
+		initialDataUpdatedAt: 0
 	})
 
 	const { data: user } = useUserGetQuery();

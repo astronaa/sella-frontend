@@ -1,9 +1,9 @@
 import { authFetchClient } from "../fetch-client";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
 import { PayloadPagination } from "../shared/schemas";
-import { mapDtoToOrder, mapDtoToPaymentMethod } from "./mappers";
+import { mapDtoToOrder } from "./mappers";
 import { OrderId } from "./model";
-import { PayloadCreate, schemaCreate, schemaPaymentMethod } from "./schemas";
+import { PayloadCreate, schemaCreate } from "./schemas";
 
 export function createOrdersClient() {
 	return {
@@ -33,17 +33,6 @@ export function createOrdersClient() {
 			});
 		},
 
-		async getPaymentMethods() {
-			const { data, error } = await authFetchClient.GET('/api/orders/payment-methods');
-
-			return data ? {
-				data: data.map(mapDtoToPaymentMethod),
-				error
-			} : {
-				data, error
-			}
-		},
-
 		for: (orderId: OrderId) => ({
 			async get() {
 				const { data, error } = await authFetchClient.GET('/api/orders/{id}', {
@@ -58,7 +47,6 @@ export function createOrdersClient() {
 			}
 		}),
 
-		schemaCreate,
-		schemaPaymentMethod
+		schemaCreate
 	}
 }

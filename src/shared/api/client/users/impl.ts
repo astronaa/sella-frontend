@@ -27,6 +27,11 @@ export function createUsersClient() {
 		async deleteAvatar() {
 			return authFetchClient.DELETE('/api/users/profile-picture')
 		},
+		async setTronWallet(address: string) {
+			return authFetchClient.PATCH('/api/users/tron-address', {
+				body: { tronAddress: address }
+			})
+		},
 
 		schemaAvatarFile: schemaFile(1024 * 1024 * 2) // 2mb
 	}
