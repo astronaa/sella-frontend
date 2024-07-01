@@ -14,19 +14,20 @@ export const schema = z.object({
 	galleryImages: z.array(z.instanceof(File)).optional(),
 	galleryImagesUrls: z.array(z.string()),
 	hasPreview: z.boolean(),
-	isFrozen: z.boolean()
+	isFrozen: z.boolean(),
+	tagNames: z.array(z.string()).optional().default([])
 });
 
 export type SchemaType = z.infer<typeof schema>
 
 export async function manageProduct(productId: ProductId, values: SchemaType) {
-	console.log(values)
 	const { data, error } = await apiClient.products.for(productId).update({
 		name: values.name,
 		description: values.description ?? '',
 		price: Number(values.price),
 		shortDescription: values.shortDescription,
-		isFrozen: values.isFrozen
+		isFrozen: values.isFrozen,
+		tagNames: values.tagNames
 	})
 
 	if(error){
