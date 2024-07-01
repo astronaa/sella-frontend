@@ -27,11 +27,15 @@ export function Links({ className }: HTMLAttributes<HTMLDivElement>) {
 		if(!linksContainerRef.current) return
 		//@ts-expect-error TS2802: Type HTMLCollection can only be iterated through when using
 		// the --downlevelIteration flag or with a --target of es2015 or higher.
-		const children = [...linksContainerRef.current.children]
-		const activeLink = children.find((el) => el.dataset.link === pathname)
+		const children: Element[] = [...linksContainerRef.current.children]
+		const activeLink = children.find((el) => {
+			if(el instanceof HTMLElement) {
+				return el.dataset.link === pathname
+			}
+		})
 
-		activeLink.scrollIntoView(scrollOptions)
-	}, []);
+		activeLink?.scrollIntoView(scrollOptions)
+	}, [pathname]);
 
 	return (
 		<div ref={linksContainerRef} className={cn('flex border-0 p-0 h-fit', className)}>
