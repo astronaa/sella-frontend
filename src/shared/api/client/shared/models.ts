@@ -27,3 +27,9 @@ export interface PaymentMethod {
 		address: string;
 	}[]
 }
+
+export interface Rating {
+	likes: number
+	dislikes: number
+	reviewsCount: number
+}

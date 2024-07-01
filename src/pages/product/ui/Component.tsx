@@ -1,11 +1,12 @@
 import { ProductContent } from "./ProductContent";
 import { ReviewsStream } from "./ReviewsStream";
 import { PreviewImage } from "~/shared/ui/image";
-import { Icons } from "~/shared/ui/icons";
 import { ProductId } from "~/shared/api/client"
-import { fetchProduct, fetchProductReviews } from "../api";
+import { ProductInitialData, fetchProduct, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
+import { StoreCard } from "~/entities/store";
+import { RatingRow } from "~/shared/ui/rating";
 
 export async function Component({ productId }: { productId: ProductId }) {
 	const product = await fetchProduct(productId);
@@ -21,11 +22,11 @@ export async function Component({ productId }: { productId: ProductId }) {
 
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
-						<TwitterWidget />
+						<StoreWidget initialData={product} />
 					</div>
 				</div>
 
-				<ReviewsStream 
+				<ReviewsStream
 					className='w-full max-w-[47.5rem] max-xl:max-w-full'
 					initialData={reviews}
 				/>
@@ -34,41 +35,57 @@ export async function Component({ productId }: { productId: ProductId }) {
 	);
 }
 
-function TwitterWidget() {
+function StoreWidget({ initialData: product }: { initialData: ProductInitialData }) {
+	const { store } = product;
+
 	return (
 		<div className="border border-white/[.04] rounded-[1.25rem] p-4 flex flex-col gap-6">
-			<div className="flex flex-col gap-4">
-				<div className="flex gap-4 items-center">
-					<PreviewImage src={null} alt="Twitter User Avatar" className="size-14 rounded-full" />
-					<div className="flex flex-col gap-1">
-						<div className="flex items-center gap-1 text-[1rem]/[20/0.5rem] font-semibold">
-							<div className="text-white">
-								Twitter Accounts
-							</div>
-							<Icons.Verified className='text-accent-100' />
-						</div>
-						<div className="text-black-40">@twitteraccs</div>
+			{store && (
+				<StoreCard.Root
+					store={store}
+					className='flex-col p-0 border-none gap-[1rem]'
+				>
+					<div className='flex gap-[1rem] w-full'>
+						<StoreCard.ImageDesktop
+							className='size-[3.5rem]'
+						/>
+						<StoreCard.Content>
+							<StoreCard.Title
+								className='text-[1rem] max-md:text-[1rem]'
+							/>
+						</StoreCard.Content>
 					</div>
-				</div>
-				<div className="text-[1rem]/[1.3rem] font-normal text-black-60">
-					Selling old, premium, crypto twitter accounts with blue ticks and real followers
-				</div>
-			</div>
+
+					{!!store.description && (
+						<StoreCard.Description
+							className='text-[1rem]'
+						/>
+					)}
+				</StoreCard.Root>
+			)}
+
 			<div className="flex items-center justify-between bg-black-08 text-black-60 rounded-2xl p-2 pr-3">
 				<div className="flex items-center gap-2">
-					<PreviewImage src={null} alt="Twitter User Avatar" className="size-8 rounded-full" />
-					<div>by @redfox</div>
+					<PreviewImage
+						width={32} height={32}
+						src={store?.owner.avatarImage ?? null}
+						alt="Store owner avatar"
+						className="size-8 rounded-full"
+					/>
+					<div>by {store?.owner.username}</div>
 				</div>
-				<div className="flex items-center gap-3">
-					<div className="flex items-center gap-1 text-green-100">
-						<Icons.Likes />
-						<span>421</span>
-					</div>
-					<div className="flex items-center gap-1 text-red-100">
-						<Icons.Dislikes />
-						<span>16</span>
-					</div>
-				</div>
+
+				{store?.owner.overallRating && (
+					<RatingRow.Root
+						asChild
+						rating={store.owner.overallRating}
+					>
+						<RatingRow.Thumbs>
+							<RatingRow.Likes />
+							<RatingRow.Dislikes />
+						</RatingRow.Thumbs>
+					</RatingRow.Root>
+				)}
 			</div>
 		</div>
 	)

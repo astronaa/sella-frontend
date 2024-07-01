@@ -655,6 +655,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/contract/abi": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ContractController_getAbi"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/product/{id}/report": {
         parameters: {
             query?: never;
@@ -855,7 +871,7 @@ export interface components {
         StoreOwnerDto: {
             username: string;
             /** Format: uuid */
-            profilePictureId?: string;
+            profilePictureId: string | null;
             rating: components["schemas"]["RatingDto"];
         };
         ProductDetailsDTO: {
@@ -908,15 +924,15 @@ export interface components {
             hasPreview?: boolean;
             tagNames?: string[];
             holdPeriod?: number;
-            /** @default false */
-            isFrozen: boolean;
+            isFrozen?: boolean;
         };
         ProductAddImageResultDto: {
             imageIds: string[];
         };
         CommentUserDto: {
             username: string;
-            profilePictureId?: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
         };
         ReviewDto: {
             /** Format: uuid */
@@ -1000,7 +1016,7 @@ export interface components {
         BaseUserDto: {
             username: string;
             /** Format: uuid */
-            profilePictureId?: string;
+            profilePictureId: string | null;
         };
         SalesInfoDto: {
             id: string;
@@ -2316,6 +2332,21 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
+            };
+        };
+    };
+    ContractController_getAbi: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };
