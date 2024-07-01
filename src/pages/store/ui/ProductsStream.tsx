@@ -18,14 +18,12 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
-import { ProductsInitialData } from "../api";
 
 interface ProductsStreamProps {
 	className?: string,
-	initialData: ProductsInitialData
 }
 
-export function ProductsStream({ initialData, className }: ProductsStreamProps) {
+export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const [page, setPage] = useState(1);
@@ -35,10 +33,9 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 			storeUrl: store.shortName,
 			limit: PRODUCT_ITEMS_PER_PAGE,
 		}),
-		initialData,
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
-	})	
+	})
 
 	const { data: user } = useUserGetQuery();
 	const products = data?.items ?? []
@@ -119,8 +116,8 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 			loading && 'opacity-50'
 		)}>
 			{products.map(p => (
-				<ProductCard.Root 
-					product={p} key={p.id} 
+				<ProductCard.Root
+					product={p} key={p.id}
 					className='w-full mx-auto h-full' asChild
 				>
 					<ProductLink product={p}>
@@ -170,13 +167,16 @@ function ProductsEditTable({ products, loading, children }: ProductsListProps) {
 				{products.map((p, index) => (
 					<FlexTable.Row key={p.id} >
 						<span>{index + 1}</span>
-						<span className='text-white flex gap-[0.5rem] items-center'>
-							<ProductImage 
+						<ProductLink
+							product={p}
+							className='text-white flex gap-[0.5rem] items-center rounded-[0.5rem]'
+						>
+							<ProductImage
 								product={p}
 								className='size-[2rem]'
 							/>
 							{p.name}
-						</span>
+						</ProductLink>
 						<span>
 
 						</span>

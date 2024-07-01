@@ -8,13 +8,8 @@ import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 import { EditMode } from "./edit-mode";
 import { useQuery } from "@tanstack/react-query";
-import { ProductsInitialData } from "../api";
 
-interface HeadingProps {
-	productsInitialData: ProductsInitialData
-}
-
-export function Heading({ productsInitialData }: HeadingProps) {
+export function Heading() {
 	const store = useStoreStrictContext();
 
 	const { data: products } = useQuery({
@@ -22,10 +17,9 @@ export function Heading({ productsInitialData }: HeadingProps) {
 			storeUrl: store.shortName,
 			limit: PRODUCT_ITEMS_PER_PAGE,
 		}),
-		initialData: productsInitialData,
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
-	})	
+	})
 
 	const { data: user } = useUserGetQuery();
 
@@ -51,7 +45,9 @@ export function Heading({ productsInitialData }: HeadingProps) {
 					{store.ownerUsername == user.username ? (
 						<>
 							<ManageDialog />
-							{products.total > 0 && <EditMode.Button />}
+							{products && products.total > 0 && (
+								<EditMode.Button />
+							)}
 						</>
 					) : (
 						<StoreReportFlow storeUrl={store.shortName} />
