@@ -1,5 +1,4 @@
-import { Order } from "~/shared/api/client";
-import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 
@@ -7,11 +6,10 @@ const QUERY_KEY = 'orders'
 
 interface GetOrdersOptions {
 	page: number,
-	limit: number,
-	initialData?: { items: Order[], total: number, totalPrice: number } | undefined
+	limit: number
 }
 
-export const getOrdersOptions = ({ page, limit, initialData }: GetOrdersOptions) =>
+export const getOrdersOptions = ({ page, limit }: GetOrdersOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, page, { limit }],
 		queryFn: async () => {
@@ -21,11 +19,7 @@ export const getOrdersOptions = ({ page, limit, initialData }: GetOrdersOptions)
 				throw error;
 
 			return data;
-		},
-		initialData: initialData ?? { items: [], total: 0, totalPrice: 0 },
-		staleTime: 5000,
-		initialDataUpdatedAt: 0,
-		placeholderData: keepPreviousData
+		}
 	})
 
 export function useGetOrders(args: GetOrdersOptions) {
