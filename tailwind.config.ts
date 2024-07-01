@@ -42,6 +42,7 @@ const config = {
 				dialog: '110',
 				drawer: '110',
 				header: '100',
+				'mobile-menu': '99'
 			},
 			maxWidth: {
 				content: '72.5rem'

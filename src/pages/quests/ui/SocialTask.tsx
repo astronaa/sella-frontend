@@ -7,7 +7,7 @@ export function SocialTask({
 	                           description,
 	                           disabled,
 	                           complete,
-	points
+	                           points
 }: {
 	title: string
 	description: string
@@ -16,7 +16,8 @@ export function SocialTask({
 	points: number
 }) {
 	return (
-		<div className='border border-secondary p-[1rem] rounded-[1.25rem] flex justify-between items-center gap-4'>
+		<div className='border border-secondary p-[1rem] rounded-[1.25rem]
+		flex justify-between items-center gap-4 max-md:flex-col max-md:items-stretch'>
 			<div className='flex flex-col gap-1'>
 				<div
 					className={cn('flex items-center gap-1 text-white font-bold', {
@@ -31,7 +32,8 @@ export function SocialTask({
 			{complete
 				? (
 					<div
-						className='flex items-center text-accent-100 border border-secondary rounded-[0.75rem] px-[1rem] h-[2.375rem]'
+						className='flex items-center text-accent-100 border border-secondary
+						rounded-[0.75rem] px-[1rem] h-[2.375rem] text-center justify-center'
 					>
 						COMPLETE
 					</div>

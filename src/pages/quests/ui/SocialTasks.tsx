@@ -2,7 +2,7 @@ import { SocialTask } from "~/pages/quests/ui/SocialTask";
 
 export function SocialTasks() {
 	return (
-		<div className='grid grid-cols-2 gap-x-[2.5rem] gap-y-3'>
+		<div className='grid grid-cols-2 gap-x-[2.5rem] gap-y-3 max-md:grid-cols-1'>
 			{/* TODO make map */}
 			<SocialTask
 				points={2000}

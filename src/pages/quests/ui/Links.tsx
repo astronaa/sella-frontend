@@ -3,6 +3,13 @@
 import NextLink from "next/link";
 import { cn } from "~/shared/lib/cn";
 import { usePathname } from "next/navigation";
+import { HTMLAttributes, MouseEvent, useLayoutEffect, useRef } from "react";
+
+const scrollOptions: ScrollIntoViewOptions = {
+	behavior: 'smooth',
+	block: 'nearest',
+	inline: 'center'
+}
 
 const tabs = [
 	{ id: '1', label: 'Social tasks', link: '/dashboard/quests/social-tasks' },
@@ -10,15 +17,36 @@ const tabs = [
 	{ id: '3', label: 'Decentralized management', link: '/dashboard/quests/management' },
 ]
 
-export function Links() {
+export function Links({ className }: HTMLAttributes<HTMLDivElement>) {
 	const pathname = usePathname()
+	const linksContainerRef = useRef<HTMLDivElement>(null);
+
+	const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+		if (e.target instanceof HTMLElement) {
+			e.target.scrollIntoView(scrollOptions)
+		}
+	}
+
+	useLayoutEffect(() => {
+		if (!linksContainerRef.current) return
+
+		const activeLink = Array.from(linksContainerRef.current.children).find((el) => {
+			if (el instanceof HTMLElement) {
+				return el.dataset.link === pathname
+			}
+		})
+
+		activeLink?.scrollIntoView(scrollOptions)
+	}, [pathname]);
 
 	return (
-		<div className='border-0 p-0 h-fit'>
+		<div ref={linksContainerRef} className={cn('flex border-0 p-0 h-fit', className)}>
 			{tabs.map((tab) => (
 				<NextLink
+					data-link={tab.link}
+					onClick={handleClick}
 					href={tab.link}
-					className={cn('px-4 py-2 rounded-[0.75rem] text-black-60', {
+					className={cn('px-4 py-2 rounded-[0.75rem] text-black-60 text-nowrap', {
 						'text-white bg-white/[.06] rounded-[0.75rem]': tab.link === pathname
 					})}
 					key={tab.id}

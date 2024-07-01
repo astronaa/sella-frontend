@@ -11,7 +11,7 @@ export function Management() {
 					</div>
 				</div>
 
-				<div className='flex justify-between gap-4'>
+				<div className='flex justify-between gap-4 flex-wrap'>
 					<Card title='Decentralized Management' items={[
 						'Users Can Vote on Dispute Resolution',
 						'Receive Points for Voting',
@@ -30,7 +30,7 @@ export function Management() {
 				</div>
 
 				<div>
-					<PointsButton points={15000}/>
+					<PointsButton className='max-md:w-full' points={15000}/>
 				</div>
 			</div>
 
@@ -42,7 +42,7 @@ export function Management() {
 					</div>
 				</div>
 
-				<div className='flex justify-between gap-4'>
+				<div className='flex justify-between gap-4 flex-wrap'>
 					<Card title='Educate Yourself' items={[
 						'Read our Prohibited Items List',
 						'Study our Terms of Service',
@@ -61,7 +61,7 @@ export function Management() {
 				</div>
 
 				<div>
-					<PointsButton points={15000}/>
+					<PointsButton className='max-md:w-full' points={15000}/>
 				</div>
 			</div>
 		</div>
