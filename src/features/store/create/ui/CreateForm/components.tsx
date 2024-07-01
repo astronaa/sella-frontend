@@ -33,6 +33,7 @@ export function Root({ onActionFulfilled, children }: RootProps) {
 			if (error instanceof FormError) {
 				return error.fields
 			}else if (error instanceof Error){
+				console.log(error)
 				toaster.error({title: 'Error creating Store', description: error.message})
 			}
 		}

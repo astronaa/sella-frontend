@@ -23,6 +23,8 @@ export async function updateStore(store: Store, { previewImage, ...data }: Schem
 	if(error){
 		if (error.statusCode == 400) {
 			throw new FormError(error.message);
+		}else if(error.statusCode === 409){
+			throw new FormError({url: error.message as unknown as string});
 		}
 		throw new Error(error.message as unknown as string);
 	}
