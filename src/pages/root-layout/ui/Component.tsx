@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
 import { TronWalletConnectDialog } from "~/features/tron-wallet";
+import {Toaster} from "~/widgets/toaster";
 
 export function Component({ children }: PropsWithChildren) {
 	return (
@@ -15,10 +16,12 @@ export function Component({ children }: PropsWithChildren) {
 			</div>
 
 			<Footer />
+			<Toaster/>
 
 			<RegisterFlowDialog />
 			<UserProfileSettingsDialog />
 			<TronWalletConnectDialog />
+
 		</>
 	);
 }

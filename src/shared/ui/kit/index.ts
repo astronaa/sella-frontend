@@ -5,6 +5,9 @@ export * as Collapsible from './collapsible';
 export * as FlexTable from './flex-table';
 export * as Select from './select';
 export * as Tabs from './tabs';
-export * as Carousel from './carousel'
-export * as Clipboard from './clipboard'
+export * as Carousel from './carousel';
 export * as Popover from './popover';
+export * as Clipboard from './clipboard'
+export * as Toast from './toast';
+export * as TagsInput from './tags-input';
+

@@ -1,4 +1,4 @@
-import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 
@@ -19,16 +19,11 @@ const getSalesQueryOptions = ({ page, limit }: GetSalesQueryOptions) =>
 				throw error;
 
 			return data;
-		},
-		staleTime: 5000,
-		initialDataUpdatedAt: 0,
-		placeholderData: keepPreviousData
+		}
 	})
 
 export function useGetSales(args: GetSalesQueryOptions) {
-	return useQuery({
-		...getSalesQueryOptions(args)
-	})
+	return useQuery(getSalesQueryOptions(args))
 }
 
 export function invalidateAll() {

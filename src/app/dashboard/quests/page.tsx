@@ -1,5 +1,7 @@
 import { redirect, RedirectType } from "next/navigation";
 
-export default async () => {
+const Redirect = async () => {
 	redirect('/dashboard/quests/social-tasks', RedirectType.replace)
 }
+
+export default Redirect

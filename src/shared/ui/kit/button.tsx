@@ -44,7 +44,8 @@ const styles = tv(
 				outline: [],
 				subtle: [],
 				ghost: ['hocus:bg-white/5'],
-				action: ['bg-black/50 text-white backdrop-blur-sm']
+				action: ['bg-black/50 text-white backdrop-blur-sm'],
+				unstyled: []
 			},
 			size: {
 				xs: 'rounded-full h-[1.25rem] min-w-[1.25rem]',

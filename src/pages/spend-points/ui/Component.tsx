@@ -64,12 +64,12 @@ export async function Component() {
 		<div className='px-4'>
 			<div className='max-w-content m-auto flex flex-col gap-12'>
 
-				<div className='flex justify-between w-full'>
+				<div className='flex justify-between w-full max-md:flex-col max-md:gap-8'>
 					<Heading>
 						Spend Points
 					</Heading>
 
-					<div className='flex items-center gap-6'>
+					<div className='flex items-center gap-6 max-md:self-end'>
 						<div className='flex items-center gap-1 text-accent-100'>
 							<div>8500</div>
 							<Icons.PointsIcon />
@@ -84,7 +84,8 @@ export async function Component() {
 				<div>
 					<div className='font-[600] text-white text-[2rem] mb-4'>Gift Cards</div>
 
-					<div className='grid grid-cols-3 gap-[2.5rem] grid-flow-row auto-rows-[minmax(13.75rem,_2fr)]'>
+					<div className='grid grid-cols-3 gap-[2.5rem] grid-flow-row auto-rows-[minmax(13.75rem,_2fr)]
+					max-md:grid-cols-1'>
 						{gifts.map(({ points, price }, i) => (
 							<GiftCard key={i} points={points} price={price}/>
 						))}
@@ -94,7 +95,8 @@ export async function Component() {
 				<div>
 					<div className='font-bold text-white text-[2rem] mb-4'>Sella Tokens</div>
 
-					<div className='grid grid-cols-3 gap-[2.5rem] grid-flow-row auto-rows-[minmax(13.75rem,_2fr)]'>
+					<div className='grid grid-cols-3 gap-[2.5rem] grid-flow-row auto-rows-[minmax(13.75rem,_2fr)]
+					max-md:grid-cols-1'>
 						{tokens.map(({ points, price }, i) => (
 							<TokenCard key={i} points={points} price={price}/>
 						))}

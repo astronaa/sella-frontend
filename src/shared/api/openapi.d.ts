@@ -591,7 +591,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/my-orders": {
+    "/api/my-orders": {
         parameters: {
             query?: never;
             header?: never;
@@ -607,7 +607,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/my-sales": {
+    "/api/my-sales": {
         parameters: {
             query?: never;
             header?: never;

@@ -67,7 +67,7 @@ export function Content({ className, ...props }: HTMLArkProps<'div'>) {
 }
 
 export function Title({ className, children, ...props }: HTMLArkProps<'div'>) {
-	const { name: title, shortName: name, isVerified } = useStoreStrictContext();
+	const { name: title, url: name, isVerified } = useStoreStrictContext();
 
 	return (
 		<ark.div

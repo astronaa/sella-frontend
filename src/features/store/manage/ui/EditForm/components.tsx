@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader,
+	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl
 } from "~/shared/ui/validation-inputs";
@@ -15,6 +15,7 @@ import { cn } from "~/shared/lib/cn";
 import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
+import {toaster} from "~/shared/ui/toaster";
 
 const validate = zodValidate(schema);
 
@@ -35,8 +36,11 @@ export function Root({ onActionFulfilled, children, store }: RootProps) {
 			onActionFulfilled?.(result);
 		}
 		catch (error) {
-			if (error instanceof FormError)
-				return error.errorMap
+			if (error instanceof FormError) {
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.create({type: 'error', title: 'Error updating Store', description: error.message})
+			}
 		}
 	}
 
@@ -76,7 +80,7 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					<VTextControl.ErrorText />
 				</VTextControl.Root>
 
-				<VTextControl.Root className='w-full' name='shortName'>
+				<VTextControl.Root className='w-full' name='url'>
 					<VTextControl.Label>Store URL</VTextControl.Label>
 					<StoreInputAddon>
 						{({ Component: Addon, inputClassName }) => (
@@ -97,6 +101,12 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				/>
 				<VTextAreaControl.ErrorText />
 			</VTextAreaControl.Root>
+
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
 		</div>
 	);
 }

@@ -8,7 +8,7 @@ import { PayloadCreate, schemaCreate } from "./schemas";
 export function createOrdersClient() {
 	return {
 		async getAll(pagination: PayloadPagination = { page: 1, limit: 10 }) {
-			const { data, error } = await authFetchClient.GET('/api/orders/my-orders', {
+			const { data, error } = await authFetchClient.GET('/api/my-orders', {
 				params: {
 					query: mapPaginationPayloadToDto(pagination)
 				},

@@ -18,6 +18,7 @@ import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
 import { TronWalletControl } from './TronWalletControl';
 import { TelegramControl } from './TelegramControl';
 import { EmailControl } from './EmailControl';
+import {toaster} from "~/shared/ui/toaster";
 
 export const schema = z.object({
 	username: apiClient.auth.schemaUsername,
@@ -76,15 +77,23 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
-				if (error)
-					throw new FormError({ username: String(error.message) });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
-				if (error)
-					throw new FormError({ email: String(error.message) });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 
 				openVerifyDialog();
 
@@ -103,8 +112,11 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		catch (error) {
 			onActionRejected?.();
 
-			if (error instanceof FormError)
-				return error.errorMap
+			if (error instanceof FormError){
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.create({type: 'error', title: 'Error updating Settings', description: error.message})
+			}
 		}
 	};
 

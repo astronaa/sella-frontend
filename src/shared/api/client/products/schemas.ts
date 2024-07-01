@@ -5,7 +5,7 @@ export const schemaCreate = z.object({
 	price: z.coerce.number({ message: 'Price is required' }).min(1, 'Min price is 1 USDT'),
 	shortDescription: z.string({ required_error: 'Description is required' }),
 	description: z.string().optional(),
-	tagNames: z.array(z.string())
+	tagNames: z.array(z.string()),
 })
 
 export type PayloadCreate = z.infer<typeof schemaCreate>
@@ -13,7 +13,8 @@ export type PayloadCreate = z.infer<typeof schemaCreate>
 export const schemaUpdate = schemaCreate.partial().merge(
 	z.object({ 
 		imageIds: z.array(z.string()).optional(),
-		hasPreview: z.coerce.boolean().optional()
+		hasPreview: z.coerce.boolean().optional(),
+		isFrozen: z.coerce.boolean().optional(),
 	})
 )
 

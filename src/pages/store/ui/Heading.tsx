@@ -14,7 +14,7 @@ export function Heading() {
 
 	const { data: products } = useQuery({
 		...productQueries.getFromStoreOptions({
-			storeUrl: store.shortName,
+			storeUrl: store.url,
 			limit: PRODUCT_ITEMS_PER_PAGE,
 		}),
 		staleTime: 5000,
@@ -50,7 +50,7 @@ export function Heading() {
 							)}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.shortName} />
+						<StoreReportFlow storeUrl={store.url} />
 					)}
 				</div>
 			)}

@@ -12,7 +12,7 @@ import { salesQueries } from "~/entities/sale";
 export function SalesPage() {
 	const [page, setPage] = useState(1)
 
-	const { data, isLoading } = salesQueries.useGetSales({ page, limit: ITEMS_PER_PAGE })
+	const { data } = salesQueries.useGetSales({ page, limit: ITEMS_PER_PAGE })
 
 	const total = data?.total ?? 0;
 	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
@@ -27,7 +27,7 @@ export function SalesPage() {
 				<div className='flex gap-[1.5rem] items-center \
 					max-sm:flex-col max-sm:items-start max-sm:w-full max-sm:gap-[0.25rem]'
 				>
-					{data?.totalPrice && (
+					{data && (
 						<p className='text-black-40 me-[1.5rem]'>
 							Total: <span className='text-white'>
 								{data?.totalPrice ?? 0} USDT
@@ -40,7 +40,7 @@ export function SalesPage() {
 
 			<SalesTable 
 				data={data} 
-				loading={isLoading} 
+				loading={!data} 
 				startIndex={(page - 1) * ITEMS_PER_PAGE}
 			/>
 

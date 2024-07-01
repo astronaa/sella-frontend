@@ -110,7 +110,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 			{createdStore && (
 				<ProductCreateDialog
 					{...props}
-					storeUrl={createdStore.shortName}
+					storeUrl={createdStore.url}
 					title='First Item Upload'
 					description='Attach an image that best represents your item. Name your listing, craft a
 						catchy description, and set a price. Remember, you can change any details later on.'

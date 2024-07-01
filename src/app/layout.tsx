@@ -10,6 +10,7 @@ import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { Providers } from "./_providers";
 import { PageRootLayout } from "~/pages/root-layout";
 
+
 const fontVariables = [fontInter.variable, fontManrope.variable];
 
 export const metadata: Metadata = {
