@@ -26,7 +26,7 @@ export function ClipboardInput() {
 											inputClassName,
 											'text-black-40',
 										)}
-										value={data?.refCode}
+										value={data?.refCode ?? ''}
 										readOnly
 									/>
 								</Clipboard.Input>
