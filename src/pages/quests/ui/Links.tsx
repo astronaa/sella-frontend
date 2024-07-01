@@ -5,7 +5,11 @@ import { cn } from "~/shared/lib/cn";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes, MouseEvent, useLayoutEffect, useRef } from "react";
 
-const scrollOptions: ScrollIntoViewOptions = { behavior: 'smooth', block: 'nearest' }
+const scrollOptions: ScrollIntoViewOptions = {
+	behavior: 'smooth',
+	block: 'nearest',
+	inline: 'center'
+}
 
 const tabs = [
 	{ id: '1', label: 'Social tasks', link: '/dashboard/quests/social-tasks' },
@@ -18,18 +22,16 @@ export function Links({ className }: HTMLAttributes<HTMLDivElement>) {
 	const linksContainerRef = useRef<HTMLDivElement>(null);
 
 	const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-		if(e.target instanceof Element) {
+		if (e.target instanceof HTMLElement) {
 			e.target.scrollIntoView(scrollOptions)
 		}
 	}
 
 	useLayoutEffect(() => {
-		if(!linksContainerRef.current) return
-		//@ts-expect-error TS2802: Type HTMLCollection can only be iterated through when using
-		// the --downlevelIteration flag or with a --target of es2015 or higher.
-		const children: Element[] = [...linksContainerRef.current.children]
-		const activeLink = children.find((el) => {
-			if(el instanceof HTMLElement) {
+		if (!linksContainerRef.current) return
+
+		const activeLink = Array.from(linksContainerRef.current.children).find((el) => {
+			if (el instanceof HTMLElement) {
 				return el.dataset.link === pathname
 			}
 		})

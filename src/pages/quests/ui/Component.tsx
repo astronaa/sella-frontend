@@ -64,8 +64,9 @@ export async function Component({ children }: { children: ReactNode }) {
 				<div className='flex flex-col gap-6'>
 					<div className='flex items-center justify-between w-full max-md:flex-col-reverse max-md:gap-4'>
 						<div className='max-md:overflow-x-scroll max-md:overflow-y-hidden max-md:self-start max-md:w-[100vw]
-							max-md:px-[1rem] max-md:mx-[-1rem] scrollbar-hide'>
-							<Links />
+							max-md:mx-[-1rem] scrollbar-hide'
+						>
+							<Links className='px-[1rem] w-max' />
 						</div>
 
 						<div className='flex items-center gap-6 max-md:self-end'>
