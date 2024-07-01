@@ -1,0 +1,15 @@
+.toast__root {
+	height: var(--height);
+	overflow-wrap: anywhere;
+	position: relative;
+	scale: var(--scale);
+	translate: var(--x) var(--y) 0;
+	will-change: translate,opacity,scale;
+	z-index: var(--z-index);
+	--transition-duration: var(--durations-slow);
+	transition-duration: var(--durations-slow);
+	--transition-prop: translate,scale,opacity,height;
+	transition-property: translate,scale,opacity,height;
+	--transition-easing: var(--easings-default);
+	transition-timing-function: var(--easings-default)
+}

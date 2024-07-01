@@ -1,38 +1,28 @@
 'use client';
 
-import { 
-	VImageUploader, 
-	VTextAreaControl, 
-	VTextControl, 
-	VUploader 
+import {
+	VImageUploader, VTagsInput,
+	VTextAreaControl,
+	VTextControl,
+	VUploader
 } from "~/shared/ui/validation-inputs";
 
-import { zodValidate } from "~/shared/lib/zod-final-form";
-import { createProduct, SchemaType, schema } from "../../api";
-import { Product } from "~/shared/api/client"
+import { SchemaType } from "../../api";
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-
-const validate = zodValidate(schema);
+import {ValidationErrors} from "final-form";
 
 export interface RootProps extends PropsWithChildren {
 	storeUrl: string;
-	onActionFulfilled?: (product: Product) => void;
+	onSubmit: (product: SchemaType) => void;
+	validate: (values: SchemaType) => ValidationErrors
 }
 
-export function Root({ storeUrl, onActionFulfilled, children }: RootProps) {
-	const onSubmit = async (values: SchemaType) => {
-		try {
-			const result = await createProduct(storeUrl, values);
-			onActionFulfilled?.(result);
-		}
-		catch { }
-	}
-
+export function Root({ onSubmit, validate, children }: RootProps) {
 	return (
 		<Form
-			onSubmit={onSubmit} 
+			onSubmit={onSubmit}
 			validate={validate}
 		>
 			{() => children}
@@ -40,7 +30,7 @@ export function Root({ storeUrl, onActionFulfilled, children }: RootProps) {
 	)
 }
 
-export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
@@ -68,6 +58,17 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				</div>
 			</div>
 
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
+		</div>
+	);
+}
+export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
+	return (
+		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>
 				<VTextControl.LabelOrError>
 					Product Description
@@ -98,5 +99,5 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				</VUploader.Previews>
 			</VUploader.Root>
 		</div>
-	);
+	)
 }

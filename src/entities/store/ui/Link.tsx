@@ -15,7 +15,7 @@ export function Link({ store: s, className, ...props }: LinkProps) {
 
 	return (
 		<NextLink 
-			href={getPathname(store.shortName)} {...props} 
+			href={getPathname(store.url)} {...props}
 			className={cn('transition hover:bg-white/[.02]', className)}
 		/>
 	);

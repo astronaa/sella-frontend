@@ -5,7 +5,7 @@ export type StoreId = string;
 export interface Store {
 	id: StoreId;
 	name?: string;
-	shortName: string;
+	url: string;
 	isVerified?: boolean;
 	description?: string | null;
 	previewImage?: ImageEntry | null;

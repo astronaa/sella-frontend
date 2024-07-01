@@ -14,14 +14,16 @@ export type SchemaType = z.infer<typeof schema>;
 export async function createStore(values: SchemaType) {
 	const { data, error } = await apiClient.stores.create(values);
 
-	if (error) {
-		if (error.statusCode == 409)
-			throw new FormError({ shortName: String(error.message) });
-		else
-			throw error;
+	if(error){
+		if (error.statusCode == 400) {
+			throw new FormError(error.message as Record<string, string>);
+		}else if(error.statusCode === 409){
+			throw new FormError({url: error.message as unknown as string});
+		}
+		throw new Error(error.message as unknown as string);
 	}
 
-	await apiClient.stores.for(data.shortName).setImage(values.previewImage);
+	await apiClient.stores.for(data.url).setImage(values.previewImage);
 
 	storeQueries.invalidateAll();
 

@@ -1,36 +1,32 @@
 'use client';
 
 import {
-	VImageUploader,
+	VCheckbox,
+	VImageUploader, VTagsInput,
 	VTextAreaControl,
 	VTextControl,
 	VUploader
 } from "~/shared/ui/validation-inputs";
 
-import { zodValidate } from "~/shared/lib/zod-final-form";
-import { manageProduct, SchemaType, schema } from "../../api";
+import { SchemaType } from "../../api";
 import { Product } from "~/shared/api/client"
 import { HTMLAttributes, PropsWithChildren, useMemo } from "react";
-import { Form, useField } from "react-final-form";
+import {Form, useField} from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-import { IconButton } from "~/shared/ui/kit/button";
+import {IconButton} from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
+import {ValidationErrors} from "final-form";
+import {Divider} from "~/shared/ui/kit/divider";
 
-const validate = zodValidate(schema);
 
 export interface RootProps extends PropsWithChildren {
 	product: Product;
-	onActionFulfilled?: (product: Product) => void;
+	onSubmit: (product: SchemaType) => void;
+	validate: (values: SchemaType) => ValidationErrors
 }
 
-export function Root({ product, onActionFulfilled, children }: RootProps) {
-	const onSubmit = async (values: SchemaType) => {
-		try {
-			const result = await manageProduct(product.id, values);
-			onActionFulfilled?.(result);
-		}
-		catch { }
-	}
+export function Root({ product, onSubmit, validate, children }: RootProps) {
+
 
 	const initialValues = useMemo(() => {
 		const {
@@ -38,7 +34,6 @@ export function Root({ product, onActionFulfilled, children }: RootProps) {
 			galleryImages: galleryImagesUrls,
 			...rest
 		} = product;
-
 		return { previewImageUrl, galleryImagesUrls, ...rest }
 	}, [product]);
 
@@ -52,9 +47,8 @@ export function Root({ product, onActionFulfilled, children }: RootProps) {
 	)
 }
 
-export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const { input: { value: previewImageUrl } } = useField<string>('previewImageUrl');
-
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<div className='flex gap-[2rem] w-full max-md:flex-col'>
@@ -63,12 +57,12 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
 					initialImageSrc={previewImageUrl ?? undefined}
 				/>
-				<div className='flex flex-col justify-between w-full max-md:gap-[2rem]'>
+				<div className='flex flex-col justify-between max-md:gap-[1rem]'>
 					<VTextControl.Root className='w-full' name='name'>
 						<VTextControl.LabelOrError>
 							Product Name
 						</VTextControl.LabelOrError>
-						<VTextControl.Input />
+						<VTextControl.Input placeholder='Enter product name' />
 					</VTextControl.Root>
 
 					<VTextControl.Root className='w-full' name='price'>
@@ -83,6 +77,24 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				</div>
 			</div>
 
+			<VTextControl.Root name="tagNames">
+				<VTextControl.Label>Categories</VTextControl.Label>
+				<VTagsInput placeholder="Add category"/>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
+
+			<Divider/>
+			<VTextControl.Root name="isFrozen" className="flex-row items-center justify-between">
+				<VTextControl.Label>Out of stock</VTextControl.Label>
+				<VCheckbox>Hide from search and store</VCheckbox>
+				<VTextAreaControl.ErrorText/>
+			</VTextControl.Root>
+		</div>
+	);
+}
+export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
+	return (
+		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>
 				<VTextControl.LabelOrError>
 					Product Description
@@ -100,11 +112,10 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				/>
 			</VTextAreaControl.Root>
 
-			<ImagesUploader />
+			<ImagesUploader/>
 		</div>
-	);
+	)
 }
-
 function ImagesUploader() {
 	const {
 		input: { value: images, onChange: setImages }
@@ -139,5 +150,5 @@ function ImagesUploader() {
 				<VUploader.AddButton />
 			</VUploader.Previews>
 		</VUploader.Root>
-	);
+	)
 }
