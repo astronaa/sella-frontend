@@ -18,16 +18,16 @@ export async function Component({ children }: { children: ReactNode }) {
 				<div className='border border-secondary p-[1rem] rounded-[1.25rem] flex gap-4 items-center justify-between max-md:flex-col'>
 					<ClipboardInput/>
 
-					<div className='flex gap-8 font-[500] max-md:gap-2 max-md:text-sm'>
-						<div>
+					<div className='flex gap-8 font-[500] max-md:gap-4 max-md:text-sm'>
+						<div className='max-md:flex max-md:flex-col max-md:items-center'>
 							<span className='text-black-40'>Friends Referred:</span>{' '}
 							<span className='text-white'>5</span>
 						</div>
-						<div>
+						<div className='max-md:flex max-md:flex-col max-md:items-center'>
 							<span className='text-black-40'>Referral Points:</span>{' '}
 							<span className='text-white'>650</span>
 						</div>
-						<div>
+						<div className='max-md:flex max-md:flex-col max-md:items-center'>
 							<span className='text-black-40'>Points Earned:</span>{' '}
 							<span className='text-white'>17500</span>
 						</div>
@@ -63,7 +63,7 @@ export async function Component({ children }: { children: ReactNode }) {
 
 				<div className='flex flex-col gap-6'>
 					<div className='flex items-center justify-between w-full max-md:flex-col-reverse max-md:gap-4'>
-						<div className='max-md:overflow-x-scroll max-md:self-start max-md:w-[calc(100vw-2rem)] scrollbar-hide'>
+						<div className='max-md:overflow-x-scroll max-md:self-start max-md:w-[100vw] max-md:mx-[-1rem] scrollbar-hide'>
 							<Links />
 						</div>
 
