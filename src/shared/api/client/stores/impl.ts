@@ -1,16 +1,18 @@
 import {
-	ANOTHER_REASON_ID,
 	PayloadCreate,
-	PayloadReport,
 	PayloadUpdate,
-	reportReasons,
 	schemaCreate,
-	schemaReport,
 	schemaUpdate
 } from "./schemas";
 
 import { authFetchClient } from "../fetch-client";
-import { PayloadPagination } from "../shared/schemas";
+import {
+	PayloadPagination,
+	schemaReport,
+	reportReasons,
+	PayloadReport,
+	ANOTHER_REASON_ID
+} from "../shared/schemas";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "./mappers";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
@@ -74,7 +76,7 @@ export function createStoresClient() {
 			});
 
 			return data ? {
-				data: mapDtoToStore(data), 
+				data: mapDtoToStore(data),
 				error, response
 			} : {
 				data, error,

@@ -6,6 +6,7 @@ import { ProductId } from "~/shared/api/client"
 import { fetchProduct, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
+import { ReportFlow } from "~/features/product/report/ui/ReportFlow";
 
 export async function Component({ productId }: { productId: ProductId }) {
 	const product = await fetchProduct(productId);
@@ -22,10 +23,11 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<TwitterWidget />
+						<ReportFlow productId={productId}/>
 					</div>
 				</div>
 
-				<ReviewsStream 
+				<ReviewsStream
 					className='w-full max-w-[47.5rem] max-xl:max-w-full'
 					initialData={reviews}
 				/>

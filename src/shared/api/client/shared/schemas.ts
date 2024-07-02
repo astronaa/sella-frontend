@@ -17,4 +17,31 @@ export const schemaPaginationPayload = z.object({
 
 export type PayloadPagination = z.infer<typeof schemaPaginationPayload>;
 
+export const ANOTHER_REASON_ID = 'SomethingElse' as const;
+
 export const schemaPaymentMethods = z.enum(paymentMethodTypes)
+
+export const reportReasons = [
+	"Spam",
+	"Nudity",
+	"Scam",
+	"Illegal",
+	"Violence",
+	"HateSpeech",
+	ANOTHER_REASON_ID
+] as const;
+
+export const schemaReport = z.object({
+	description: z.string().optional(),
+	reasons: z.array(z.enum(reportReasons)).nonempty({ message: 'Reason required' })
+}).superRefine(({ description, reasons }, ctx) => {
+	if (reasons.includes(ANOTHER_REASON_ID) && !description) {
+		return ctx.addIssue({
+			code: z.ZodIssueCode.custom,
+			message: 'Description required',
+			path: ['description'],
+		});
+	}
+});
+
+export type PayloadReport = z.infer<typeof schemaReport>
