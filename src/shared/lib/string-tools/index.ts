@@ -16,3 +16,7 @@ export function truncateStrFromMiddle(
 		str.substring(str.length - backCharsNumber)
 	);
 }
+
+export function isAddressString(str: unknown): str is `0x${string}` {
+	return typeof str == 'string' && str.startsWith('0x');
+}

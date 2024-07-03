@@ -25,7 +25,7 @@ export const mapDtoToProduct = (obj:
 		id: obj.id,
 		name: obj.name,
 		price: 'price' in obj ? Number(obj.price) : undefined,
-		description: 'description' in obj ? obj.description : null,
+		description: 'description' in obj ? (obj.description ?? null) : undefined,
 		shortDescription: 'shortDescription' in obj ? obj.shortDescription : undefined,
 		hasPreview: obj.hasPreview,
 		imageIds: obj.imageIds,
@@ -38,7 +38,6 @@ export const mapDtoToProduct = (obj:
 		store: 'store' in obj ? {
 			...mapDtoToStore(obj.store),
 			owner: {
-				// @ts-expect-error expecting openapi changes
 				...mapDtoToUser(obj.storeOwner),
 				overallRating: mapDtoToRating(obj.storeOwner.rating)
 			}

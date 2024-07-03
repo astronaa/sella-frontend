@@ -1,8 +1,9 @@
 'use client';
 
 import { PropsWithChildren, useEffect, useState } from "react";
-import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { Adapter } from "@tronweb3/tronwallet-abstract-adapter";
+import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
+import { invariant } from "../lib/asserts";
 
 export function TronWalletProvider({ children }: PropsWithChildren) {
 	const [adapters, setAdapters] = useState<Adapter<string>[]>([]);
@@ -38,3 +39,6 @@ export function TronWalletProvider({ children }: PropsWithChildren) {
 		</WalletProvider>
 	);
 }
+
+export const TRONGRID_API_KEY = process.env.NEXT_PUBLIC_TRONGRID_API_KEY!;
+invariant(TRONGRID_API_KEY, 'NEXT_PUBLIC_TRONGRID_API_KEY not defined');

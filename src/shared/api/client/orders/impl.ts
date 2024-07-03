@@ -27,10 +27,15 @@ export function createOrdersClient() {
 		},
 
 		async create(payload: PayloadCreate) {
-			return await authFetchClient.POST('/api/orders', {
-				// @ts-expect-error expecting openapi changes
+			const { data, error } = await authFetchClient.POST('/api/orders', {
 				body: payload
 			});
+
+			return data ? {
+				data: mapDtoToOrder(data), error
+			} : {
+				data, error
+			}
 		},
 
 		for: (orderId: OrderId) => ({

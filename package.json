@@ -10,7 +10,8 @@
     "check:types": "tsc --pretty --noEmit",
     "ui": "park-ui",
     "prepare": "husky",
-    "openapi": "node gen-openapi.mjs"
+    "openapi": "node gen-openapi.mjs",
+    "contract-abi": "node fetch-escrow-contract.mjs"
   },
   "dependencies": {
     "@ark-ui/react": "^3.3.0",

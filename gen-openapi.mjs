@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import openapiTS, { astToString } from "openapi-typescript";
-import env from '@next/env'
+import env from '@next/env';
 import eslint from 'eslint';
 
 const TYPES_OUTPUT_PATH = './src/shared/api/openapi.d.ts';
