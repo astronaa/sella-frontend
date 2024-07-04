@@ -30,7 +30,7 @@ export function Heading({ productsInitialData }: HeadingProps) {
 	const { data: user } = useUserGetQuery();
 
 	return (
-		<div className='flex mb-[4.5rem] items-end w-full gap-[1rem] justify-between \
+		<div className='flex mb-[4rem] items-end w-full gap-[1rem] justify-between \
 			max-lg:mb-[3rem] max-lg:flex-col max-lg:items-start'
 		>
 			<StoreCard.Root

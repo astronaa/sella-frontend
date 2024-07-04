@@ -55,6 +55,7 @@ export function BaseCard({
 					</Skeleton>
 				) : (
 					<Select.Root
+						variant="noBorder"
 						items={data}
 						value={[value.block]}
 						// @ts-expect-error broken CollectionItem types in park-ui

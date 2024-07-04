@@ -19,6 +19,7 @@ import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
 import { ProductsInitialData } from "../api";
+import ProductsHeader from "~/pages/store/ui/ProductsHeader";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -86,10 +87,13 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 					</div>
 				</BleedingContainer>
 			) : (
-				<ProductsGrid
-					products={products}
-					loading={isFetching}
-				/>
+				<div className="flex flex-col">
+					<ProductsHeader productsCount={products.length}/>
+					<ProductsGrid
+						products={products}
+						loading={isFetching}
+					/>
+				</div>
 			)}
 
 			{total > PRODUCT_ITEMS_PER_PAGE && (
