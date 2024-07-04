@@ -1,6 +1,6 @@
 'use client'
 
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useRef } from "react";
 import { ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 import { Input } from "~/shared/ui/kit/input";
@@ -22,7 +22,22 @@ type SchemaType = z.infer<typeof schema>;
 const validator = zodValidate(schema);
 
 export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
-	const { sendMessage } = useChatSocketForProduct(product.id);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const { sendMessage } = useChatSocketForProduct(product.id, {
+		onNewMessage: () => {
+			setTimeout(() => {
+				const container = containerRef.current;
+				if (!container)
+					return;
+
+				container.scrollTo({
+					behavior: 'smooth',
+					top: container.scrollHeight
+				})
+			}, 100);
+		}
+	});
 
 	const onSubmit = (values: SchemaType, form: FormApi<SchemaType>) => {
 		sendMessage(values.message);
@@ -45,6 +60,7 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 
 			<ChatMessagesStream
 				product={product}
+				containerRef={containerRef}
 				className='flex-grow overflow-y-auto pt-[1rem]'
 			/>
 
@@ -53,8 +69,8 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 				onSubmit={onSubmit}
 				subscription={{}}
 			>
-				{() => (
-					<div className='flex gap-[1rem] w-full'>
+				{({ handleSubmit }) => (
+					<form className='flex gap-[1rem] w-full' onSubmit={handleSubmit}>
 						<Field name='message'>
 							{props => (
 								<Input
@@ -68,7 +84,7 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 						<VSubmitButton className='rounded-[1.25rem] px-[1.5rem]'>
 							Send
 						</VSubmitButton>
-					</div>
+					</form>
 				)}
 			</Form>
 		</div>

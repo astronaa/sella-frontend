@@ -9,7 +9,8 @@ interface UseSocketIoArgs {
 	accessToken?: string,
 	onConnect?: (socket: Socket) => void,
 	onDisconnect?: (socket: Socket) => void,
-	onCreated?: (socket: Socket) => void
+	onCreated?: (socket: Socket) => void,
+	onDestroyed?: (socket: Socket) => void,
 }
 
 export function useSocketIo({ uri, accessToken, ...args }: UseSocketIoArgs) {
@@ -18,6 +19,7 @@ export function useSocketIo({ uri, accessToken, ...args }: UseSocketIoArgs) {
 	const onConnect = useCallbackRef(args.onConnect);
 	const onDisconnect = useCallbackRef(args.onDisconnect);
 	const onCreated = useCallbackRef(args.onCreated);
+	const onDestroyed = useCallbackRef(args.onDestroyed);
 
 	useEffect(() => {
 		if (!accessToken)
@@ -43,9 +45,11 @@ export function useSocketIo({ uri, accessToken, ...args }: UseSocketIoArgs) {
 			socket.off('disconnect', onDisconnectHandler);
 			socket.close();
 
+			onDestroyed(socket);
+
 			socketRef.current = undefined;
 		}
-	}, [socketRef, onConnect, onDisconnect, onCreated, uri, accessToken]);
+	}, [socketRef, onConnect, onDisconnect, onCreated, onDestroyed, uri, accessToken]);
 
 	return {
 		socketRef

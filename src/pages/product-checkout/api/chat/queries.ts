@@ -1,5 +1,5 @@
-import { infiniteQueryOptions, queryOptions, skipToken, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { ChatId, ProductId, apiClient } from "~/shared/api/client";
+import { infiniteQueryOptions, queryOptions, skipToken, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 export const getChatForProductOptions = (productId: ProductId) =>
 	queryOptions({
