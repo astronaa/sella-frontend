@@ -34,6 +34,7 @@ import Route from '../../assets/icons/route.svg';
 import Percent from '../../assets/icons/percent.svg';
 import Lightning from '../../assets/icons/lightning.svg';
 import Link from '../../assets/icons/link.svg';
+import LinkExternal from '../../assets/icons/link-external.svg';
 import Coins from '../../assets/icons/coins.svg';
 import Refresh01 from '../../assets/icons/refresh01.svg';
 import Gift from '../../assets/icons/gift.svg';
@@ -79,6 +80,7 @@ export const Icons = {
 	Percent,
 	Lightning,
 	Link,
+	LinkExternal,
 	Coins,
 	Refresh01,
 	Gift,
