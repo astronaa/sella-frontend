@@ -30,10 +30,10 @@ export const getChatMessagesOptions = ({
 	infiniteQueryOptions({
 		enabled: !!chatId,
 		queryKey: ['chat-messages', chatId, { limit }],
-		queryFn: chatId ? (async () => {
+		queryFn: chatId ? (async ({ pageParam }) => {
 			const { data, error } = await apiClient.chats
 				.for(chatId)
-				.getMessages()
+				.getMessages({ limit, page: pageParam })
 
 			if (error)
 				throw error;
@@ -43,7 +43,11 @@ export const getChatMessagesOptions = ({
 		initialPageParam: initialPage,
 		getNextPageParam: (lastPage, pages, lastPageParam) =>
 			(lastPageParam * limit < lastPage.total) ? (lastPageParam + 1) : null,
-		staleTime: Infinity
+		staleTime: Infinity,
+		select: (data) => ({
+			pages: [...data.pages].reverse(),
+			pageParams: [...data.pageParams].reverse(),
+		}),
 	})
 
 interface UseGetChatMessagesForProductOptions {
@@ -61,7 +65,7 @@ export function useGetChatMessagesForProduct(
 
 	return useInfiniteQuery(
 		getChatMessagesOptions({
-			chatId: chatQuery.data?.chat.id ?? null, 
+			chatId: chatQuery.data?.chat.id ?? null,
 			limit
 		})
 	)

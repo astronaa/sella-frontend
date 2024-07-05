@@ -1,6 +1,6 @@
 'use client'
 
-import { HTMLAttributes, useRef } from "react";
+import { HTMLAttributes, UIEventHandler, useRef } from "react";
 import { ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 import { Input } from "~/shared/ui/kit/input";
@@ -22,13 +22,14 @@ type SchemaType = z.infer<typeof schema>;
 const validator = zodValidate(schema);
 
 export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLDivElement> & ProductProp) {
+	const autoscrollEnabledRef = useRef(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const { sendMessage } = useChatSocketForProduct(product.id, {
 		onNewMessage: () => {
 			setTimeout(() => {
 				const container = containerRef.current;
-				if (!container)
+				if (!container || !autoscrollEnabledRef.current)
 					return;
 
 				container.scrollTo({
@@ -38,6 +39,11 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 			}, 100);
 		}
 	});
+
+	const onMessagesStreamScroll: UIEventHandler<HTMLDivElement> = event => {
+		const container = event.currentTarget;
+		autoscrollEnabledRef.current = container.scrollTop > -300;
+	}
 
 	const onSubmit = (values: SchemaType, form: FormApi<SchemaType>) => {
 		sendMessage(values.message);
@@ -62,6 +68,8 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 				product={product}
 				containerRef={containerRef}
 				className='flex-grow overflow-y-auto pt-[1rem]'
+				onScroll={onMessagesStreamScroll}
+				style={{ scrollbarWidth: 'thin' }}
 			/>
 
 			<Form
