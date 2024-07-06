@@ -2,20 +2,24 @@
 
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn";
-import { truncateStrFromMiddle } from "~/shared/lib/truncate";
-import { Icons } from "~/shared/ui/icons";
-import { IconButton } from "~/shared/ui/kit/button";
-import { NavIconButton } from "./NavIconButton";
+import { truncateStrFromMiddle } from "~/shared/lib/string-tools";
 import { useUserGetQuery } from "~/entities/user";
-import { useAccount } from "wagmi";
+import { useBalance } from "wagmi";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
-import { useUserProfileSettingsDialog } from "~/shared/model/user-profile";
+import { usePathname } from "next/navigation";
+import { SlotAuthorizedNavButtons } from "../slots";
 
-export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+type Props = HTMLAttributes<HTMLDivElement> & {
+	address: `0x${string}`
+}
+
+export function AuthorizedBar({ className, address, ...props }: Props) {
+	const pathname = usePathname()
 	const { data: user } = useUserGetQuery();
-	const { address } = useAccount();
 	const { openAccountModal } = useAccountModal();
-	const { open, setOpen } = useUserProfileSettingsDialog();
+	const { data: balance } = useBalance({ address })
+
+	const isQuestsRoute = pathname?.includes('/quests')
 
 	return (
 		<div {...props}
@@ -34,31 +38,23 @@ export function AuthorizedBar({ className, ...props }: HTMLAttributes<HTMLDivEle
 					<span className='truncate max-w-full'>
 						{user?.username ?? 'unnamed'}
 					</span>
-					<span className='text-black-40'>
-						{address && truncateStrFromMiddle(address)}
-					</span>
+
+					{isQuestsRoute && balance
+						? (
+							<span className='text-accent-100 text-nowrap'>
+								{`${balance.decimals} ${balance.symbol}`}
+							</span>
+						) : (
+							<span className='text-black-40'>
+								{address && truncateStrFromMiddle(address)}
+							</span>
+						)
+					}
 				</button>
 			)}
 
 			<div className='flex gap-[0.75rem] max-lg:[&>*]:w-full max-lg:[&>*]:h-[3.4375rem]'>
-				<NavIconButton
-					href='/dashboard/sales'
-					activeOnHrefs={['/dashboard/orders']}
-				>
-					<Icons.Package />
-				</NavIconButton>
-
-				<NavIconButton href='/dashboard' end>
-					<Icons.Building />
-				</NavIconButton>
-
-				<IconButton
-					className='text-accent-100'
-					colorPalette='gray' size='sm'
-					active={open} onClick={() => setOpen(true)}
-				>
-					<Icons.Settings />
-				</IconButton>
+				<SlotAuthorizedNavButtons.Renderer />
 			</div>
 		</div>
 	);

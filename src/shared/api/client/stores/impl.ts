@@ -67,7 +67,7 @@ export function createStoresClient() {
 			const { data, error, response } = await authFetchClient.POST('/api/stores', {
 				body: {
 					name: payload.name,
-					url: payload.shortName,
+					url: payload.url,
 					description: payload.description ?? undefined,
 					tagNames: payload.tagNames
 				}
@@ -119,7 +119,7 @@ export function createStoresClient() {
 					body: {
 						name: payload.name,
 						description: payload.description ?? undefined,
-						url: payload.shortName,
+						url: payload.url,
 						// @ts-expect-error expecting openapi changes
 						tagNames: payload.tagNames
 					},

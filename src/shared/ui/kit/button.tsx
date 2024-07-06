@@ -21,7 +21,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
 
 Button.displayName = 'Button'
 
-export const IconButton = forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => (
+export type IconButtonProps = ButtonProps;
+
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({ className, ...props }, ref) => (
 	<Button ref={ref} {...props} className={cn('px-0 border border-secondary', className)} />
 ));
 
@@ -42,7 +44,8 @@ const styles = tv(
 				outline: [],
 				subtle: [],
 				ghost: ['hocus:bg-white/5'],
-				action: ['bg-black/50 text-white backdrop-blur-sm']
+				action: ['bg-black/50 text-white backdrop-blur-sm'],
+				unstyled: []
 			},
 			size: {
 				xs: 'rounded-full h-[1.25rem] min-w-[1.25rem]',
@@ -54,6 +57,7 @@ const styles = tv(
 			colorPalette: {
 				accent: [],
 				gray: [],
+				lightgray: [],
 				red: [],
 				green: [],
 				social: []
@@ -76,6 +80,13 @@ const styles = tv(
 					'hocus:bg-white/[.10]',
 					'data-[selected]:bg-accent-100 data-[selected]:hocus:bg-accent-100/80',
 					'data-[selected]:text-black-100'
+				]
+			},
+			{
+				colorPalette: 'lightgray',
+				variant: 'solid',
+				className: [
+					'bg-black-60 text-black disabled:opacity-100',
 				]
 			},
 			{

@@ -8,12 +8,13 @@ export interface InputProps extends InputVariantProps, Omit<HTMLArkProps<'input'
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-	const { size, className, variant, placeholder = '', error = false, ...rest } = props
+	const { size, className, variant, placeholder = '', error = false, defaultValue, ...rest } = props
 
 	return (
 		<ark.input
 			className={styles({ size, className, variant })}
 			placeholder={placeholder}
+			defaultValue={props.readOnly ? undefined : defaultValue}
 			data-error={error ? true : undefined}
 			ref={ref} {...rest}
 		/>
@@ -48,9 +49,9 @@ const styles = tv(
 		base: [
 			'text-white outline-none transition leading-[normal] placeholder-black-40 truncate bg-transparent'
 		],
-		defaultVariants: { 
-			variant: 'filled', 
-			size: 'md' 
+		defaultVariants: {
+			variant: 'filled',
+			size: 'md'
 		},
 		variants: {
 			variant: {
@@ -78,5 +79,14 @@ const styles = tv(
 export function InputGroup({ className, ...props }: HTMLArkProps<'div'>) {
 	return (
 		<ark.div {...props} className={cn('relative', className)} />
+	);
+}
+
+export function InputAddon({ className, ...props }: HTMLArkProps<'span'>) {
+	return (
+		<ark.span
+			{...props}
+			className={cn('flex items-center absolute h-full top-0', className)}
+		/>
 	);
 }

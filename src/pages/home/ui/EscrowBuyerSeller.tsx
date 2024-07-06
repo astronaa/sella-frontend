@@ -1,5 +1,5 @@
 import { Button } from "~/shared/ui/kit/button";
-import { Background } from "./SectionBackground";
+import { Background } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { Heading } from "~/shared/ui/kit/heading";

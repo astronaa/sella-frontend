@@ -12,7 +12,7 @@ import { CreateStoreSuccessDialog } from './CreateStoreSuccessDialog';
 import { Store } from "~/shared/api/client"
 import { ProductCreateDialog } from '~/features/product/create';
 import { AllSetDialog } from './AllSetDialog';
-import { useRegisterFlow, useRegisterFlowWalletGuard } from '~/shared/model/register-flow';
+import { useRegisterFlow, useRegisterFlowWalletGuard } from '../model/flow';
 
 export function FlowDialog(props: Dialog.RootProps) {
 	const open = useRegisterFlow(s => s.open);
@@ -110,7 +110,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 			{createdStore && (
 				<ProductCreateDialog
 					{...props}
-					storeUrl={createdStore.shortName}
+					storeUrl={createdStore.url}
 					title='First Item Upload'
 					description='Attach an image that best represents your item. Name your listing, craft a
 						catchy description, and set a price. Remember, you can change any details later on.'

@@ -13,6 +13,7 @@ export * from './users/model';
 export * from './chats/model';
 export * from './chats/mappers';
 
+export * from './escrow/contract-abi'
 export * from './shared/models';
 export * from './shared/schemas';
 export * from './shared/mappers';

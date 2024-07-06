@@ -3,6 +3,7 @@ import { ProductId } from "~/shared/api/client"
 import { apiClient } from "~/shared/api/client";
 import { mapMediaUrlToId } from "~/shared/api/client"
 import { productQueries } from "~/entities/product";
+import {FormError} from "~/shared/lib/errors";
 
 export const schema = z.object({
 	name: z.string({ required_error: 'Name is required' }).min(3, 'Min length is 3'),
@@ -11,7 +12,10 @@ export const schema = z.object({
 	description: z.string().optional().nullable(),
 	previewImage: z.instanceof(File).optional().nullable(),
 	galleryImages: z.array(z.instanceof(File)).optional(),
-	galleryImagesUrls: z.array(z.string())
+	galleryImagesUrls: z.array(z.string()),
+	hasPreview: z.boolean(),
+	isFrozen: z.boolean(),
+	tagNames: z.array(z.string()).optional().default([])
 });
 
 export type SchemaType = z.infer<typeof schema>
@@ -19,13 +23,19 @@ export type SchemaType = z.infer<typeof schema>
 export async function manageProduct(productId: ProductId, values: SchemaType) {
 	const { data, error } = await apiClient.products.for(productId).update({
 		name: values.name,
-		description: values.description ?? undefined,
+		description: values.description ?? '',
 		price: Number(values.price),
-		shortDescription: values.shortDescription
+		shortDescription: values.shortDescription,
+		isFrozen: values.isFrozen,
+		tagNames: values.tagNames
 	})
 
-	if (error)
-		throw error;
+	if(error){
+		if (error.statusCode == 400) {
+			throw new FormError(error.message as Record<string, string>);
+		}
+		throw new Error(error.message as unknown as string);
+	}
 
 	await apiClient.products.for(productId).uploadImages(data, {
 		previewImage: values.previewImage,

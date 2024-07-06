@@ -1,11 +1,21 @@
 'use client';
 
 import Link from "next/link";
-import { ComponentProps } from "react";
-import { IconButton } from "~/shared/ui/kit/button";
+import { cn } from "~/shared/lib/cn";
+import { IconButton, IconButtonProps } from "~/shared/ui/kit/button";
 import { usePathnameMatcher } from "~/shared/ui/nav-link";
 
-interface NavIconButtonProps extends ComponentProps<typeof IconButton> {
+export function BaseNavIconButton({ className, ...props }: IconButtonProps) {
+	return (
+		<IconButton
+			className={cn('text-accent-100', className)}
+			colorPalette='gray' size='sm'
+			{...props}
+		/>
+	);
+}
+
+interface NavIconButtonProps extends IconButtonProps {
 	href: string;
 	end?: boolean;
 	activeOnHrefs?: string[];
@@ -17,11 +27,9 @@ export function NavIconButton({ href, end, activeOnHrefs, ...props }: NavIconBut
 
 	return (
 		<Link href={href}>
-			<IconButton
-				className='text-accent-100 h-full'
-				colorPalette='gray' size='sm'
-				{...props}
-				active={active} 
+			<BaseNavIconButton
+				className='h-full' {...props}
+				active={active}
 			/>
 		</Link>
 	);

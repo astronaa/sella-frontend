@@ -1,18 +1,17 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
-import { Product, ProductId } from "~/shared/api/client"
+import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
 
-interface GetFromStoreQueryOptions {
+interface GetFromStoreOptions {
 	storeUrl: string,
 	page?: number,
 	limit?: number,
-	initialData?: { items: Product[], total: number } | undefined
 }
 
-const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData }: GetFromStoreQueryOptions) =>
+export const getFromStoreOptions = ({ storeUrl, page = 1, limit = 10 }: GetFromStoreOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, { page, storeUrl, limit }],
 		queryFn: async () => {
@@ -23,25 +22,18 @@ const getFromStoreQueryOptions = ({ storeUrl, page = 1, limit = 10, initialData 
 
 			return data;
 		},
-		initialData: initialData ?? { items: [], total: 0 },
-		staleTime: 5000,
-		initialDataUpdatedAt: 0
 	})
 
-export function useGetFromStore(args: GetFromStoreQueryOptions) {
-	return useQuery({
-		...getFromStoreQueryOptions(args)
-	})
+export function useGetFromStore(args: GetFromStoreOptions) {
+	return useQuery(getFromStoreOptions(args))
 }
 
-interface GetOneQueryOptions {
-	productId: ProductId,
-	initialData: Product,
-	staleTime?: number
+interface GetOneOptions {
+	productId: ProductId
 }
 
-export function useGetOne({ productId, staleTime, initialData }: GetOneQueryOptions) {
-	return useQuery({
+export const getGetOneOptions = ({ productId }: GetOneOptions) =>
+	queryOptions({
 		queryKey: [QUERY_KEY, { id: productId }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.products.for(productId).get();
@@ -51,9 +43,10 @@ export function useGetOne({ productId, staleTime, initialData }: GetOneQueryOpti
 
 			return data;
 		},
-		staleTime,
-		initialData,
 	})
+
+export function useGetOne(args: GetOneOptions) {
+	return useQuery(getGetOneOptions(args));
 }
 
 export function invalidateAll() {

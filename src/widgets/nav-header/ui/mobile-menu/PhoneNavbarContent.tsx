@@ -17,8 +17,8 @@ export function PhoneNavbarContent() {
 	return (
 		<div
 			className={cn(
-				"backdrop-blur-[3rem] bg-black-06/50 flex flex-col p-4 justify-between h-screen pt-36 pb-[2.875rem] w-full",
-				"fixed top-0 z-drawer h-screen",
+				"backdrop-blur-[3rem] bg-black-06/50 flex flex-col p-4 justify-between h-screen pt-[8rem] pb-[2.875rem] w-full",
+				"fixed top-0 z-mobile-menu h-screen",
 				"lg:hidden"
 			)}
 		>

@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLAttributes } from "react";
-import { NotAuthorizedBar } from "./NotAuthorizedBar";
+import { UnauthorizedBar } from "./UnauthorizedBar";
 import { AuthorizedBar } from "./AuthorizedBar";
 import { useUserGetQuery } from "~/entities/user";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
@@ -19,9 +19,9 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 			loading={user === undefined}
 		>
 			{!!isAuthorized ? (
-				<AuthorizedBar {...props} />
+				<AuthorizedBar address={address} {...props} />
 			) : (
-				<NotAuthorizedBar {...props} />
+				<UnauthorizedBar {...props} />
 			)}
 		</Skeleton>
 	);

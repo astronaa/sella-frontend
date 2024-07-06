@@ -1,19 +1,17 @@
-import { Order, OrderPaymentMethod } from "~/shared/api/client";
-import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
-import { apiClient } from "~/shared/api/client";
+import { queryOptions, useQuery } from "@tanstack/react-query";
+import { OrderId, apiClient } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'orders'
 
 interface GetOrdersOptions {
 	page: number,
-	limit: number,
-	initialData?: { items: Order[], total: number, totalPrice: number } | undefined
+	limit: number
 }
 
-export const getOrdersOptions = ({ page, limit, initialData }: GetOrdersOptions) =>
+export const getOrdersOptions = ({ page, limit }: GetOrdersOptions) =>
 	queryOptions({
-		queryKey: [QUERY_KEY, page, { limit }],
+		queryKey: [QUERY_KEY, { page, limit }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.orders.getAll({ page, limit });
 
@@ -21,33 +19,28 @@ export const getOrdersOptions = ({ page, limit, initialData }: GetOrdersOptions)
 				throw error;
 
 			return data;
-		},
-		initialData: initialData ?? { items: [], total: 0, totalPrice: 0 },
-		staleTime: 5000,
-		initialDataUpdatedAt: 0,
-		placeholderData: keepPreviousData
+		}
 	})
 
 export function useGetOrders(args: GetOrdersOptions) {
 	return useQuery(getOrdersOptions(args))
 }
 
-export const getPaymentMethodsOptions = () =>
-	queryOptions<OrderPaymentMethod[]>({
-		queryKey: [QUERY_KEY, 'payment-methods'],
+export const getByIdOptions = (orderId: OrderId) =>
+	queryOptions({
+		queryKey: [QUERY_KEY, orderId],
 		queryFn: async () => {
-			const { data, error } = await apiClient.orders.getPaymentMethods();
+			const { data, error } = await apiClient.orders.for(orderId).get();
 
 			if (error)
 				throw error;
 
 			return data;
-		},
-		staleTime: Infinity
+		}
 	})
 
-export function useGetPaymentMethods() {
-	return useQuery(getPaymentMethodsOptions())
+export function useGetById(orderId: OrderId) {
+	return useQuery(getByIdOptions(orderId))
 }
 
 export function invalidateAll() {

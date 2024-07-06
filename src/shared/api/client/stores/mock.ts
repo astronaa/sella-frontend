@@ -3,7 +3,7 @@ import { Store } from "./model";
 export const storeMock: Store = {
 	id: '1',
 	name: 'Store Name',
-	shortName: '@storename',
+	url: '@storename',
 	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
 	isVerified: true,
 	previewImage: null,

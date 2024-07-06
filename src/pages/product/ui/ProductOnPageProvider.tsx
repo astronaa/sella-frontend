@@ -1,16 +1,19 @@
 'use client';
 
 import { PropsWithChildren } from "react";
-import { Product } from "~/shared/api/client"
 import { ProductProvider, productQueries } from "~/entities/product";
+import { ProductInitialData } from "../api";
+import { useQuery } from "@tanstack/react-query";
 
 interface ProductOnPageProviderProps extends PropsWithChildren {
-	initialData: Product
+	initialData: ProductInitialData
 }
 
 export function ProductOnPageProvider({ initialData, children }: ProductOnPageProviderProps) {
-	const { data: product } = productQueries.useGetOne({
-		productId: initialData.id,
+	const { data: product } = useQuery({
+		...productQueries.getGetOneOptions({
+			productId: initialData.id,
+		}),
 		initialData,
 		staleTime: Infinity
 	})

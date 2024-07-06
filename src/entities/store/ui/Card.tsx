@@ -9,6 +9,7 @@ import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
 import { PreviewImage, PreviewImageProps } from "~/shared/ui/image";
 import { StoreProvider, useStoreStrictContext } from "./context";
+import { RatingRow } from "~/shared/ui/rating";
 
 export type RootProps = HTMLArkProps<'div'> & StoreProp;
 
@@ -66,7 +67,7 @@ export function Content({ className, ...props }: HTMLArkProps<'div'>) {
 }
 
 export function Title({ className, children, ...props }: HTMLArkProps<'div'>) {
-	const { name: title, shortName: name, isVerified } = useStoreStrictContext();
+	const { name: title, url: name, isVerified } = useStoreStrictContext();
 
 	return (
 		<ark.div
@@ -85,7 +86,7 @@ export function Title({ className, children, ...props }: HTMLArkProps<'div'>) {
 					{isVerified && <Icons.Verified className='text-accent-100 size-[0.85em]' />}
 				</div>
 
-				<span className='font-semibold text-black-40 text-[1.1rem] max-lg:text-[1rem]'>
+				<span className='font-semibold text-black-40 text-[1rem]'>
 					{name}
 				</span>
 			</div>
@@ -103,33 +104,17 @@ export function Description({ className, ...props }: HTMLArkProps<'p'>) {
 	);
 }
 
-export function Rating({ className, ...props }: HTMLArkProps<"div">) {
+export function Rating(props: Omit<RatingRow.RootProps, 'rating'>) {
 	const { rating } = useStoreStrictContext();
 
 	if(!rating)
 		return null;
 
 	return (
-		<ark.div
-			className={cn("flex items-center gap-[0.75rem]", className)}
+		<RatingRow.Composed 
+			rating={rating} 
 			{...props}
-		>
-			<span className="text-black-60 font-semibold">
-				{rating.reviewsCount} Reviews
-			</span>
-
-			<div className="flex items-center gap-[0.75rem]">
-				<div className="flex gap-[0.2rem] text-green-100 items-center font-semibold">
-					<Icons.Likes className="size-[1rem]" />{" "}
-					<span>{rating.likes}</span>
-				</div>
-
-				<div className="flex items-center gap-[0.4rem] text-red-100 font-semibold">
-					<Icons.Dislikes className="size-[1rem]" />{" "}
-					<span>{rating.dislikes}</span>
-				</div>
-			</div>
-		</ark.div>
+		/>
 	);
 }
 

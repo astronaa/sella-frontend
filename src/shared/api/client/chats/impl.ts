@@ -34,17 +34,10 @@ export function createChatsClient() {
 					}
 				});
 
-				interface PLEASE_REPLACE_AFTER_OPENAPI_UPDATE_ExpectedData {
-					data: NonNullable<(typeof data)>[],
-					total: number
-				}
-
-				const expectedData = data as unknown as PLEASE_REPLACE_AFTER_OPENAPI_UPDATE_ExpectedData;
-
 				return data ? {
 					data: {
-						items: expectedData.data.map(mapDtoToChatMessage),
-						total: expectedData.total,
+						items: data.data.map(mapDtoToChatMessage),
+						total: data.total,
 					}
 				} : {	
 					data, error 

@@ -39,12 +39,13 @@ const config = {
 			},
 			zIndex: {
 				dropdown: '60',
-				dialog: '70',
-				drawer: '70',
+				dialog: '110',
+				drawer: '110',
 				header: '100',
+				'mobile-menu': '99'
 			},
 			maxWidth: {
-				'content': '72.5rem'
+				content: '72.5rem'
 			}
 		},
 	},

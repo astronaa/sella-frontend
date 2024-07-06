@@ -7,20 +7,15 @@ type Schemes = components['schemas'];
 export const mapDtoToUser = ({ 
 	profilePictureId, 
 	username,
-	email,
-	telegramId,
-	twitterId,
-	...rest 
-}: Schemes['User']) => ({
-	...rest,
-	email: email ?? null,
+	...obj 
+}: Schemes['User'] | Schemes["BaseUserDto"]) => ({
 	username: username ?? null,
-	twitterId: twitterId ?? null,
-	telegramId: telegramId ?? null,
-	avatarImage: profilePictureId ? mapMediaIdToUrl(profilePictureId) : null
+	avatarImage: profilePictureId ? mapMediaIdToUrl(profilePictureId) : null,
+	email: 'email' in obj ? (obj.email ?? null) : undefined,
+	twitterId: 'twitterId' in obj ? (obj.twitterId ?? null) : undefined,
+	telegramId: 'telegramId' in obj ? (obj.telegramId ?? null) : undefined,
+	address: 'address' in obj ? obj.address : undefined,
+	tronAddress: 'tronAddress' in obj ? (obj.tronAddress ?? null) : undefined,
+	refCode: 'refCode' in obj ? obj.refCode : undefined,
+	createdAt: 'createdAt' in obj ? obj.createdAt : undefined
 }) satisfies User
-
-export const mapDtoToUserShort = ({ username, profilePictureId }: Schemes["CommentUserDto"]) => ({
-	username,
-	avatarImage: profilePictureId ? mapMediaIdToUrl(profilePictureId) : null
-}) satisfies User;

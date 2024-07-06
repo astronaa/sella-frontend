@@ -203,6 +203,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/users/tron-address": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** @description Changes tron address */
+        patch: operations["UsersController_updateTronAddress"];
+        trace?: never;
+    };
     "/api/stores/{url}/products": {
         parameters: {
             query?: never;
@@ -309,6 +326,22 @@ export interface paths {
         };
         /** @description Get media by UUIDv4. */
         get: operations["MediaController_getMedia"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{id}/payment-methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_getPaymentMethods"];
         put?: never;
         post?: never;
         delete?: never;
@@ -526,22 +559,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/payment-methods": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["OrdersController_getPaymentMethods"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/orders/{id}": {
         parameters: {
             query?: never;
@@ -574,7 +591,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/my-orders": {
+    "/api/my-orders": {
         parameters: {
             query?: never;
             header?: never;
@@ -590,7 +607,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/my-sales": {
+    "/api/my-sales": {
         parameters: {
             query?: never;
             header?: never;
@@ -632,6 +649,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["QuestsController_completeQuest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/contract/abi": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ContractController_getAbi"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -706,7 +739,7 @@ export interface components {
             title: string;
             description: string;
             /** @enum {string} */
-            type: "followOnX" | "addSella" | "retweetOnX" | "likeOnX" | "commentOnX" | "followOnTelegram" | "createFirstStore" | "referFriends" | "commentOnMedium" | "commeOnReddit";
+            type: "followOnX" | "addSella" | "retweetOnX" | "likeOnX" | "commentOnX" | "followOnTelegram" | "createFirstStore" | "referFriends" | "commentOnMedium" | "commeOnReddit" | "upvoteOnReddit" | "likeOnMedium";
             questRequired: components["schemas"]["Quest"];
             attribute?: components["schemas"]["QuestAttribute"];
             points: number;
@@ -723,8 +756,9 @@ export interface components {
             twitterUsername?: string;
             telegramId?: string;
             refCode: string;
-            invitedBy?: string;
+            invitedBy?: number;
             points: number;
+            tronAddress?: string;
             /** Format: date-time */
             lastOnline: string;
             completedQuests: components["schemas"]["Quest"][];
@@ -744,14 +778,21 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
+        UpdateTronAddress: {
+            /** @description Tron address */
+            tronAddress: string;
+        };
         StoreProductDto: {
             id: string;
             name: string;
+            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             price: number;
             description: string | null;
             shortDescription: string;
+            isFrozen: boolean;
+            tagNames: string[];
         };
         ProductsResponseDto: {
             data: components["schemas"]["StoreProductDto"][];
@@ -805,6 +846,24 @@ export interface components {
             tag: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
             message?: string;
         };
+        Token: {
+            /** @description The name of the token */
+            name: string;
+            /** @description The address of the token */
+            address: string;
+        };
+        PaymentMethod: {
+            /** @description The name of the blockchain */
+            name: string;
+            /** @description Chain id of network */
+            chainId: number;
+            /** @enum {string} */
+            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
+            /** @description The contract address of the escrow contract */
+            contractAddress: string;
+            /** @description List of tokens associated with the blockchain */
+            tokens: components["schemas"]["Token"][];
+        };
         BaseStoreDto: {
             name: string;
             url: string;
@@ -814,18 +873,18 @@ export interface components {
         StoreOwnerDto: {
             username: string;
             /** Format: uuid */
-            profilePictureId?: string;
+            profilePictureId: string | null;
             rating: components["schemas"]["RatingDto"];
         };
         ProductDetailsDTO: {
             id: string;
             name: string;
+            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
-            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -846,12 +905,12 @@ export interface components {
         ProductDto: {
             id: string;
             name: string;
+            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
-            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -867,8 +926,7 @@ export interface components {
             hasPreview?: boolean;
             tagNames?: string[];
             holdPeriod?: number;
-            /** @default false */
-            isFrozen: boolean;
+            isFrozen?: boolean;
         };
         ProductAddImageResultDto: {
             imageIds: string[];
@@ -889,7 +947,8 @@ export interface components {
         };
         CommentUserDto: {
             username: string;
-            profilePictureId?: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
         };
         ReviewDto: {
             /** Format: uuid */
@@ -926,54 +985,47 @@ export interface components {
             readAt: string;
             fileIds: string[];
         };
+        GetMessagesResponseDto: {
+            data: components["schemas"]["MessageDto"][];
+            total: number;
+        };
         GetExploreResponseDto: {
             data: components["schemas"]["Store"][];
             total: number;
         };
-        Token: {
-            /** @description The name of the token */
-            name: string;
-            /** @description The address of the token */
-            address: string;
-        };
-        PaymentMethod: {
-            /** @description The name of the blockchain */
-            name: string;
-            /** @enum {string} */
-            value: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
-            /** @description The contract address of the escrow contract */
-            contractAddress: string;
-            /** @description List of tokens associated with the blockchain */
-            tokens: components["schemas"]["Token"][];
-        };
         BaseProductDto: {
             id: string;
             name: string;
+            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
+        };
+        SellerDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
+            address: string;
+            tronAddress?: string;
         };
         OrderInfoDto: {
             id: string;
             store: components["schemas"]["BaseStoreDto"];
             product: components["schemas"]["BaseProductDto"];
+            seller: components["schemas"]["SellerDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Released" | "Refunded";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
         OrderCreateDto: {
             productId: string;
             paymentType: string;
-        };
-        CreatedOrderDto: {
-            id: string;
-            tokenAmount: number;
         };
         OrdersResponseDto: {
             data: components["schemas"]["OrderInfoDto"][];
@@ -983,20 +1035,20 @@ export interface components {
         BaseUserDto: {
             username: string;
             /** Format: uuid */
-            profilePictureId?: string;
+            profilePictureId: string | null;
         };
         SalesInfoDto: {
             id: string;
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Released" | "Refunded";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1378,6 +1430,26 @@ export interface operations {
             };
         };
     };
+    UsersController_updateTronAddress: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTronAddress"];
+            };
+        };
+        responses: {
+            /** @description Sucessfully changed tron address */
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
     StoresController_getProductsByStoreUrl: {
         parameters: {
             query: {
@@ -1670,6 +1742,30 @@ export interface operations {
             404: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    ProductsController_getPaymentMethods: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product id
+                 * @example 123e4567-e89b-12d3-a456-426614174000
+                 */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully sent payment methods */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["PaymentMethod"][];
+                };
             };
         };
     };
@@ -2011,7 +2107,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["MessageDto"];
+                    "application/json": components["schemas"]["GetMessagesResponseDto"];
                 };
             };
             /** @description Invalid chat ID */
@@ -2114,24 +2210,6 @@ export interface operations {
             };
         };
     };
-    OrdersController_getPaymentMethods: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successfully sent payment methods */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["PaymentMethod"][];
-                };
-            };
-        };
-    };
     OrdersController_getOrderInfo: {
         parameters: {
             query?: never;
@@ -2174,7 +2252,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["CreatedOrderDto"];
+                    "application/json": components["schemas"]["OrderInfoDto"];
                 };
             };
             /** @description Invalid order data */
@@ -2273,6 +2351,21 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
+            };
+        };
+    };
+    ContractController_getAbi: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };

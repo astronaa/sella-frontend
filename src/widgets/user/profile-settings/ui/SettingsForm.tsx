@@ -1,20 +1,24 @@
 'use client';
 
+import { useWallet as useTronWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
+import { useAccount as useEthWallet } from 'wagmi';
 import { HTMLAttributes, useMemo } from 'react';
-import { Form, useField, useForm, useFormState } from 'react-final-form';
-import { useAccount } from 'wagmi';
+import { Form } from 'react-final-form';
 import { z } from 'zod';
 import { invalidateUserGetQuery, useUserGetQuery } from '~/entities/user';
-import { AuthChannelsTelegramAuthButton, AuthChannelsVerifyEmailDialog } from '~/features/auth-channels';
+import { AuthChannelsVerifyEmailDialog } from '~/features/auth-channels';
 import { apiClient } from '~/shared/api/client';
 import { cn } from '~/shared/lib/cn';
 import { useDialogState } from '~/shared/lib/dialog';
 import { FormError } from '~/shared/lib/errors';
 import { usePromiseResolver } from '~/shared/lib/use-promise-resolver';
 import { zodValidate } from '~/shared/lib/zod-final-form';
-import { Icons } from '~/shared/ui/icons';
 import { DividerWithElement } from '~/shared/ui/kit/divider';
 import { VImageUploader, VTextControl } from '~/shared/ui/validation-inputs';
+import { TronWalletControl } from './TronWalletControl';
+import { TelegramControl } from './TelegramControl';
+import { EmailControl } from './EmailControl';
+import {toaster} from "~/shared/ui/toaster";
 
 export const schema = z.object({
 	username: apiClient.auth.schemaUsername,
@@ -36,7 +40,8 @@ const validateForm = zodValidate(schema);
 
 export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionRejected, className, ...props }: SettingsFormProps) {
 	const { data: user } = useUserGetQuery();
-	const { address } = useAccount();
+	const { address: ethAddress } = useEthWallet();
+	const { address: tronAddress } = useTronWallet();
 
 	const {
 		createPromise: waitForEmailVerification,
@@ -72,15 +77,23 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 
 			if (user?.username != values.username) {
 				const { error } = await apiClient.auth.setUsername(values.username);
-				if (error)
-					throw new FormError({ field: 'username', message: error.message });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 			}
 
 			if (user?.email != values.email && values.email) {
 				const { error } = await apiClient.auth.sendEmailCode(values.email);
 
-				if (error)
-					throw new FormError({ field: 'email', message: error.message });
+				if(error){
+					if (error.statusCode == 400) {
+						throw new FormError(error.message as Record<string, string>);
+					}
+					throw new Error(error.message as unknown as string);
+				}
 
 				openVerifyDialog();
 
@@ -99,18 +112,22 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 		catch (error) {
 			onActionRejected?.();
 
-			if (error instanceof FormError && error.field)
-				return { [error.field]: error.message }
+			if (error instanceof FormError){
+				return error.fields
+			}else if (error instanceof Error){
+				toaster.create({type: 'error', title: 'Error updating Settings', description: error.message})
+			}
 		}
 	};
 
 	const initialValues = useMemo(() => ({
-		wallet: address,
+		ethAddress,
+		tronAddress,
 		email: user?.email,
 		username: user?.username,
 		avatarImage: user?.avatarImage,
 		telegramId: user?.telegramId
-	}), [address, user?.email, user?.avatarImage, user?.username, user?.telegramId]);
+	}), [ethAddress, tronAddress, user?.email, user?.avatarImage, user?.username, user?.telegramId]);
 
 	return (
 		<Form
@@ -130,10 +147,10 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 							initialImageSrc={initialValues.avatarImage ?? undefined}
 						/>
 
-						<div className='flex flex-col justify-between max-md:gap-[1rem] gap-[0.5rem]'>
-							<VTextControl.Root className='w-full' name='wallet'>
+						<div className='flex flex-col w-full justify-between max-md:gap-[1rem] gap-[0.5rem]'>
+							<VTextControl.Root className='w-full' name='ethAddress'>
 								<VTextControl.LabelOrError>
-									Wallet
+									Ethereum Wallet
 								</VTextControl.LabelOrError>
 								<VTextControl.Input
 									className='pointer-events-none truncate max-w-full pe-[1rem]'
@@ -141,17 +158,19 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 								/>
 							</VTextControl.Root>
 
-							<VTextControl.Root className='w-full' name='username'>
-								<VTextControl.Label>
-									Username
-								</VTextControl.Label>
-								<VTextControl.Input
-									placeholder='Your username'
-								/>
-								<VTextControl.ErrorText />
-							</VTextControl.Root>
+							<TronWalletControl />
 						</div>
 					</div>
+
+					<VTextControl.Root className='w-full' name='username'>
+						<VTextControl.Label>
+							Username
+						</VTextControl.Label>
+						<VTextControl.Input
+							placeholder='Your username'
+						/>
+						<VTextControl.ErrorText />
+					</VTextControl.Root>
 
 					<DividerWithElement className='text-black-40 text-[0.875rem]'>
 						2fa / Notifications
@@ -171,70 +190,4 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			)}
 		</Form>
 	);
-}
-
-
-function EmailControl({ name }: { name: string }) {
-	const { change } = useForm();
-	const { input } = useField(name);
-	const { initialValues } = useFormState<SchemaType>({
-		subscription: { initialValues: true }
-	});
-
-	return (
-		<VTextControl.Root className='w-full' name={name}>
-			<VTextControl.Label className='flex justify-between w-full'>
-				<span>Email Address</span>
-				{initialValues.email && input.value == initialValues.email && (
-					<span
-						className='text-cyan-100 cursor-pointer'
-						onClick={() => change('email', null)}
-					>
-						Disconnect
-					</span>
-				)}
-			</VTextControl.Label>
-			<VTextControl.Input
-				placeholder="johnappleseed@gmail.com"
-			/>
-			<VTextControl.ErrorText />
-		</VTextControl.Root>
-	);
-}
-
-function TelegramControl({ name }: { name: string }) {
-	const { initialValues } = useFormState<SchemaType>({
-		subscription: { initialValues: true }
-	});
-
-	return initialValues.telegramId ? (
-		<VTextControl.Root className='w-full' name={name}>
-			<VTextControl.Label className='flex justify-between w-full'>
-				<span>Telegram</span>
-				{initialValues.telegramId && (
-					<span
-						className='text-cyan-100 cursor-pointer'
-					>
-						Disconnect
-					</span>
-				)}
-			</VTextControl.Label>
-			<VTextControl.Input
-				className='ps-[3rem] cursor-default'
-				placeholder="Your @telegram"
-				readOnly
-			>
-				<span className='flex items-center justify-center absolute h-full top-0 left-0 ps-[1rem]'>
-					<Icons.Telegram className='size-[1.25rem]' />
-				</span>
-			</VTextControl.Input>
-			<VTextControl.ErrorText />
-		</VTextControl.Root>
-	) : (
-		<div className='w-full'>
-			<AuthChannelsTelegramAuthButton
-				onActionFulfilled={invalidateUserGetQuery}
-			/>
-		</div>
-	)
 }

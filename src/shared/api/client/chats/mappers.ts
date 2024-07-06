@@ -1,5 +1,5 @@
 import { components } from "../../openapi";
-import { mapDtoToUserShort } from "../users/mappers";
+import { mapDtoToUser } from "../users/mappers";
 import { Chat, ChatMessage } from "./model";
 
 type Schemes = components['schemas'];
@@ -11,5 +11,5 @@ export const mapDtoToChat = ({ chatId, ...rest }: Schemes['ChatResponseDto']) =>
 
 export const mapDtoToChatMessage = (dto: Schemes['MessageDto']) => ({
 	...dto,
-	sender: mapDtoToUserShort(dto.sender)
+	sender: mapDtoToUser(dto.sender)
 }) satisfies ChatMessage

@@ -16,21 +16,21 @@ export const schema = apiClient.stores.schemaUpdate.merge(
 export type SchemaType = z.infer<typeof schema>;
 
 export async function updateStore(store: Store, { previewImage, ...data }: SchemaType) {
-	const { error, response } = await apiClient.stores
-		.for(store.shortName)
+	const { error } = await apiClient.stores
+		.for(store.url)
 		.update(data);
 
-	if (response.status == 409) {
-		throw new FormError({
-			field: 'shortName',
-			message: error?.message as unknown as string
-		});
+	if(error){
+		if (error.statusCode == 400) {
+			throw new FormError(error.message);
+		}else if(error.statusCode === 409){
+			throw new FormError({url: error.message as unknown as string});
+		}
+		throw new Error(error.message as unknown as string);
 	}
-	else if (error)
-		throw error;
 
 	if (previewImage)
-		await apiClient.stores.for(store.shortName).setImage(previewImage);
+		await apiClient.stores.for(store.url).setImage(previewImage);
 
 	storeQueries.invalidateAll();
 

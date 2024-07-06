@@ -1,0 +1,1 @@
+export * as paymentMethodsQueries from './api';

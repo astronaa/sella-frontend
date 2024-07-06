@@ -3,10 +3,10 @@
 import { Dialog } from '~/shared/ui/kit';
 import { useId, useState } from 'react';
 import { Button } from '~/shared/ui/kit/button';
-import { useUserProfileSettingsDialog } from '~/shared/model/user-profile';
 import { SettingsForm } from './SettingsForm';
 import { useAccount } from 'wagmi';
 import { Portal } from '@ark-ui/react';
+import { useSettingsDialog } from '../model/dialog';
 
 type ProfileDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void
@@ -15,7 +15,7 @@ type ProfileDialogProps = Dialog.RootProps & {
 export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProps) {
 	const formId = useId();
 	const { address } = useAccount();
-	const { open, setOpen } = useUserProfileSettingsDialog();
+	const { open, setOpen } = useSettingsDialog();
 	const [loading, setLoading] = useState(false);
 
 	const onFormActionFulfilled = () => {
@@ -31,9 +31,8 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 			onOpenChange={({ open }) => setOpen(open)}
 			unmountOnExit lazyMount
 		>
-			<Dialog.Backdrop />
-
 			<Portal>
+				<Dialog.Backdrop />
 				<Dialog.Positioner>
 					<Dialog.Content
 						className='items-start w-[37.5rem] gap-[2rem] pt-[1.5625rem] pb-[2.1875rem]'

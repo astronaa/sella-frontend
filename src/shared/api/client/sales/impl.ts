@@ -6,7 +6,7 @@ import { mapDtoToSale } from "./mappers";
 export function createSalesClient() {
 	return {
 		async getAll(pagination: PayloadPagination = { page: 1, limit: 2 }) {
-			const { data, error } = await authFetchClient.GET('/api/orders/my-sales', {
+			const { data, error } = await authFetchClient.GET('/api/my-sales', {
 				params: {
 					query: mapPaginationPayloadToDto(pagination)
 				},

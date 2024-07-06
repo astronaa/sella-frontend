@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { apiClient } from "~/shared/api/client";
+import { schemaPaymentMethods } from "~/shared/api/client";
 
 export const schema = z.object({
-	block: apiClient.orders.schemaPaymentMethod,
+	block: schemaPaymentMethods,
 	token: z.string()
 })
 

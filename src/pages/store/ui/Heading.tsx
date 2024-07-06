@@ -3,23 +3,22 @@
 import { StoreCard, useStoreStrictContext } from "~/entities/store";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
-import { Product } from "~/shared/api/client"
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
 import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 import { EditMode } from "./edit-mode";
+import { useQuery } from "@tanstack/react-query";
 
-interface HeadingProps {
-	productsInitialData?: { items: Product[], total: number }
-}
-
-export function Heading({ productsInitialData }: HeadingProps) {
+export function Heading() {
 	const store = useStoreStrictContext();
 
-	const { data: products } = productQueries.useGetFromStore({
-		storeUrl: store.shortName,
-		limit: PRODUCT_ITEMS_PER_PAGE,
-		initialData: productsInitialData
+	const { data: products } = useQuery({
+		...productQueries.getFromStoreOptions({
+			storeUrl: store.url,
+			limit: PRODUCT_ITEMS_PER_PAGE,
+		}),
+		staleTime: 5000,
+		initialDataUpdatedAt: 0
 	})
 
 	const { data: user } = useUserGetQuery();
@@ -46,10 +45,12 @@ export function Heading({ productsInitialData }: HeadingProps) {
 					{store.ownerUsername == user.username ? (
 						<>
 							<ManageDialog />
-							{products.total > 0 && <EditMode.Button />}
+							{products && products.total > 0 && (
+								<EditMode.Button />
+							)}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.shortName} />
+						<StoreReportFlow storeUrl={store.url} />
 					)}
 				</div>
 			)}
