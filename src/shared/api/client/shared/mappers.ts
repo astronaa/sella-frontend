@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "~/shared/config/api-base-url";
 import { PayloadPagination } from "./schemas";
 import { components } from "../../openapi";
-import { PaymentMethod } from "./models";
+import { PaymentMethod, Rating } from "./models";
 
 type Schemas = components['schemas'];
 
@@ -19,3 +19,9 @@ export const mapPaginationPayloadToDto = (obj: PayloadPagination) => ({
 export const mapDtoToPaymentMethod = (obj: Schemas['PaymentMethod']): PaymentMethod => (
 	obj
 );
+
+export const mapDtoToRating = (obj: Schemas['RatingDto']): Rating => ({
+	likes: obj.positive,
+	dislikes: obj.negative,
+	reviewsCount: obj.total
+})	

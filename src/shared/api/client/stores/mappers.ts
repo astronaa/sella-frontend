@@ -1,6 +1,6 @@
 import { WithRequired } from "~/shared/lib/utility-types";
 import { components } from "../../openapi";
-import { mapMediaIdToUrl } from "../shared/mappers";
+import { mapDtoToRating, mapMediaIdToUrl } from "../shared/mappers";
 import { Store } from "./model";
 
 type Schemes = components['schemas'];
@@ -16,9 +16,5 @@ export const mapDtoToStore = (obj:
 	url: obj.url,
 	ownerUsername: obj.ownerUsername,
 	tagNames: obj.tagNames,
-	rating: obj.rating ? {
-		likes: obj.rating.positive,
-		dislikes: obj.rating.negative,
-		reviewsCount: obj.rating.total
-	} : undefined
+	rating: obj.rating ? mapDtoToRating(obj.rating) : undefined
 }) satisfies Store;

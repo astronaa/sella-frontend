@@ -791,6 +791,7 @@ export interface components {
             description: string | null;
             shortDescription: string;
             isFrozen: boolean;
+            tagNames: string[];
         };
         ProductsResponseDto: {
             data: components["schemas"]["StoreProductDto"][];
@@ -856,7 +857,7 @@ export interface components {
             /** @description Chain id of network */
             chainId: number;
             /** @enum {string} */
-            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
             /** @description The contract address of the escrow contract */
             contractAddress: string;
             /** @description List of tokens associated with the blockchain */
@@ -985,12 +986,20 @@ export interface components {
             hasPreview: boolean;
             imageIds: string[];
         };
+        SellerDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
+            address: string;
+            tronAddress?: string;
+        };
         OrderInfoDto: {
             id: string;
             store: components["schemas"]["BaseStoreDto"];
             product: components["schemas"]["BaseProductDto"];
+            seller: components["schemas"]["SellerDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Released" | "Refunded";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
@@ -1003,10 +1012,6 @@ export interface components {
         OrderCreateDto: {
             productId: string;
             paymentType: string;
-        };
-        CreatedOrderDto: {
-            id: string;
-            tokenAmount: number;
         };
         OrdersResponseDto: {
             data: components["schemas"]["OrderInfoDto"][];
@@ -1023,7 +1028,7 @@ export interface components {
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Released" | "Refunded";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
@@ -2233,7 +2238,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["CreatedOrderDto"];
+                    "application/json": components["schemas"]["OrderInfoDto"];
                 };
             };
             /** @description Invalid order data */
