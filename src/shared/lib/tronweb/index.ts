@@ -13,7 +13,10 @@ type TronWeb = IncompleteTronWeb & {
 	toBigNumber(num: number): object,
 
 	trx: {
-		sendRawTransaction(transaction: object): Promise<object>
+		sendRawTransaction(transaction: object): Promise<{
+			result: boolean,
+			transaction: { txID: string }
+		}>
 	}
 }
 

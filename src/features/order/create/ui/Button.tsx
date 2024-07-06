@@ -1,24 +1,21 @@
 'use client';
 
 import { Button, ButtonProps } from "~/shared/ui/kit/button";
-import { ValueType } from "../model/schema";
 import { useMutation } from "@tanstack/react-query";
-import { OrderId, apiClient } from "~/shared/api/client";
+import { OrderId, PayloadPaymentToken, apiClient } from "~/shared/api/client";
 import { useProductStrictContext } from "~/entities/product";
-import { EscrowError, useCreateEscrowAction } from "../api/escrow";
 
 export interface ActionCallbacks {
 	onActionFulfilled?: (orderId: OrderId) => void,
-	onActionRejected?: (error: EscrowError, retry: () => Promise<void>) => void
-}
-interface ButtonCreateOrderProps extends ButtonProps, ActionCallbacks {
-	method: ValueType,
+	onActionRejected?: (error: Error) => void
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface ButtonCreateOrderProps extends ButtonProps, ActionCallbacks {
+	method: PayloadPaymentToken,
+}
+
 export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected, ...props }: ButtonCreateOrderProps) {
 	const product = useProductStrictContext();
-	const createEscrow = useCreateEscrowAction(product.id);
 
 	const { mutateAsync: create, isPending } = useMutation({
 		mutationFn: async () => {
@@ -31,42 +28,17 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 				throw error;
 
 			return data;
-		}
+		},
+		onError: onActionRejected,
+		onSuccess: order => onActionFulfilled?.(order.id)
 	})
-
-	const onClick = async () => {
-		if (createEscrow.loading)
-			return;
-
-		const order = await create().catch(() => null);
-		if (!order)
-			return;
-
-		const tryExecuteOrder = async () => {
-			try {
-				await createEscrow.execute({
-					order, ...method
-				});
-
-				// onActionFulfilled?.(order.id);
-			}
-			catch (error) {
-				if (error instanceof EscrowError)
-					onActionRejected?.(error, tryExecuteOrder);
-				else if (error instanceof Error)
-					onActionRejected?.(new EscrowError('generic', error.message), tryExecuteOrder);
-			}
-		}
-
-		tryExecuteOrder();
-	}
-
+	
 	return (
 		<Button
 			size='xl'
 			{...props}
-			disabled={isPending || !!props?.disabled || createEscrow.loading}
-			onClick={onClick}
+			onClick={() => create()}
+			disabled={isPending}
 		>
 			Pay Now
 		</Button>

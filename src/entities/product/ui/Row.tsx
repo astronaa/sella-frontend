@@ -4,7 +4,7 @@
 
 import { HTMLArkProps, ark } from "@ark-ui/react";
 import { ProductProp } from "./Prop";
-import { useProductContextOrProp } from "./context";
+import { useProductContextOrProp } from "../model/context";
 import { cn } from "~/shared/lib/cn";
 import { Image } from "./Image";
 
