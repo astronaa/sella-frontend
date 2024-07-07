@@ -54,7 +54,8 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 						throw new EscrowError('generic', `approve transaction id is not valid ethereum hash`);
 
 					await wagmi.waitForTransactionReceipt(wagmiConfig, {
-						hash: approveTransactionId
+						hash: approveTransactionId,
+						retryCount: Infinity
 					});
 				},
 				createEscrow: () => wagmi.writeContract(wagmiConfig, {
@@ -74,7 +75,8 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 						throw new EscrowError('generic', `create escrow transaction id is not valid ethereum hash`);
 
 					await wagmi.waitForTransactionReceipt(wagmiConfig, {
-						hash: createEscrowTransactionId
+						hash: createEscrowTransactionId,
+						retryCount: Infinity,
 					});
 				}
 			};
