@@ -13,6 +13,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
 			const holdPeriod = order.product.holdPeriod;
+			const tokenAmount = BigInt(order.transaction.tokenAmount * 10 ** 6);
 
 			if (holdPeriod === undefined)
 				throw new EscrowError('generic', 'holdPeriod is not defined for product');
@@ -39,12 +40,12 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 							},
 							{
 								type: 'uint256',
-								value: tw.toBigNumber(order.transaction.tokenAmount)
+								value: tokenAmount
 							}
 						]
 					);
 
-					if (transactionApprove.result !== true)
+					if (transactionApprove.result.result !== true)
 						throw new EscrowError('generic', `failed to build approve transaction`);
 
 					await tw.trx.sendRawTransaction(
@@ -72,11 +73,11 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 							},
 							{
 								type: 'uint256',
-								value: tw.toBigNumber(order.transaction.tokenAmount)
+								value: tokenAmount
 							},
 							{
 								type: 'uint256',
-								value: tw.toBigNumber(holdPeriod)
+								value: BigInt(holdPeriod)
 							},
 							{
 								type: 'string',
@@ -85,8 +86,8 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 						]
 					);
 
-					if (transactionCreateEscrow.result !== true)
-						throw new EscrowError('generic', `failed to build approve create escrow transaction`);
+					if (transactionCreateEscrow.result.result !== true)
+						throw new EscrowError('generic', `failed to build create escrow transaction`);
 
 					await tw.trx.sendRawTransaction(
 						await tronWallet.signTransaction(transactionCreateEscrow.transaction)

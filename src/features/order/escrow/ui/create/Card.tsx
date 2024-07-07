@@ -92,28 +92,30 @@ export function Card({ order, method, onActionFulfilled, onActionRejected, autoR
 				</EscrowCard.WaferContent>
 			</EscrowCard.Wafer>
 
-			<div className='flex justify-between w-full pt-[1rem] gap-[1rem] text-black-74'>
-				{action.status != 'idle' && (
-					<>
-						<span className={cn(action.status == 'error' && 'text-error-100')}>
-							{getLabelTextByStatus(action.status)}
-						</span>
+			<div className='flex flex-col gap-[0.5rem]'>
+				<div className='flex justify-between w-full pt-[1rem] gap-[1rem] text-black-74'>
+					{action.status != 'idle' && (
+						<>
+							<span className={cn(action.status == 'error' && 'text-error-100')}>
+								{getLabelTextByStatus(action.status)}
+							</span>
 
-						{action.status != 'error' && action.status != 'done' && (
-							<Stopwatch
-								key={action.status}
-								className='text-accent-100'
-							/>
-						)}
-					</>
+							{!['error', 'done', 'loading'].includes(action.status) && (
+								<Stopwatch
+									key={action.status}
+									className='text-accent-100'
+								/>
+							)}
+						</>
+					)}
+				</div>
+
+				{action.status == 'error' && (
+					<span className='break-words text-black-40'>
+						{action.errorMessage}
+					</span>
 				)}
 			</div>
-
-			{action.status == 'error' && (
-				<span className='break-words text-black-40'>
-					{action.errorMessage}
-				</span>
-			)}	
 
 			<Button
 				size='xl' colorPalette='gray'
