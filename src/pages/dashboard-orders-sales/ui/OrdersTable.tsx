@@ -1,9 +1,5 @@
-import {
-	TransactionStatusBadge,
-	TransactionActionButton
-} from "./TransactionElements";
-
-import { FlexTable } from "~/shared/ui/kit";
+import { TransactionStatusBadge } from "./TransactionElements";
+import { FlexTable, Tooltip } from "~/shared/ui/kit";
 import { OrdersResponse } from "../api/orders";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
@@ -12,6 +8,8 @@ import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
 import { TableSkeletons } from "./TableSkeletons";
+import { IconButton } from "~/shared/ui/kit/button";
+import Link from "next/link";
 
 const config = [
 	{ width: '3.75rem' },
@@ -25,7 +23,7 @@ const config = [
 ]
 
 interface OrdersTableProps {
-	data?: OrdersResponse, 
+	data?: OrdersResponse,
 	loading?: boolean,
 	startIndex: number
 }
@@ -82,10 +80,22 @@ export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
 										</Badge>
 									</span>
 									<span className='text-accent-100'>
-										{o.transaction.totalPaid} USDT
+										{o.price} USDT
 									</span>
 									<span className='sticky right-0'>
-										<TransactionActionButton transaction={o.transaction} />
+										<Link href={`/products/${o.product.id}/checkout/${o.id}`}>
+											<Tooltip.Composed 
+												label='Go to order'
+												closeDelay={0} usePortal
+											>
+												<IconButton
+													className='backdrop-blur-[1rem]'
+													colorPalette='gray' size='sm'
+												>
+													<Icons.Package />
+												</IconButton>
+											</Tooltip.Composed>
+										</Link>
 									</span>
 								</FlexTable.Row>
 							))}

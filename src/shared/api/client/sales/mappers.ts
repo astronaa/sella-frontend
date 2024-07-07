@@ -6,6 +6,7 @@ import { Sale } from "./model";
 export const mapDtoToSale = (obj: components['schemas']['SalesInfoDto']): Sale => {
 	return {
 		id: obj.id,
+		price: Number(obj.price),
 		transaction: {
 			status: obj.status,
 			fulfillmentStatus: obj.fulfillmentStatus,

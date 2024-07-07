@@ -6,6 +6,7 @@ export type SaleId = string;
 
 export interface Sale {
 	id: SaleId;
+	price: number,
 	product: Product;
 	user: User;
 	transaction: Transaction;

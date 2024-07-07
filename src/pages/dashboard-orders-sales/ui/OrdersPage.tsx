@@ -8,11 +8,15 @@ import { useState } from "react";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "../config";
 import { ordersQueries } from "~/entities/order";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export function OrdersPage() {
 	const [page, setPage] = useState(1)
 
-	const { data } = ordersQueries.useGetOrders({ page, limit: ITEMS_PER_PAGE })
+	const { data } = useQuery({
+		...ordersQueries.getOrdersOptions({ page, limit: ITEMS_PER_PAGE }),
+		placeholderData: keepPreviousData
+	});
 
 	const total = data?.total ?? 0;
 	const handlePageChange = (details: PageChangeDetails) => setPage(details.page)
