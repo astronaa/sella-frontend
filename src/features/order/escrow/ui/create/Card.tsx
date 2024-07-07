@@ -109,6 +109,12 @@ export function Card({ order, method, onActionFulfilled, onActionRejected, autoR
 				)}
 			</div>
 
+			{action.status == 'error' && (
+				<span className='break-words text-black-40'>
+					{action.errorMessage}
+				</span>
+			)}	
+
 			<Button
 				size='xl' colorPalette='gray'
 				onClick={onButtonClick}

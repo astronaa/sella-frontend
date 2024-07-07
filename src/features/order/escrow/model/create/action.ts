@@ -85,6 +85,7 @@ export function useCreateEscrowAction(order: Order) {
 			status: 'loading',
 			execute: undefined,
 			continue: undefined,
+			errorMessage: state.errorMessage
 		} as const;
 	}
 
@@ -93,6 +94,7 @@ export function useCreateEscrowAction(order: Order) {
 			status: state.status,
 			execute: undefined,
 			continue: undefined,
+			errorMessage: state.errorMessage
 		} as const;
 	}
 
@@ -101,6 +103,7 @@ export function useCreateEscrowAction(order: Order) {
 			status: state.status,
 			execute: undefined,
 			continue: actionFn,
+			errorMessage: state.errorMessage
 		} as const;
 	}
 
@@ -108,5 +111,6 @@ export function useCreateEscrowAction(order: Order) {
 		status: state.status,
 		execute: actionFn,
 		continue: undefined,
+		errorMessage: state.errorMessage
 	} as const;
 }
