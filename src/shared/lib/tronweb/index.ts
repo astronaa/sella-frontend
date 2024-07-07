@@ -11,12 +11,15 @@ type TronWeb = IncompleteTronWeb & {
 		toHex(str: string): string
 	},
 	toBigNumber(num: number | bigint): object,
+	toAscii(raw: string): string,
 
 	trx: {
 		sendRawTransaction(transaction: object): Promise<{
-			result: boolean,
-			transaction: { txID: string }
-		}>
+			code: string,
+			message: string,
+			txid: string
+		}>,
+		getConfirmedTransaction(txId: string): Promise<object>
 	}
 }
 
