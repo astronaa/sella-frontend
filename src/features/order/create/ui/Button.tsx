@@ -6,7 +6,7 @@ import { OrderId, PayloadPaymentToken, apiClient } from "~/shared/api/client";
 import { useProductStrictContext } from "~/entities/product";
 
 export interface ActionCallbacks {
-	onActionFulfilled?: (orderId: OrderId) => void,
+	onActionFulfilled?: (orderId: OrderId, method: PayloadPaymentToken) => void,
 	onActionRejected?: (error: Error) => void
 }
 
@@ -30,7 +30,7 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 			return data;
 		},
 		onError: onActionRejected,
-		onSuccess: order => onActionFulfilled?.(order.id)
+		onSuccess: order => onActionFulfilled?.(order.id, method)
 	})
 	
 	return (

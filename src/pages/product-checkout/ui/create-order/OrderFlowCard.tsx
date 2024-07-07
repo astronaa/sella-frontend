@@ -21,7 +21,7 @@ export function OrderFlowCard({ product, method }: Props) {
 			className='w-full'
 			product={product}
 			defaultValue={method}
-			onActionFulfilled={orderId => {
+			onActionFulfilled={(orderId, method) => {
 				if (method)
 					router.push(`/products/${product.id}/checkout/${orderId}?tab=${tab}&${objToSearchParams(method)}`)
 			}}

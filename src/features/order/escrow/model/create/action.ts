@@ -28,6 +28,9 @@ export function useCreateEscrowAction(order: Order) {
 		if (!token)
 			throw new EscrowError('generic', "cannot find corresponding token for input token type");
 
+		if(state.status == 'error')
+			reset();
+
 		const methods = await prepare({ chain, token });
 
 		do {
@@ -60,7 +63,7 @@ export function useCreateEscrowAction(order: Order) {
 
 					setState(s => ({ ...s, status: 'done' }));
 
-				case 'done':
+				default:
 					return;
 			}
 		}
@@ -68,16 +71,14 @@ export function useCreateEscrowAction(order: Order) {
 	}
 
 	const { mutateAsync, isPending } = useMutation({
-		mutationFn: async (args: CreateEscrowArgs) => {
-			try {
-				await execute(args);
-			}
-			catch (error) {
-				reset();
-				throw error;
-			}
-		}
+		mutationFn: execute,
+		onError: (error) => setState(s => ({
+			...s, status: 'error', errorMessage: error.message
+		})),
+		retry: false
 	})
+
+	const actionFn = isPending ? undefined : mutateAsync;
 
 	if (!paymentMethods) {
 		return {
@@ -87,7 +88,7 @@ export function useCreateEscrowAction(order: Order) {
 		} as const;
 	}
 
-	if(state.status == 'done') {
+	if (state.status == 'done') {
 		return {
 			status: state.status,
 			execute: undefined,
@@ -99,13 +100,13 @@ export function useCreateEscrowAction(order: Order) {
 		return {
 			status: state.status,
 			execute: undefined,
-			continue: isPending ? undefined : mutateAsync,
+			continue: actionFn,
 		} as const;
 	}
 
 	return {
 		status: state.status,
-		execute: mutateAsync,
+		execute: actionFn,
 		continue: undefined,
 	} as const;
 }
