@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ordersQueries } from "~/entities/order";
-import { OrderEscrowCreateCard } from "~/features/order/escrow";
+import { OrderEscrowCreateCard, OrderEscrowHoldingCard } from "~/features/order/escrow";
 import { OrderId, PayloadPaymentToken } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { toaster } from "~/shared/ui/toaster";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function OrderFlowCard({ orderId, method }: Props) {
-	const { data: order } = useQuery({
+	const { data: order, refetch, isFetching } = useQuery({
 		...ordersQueries.getByIdOptions(orderId),
 		staleTime: Infinity
 	})
@@ -23,7 +23,7 @@ export function OrderFlowCard({ orderId, method }: Props) {
 	const watchAccount = useWatchAccount();
 	const startFlow = useRegisterFlow(s => s.startFlow);
 
-	if (!order) {
+	if (isFetching || !order) {
 		return (
 			<Skeleton
 				loading={true}
@@ -32,30 +32,40 @@ export function OrderFlowCard({ orderId, method }: Props) {
 		);
 	}
 
+	if (order.transaction.status == 'Unpaid') {
+		return (
+			<OrderEscrowCreateCard
+				className='w-full'
+				order={order} method={method}
+				onActionFulfilled={refetch}
+				onActionRejected={(error, retry) => {
+					switch (error.cause) {
+						case "eth-not-found":
+							startFlow();
+
+							watchAccount({
+								once: true,
+								onConnected: retry
+							})
+
+							break;
+
+						default:
+							toaster.create({
+								type: 'error',
+								title: 'Payment error',
+								description: error.message
+							})
+					}
+				}}
+			/>
+		);
+	}
+
 	return (
-		<OrderEscrowCreateCard
+		<OrderEscrowHoldingCard
 			className='w-full'
-			order={order} method={method}
-			onActionRejected={(error, retry) => {
-				switch (error.cause) {
-					case "eth-not-found":
-						startFlow();
-
-						watchAccount({
-							once: true,
-							onConnected: retry
-						})
-
-						break;
-
-					default:
-						toaster.create({
-							type: 'error',
-							title: 'Payment error',
-							description: error.message
-						})
-				}
-			}}
+			order={order}
 		/>
 	);
 }
