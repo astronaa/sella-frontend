@@ -111,7 +111,7 @@ export function Card({ order, method, onActionFulfilled, onActionRejected, autoR
 				</div>
 
 				{action.status == 'error' && (
-					<span className='break-words text-black-40'>
+					<span className='break-words text-black-40 max-h-[9rem] overflow-y-auto'>
 						{action.errorMessage}
 					</span>
 				)}
