@@ -7,6 +7,7 @@ export type OrderId = string;
 
 export interface Order {
 	id: OrderId;
+	price: number;
 	product: Product;
 	store: Store;
 	transaction: Transaction;

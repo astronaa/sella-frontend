@@ -1,1 +1,1 @@
-export { Card as OrderEscrowCard } from './ui/Card';
+export { Card as OrderEscrowCreateCard } from './ui/create/Card';

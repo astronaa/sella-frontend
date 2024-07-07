@@ -4,7 +4,7 @@
 import { HTMLArkProps, ark } from "@ark-ui/react";
 import { ProductProp } from "./Prop";
 import { cn } from "~/shared/lib/cn";
-import { ProductProvider, useProductStrictContext } from "./context";
+import { ProductProvider, useProductStrictContext } from "../model/context";
 
 import { Price } from './Price';
 import { Image } from './Image';
