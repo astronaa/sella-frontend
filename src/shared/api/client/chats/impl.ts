@@ -1,6 +1,6 @@
 import { ProductId } from "../products/model";
 import { authFetchClient } from "../fetch-client";
-import { mapDtoToChat } from "./mappers";
+import { mapDtoToChat, mapDtoToChatMessage } from "./mappers";
 import { ChatId } from "./model";
 import { PayloadPagination } from "../shared/schemas";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
@@ -9,12 +9,16 @@ export function createChatsClient() {
 	return {
 		fromProduct: (productId: ProductId) => ({
 			async get() {
-				const { data, error } = await authFetchClient.GET('/api/chats/{id}', {
+				const { data, error } = await authFetchClient.GET('/api/products/{id}/chat', {
 					params: { path: { id: productId } }
 				});
 
 				return data ? {
-					data: mapDtoToChat(data), error
+					data: {
+						chat: mapDtoToChat(data.result), 
+						accessToken: data.metadata.accessToken as string
+					},
+					error
 				} : {
 					data, error
 				}
@@ -23,12 +27,21 @@ export function createChatsClient() {
 		}),
 		for: (chatId: ChatId) => ({
 			async getMessages(pagination: PayloadPagination = { page: 1, limit: 10 }) {
-				return await authFetchClient.GET('/api/chats/messages/{chatId}', {
+				const { data, error } = await authFetchClient.GET('/api/chats/{chatId}/messages', {
 					params: {
 						path: { chatId },
 						query: mapPaginationPayloadToDto(pagination)
 					}
 				});
+
+				return data ? {
+					data: {
+						items: data.data.map(mapDtoToChatMessage),
+						total: data.total,
+					}
+				} : {	
+					data, error 
+				}
 			}
 		})
 	}

@@ -7,7 +7,12 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'sella.veydlin.com',
 				pathname: '/api/media/**'
-			}
+			},
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				pathname: '/api/media/**'
+			},
 		]
 	},
 	webpack(config) {

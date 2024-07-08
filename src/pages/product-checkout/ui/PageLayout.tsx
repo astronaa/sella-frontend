@@ -19,7 +19,7 @@ export function PageLayout({ children, product, initialTab = 'chat' }: PropsWith
 		<div className='flex flex-col w-full gap-[1rem] max-w-content mx-auto px-[1rem]'>
 			<PageProductCard
 				product={product}
-				className='w-full max-w-full lg:hidden'
+				className='w-full max-w-full lg:hidden flex-shrink-0'
 			/>
 
 			<Tabs.Root
