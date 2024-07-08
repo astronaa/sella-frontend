@@ -49,7 +49,7 @@ export function useChatSocketForProduct(productId: ProductId, args: UseChatSocke
 	const onNewMessageCb = useCallbackRef(args?.onNewMessage);
 
 	const { socketRef } = useSocketIo({
-		uri: 'ws://localhost:3003', accessToken,
+		accessToken,
 		onConnect: socket => socket.emit('joinRoom', { chatId }),
 		onCreated: socket => {
 			if (!onNewMessageListenersCount) {

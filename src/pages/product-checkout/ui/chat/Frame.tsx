@@ -54,47 +54,59 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 		<div
 			{...props}
 			className={cn(
-				'flex flex-col justify-between border border-secondary bg-white/[.04]',
-				'rounded-[1.25rem] p-[1rem] pt-0 gap-[1rem] h-[44.875rem]',
+				'flex flex-col rounded-[1.25rem] gap-[1.25rem] h-[44.875rem] overflow-hidden',
 				className
 			)}
 		>
 			<PageProductCard
 				product={product}
-				className='w-full max-w-full max-lg:hidden mt-[1rem] flex-shrink-0'
+				className='w-full max-w-full max-lg:hidden flex-shrink-0'
 			/>
 
-			<ChatMessagesStream
-				product={product}
-				containerRef={containerRef}
-				className='flex-grow overflow-y-auto pt-[1rem]'
-				onScroll={onMessagesStreamScroll}
-				style={{ scrollbarWidth: 'thin' }}
-			/>
-
-			<Form
-				validate={validator}
-				onSubmit={onSubmit}
-				subscription={{}}
-			>
-				{({ handleSubmit }) => (
-					<form className='flex gap-[1rem] w-full' onSubmit={handleSubmit}>
-						<Field name='message'>
-							{props => (
-								<Input
-									className='w-full min-h-full rounded-[1.25rem]'
-									placeholder='Your Message'
-									{...props.input}
-								/>
-							)}
-						</Field>
-
-						<VSubmitButton className='rounded-[1.25rem] px-[1.5rem]'>
-							Send
-						</VSubmitButton>
-					</form>
+			<div
+				className={cn(
+					'flex flex-col justify-between border border-secondary bg-white/[.04] relative',
+					'rounded-[1.25rem] gap-[1rem] flex-grow min-h-0',
+					className
 				)}
-			</Form>
+			>
+				<ChatMessagesStream
+					product={product}
+					containerRef={containerRef}
+					className='flex-grow overflow-y-auto'
+					onScroll={onMessagesStreamScroll}
+				/>
+
+				<Form
+					validate={validator}
+					onSubmit={onSubmit}
+					subscription={{}}
+				>
+					{({ handleSubmit }) => (
+						<form 
+							className={cn(
+								'flex gap-[1rem] w-full p-[1rem] absolute bottom-0 right-0 left-0',
+								'bg-[#0F0F0F]/20 backdrop-blur-sm border border-transparent border-t-secondary'
+							)} 
+							onSubmit={handleSubmit}
+						>
+							<Field name='message'>
+								{props => (
+									<Input
+										className='w-full min-h-full rounded-[1.25rem] border border-secondary'
+										placeholder='Your Message'
+										{...props.input}
+									/>
+								)}
+							</Field>
+
+							<VSubmitButton className='rounded-[1.25rem] px-[1.5rem]'>
+								Send
+							</VSubmitButton>
+						</form>
+					)}
+				</Form>
+			</div>
 		</div>
 	);
 }

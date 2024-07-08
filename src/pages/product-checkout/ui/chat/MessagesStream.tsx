@@ -39,13 +39,17 @@ export function ChatMessagesStream({ className, product, containerRef, ...props 
 			{...props}
 			ref={mergedRef}
 			className={cn('relative flex flex-col-reverse w-full', className)}
+			style={{ 
+				'--scrollbar-track-mt': '1rem',
+				'--scrollbar-track-mb': '6rem',
+			} as React.CSSProperties}
 		>
-			<div className='flex flex-col gap-[1rem]' >
+			<div className='flex flex-col gap-[1rem] pb-[6rem]'>
 				<div
-					className='flex flex-col w-full gap-[1rem] mt-auto px-[0.25rem]'
+					className='flex flex-col w-full gap-[1rem] mt-auto px-[0.75rem]'
 				>
 					{messages?.pages.map(page => (
-						<Fragment key={page.items[0].id}>
+						<Fragment key={page.items[0]?.id}>
 							{page.items.map(m => {
 								const isLocalMsg = m.sender.username == user?.username;
 

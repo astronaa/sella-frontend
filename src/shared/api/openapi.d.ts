@@ -782,7 +782,7 @@ export interface components {
             /** @description Tron address */
             tronAddress: string;
         };
-        StoreProductDto: {
+        EnumeratedProductDto: {
             id: string;
             name: string;
             holdPeriod: number;
@@ -795,7 +795,7 @@ export interface components {
             tagNames: string[];
         };
         ProductsResponseDto: {
-            data: components["schemas"]["StoreProductDto"][];
+            data: components["schemas"]["EnumeratedProductDto"][];
             total: number;
         };
         RatingDto: {
@@ -851,6 +851,7 @@ export interface components {
             name: string;
             /** @description The address of the token */
             address: string;
+            decimals: number;
         };
         PaymentMethod: {
             /** @description The name of the blockchain */
@@ -890,6 +891,8 @@ export interface components {
             /** @default false */
             isFrozen: boolean;
             tagNames: string[];
+            /** Format: date-time */
+            createdAt: string;
             store: components["schemas"]["BaseStoreDto"];
             storeOwner: components["schemas"]["StoreOwnerDto"];
         };
@@ -916,6 +919,8 @@ export interface components {
             /** @default false */
             isFrozen: boolean;
             tagNames: string[];
+            /** Format: date-time */
+            createdAt: string;
         };
         ProductUpdateDto: {
             name?: string;
@@ -1013,19 +1018,23 @@ export interface components {
             product: components["schemas"]["BaseProductDto"];
             seller: components["schemas"]["SellerDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
+            /** Format: int64 */
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            /** @enum {string} */
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
             /** Format: date-time */
             createdAt: string;
         };
         OrderCreateDto: {
             productId: string;
-            paymentType: string;
+            token: string;
+            blockchain: string;
         };
         OrdersResponseDto: {
             data: components["schemas"]["OrderInfoDto"][];
@@ -1042,13 +1051,16 @@ export interface components {
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
+            /** Format: int64 */
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            /** @enum {string} */
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1455,6 +1467,12 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                query?: string;
+                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
+                /** @description Minimum price (inclusive) */
+                minPrice?: number;
+                /** @description Maximum price (inclusive) */
+                maxPrice?: number;
             };
             header?: never;
             path: {
@@ -2039,7 +2057,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                productId: string;
+                orderId: string;
             };
             cookie?: never;
         };

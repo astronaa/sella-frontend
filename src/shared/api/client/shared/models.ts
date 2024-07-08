@@ -1,4 +1,4 @@
-export type TransactionStatus = "Dispute" | "Unpaid" | "Hold" | "Claimed" | "Refunded";
+export type TransactionStatus = "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
 export type TransactionFulfillmentStatus = "Dispute" | "Pending" | "Processing" | "Fulfilled" | "Failed" | "Canceled";
 
 export interface Transaction {
