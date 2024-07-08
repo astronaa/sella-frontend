@@ -1,45 +1,44 @@
 'use client';
 
 import { Button, ButtonProps } from "~/shared/ui/kit/button";
-import { ValueType } from "../model/schema";
 import { useMutation } from "@tanstack/react-query";
-import { OrderId, apiClient } from "~/shared/api/client";
+import { OrderId, PayloadPaymentToken, apiClient } from "~/shared/api/client";
 import { useProductStrictContext } from "~/entities/product";
 
-interface ButtonCreateOrderProps extends ButtonProps {
-	method: ValueType,
-	onActionFulfilled?: (orderId: OrderId) => void
+export interface ActionCallbacks {
+	onActionFulfilled?: (orderId: OrderId, method: PayloadPaymentToken) => void,
+	onActionRejected?: (error: Error) => void
 }
 
-export function ButtonCreateOrder({ method, onActionFulfilled, ...props }: ButtonCreateOrderProps) {
+interface ButtonCreateOrderProps extends ButtonProps, ActionCallbacks {
+	method: PayloadPaymentToken,
+}
+
+export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected, ...props }: ButtonCreateOrderProps) {
 	const product = useProductStrictContext();
 
 	const { mutateAsync: create, isPending } = useMutation({
 		mutationFn: async () => {
 			const { data, error } = await apiClient.orders.create({
 				productId: product.id,
-				paymentMethod: method.token
+				paymentType: method.token
 			});
 
-			if(error)
+			if (error)
 				throw error;
 
 			return data;
-		}
+		},
+		onError: onActionRejected,
+		onSuccess: order => onActionFulfilled?.(order.id, method)
 	})
-
-	const onClick = async () => {
-		const result = await create().catch(() => null);
-		if(result)
-			onActionFulfilled?.(result.id);
-	}
-
+	
 	return (
 		<Button
-			size='xl' 
-			{...props} 
-			disabled={isPending || !!props?.disabled}
-			onClick={onClick}
+			size='xl'
+			{...props}
+			onClick={() => create()}
+			disabled={isPending}
 		>
 			Pay Now
 		</Button>

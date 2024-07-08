@@ -1,4 +1,6 @@
-import { ImageEntry } from "../shared/models";
+import { ImageEntry, Rating } from "../shared/models";
+import { Store } from "../stores/model";
+import { User } from "../users/model";
 
 export type ProductId = string;
 
@@ -23,4 +25,10 @@ export interface Product {
 		dislikes: number;
 		reviewsCount: number;
 	};
+
+	store?: Store & {
+		owner: User & {
+			overallRating: Rating
+		}
+	}
 }

@@ -1,9 +1,5 @@
-import {
-	TransactionStatusBadge,
-	TransactionActionButton
-} from "./TransactionElements";
-
-import { FlexTable } from "~/shared/ui/kit";
+import { TransactionStatusBadge } from "./TransactionElements";
+import { FlexTable, Tooltip } from "~/shared/ui/kit";
 import { SalesResponse } from "../api/sales";
 import { ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
@@ -12,6 +8,8 @@ import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { BleedingContainer } from "./BleedingContainer";
 import { dayJs } from "~/shared/lib/dayjs";
 import { TableSkeletons } from "./TableSkeletons";
+import Link from "next/link";
+import { IconButton } from "~/shared/ui/kit/button";
 
 const config = [
 	{ width: '3.75rem' },
@@ -25,7 +23,7 @@ const config = [
 ]
 
 interface SalesTableProps {
-	data?: SalesResponse, 
+	data?: SalesResponse,
 	loading?: boolean,
 	startIndex: number
 }
@@ -82,10 +80,22 @@ export function SalesTable({ data, loading, startIndex }: SalesTableProps) {
 										</Badge>
 									</span>
 									<span className='text-accent-100'>
-										{sale.product.price} USDT
+										{sale.price} USDT
 									</span>
 									<span className='sticky right-0'>
-										<TransactionActionButton transaction={sale.transaction} />
+										<Link href={`/products/${sale.product.id}/checkout/${sale.id}`}>
+											<Tooltip.Composed
+												label='Go to sale'
+												closeDelay={0} usePortal
+											>
+												<IconButton
+													className='backdrop-blur-[1rem]'
+													colorPalette='gray' size='sm'
+												>
+													<Icons.Package />
+												</IconButton>
+											</Tooltip.Composed>
+										</Link>
 									</span>
 								</FlexTable.Row>
 							))

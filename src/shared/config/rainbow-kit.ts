@@ -3,9 +3,7 @@
 import {
 	mainnet,
 	polygon,
-	optimism,
-	arbitrum,
-	base,
+	sepolia
 } from 'wagmi/chains';
 
 import { darkTheme, getDefaultConfig } from '@rainbow-me/rainbowkit';
@@ -14,7 +12,7 @@ import { resolvedTwConfig } from '../lib/resolved-tw-config';
 export const wagmiConfig = getDefaultConfig({
 	appName: 'My RainbowKit App',
 	projectId: 'YOUR_PROJECT_ID',
-	chains: [mainnet, polygon, optimism, arbitrum, base],
+	chains: [mainnet, polygon, sepolia],
 	ssr: true,
 });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from "~/shared/api/client"
+import { Product, productMock } from "~/shared/api/client"
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { FlexTable } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
@@ -18,15 +18,14 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
-import { ProductsInitialData } from "../api";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 import ProductsHeader from "~/pages/store/ui/ProductsHeader";
 
 interface ProductsStreamProps {
 	className?: string,
-	initialData: ProductsInitialData
 }
 
-export function ProductsStream({ initialData, className }: ProductsStreamProps) {
+export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const [page, setPage] = useState(1);
@@ -36,20 +35,19 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 			storeUrl: store.url,
 			limit: PRODUCT_ITEMS_PER_PAGE,
 		}),
-		initialData,
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
 	})
 
 	const { data: user } = useUserGetQuery();
-	const products = data?.items ?? []
+	const products = data?.items;
 	const total = data?.total ?? 0;
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
-			{!products.length && (
+			{products && !products.length && (
 				<NotFoundScreen>
 					<Icons.PackageThin />
 
@@ -88,7 +86,7 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 				</BleedingContainer>
 			) : (
 				<div className="flex flex-col">
-					<ProductsHeader productsCount={products.length}/>
+					<ProductsHeader productsCount={products ? products.length : 0}/>
 					<ProductsGrid
 						products={products}
 						loading={isFetching}
@@ -111,7 +109,7 @@ export function ProductsStream({ initialData, className }: ProductsStreamProps) 
 }
 
 interface ProductsListProps extends PropsWithChildren {
-	products: Product[],
+	products?: Product[],
 	loading?: boolean
 }
 
@@ -122,9 +120,22 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 			'max-md:grid-cols-1 max-lg:grid-cols-2 max-xl:grid-cols-3',
 			loading && 'opacity-50'
 		)}>
-			{products.map(p => (
-				<ProductCard.Root 
-					product={p} key={p.id} 
+			{loading && !products && (
+				Array.from({ length: 4 }).map((_, index) => (
+					<Skeleton
+						key={index} loading={true}
+						className='rounded-[1.25rem]'
+					>
+						<ProductCard.Composed
+							product={productMock}
+						/>
+					</Skeleton>
+				))
+			)}
+
+			{products?.map(p => (
+				<ProductCard.Root
+					product={p} key={p.id}
 					className='w-full mx-auto h-full' asChild
 				>
 					<ProductLink product={p}>
@@ -153,7 +164,7 @@ const tableConfig = [
 ]
 
 function ProductsEditTable({ products, loading, children }: ProductsListProps) {
-	if (!products.length)
+	if (!products || !products.length)
 		return null;
 
 	return (
@@ -174,13 +185,16 @@ function ProductsEditTable({ products, loading, children }: ProductsListProps) {
 				{products.map((p, index) => (
 					<FlexTable.Row key={p.id} >
 						<span>{index + 1}</span>
-						<span className='text-white flex gap-[0.5rem] items-center'>
-							<ProductImage 
+						<ProductLink
+							product={p}
+							className='text-white flex gap-[0.5rem] items-center rounded-[0.5rem]'
+						>
+							<ProductImage
 								product={p}
 								className='size-[2rem]'
 							/>
 							{p.name}
-						</span>
+						</ProductLink>
 						<span>
 
 						</span>

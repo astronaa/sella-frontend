@@ -3,7 +3,7 @@
 import NextLink from "next/link";
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "~/shared/lib/cn";
-import { useProductContextOrProp } from "./context";
+import { useProductContextOrProp } from "../model/context";
 import { ProductProp } from "./Prop";
 
 type LinkProps = Omit<ComponentPropsWithoutRef<typeof NextLink>, 'href'> & Partial<ProductProp>;

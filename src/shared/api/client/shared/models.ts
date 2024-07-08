@@ -1,5 +1,5 @@
-export type TransactionStatus = "Unpaid" | "Hold" | "Released" | "Refunded";
-export type TransactionFulfillmentStatus = "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
+export type TransactionStatus = "Dispute" | "Unpaid" | "Hold" | "Claimed" | "Refunded";
+export type TransactionFulfillmentStatus = "Dispute" | "Pending" | "Processing" | "Fulfilled" | "Failed" | "Canceled";
 
 export interface Transaction {
 	status: TransactionStatus;
@@ -7,12 +7,13 @@ export interface Transaction {
 	totalPaid: number;
 	transactionUrl: string;
 	createdAt: string;
+	tokenAmount: number;
 }
 
 export type ImageEntry = string;
 
 export const paymentMethodTypes = [
-	"ETH", "TRX", "MATIC", "USDT", "USDC", "DAI", "SELLA", "SEPOLIA"
+	"ETH", "TRX", "MATIC", "SEPOLIA"
 ] as const;
 
 export type PaymentMethodTypes = typeof paymentMethodTypes[number];
@@ -21,9 +22,16 @@ export interface PaymentMethod {
 	name: string;
 	value: PaymentMethodTypes;
 	contractAddress: string;
+	chainId: number;
 
 	tokens: {
 		name: string;
 		address: string;
 	}[]
+}
+
+export interface Rating {
+	likes: number
+	dislikes: number
+	reviewsCount: number
 }

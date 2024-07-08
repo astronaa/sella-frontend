@@ -1,27 +1,32 @@
 import { ChatFrame } from "../chat/Frame";
 import { PageLayout, PossibleTabs } from "../PageLayout";
-import { fetchOrder } from "../../api/order";
 import { OrderFlowCard } from "./OrderFlowCard";
-import { OrderId } from "~/shared/api/client";
+import { OrderId, PayloadPaymentToken, ProductId } from "~/shared/api/client";
+import { fetchProduct } from "../../api/product";
 
 interface PageProcessOrderProps {
+	productId: ProductId,
 	orderId: OrderId,
-	initialTab?: PossibleTabs
+	initialTab?: PossibleTabs,
+	method: PayloadPaymentToken
 }
 
-export async function PageProcessOrder({ orderId, initialTab = 'chat' }: PageProcessOrderProps) {
-	const order = await fetchOrder(orderId);
+export async function PageProcessOrder({ orderId, productId, initialTab = 'chat', method }: PageProcessOrderProps) {
+	const product = await fetchProduct(productId);
  
 	return (
 		<PageLayout
 			initialTab={initialTab}
-			product={order.product}
+			product={product}
 		>
 			<ChatFrame
-				product={order.product}
+				product={product}
 				className='w-full'
 			/>
-			<OrderFlowCard order={order} />
+			<OrderFlowCard 
+				orderId={orderId} 
+				method={method}
+			/>
 		</PageLayout>
 	)
 }

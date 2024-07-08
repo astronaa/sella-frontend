@@ -18,3 +18,10 @@ export const schemaPaginationPayload = z.object({
 export type PayloadPagination = z.infer<typeof schemaPaginationPayload>;
 
 export const schemaPaymentMethods = z.enum(paymentMethodTypes)
+
+export const schemaPaymentToken = z.object({
+	block: schemaPaymentMethods,
+	token: z.string()
+})
+
+export type PayloadPaymentToken = z.infer<typeof schemaPaymentToken>; 

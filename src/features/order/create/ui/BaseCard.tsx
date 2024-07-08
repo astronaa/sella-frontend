@@ -10,13 +10,13 @@ import { RadioGroup, Select } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
-import { ValueType, schema } from "../model/schema";
 import { paymentMethodsQueries } from "~/entities/payment-methods";
+import { PayloadPaymentToken, schemaPaymentToken } from "~/shared/api/client";
 
 export type BaseCardProps = WithControllableProps<
-	ValueType, Omit<HTMLAttributes<HTMLDivElement>, 'children'>
+	PayloadPaymentToken, Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 > & {
-	children?: MaybeRenderProp<ValueType>
+	children?: MaybeRenderProp<PayloadPaymentToken>
 } & ProductProp
 
 export function BaseCard({
@@ -102,7 +102,7 @@ export function BaseCard({
 					<RadioGroup.Root
 						value={value.token}
 						onValueChange={change => {
-							setValue(v => schema.parse({ ...v, token: change.value }));
+							setValue(v => schemaPaymentToken.parse({ ...v, token: change.value }));
 						}}
 					>
 						{availableTokens?.map(c => (
