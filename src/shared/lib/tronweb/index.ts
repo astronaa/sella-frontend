@@ -10,10 +10,16 @@ type TronWeb = IncompleteTronWeb & {
 	address: {
 		toHex(str: string): string
 	},
-	toBigNumber(num: number): object,
+	toBigNumber(num: number | bigint): object,
+	toAscii(raw: string): string,
 
 	trx: {
-		sendRawTransaction(transaction: object): Promise<object>
+		sendRawTransaction(transaction: object): Promise<{
+			code: string,
+			message: string,
+			txid: string
+		}>,
+		getConfirmedTransaction(txId: string): Promise<object>
 	}
 }
 

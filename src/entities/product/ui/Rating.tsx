@@ -1,5 +1,5 @@
 import { ProductProp } from "~/entities/product";
-import { useProductContextOrProp } from "./context";
+import { useProductContextOrProp } from "../model/context";
 import { RatingRow } from "~/shared/ui/rating";
 
 export function Rating({ product: p, ...props }: Omit<RatingRow.RootProps, 'rating'> & Partial<ProductProp>) {

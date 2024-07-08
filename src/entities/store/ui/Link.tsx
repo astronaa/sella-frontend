@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { ComponentPropsWithoutRef } from "react";
 import { StoreProp } from "./Prop";
 import { cn } from "~/shared/lib/cn";
-import { useStoreContextOrProp } from "./context";
+import { useStoreContextOrProp } from "../model/context";
 
 type LinkProps = Omit<ComponentPropsWithoutRef<typeof NextLink>, 'href'> & Partial<StoreProp>;
 

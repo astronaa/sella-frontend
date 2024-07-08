@@ -10,7 +10,7 @@ export {
 	StoreProvider,
 	useStoreContext,
 	useStoreStrictContext
-} from './ui/context';
+} from './model/context';
 
 export type { StoreProp } from './ui/Prop';
 

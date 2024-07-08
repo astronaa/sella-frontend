@@ -4,7 +4,7 @@ export {
 	ProductProvider, 
 	useProductContext,
 	useProductStrictContext 
-} from "./ui/context";
+} from "./model/context";
 
 export { 
 	Link as ProductLink,

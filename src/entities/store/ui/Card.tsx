@@ -8,7 +8,7 @@ import { ComponentProps } from "react";
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
 import { PreviewImage, PreviewImageProps } from "~/shared/ui/image";
-import { StoreProvider, useStoreStrictContext } from "./context";
+import { StoreProvider, useStoreStrictContext } from "../model/context";
 import { RatingRow } from "~/shared/ui/rating";
 
 export type RootProps = HTMLArkProps<'div'> & StoreProp;

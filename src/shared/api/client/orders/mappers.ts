@@ -8,6 +8,7 @@ type Schemas = components['schemas'];
 
 export const mapDtoToOrder = (obj: Schemas['OrderInfoDto']) => ({
 	id: obj.id,
+	price: Number(obj.price),
 	transaction: {
 		status: obj.status,
 		fulfillmentStatus: obj.fulfillmentStatus,

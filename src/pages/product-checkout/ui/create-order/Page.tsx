@@ -1,18 +1,16 @@
-import { StoreId } from "~/shared/api/client"
+import { PayloadPaymentToken, StoreId } from "~/shared/api/client"
 import { fetchProduct } from "../../api/product";
 import { ChatFrame } from "../chat/Frame";
 import { PageLayout, schemaPossibleTabs } from "../PageLayout";
 import { OrderFlowCard } from "./OrderFlowCard";
-import { schemaOrderCreate } from "~/features/order/create";
 
 interface PageCreateOrderProps {
 	storeId: StoreId,
 	initialTab?: string,
-	token?: string,
-	block?: string
+	method: PayloadPaymentToken
 }
 
-export async function PageCreateOrder({ storeId, initialTab = 'chat', token, block }: PageCreateOrderProps) {
+export async function PageCreateOrder({ storeId, initialTab = 'chat', method }: PageCreateOrderProps) {
 	const product = await fetchProduct(String(storeId));
 
 	return (
@@ -26,7 +24,7 @@ export async function PageCreateOrder({ storeId, initialTab = 'chat', token, blo
 			/>
 			<OrderFlowCard
 				product={product}
-				method={schemaOrderCreate.parse({ token, block })}
+				method={method}
 			/>
 		</PageLayout>
 	)

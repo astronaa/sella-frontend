@@ -4,12 +4,12 @@ import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'sales'
 
-interface GetSalesQueryOptions {
+interface GetSalesOptions {
 	page: number,
 	limit: number
 }
 
-const getSalesQueryOptions = ({ page, limit }: GetSalesQueryOptions) =>
+export const getSalesOptions = ({ page, limit }: GetSalesOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, page, { limit }],
 		queryFn: async () => {
@@ -22,8 +22,8 @@ const getSalesQueryOptions = ({ page, limit }: GetSalesQueryOptions) =>
 		}
 	})
 
-export function useGetSales(args: GetSalesQueryOptions) {
-	return useQuery(getSalesQueryOptions(args))
+export function useGetSales(args: GetSalesOptions) {
+	return useQuery(getSalesOptions(args))
 }
 
 export function invalidateAll() {

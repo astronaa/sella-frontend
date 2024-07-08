@@ -1,41 +1,71 @@
 'use client';
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { ordersQueries } from "~/entities/order";
-import { OrderEscrowCard } from "~/features/order/escrow";
-import { OrderLeaveReviewCard } from "~/features/order/leave-review";
-import { OrderId } from "~/shared/api/client";
+import { OrderEscrowCreateCard, OrderEscrowHoldingCard } from "~/features/order/escrow";
+import { OrderId, PayloadPaymentToken } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { toaster } from "~/shared/ui/toaster";
+import { useRegisterFlow } from "~/widgets/register-flow";
+import { useWatchAccount } from "~/shared/lib/wagmi";
 
-export function OrderFlowCard({ orderId }: { orderId: OrderId }) {
-	const { data: order } = useQuery({
+interface Props {
+	orderId: OrderId,
+	method: PayloadPaymentToken
+}
+
+export function OrderFlowCard({ orderId, method }: Props) {
+	const { data: order, refetch, isFetching } = useQuery({
 		...ordersQueries.getByIdOptions(orderId),
 		staleTime: Infinity
 	})
 
-	const [showLeaveReview, setShowLeaveReview] = useState(false);
+	const watchAccount = useWatchAccount();
+	const startFlow = useRegisterFlow(s => s.startFlow);
 
-	if(!order) {
+	if (isFetching || !order) {
 		return (
-			<Skeleton 
+			<Skeleton
 				loading={true}
-				className='w-full h-[33.25rem] rounded-[1.25rem]'
+				className='w-full h-[22.5rem] rounded-[1.25rem]'
 			/>
 		);
 	}
 
-	return showLeaveReview ? (
-		<OrderLeaveReviewCard
-			order={order}
-			onActionFulfilled={() => setShowLeaveReview(false)}
+	if (order.transaction.status == 'Unpaid') {
+		return (
+			<OrderEscrowCreateCard
+				className='w-full'
+				order={order} method={method}
+				onActionFulfilled={refetch}
+				onActionRejected={(error, retry) => {
+					switch (error.cause) {
+						case "eth-not-found":
+							startFlow();
+
+							watchAccount({
+								once: true,
+								onConnected: retry
+							})
+
+							break;
+
+						default:
+							toaster.create({
+								type: 'error',
+								title: 'Payment error',
+								description: error.message
+							})
+					}
+				}}
+			/>
+		);
+	}
+
+	return (
+		<OrderEscrowHoldingCard
 			className='w-full'
-		/>
-	) : (
-		<OrderEscrowCard
 			order={order}
-			onActionFulfilled={() => setShowLeaveReview(true)}
-			className='w-full'
 		/>
 	);
 }

@@ -2,7 +2,7 @@
 
 import { cn } from "~/shared/lib/cn";
 import { ProductProp } from "./Prop";
-import { useProductContextOrProp } from "./context";
+import { useProductContextOrProp } from "../model/context";
 import { PreviewImage, PreviewImageProps } from "~/shared/ui/image";
 
 export function Image({ className, product: p, ...props }: Omit<PreviewImageProps, 'src' | 'alt'> & Partial<ProductProp>) {
