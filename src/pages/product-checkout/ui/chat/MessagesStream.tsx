@@ -1,46 +1,73 @@
 'use client';
 
-import { HTMLAttributes } from "react";
+import { Fragment, HTMLAttributes, RefObject, useRef } from "react";
 import { cn } from "~/shared/lib/cn";
-import { ChatMessageBubble, Message } from "./MessageBubble";
+import { ChatMessageBubble } from "./MessageBubble";
+import { ProductProp } from "~/entities/product";
+import { useUserGetQuery } from "~/entities/user";
+import { chatQueries } from "../../api/chat";
+import { useScrollPagination } from "~/shared/lib/use-scroll-pagination";
+import { useMergeRefs } from "~/shared/lib/use-merge-refs";
 
-interface ChatMessagesStreamProps extends HTMLAttributes<HTMLDivElement> {
-	initialMessages?: Message[];
-}
+type ChatMessagesStreamProps = HTMLAttributes<HTMLDivElement> & ProductProp & {
+	containerRef?: RefObject<HTMLDivElement>
+};
 
-export function ChatMessagesStream({ className, initialMessages = [], ...props }: ChatMessagesStreamProps) {
-	// const { data } = useQuery({
-	// 	queryKey: ['chat'],
-	// 	queryFn: async () => {
-	// 		const chatsRes = await apiClient.chats
-	// 			.fromProduct('d6067dc4-587a-47b9-b58a-ad9a7f7027f0')
-	// 			.get();
+export function ChatMessagesStream({ className, product, containerRef, ...props }: ChatMessagesStreamProps) {
+	const { data: user } = useUserGetQuery();
 
-	// 		if(chatsRes.error)
-	// 			throw chatsRes.error;
+	const {
+		data: messages,
+		fetchNextPage,
+		isFetchingNextPage,
+		hasNextPage,
+	} = chatQueries.useGetChatMessagesForProduct({
+		productId: product.id
+	});
 
-	// 		const messagesRes = await apiClient.chats
-	// 			.for(chatsRes.data.id)
-	// 			.getMessages()
+	const ref = useRef<HTMLDivElement>(null);
+	const mergedRef = useMergeRefs(ref, containerRef);
 
-	// 		if(messagesRes.error)
-	// 			throw messagesRes.error;
-
-	// 		return messagesRes.data;
-	// 	}
-	// })
-	
-	// console.log(data);
+	useScrollPagination(ref, {
+		shouldObserve: !isFetchingNextPage && hasNextPage,
+		onLoadMore: fetchNextPage,
+		threshold: 0.8
+	})
 
 	return (
-		<div {...props} className={cn('relative flex flex-col-reverse w-full', className)}>
-			<div className='flex flex-col gap-[1rem]'>
-				<div className='flex flex-col w-full gap-[1rem] mt-auto px-[0.25rem]'>
-					{initialMessages.map((m, index) => (
-						<ChatMessageBubble
-							key={index} message={m}
-							className={cn(m.title ? 'rounded-bl-none' : 'self-end bg-white/[.06] rounded-br-none')}
-						/>
+		<div
+			{...props}
+			ref={mergedRef}
+			className={cn('relative flex flex-col-reverse w-full', className)}
+		>
+			<div className='flex flex-col gap-[1rem]' >
+				<div
+					className='flex flex-col w-full gap-[1rem] mt-auto px-[0.25rem]'
+				>
+					{messages?.pages.map(page => (
+						<Fragment key={page.items[0].id}>
+							{page.items.map(m => {
+								const isLocalMsg = m.sender.username == user?.username;
+
+								return (
+									<ChatMessageBubble
+										key={m.id}
+										message={{
+											title: isLocalMsg ? undefined : m.sender.username,
+											imageUrl: isLocalMsg ? undefined : m.sender.avatarImage,
+											body: m.content,
+											createdAt: m.createdAt,
+											isSystem: false,
+										}}
+										className={cn(
+											isLocalMsg
+												? 'self-end bg-white/[.06] rounded-br-none'
+												: 'rounded-bl-none'
+										)}
+									/>
+								)
+							})}
+						</Fragment>
 					))}
 				</div>
 			</div>

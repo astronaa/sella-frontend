@@ -1,6 +1,7 @@
 'use client';
 
 import { Icons } from "~/shared/ui/icons";
+import { Tooltip } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 import { NavHeader } from "~/widgets/nav-header";
 import { RegsiterFlowStartButton } from "~/widgets/register-flow";
@@ -20,25 +21,33 @@ export function Header() {
 			</NavHeader.SlotUnauthorizedButtons>
 
 			<NavHeader.SlotAuthorizedNavButtons>
-				<NavHeader.NavIconButton
-					href='/dashboard/sales'
-					activeOnHrefs={['/dashboard/orders']}
-				>
-					<Icons.Package />
-				</NavHeader.NavIconButton>
+				<Tooltip.Composed label='Orders/Sales'>
+					<NavHeader.NavIconButton
+						href='/dashboard/sales'
+						activeOnHrefs={['/dashboard/orders']}
+					>
+						<Icons.Package />
+					</NavHeader.NavIconButton>
+				</Tooltip.Composed>
 
-				<NavHeader.NavIconButton href='/dashboard' end>
-					<Icons.Building />
-				</NavHeader.NavIconButton>
+				<Tooltip.Composed label='Dashboard'>
+					<NavHeader.NavIconButton href='/dashboard' end>
+						<Icons.Building />
+					</NavHeader.NavIconButton>
+				</Tooltip.Composed>
 
-				<NavHeader.NavIconButton
-					href='/dashboard/quests'
-					activeOnHrefs={['/dashboard/quests']}
-				>
-					<Icons.Coins />
-				</NavHeader.NavIconButton>
+				<Tooltip.Composed label='Quests'>
+					<NavHeader.NavIconButton
+						href='/dashboard/quests'
+						activeOnHrefs={['/dashboard/quests']}
+					>
+						<Icons.Coins />
+					</NavHeader.NavIconButton>
+				</Tooltip.Composed>
 
-				<UserSettingsButton />
+				<Tooltip.Composed label='Settings'>
+					<UserSettingsButton />
+				</Tooltip.Composed>
 			</NavHeader.SlotAuthorizedNavButtons>
 		</NavHeader.Root>
 	);
@@ -46,7 +55,7 @@ export function Header() {
 
 function UserSettingsButton() {
 	const { open, setOpen } = useUserProfileSettingsDialog();
-	
+
 	return (
 		<NavHeader.BaseNavIconButton
 			active={open} onClick={() => setOpen(true)}

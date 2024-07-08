@@ -2,7 +2,7 @@
 
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn";
-import { truncateStrFromMiddle } from "~/shared/lib/truncate";
+import { truncateStrFromMiddle } from "~/shared/lib/string-tools";
 import { useUserGetQuery } from "~/entities/user";
 import { useBalance } from "wagmi";
 import { useAccountModal } from "@rainbow-me/rainbowkit";

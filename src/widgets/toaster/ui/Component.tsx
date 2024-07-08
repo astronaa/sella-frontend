@@ -13,8 +13,11 @@ export function Component() {
 					<Toast.Title>{toast.title}</Toast.Title>
 					<Toast.Description>{toast.description}</Toast.Description>
 					<Toast.CloseTrigger asChild>
-						<IconButton size="xs" variant="ghost">
-							<Icons.Close className="size-[12px] text-black-40"/>
+						<IconButton 
+							size="xs" variant="ghost"
+							className='size-[1.5rem] border-none'
+						>
+							<Icons.Close className="size-[1em] text-black-40"/>
 						</IconButton>
 					</Toast.CloseTrigger>
 				</Toast.Root>

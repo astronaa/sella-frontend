@@ -21,6 +21,13 @@ export const ANOTHER_REASON_ID = 'SomethingElse' as const;
 
 export const schemaPaymentMethods = z.enum(paymentMethodTypes)
 
+export const schemaPaymentToken = z.object({
+	block: schemaPaymentMethods,
+	token: z.string()
+})
+
+export type PayloadPaymentToken = z.infer<typeof schemaPaymentToken>;
+
 export const reportReasons = [
 	"Spam",
 	"Nudity",

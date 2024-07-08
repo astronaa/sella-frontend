@@ -5,8 +5,3 @@ export {
 export {
 	Card as OrderCreateCard
 } from './ui/Card';
-
-export {
-	type ValueType as OrderCreatePayload,
-	schema as schemaOrderCreate
-} from './model/schema';
