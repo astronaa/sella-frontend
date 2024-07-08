@@ -5,6 +5,7 @@ import { Tooltip } from '@ark-ui/react/tooltip'
 import { Fragment } from 'react'
 import { type VariantProps, tv } from 'tailwind-variants'
 import { createStyleContext } from '~/shared/lib/create-style-context'
+import './tooltip.css';
 
 const tooltip = tv(
 	{
@@ -12,7 +13,7 @@ const tooltip = tv(
 		slots: {
 			trigger: 'tooltip__trigger',
 			arrow: 'tooltip__arrow',
-			arrowTip: 'tooltip__arrowTip',
+			arrowTip: 'tooltip__arrowTip border border-transparent border-l-secondary border-t-secondary',
 			positioner: 'tooltip__positioner',
 			content: 'tooltip__content bg-[#1f1f1f] rounded-[0.75rem] border border-secondary text-[0.90rem] font-normal',
 		},
@@ -49,9 +50,9 @@ export function Composed({ label, children, usePortal = false, ...props }: Compo
 			<PortalOrFragment>
 				<Positioner className='pointer-events-none'>
 					<Content>
-						{/* <Arrow>
+						<Arrow>
 							<ArrowTip />
-						</Arrow> */}
+						</Arrow>
 
 						{label}
 					</Content>
