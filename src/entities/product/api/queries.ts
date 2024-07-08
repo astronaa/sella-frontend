@@ -7,15 +7,21 @@ const QUERY_KEY = 'products'
 
 interface GetFromStoreOptions {
 	storeUrl: string,
-	page?: number,
-	limit?: number,
+	query: {
+		page: number
+		pageSize: number
+		sort: "new" | "old" | "price_asc" | "price_desc" | "rating"
+		query?: string
+		minPrice?: number
+		maxPrice?: number;
+	},
 }
 
-export const getFromStoreOptions = ({ storeUrl, page = 1, limit = 10 }: GetFromStoreOptions) =>
+export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 	queryOptions({
-		queryKey: [QUERY_KEY, { page, storeUrl, limit }],
+		queryKey: [QUERY_KEY, query],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({ page, limit });
+			const { data, error } = await apiClient.stores.for(storeUrl).getProducts(query);
 
 			if (error)
 				throw error;

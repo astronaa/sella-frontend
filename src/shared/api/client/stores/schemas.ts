@@ -41,3 +41,14 @@ export const schemaReport = z.object({
 });
 
 export type PayloadReport = z.infer<typeof schemaReport>
+
+export const schemaGetProducts = z.object({
+	page: z.number(),
+	pageSize: z.number(),
+	query: z.string().optional(),
+	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
+	minPrice: z.number().optional(),
+	maxPrice: z.number().optional()
+})
+
+export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;

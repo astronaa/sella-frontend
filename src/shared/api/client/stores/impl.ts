@@ -1,6 +1,6 @@
 import {
 	ANOTHER_REASON_ID,
-	PayloadCreate,
+	PayloadCreate, PayloadGetProducts,
 	PayloadReport,
 	PayloadUpdate,
 	reportReasons,
@@ -95,11 +95,11 @@ export function createStoresClient() {
 				}
 			},
 
-			async getProducts(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			async getProducts(pagination: PayloadGetProducts) {
 				const { data, error } = await authFetchClient.GET('/api/stores/{url}/products', {
 					params: {
 						path: { url: storeUrl },
-						query: mapPaginationPayloadToDto(pagination)
+						query: pagination
 					},
 				});
 

@@ -15,7 +15,7 @@ export function Heading() {
 	const { data: products } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			limit: PRODUCT_ITEMS_PER_PAGE,
+			query: {page: 1, pageSize: PRODUCT_ITEMS_PER_PAGE, sort: 'new'}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0

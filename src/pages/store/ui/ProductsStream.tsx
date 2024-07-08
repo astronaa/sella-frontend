@@ -34,7 +34,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			limit: PRODUCT_ITEMS_PER_PAGE,
+			query: {pageSize: PRODUCT_ITEMS_PER_PAGE, page: 1, sort: 'new'}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0

@@ -9,6 +9,7 @@ export function createChatsClient() {
 	return {
 		fromProduct: (productId: ProductId) => ({
 			async get() {
+				//@ts-expect-error open api changes
 				const { data, error } = await authFetchClient.GET('/api/chats/{id}', {
 					params: { path: { id: productId } }
 				});
@@ -23,6 +24,7 @@ export function createChatsClient() {
 		}),
 		for: (chatId: ChatId) => ({
 			async getMessages(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+				//@ts-expect-error open api changes
 				return await authFetchClient.GET('/api/chats/messages/{chatId}', {
 					params: {
 						path: { chatId },
