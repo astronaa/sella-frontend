@@ -24,7 +24,7 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<StoreWidget initialData={product} />
-						<ProductReportFlow productId={productId}/>
+						{product && <ProductReportFlow product={product}/>}
 					</div>
 				</div>
 

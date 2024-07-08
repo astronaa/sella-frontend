@@ -134,6 +134,12 @@ export function createStoresClient() {
 					parseAs: 'text'
 				})
 			},
+			async getReport() {
+				return await authFetchClient.GET('/api/stores/{url}/report', {
+					params: { path: { url: storeUrl } },
+					parseAs: 'text'
+				})
+			},
 			async report(payload: PayloadReport) {
 				return await authFetchClient.POST('/api/stores/{url}/report', {
 					params: { path: { url: storeUrl } },

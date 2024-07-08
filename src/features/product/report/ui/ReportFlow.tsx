@@ -5,11 +5,22 @@ import { IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import { ReportProductDialog } from "./ReportProductDialog";
 import { ReportSuccessDialog } from "./ReportSuccessDialog";
-import { ProductId } from "~/shared/api/client";
+import { useUserGetQuery } from "~/entities/user";
+import { Product } from "~/shared/api/client";
+import { useGetProductReport } from "~/entities/product/api/queries";
 
-export function ReportFlow({ productId }: { productId: ProductId }) {
+export function ReportFlow({ product }: { product: Product }) {
 	const { isOpen, open, handleOpenChange } = useDialogState();
-	const { isOpen: isOpenSucess, toggle: toggleSucess } = useDialogState();
+	const { isOpen: isOpenSuccess, toggle: toggleSuccess } = useDialogState();
+	const { data: user, isLoading: isUserLoading } = useUserGetQuery()
+
+	const { data: reportData, isLoading: isReportLoading } = useGetProductReport({ productId: product.id })
+
+	const isMyProduct = product.store?.owner.username === user?.username
+
+	if(isMyProduct || reportData || isReportLoading || isUserLoading) {
+		return null
+	}
 
 	return (
 		<>
@@ -27,14 +38,14 @@ export function ReportFlow({ productId }: { productId: ProductId }) {
 			<ReportProductDialog
 				open={isOpen}
 				onOpenChange={handleOpenChange}
-				onActionFulfilled={toggleSucess}
-				productId={productId}
+				onActionFulfilled={toggleSuccess}
+				productId={product.id}
 			/>
 
 			<ReportSuccessDialog
-				open={isOpenSucess}
+				open={isOpenSuccess}
 				onContinue={() => {
-					toggleSucess()
+					toggleSuccess()
 					handleOpenChange({ open: false })
 				}}
 			/>

@@ -8,6 +8,7 @@ import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 import { EditMode } from "./edit-mode";
 import { useQuery } from "@tanstack/react-query";
+import { useGetStoreReport } from "~/entities/store/api/queries";
 
 export function Heading() {
 	const store = useStoreStrictContext();
@@ -20,6 +21,8 @@ export function Heading() {
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
 	})
+
+	const { data: report } = useGetStoreReport({ store })
 
 	const { data: user } = useUserGetQuery();
 
@@ -42,7 +45,7 @@ export function Heading() {
 
 			{!!user && (
 				<div className='flex gap-[1rem] md:self-end'>
-					{store.ownerUsername == user.username ? (
+					{store.ownerUsername == user.username || report ? (
 						<>
 							<ManageDialog />
 							{products && products.total > 0 && (

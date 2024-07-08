@@ -54,6 +54,12 @@ export function createProductsClient() {
 					data, error
 				}
 			},
+			async getReport() {
+				return await authFetchClient.GET('/api/product/{id}/report', {
+					params: { path: { id: productId } },
+					parseAs: 'text'
+				})
+			},
 			async report(payload: PayloadReport) {
 				return await authFetchClient.POST('/api/product/{id}/report', {
 					params: { path: { id: productId } },

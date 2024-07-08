@@ -49,6 +49,20 @@ export function useGetOne(args: GetOneOptions) {
 	return useQuery(getGetOneOptions(args));
 }
 
+export function useGetProductReport({ productId }: { productId: ProductId }) {
+	return useQuery({
+		queryKey: ['product_report', productId],
+		queryFn: async () => {
+			const { data, error } = await apiClient.products.for(productId).getReport();
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+	})
+}
+
 export function invalidateAll() {
 	return queryClient.invalidateQueries({
 		predicate: q => q.queryKey.includes(QUERY_KEY)

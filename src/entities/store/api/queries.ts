@@ -34,9 +34,9 @@ export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptio
 	})
 }
 
-export function useGetAll({ 
+export function useGetAll({
 	page, limit,
-	initialData = { items: [], total: 0 }, 
+	initialData = { items: [], total: 0 },
 }: GetAllQueryOptions) {
 	return useQuery({
 		queryKey: [QUERY_KEY, page],
@@ -68,9 +68,23 @@ export function useGetForUser() {
 	})
 }
 
-export function useGetForExplore({ 
+export function useGetStoreReport({ store }: { store: Store }) {
+	return useQuery({
+		queryKey: ['store_report', store.url],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.for(store.url).getReport();
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+	})
+}
+
+export function useGetForExplore({
 	page, limit,
-	initialData = { items: [], total: 0 }, 
+	initialData = { items: [], total: 0 },
 }: GetForExploreQueryOptions) {
 	return useQuery({
 		queryKey: [QUERY_KEY, 'explore', page],
