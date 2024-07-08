@@ -5,7 +5,7 @@ import { ProductId } from "~/shared/api/client"
 import { ProductInitialData, fetchProduct, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
-import { ReportFlow } from "~/features/product/report/ui/ReportFlow";
+import { ProductReportFlow } from "~/features/product/report";
 import { StoreCard } from "~/entities/store";
 import { RatingRow } from "~/shared/ui/rating";
 
@@ -24,7 +24,7 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<StoreWidget initialData={product} />
-						<ReportFlow productId={productId}/>
+						<ProductReportFlow productId={productId}/>
 					</div>
 				</div>
 
