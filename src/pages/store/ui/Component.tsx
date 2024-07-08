@@ -5,7 +5,6 @@ import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { Heading } from "./Heading";
 import { StoreOnPageProvider } from "./StoreOnPageProvider";
 import { EditMode } from "./edit-mode";
-import {Divider} from "~/shared/ui/kit/divider";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
 	const store = await fetchStore(storeUrl);
@@ -15,7 +14,6 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 			<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
 				<EditMode.Root>
 					<Heading />
-					<Divider/>
 					<ProductsStream
 						className='mb-[6rem] max-md:mb-[5rem]'
 					/>

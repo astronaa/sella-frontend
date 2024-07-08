@@ -20,6 +20,7 @@ import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import ProductsHeader from "~/pages/store/ui/ProductsHeader";
+import {Divider} from "~/shared/ui/kit/divider";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -86,6 +87,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 				</BleedingContainer>
 			) : (
 				<div className="flex flex-col">
+					<Divider/>
 					<ProductsHeader productsCount={products ? products.length : 0}/>
 					<ProductsGrid
 						products={products}

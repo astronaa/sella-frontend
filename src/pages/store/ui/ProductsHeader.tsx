@@ -26,7 +26,7 @@ export default function ProductsHeader({productsCount}: {productsCount: number})
 				</div>
 				<div className="flex gap-x-[1rem]">
 					<IconButton variant="ghost" size="sm" className={isExpanded ? 'bg-white hocus:bg-white' : ''} onClick={() => setIsExpanded(!isExpanded)}>
-						<Icons.FilterLines className={isExpanded ? "[&_path]:stroke-black-100 hocus:[&_path]:stroke-black-100" : ''} />
+						<Icons.FilterLines className={isExpanded ? "text-black-100 hocus:text-black-100" : ''} />
 					</IconButton>
 					<SearchBar.Root>
 						<SearchBar.Input placeholder='Search products' />
@@ -73,7 +73,7 @@ export default function ProductsHeader({productsCount}: {productsCount: number})
 							<label className="text-black-60 font-inter font-semibold text-[1rem]">Price</label>
 							<div className="flex mt-[0.4rem] w-[18rem]">
 								<Input size="sm" placeholder="From $1" className={cn(
-									'border pe-[2.5rem] rounded-r-none',
+									'border pe-[2.5rem] rounded-r-none border-r-0',
 									'border-secondary bg-white/[.04] placeholder:text-black-60',
 									'focus:bg-white/[.06] filled:bg-white/[.06]',
 								)}/>
