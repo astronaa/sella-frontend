@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "~/shared/config/api-base-url";
 import { PayloadPagination } from "./schemas";
 import { components } from "../../openapi";
-import { PaymentMethod, Rating } from "./models";
+import { PaymentMethod, Rating, Transaction } from "./models";
 
 type Schemas = components['schemas'];
 
@@ -24,4 +24,17 @@ export const mapDtoToRating = (obj: Schemas['RatingDto']): Rating => ({
 	likes: obj.positive,
 	dislikes: obj.negative,
 	reviewsCount: obj.total
-})	
+})
+
+export const mapDtoToTransaction = (
+	obj: Schemas['OrderInfoDto'] | Schemas['SalesInfoDto']
+): Transaction => ({
+	status: obj.status,
+	fulfillmentStatus: obj.fulfillmentStatus,
+	createdAt: obj.createdAt,
+	transactionUrl: '',
+	totalPaid: obj.price,
+	tokenAmount: obj.tokenAmount,
+	block: obj.blockchain,
+	token: obj.token
+})

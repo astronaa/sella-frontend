@@ -1,26 +1,17 @@
 export type TransactionStatus = "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
 export type TransactionFulfillmentStatus = "Dispute" | "Pending" | "Processing" | "Fulfilled" | "Failed" | "Canceled";
 
-export interface Transaction {
-	status: TransactionStatus;
-	fulfillmentStatus: TransactionFulfillmentStatus;
-	totalPaid: number;
-	transactionUrl: string;
-	createdAt: string;
-	tokenAmount: number;
-}
-
 export type ImageEntry = string;
 
-export const paymentMethodTypes = [
+export const blockchainTypes = [
 	"ETH", "TRX", "MATIC", "SEPOLIA"
 ] as const;
 
-export type PaymentMethodTypes = typeof paymentMethodTypes[number];
+export type BlockchainTypes = typeof blockchainTypes[number];
 
 export interface PaymentMethod {
 	name: string;
-	value: PaymentMethodTypes;
+	value: BlockchainTypes;
 	contractAddress: string;
 	chainId: number;
 
@@ -34,4 +25,15 @@ export interface Rating {
 	likes: number
 	dislikes: number
 	reviewsCount: number
+}
+
+export interface Transaction {
+	status: TransactionStatus;
+	fulfillmentStatus: TransactionFulfillmentStatus;
+	totalPaid: number;
+	transactionUrl: string;
+	createdAt: string;
+	tokenAmount: number;
+	block: BlockchainTypes,
+	token: string
 }
