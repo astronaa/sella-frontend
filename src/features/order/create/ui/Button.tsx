@@ -21,7 +21,7 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 		mutationFn: async () => {
 			const { data, error } = await apiClient.orders.create({
 				productId: product.id,
-				paymentType: method.token
+				...method
 			});
 
 			if (error)

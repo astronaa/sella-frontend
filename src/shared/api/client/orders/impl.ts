@@ -30,8 +30,8 @@ export function createOrdersClient() {
 			const { data, error } = await authFetchClient.POST('/api/orders', {
 				body: {
 					productId: payload.productId,
-					blockchain: 'SEPOLIA',
-					token: 'USDC'
+					token: payload.token,
+					blockchain: payload.block
 				}
 			});
 

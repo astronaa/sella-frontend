@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ordersQueries } from "~/entities/order";
 import { OrderEscrowCreateCard, OrderEscrowHoldingCard } from "~/features/order/escrow";
-import { OrderId, PayloadPaymentToken } from "~/shared/api/client";
+import { OrderId } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { toaster } from "~/shared/ui/toaster";
 import { useRegisterFlow } from "~/widgets/register-flow";
@@ -11,10 +11,9 @@ import { useWatchAccount } from "~/shared/lib/wagmi";
 
 interface Props {
 	orderId: OrderId,
-	method: PayloadPaymentToken
 }
 
-export function OrderFlowCard({ orderId, method }: Props) {
+export function OrderFlowCard({ orderId }: Props) {
 	const { data: order, refetch, isFetching } = useQuery({
 		...ordersQueries.getByIdOptions(orderId),
 		staleTime: Infinity
@@ -36,7 +35,7 @@ export function OrderFlowCard({ orderId, method }: Props) {
 		return (
 			<OrderEscrowCreateCard
 				className='w-full'
-				order={order} method={method}
+				order={order}
 				onActionFulfilled={refetch}
 				onActionRejected={(error, retry) => {
 					switch (error.cause) {

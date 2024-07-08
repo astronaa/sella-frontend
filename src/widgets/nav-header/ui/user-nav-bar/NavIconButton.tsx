@@ -29,7 +29,7 @@ export function NavIconButton({ href, end, activeOnHrefs, ...props }: NavIconBut
 		<Link href={href}>
 			<BaseNavIconButton
 				className='h-full' {...props}
-				active={active}
+				active={active} tabIndex={-1}
 			/>
 		</Link>
 	);

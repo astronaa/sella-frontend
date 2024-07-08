@@ -41,7 +41,11 @@ export function Composed({ label, children, usePortal = false, ...props }: Compo
 
 	return (
 		<Root openDelay={50} closeDelay={500} {...props}>
-			<Trigger>{children}</Trigger>
+			<Trigger asChild>
+				<div>
+					{children}
+				</div>
+			</Trigger>
 			<PortalOrFragment>
 				<Positioner className='pointer-events-none'>
 					<Content>

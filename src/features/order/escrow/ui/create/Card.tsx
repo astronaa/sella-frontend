@@ -6,7 +6,6 @@ import { Button } from "~/shared/ui/kit/button";
 import { Price } from "~/shared/ui/price";
 import { EscrowCard } from "../Card";
 import { useCreateEscrowAction } from "../../model/create/action";
-import { PayloadPaymentToken } from "~/shared/api/client";
 import { EscrowError } from "../../model/error";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { useInterval } from "usehooks-ts";
@@ -17,12 +16,11 @@ type RetryFn = () => Promise<void>
 
 interface CardProps extends HTMLAttributes<HTMLDivElement>, OrderProp {
 	autoRun?: boolean;
-	method: PayloadPaymentToken;
 	onActionFulfilled?: () => void;
 	onActionRejected?: (error: EscrowError, retry: RetryFn) => void;
 }
 
-export function Card({ order, method, onActionFulfilled, onActionRejected, autoRun = true, ...props }: CardProps) {
+export function Card({ order, onActionFulfilled, onActionRejected, autoRun = true, ...props }: CardProps) {
 	const action = useCreateEscrowAction(order);
 
 	const handleError = useCallbackRef((error: unknown, retryFn: RetryFn) => {
@@ -36,9 +34,9 @@ export function Card({ order, method, onActionFulfilled, onActionRejected, autoR
 		const tryExecute = async () => {
 			try {
 				if (action.execute)
-					await action.execute(method);
+					await action.execute(order.transaction);
 				else if (action.continue)
-					await action.continue(method);
+					await action.continue(order.transaction);
 
 				onActionFulfilled?.();
 			}
