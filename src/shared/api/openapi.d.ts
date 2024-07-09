@@ -462,6 +462,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/products-search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsSearchController_getProductsByStoreUrl"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/featured-tags": {
         parameters: {
             query?: never;
@@ -859,7 +875,7 @@ export interface components {
             /** @description Chain id of network */
             chainId: number;
             /** @enum {string} */
-            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
+            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             /** @description The contract address of the escrow contract */
             contractAddress: string;
             /** @description List of tokens associated with the blockchain */
@@ -972,6 +988,10 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
+        ProductSearchResultDto: {
+            data: components["schemas"]["EnumeratedProductDto"][];
+            total: number;
+        };
         FeaturedTagDto: {
             name: string;
             /** Format: uuid */
@@ -1018,7 +1038,7 @@ export interface components {
             product: components["schemas"]["BaseProductDto"];
             seller: components["schemas"]["SellerDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved" | "Released";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
@@ -1027,7 +1047,7 @@ export interface components {
             /** @enum {string} */
             token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** @enum {string} */
-            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1051,7 +1071,7 @@ export interface components {
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved" | "Released";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
@@ -1060,7 +1080,7 @@ export interface components {
             /** @enum {string} */
             token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
             /** @enum {string} */
-            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1473,6 +1493,8 @@ export interface operations {
                 minPrice?: number;
                 /** @description Maximum price (inclusive) */
                 maxPrice?: number;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path: {
@@ -2086,6 +2108,35 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    ProductsSearchController_getProductsByStoreUrl: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+                query?: string;
+                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
+                /** @description Minimum price (inclusive) */
+                minPrice?: number;
+                /** @description Maximum price (inclusive) */
+                maxPrice?: number;
+                /** @description One of tags */
+                tagName?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of products */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductSearchResultDto"];
+                };
             };
         };
     };
