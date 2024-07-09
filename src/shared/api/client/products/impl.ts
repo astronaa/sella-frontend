@@ -1,8 +1,10 @@
 import {
 	PayloadCreate,
+	PayloadSearch,
 	PayloadUpdate,
 	PayloadUploadImages,
 	schemaCreate,
+	schemaSearch,
 	schemaUpdate,
 	schemaUploadImages
 } from "./schemas";
@@ -11,7 +13,8 @@ import { Product, ProductId } from "./model";
 import { authFetchClient } from "../fetch-client";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
-import { mapDtoToPaymentMethod } from "../shared/mappers";
+import { mapDtoToPaymentMethod, mapPaginationPayloadToDto } from "../shared/mappers";
+import { PayloadPagination } from "../shared/schemas";
 
 export function createProductsClient() {
 	return {
@@ -24,6 +27,28 @@ export function createProductsClient() {
 
 			return data ? {
 				data: mapDtoToProduct(data), error
+			} : {
+				data, error
+			}
+		},
+
+		async search({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination) {
+			const { data, error } = await authFetchClient.GET('/api/products-search', {
+				params: {
+					query: {
+						...mapPaginationPayloadToDto(pagination),
+						...payload,
+						tagName: tagNames
+					}
+				}
+			});
+
+			return data ? {
+				data: {
+					items: data.data.map(mapDtoToProduct),
+					total: data.total
+				},
+				error
 			} : {
 				data, error
 			}
@@ -149,9 +174,9 @@ export function createProductsClient() {
 			},
 		}),
 
-
 		schemaCreate,
 		schemaUpdate,
 		schemaUploadImages,
+		schemaSearch
 	}
 }
