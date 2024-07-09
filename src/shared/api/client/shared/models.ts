@@ -7,7 +7,11 @@ export const blockchainTypes = [
 	"ETH", "TRX", "MATIC", "SEPOLIA", "Nile"
 ] as const;
 
+
 export type BlockchainTypes = typeof blockchainTypes[number];
+
+export const isTronBlock = (block: BlockchainTypes) =>
+	block == 'TRX' || block == 'Nile';
 
 export interface PaymentMethod {
 	name: string;

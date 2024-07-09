@@ -6,8 +6,10 @@ type CardProps = BaseCardProps & ActionCallbacks;
 export function Card({ onActionFulfilled, onActionRejected, ...props }: CardProps) {
 	return (
 		<BaseCard {...props}>
-			{method => (
+			{({ disabled, ...method }) => (
 				<ButtonCreateOrder
+					className='w-full'
+					disabled={disabled}
 					method={method}
 					onActionFulfilled={onActionFulfilled}
 					onActionRejected={onActionRejected}
