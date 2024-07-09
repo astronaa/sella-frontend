@@ -1,13 +1,17 @@
-export type TransactionStatus = "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved";
+export type TransactionStatus = "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved" | "Released";
 export type TransactionFulfillmentStatus = "Dispute" | "Pending" | "Processing" | "Fulfilled" | "Failed" | "Canceled";
 
 export type ImageEntry = string;
 
 export const blockchainTypes = [
-	"ETH", "TRX", "MATIC", "SEPOLIA"
+	"ETH", "TRX", "MATIC", "SEPOLIA", "Nile"
 ] as const;
 
+
 export type BlockchainTypes = typeof blockchainTypes[number];
+
+export const isTronBlock = (block: BlockchainTypes) =>
+	block == 'TRX' || block == 'Nile';
 
 export interface PaymentMethod {
 	name: string;

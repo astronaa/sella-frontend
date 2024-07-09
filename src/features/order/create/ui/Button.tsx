@@ -38,7 +38,7 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 			size='xl'
 			{...props}
 			onClick={() => create()}
-			disabled={isPending}
+			disabled={isPending || props?.disabled}
 		>
 			Pay Now
 		</Button>

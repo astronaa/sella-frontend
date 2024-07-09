@@ -1,5 +1,5 @@
 import { paymentMethodsQueries } from "~/entities/payment-methods";
-import { Order, PayloadPaymentToken } from "~/shared/api/client";
+import { Order, PayloadPaymentToken, isTronBlock } from "~/shared/api/client";
 import { useCreateEscrowState } from './state';
 import { EscrowError } from '../error';
 import { useCreateEscrowEth } from './eth';
@@ -18,7 +18,7 @@ export function useCreateEscrowAction(order: Order) {
 		if (!paymentMethods)
 			return;
 
-		const prepare = block == 'TRX' ? prepareCreateEscrowTron : prepareCreateEscrowEth;
+		const prepare = isTronBlock(block) ? prepareCreateEscrowTron : prepareCreateEscrowEth;
 
 		const chain = paymentMethods.find(m => m.value == block);
 		if (!chain)
