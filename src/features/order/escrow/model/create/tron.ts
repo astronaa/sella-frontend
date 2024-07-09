@@ -27,7 +27,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
 			const holdPeriod = order.product.holdPeriod;
-			const tokenAmount = BigInt(order.transaction.tokenAmount * 10 ** 6);
+			const tokenAmount = BigInt(order.transaction.tokenAmount);
 
 			if (holdPeriod === undefined)
 				throw new EscrowError('generic', 'holdPeriod is not defined for product');
