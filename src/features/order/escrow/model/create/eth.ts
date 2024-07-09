@@ -18,7 +18,7 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 			const tokenAddress = token.address;
 			const chainContractAddress = chain.contractAddress;
 			const sellerAddress = order.seller.address;
-			const tokenAmount = BigInt(order.transaction.tokenAmount * 10 ** 6);
+			const tokenAmount = BigInt(order.transaction.tokenAmount);
 			const holdPeriod = order.product.holdPeriod;
 			
 			if (holdPeriod === undefined)
