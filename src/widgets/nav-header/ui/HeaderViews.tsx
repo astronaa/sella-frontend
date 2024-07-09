@@ -21,14 +21,21 @@ export function HeaderDesktopView() {
 
 			<div className='flex'>
 				<CategoriesRoulette.Button
-					className='border border-secondary rounded-r-none flex-shrink-0'
+					className='border border-secondary rounded-r-none flex-shrink-0 w-[9.5rem] justify-start'
 				>
-					Categories
+					<CategoriesRoulette.ContextConsumer>
+						{({ category }) => (
+							<span className='min-w-0 truncate'>
+								{category?.name ?? 'Categories'}
+							</span>
+						)}
+					</CategoriesRoulette.ContextConsumer>
 				</CategoriesRoulette.Button>
 				<SearchPanel.SearchBarRoot className='w-full max-w-[18.75rem]'>
 					<SearchPanel.SearchBarInput
 						className='rounded-l-none border-l-0'
-						placeholder='Search products, stores' />
+						placeholder='Search products, stores'
+					/>
 				</SearchPanel.SearchBarRoot>
 			</div>
 
@@ -51,14 +58,16 @@ export function HeaderTabletView() {
 
 			<div className='flex gap-[0.75rem]'>
 				<CategoriesRoulette.Button
-					className='border border-secondary flex-shrink-0 px-0 max-lg:hidden' />
+					className='border border-secondary flex-shrink-0 px-0 max-lg:hidden'
+				/>
 
 				{searchBarMaximized ? (
 					<SearchPanel.SearchBarRoot className='w-full'>
 						<SearchPanel.SearchBarInput
 							autoFocus
 							placeholder='Search products, stores'
-							onBlur={() => setSearchShouldMaximize(false)} />
+							onBlur={() => setSearchShouldMaximize(false)}
+						/>
 					</SearchPanel.SearchBarRoot>
 				) : (
 					<IconButton
@@ -101,7 +110,8 @@ export function HeaderMobileView() {
 							variant='unstyled' autoFocus
 							className='w-full'
 							placeholder='Search products, stores'
-							onBlur={() => setSearchShouldMaximize(false)} />
+							onBlur={() => setSearchShouldMaximize(false)}
+						/>
 
 						<SearchPanel.ContextConsumer>
 							{api => (
@@ -130,7 +140,8 @@ export function HeaderMobileView() {
 
 			{!searchBarMaximized && (
 				<MobileMenu.Button
-					className='flex-shrink-0' />
+					className='flex-shrink-0'
+				/>
 			)}
 		</>
 	);

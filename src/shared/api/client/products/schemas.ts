@@ -26,3 +26,13 @@ export const schemaUploadImages = z.object({
 })
 
 export type PayloadUploadImages = z.infer<typeof schemaUploadImages>
+
+export const schemaSearch = z.object({
+	query: z.string().optional(),
+	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
+	minPrice: z.number().optional(),
+	maxPrice: z.number().optional(),
+	tagNames: z.array(z.string()).optional()
+})
+
+export type PayloadSearch = z.infer<typeof schemaSearch>
