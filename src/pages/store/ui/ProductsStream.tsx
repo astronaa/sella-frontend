@@ -10,7 +10,7 @@ import { ProductCard, ProductImage, ProductLink, ProductPrice, productQueries } 
 import { useEditModeStrictContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
-import { PropsWithChildren, useCallback, useState } from "react";
+import {PropsWithChildren, useCallback} from "react";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
@@ -21,6 +21,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import ProductsHeader from "~/pages/store/ui/ProductsHeader";
 import {Divider} from "~/shared/ui/kit/divider";
+import {ProductsSortOption} from "~/entities/product/api/queries";
+import {useSearchParams} from "~/shared/lib/search-params";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -29,12 +31,18 @@ interface ProductsStreamProps {
 export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
-	const [page, setPage] = useState(1);
+	const {searchParams, setSearchParams} = useSearchParams();
+
+	const sort = searchParams.sort as ProductsSortOption || 'new'
+	const page = searchParams.page ? Number(searchParams.page) : 1
+	const pageSize = searchParams.pageSize ? Number(searchParams.pageSize) : PRODUCT_ITEMS_PER_PAGE
 
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			query: {pageSize: PRODUCT_ITEMS_PER_PAGE, page: 1, sort: 'new'}
+			query: {sort, page, pageSize, minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
+				maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+				query: searchParams.query}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
@@ -44,29 +52,10 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const products = data?.items;
 	const total = data?.total ?? 0;
 
-	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
+	const handlePageChange = useCallback((details: PageChangeDetails) => setSearchParams({page: details.page}), [])
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
-			{products && !products.length && (
-				<NotFoundScreen>
-					<Icons.PackageThin />
-
-					{`This store don't have any products yet`}
-
-					{!!user && user.username == store.ownerUsername && (
-						<ProductCreateDialog
-							storeUrl={store.url}
-							triggerElement={
-								<Button className='mt-[1rem]' size='lg'>
-									Add First Product
-								</Button>
-							}
-						/>
-					)}
-				</NotFoundScreen>
-			)}
-
 			{editModeEnabled ? (
 				<BleedingContainer>
 					<div className='w-full max-w-full overflow-x-auto'>
@@ -88,21 +77,45 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 			) : (
 				<div className="flex flex-col">
 					<Divider/>
-					<ProductsHeader productsCount={products ? products.length : 0}/>
-					<ProductsGrid
+					<ProductsHeader
+						productsCount={total}
+						sort={sort}
+						setSort={(value) => {
+							setSearchParams({...searchParams, sort: value})
+						}}
+					/>
+					{products && !products.length ? (
+						<NotFoundScreen>
+							<Icons.PackageThin />
+
+							{`This store don't have any products yet`}
+
+							{!!user && user.username == store.ownerUsername && (
+								<ProductCreateDialog
+									storeUrl={store.url}
+									triggerElement={
+										<Button className='mt-[1rem]' size='lg'>
+											Add First Product
+										</Button>
+									}
+								/>
+							)}
+						</NotFoundScreen>
+					) : <ProductsGrid
 						products={products}
 						loading={isFetching}
-					/>
+					/>}
+
 				</div>
 			)}
 
-			{total > PRODUCT_ITEMS_PER_PAGE && (
+			{total > pageSize && (
 				<Pagination
 					page={page}
 					onPageChange={handlePageChange}
 					className='w-min'
 					count={total}
-					pageSize={PRODUCT_ITEMS_PER_PAGE}
+					pageSize={pageSize}
 					siblingCount={1}
 				/>
 			)}

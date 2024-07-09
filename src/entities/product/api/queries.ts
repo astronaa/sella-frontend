@@ -2,19 +2,24 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { apiClient } from "~/shared/api/client";
 import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
+import {z} from "zod";
 
 const QUERY_KEY = 'products'
 
+export const schemaGetProducts = z.object({
+	page: z.number(),
+	pageSize: z.number(),
+	query: z.string().optional(),
+	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
+	minPrice: z.number().optional(),
+	maxPrice: z.number().optional()
+})
+export type ProductsSortOption = "new" | "old" | "price_asc" | "price_desc" | "rating"
+
+export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
 interface GetFromStoreOptions {
 	storeUrl: string,
-	query: {
-		page: number
-		pageSize: number
-		sort: "new" | "old" | "price_asc" | "price_desc" | "rating"
-		query?: string
-		minPrice?: number
-		maxPrice?: number;
-	},
+	query: PayloadGetProducts,
 }
 
 export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>

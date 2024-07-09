@@ -3,19 +3,52 @@
 import { SearchBar } from "~/shared/ui/search-bar";
 import {Button, IconButton} from "~/shared/ui/kit/button";
 import {Icons} from "~/shared/ui/icons";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Collapsible, Select} from "~/shared/ui/kit";
 import {Input, InputGroup} from "~/shared/ui/kit/input";
 import {cn} from "~/shared/lib/cn";
+import {PayloadGetProducts, ProductsSortOption} from "~/entities/product/api/queries";
+import {useControllableState} from "~/shared/lib/use-controllable-state";
+import {useSearchParams} from "~/shared/lib/search-params";
 
-const options = [
-	{ label: "Featured", value: "newest" },
-	{ label: "", value: "oldest" },
-	{ label: "", value: "highestRating" },
-	{ label: "", value: "lowestRating" },
+const options: {label: string, value: ProductsSortOption}[] = [
+	{ label: "Newest first", value: "new" },
+	{ label: "Oldest first", value: "old" },
+	{ label: "Lowest price", value: "price_asc" },
+	{ label: "Highest price", value: "price_desc" },
+	{ label: "Best rating", value: "rating"}
 ];
-export default function ProductsHeader({productsCount}: {productsCount: number}){
+export default function ProductsHeader({sort, setSort, productsCount}:
+{
+	sort: ProductsSortOption,
+	setSort: (sort: ProductsSortOption) => void,
+	productsCount: number
+}){
+	const timeoutIdRef = useRef<number>()
 	const [isExpanded, setIsExpanded] = useState(false)
+	const {searchParams, setSearchParams} = useSearchParams();
+	const [debouncedQuery, setDebouncedQuery] = useControllableState<{[P in keyof Pick<PayloadGetProducts, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
+		{
+			defaultValue: {
+				minPrice: searchParams.minPrice,
+				maxPrice: searchParams.maxPrice,
+				query: searchParams.query
+			}
+		}
+	)
+	function setValue(key: string, value: string){
+		setDebouncedQuery((prevState) => {
+			return {...prevState, [key]: value}
+		})
+		clearTimeout(timeoutIdRef.current)
+		if(value){
+			timeoutIdRef.current = window.setTimeout(() => {
+				setSearchParams({...searchParams, [key]: value})
+			}, 300)
+		}else{
+			setSearchParams({...searchParams, [key]: value})
+		}
+	}
 
 	return (
 		<>
@@ -28,7 +61,7 @@ export default function ProductsHeader({productsCount}: {productsCount: number})
 					<IconButton variant="ghost" size="sm" className={isExpanded ? 'bg-white hocus:bg-white' : ''} onClick={() => setIsExpanded(!isExpanded)}>
 						<Icons.FilterLines className={isExpanded ? "text-black-100 hocus:text-black-100" : ''} />
 					</IconButton>
-					<SearchBar.Root>
+					<SearchBar.Root value={debouncedQuery.query} onChange={(value) => setValue('query', value)}>
 						<SearchBar.Input placeholder='Search products' />
 					</SearchBar.Root>
 				</div>
@@ -41,11 +74,9 @@ export default function ProductsHeader({productsCount}: {productsCount: number})
 					<div className="bg-white/[.04] p-[1.5rem] pb-[2rem] rounded-2xl mt-6 flex-1 border border-white/[.04] flex gap-x-6">
 						<Select.Root
 							variant="border"
+							value={[sort]}
 							items={options}
-							defaultValue={[options[0].value]}
-							/*
-							onValueChange={v => setSort(v.value[0] as typeof sort)}
-*/
+							onValueChange={({value}) => setSort(value[0] as ProductsSortOption)}
 							className='w-[13rem]'
 						>
 							<Select.Label>Sort by</Select.Label>
@@ -72,13 +103,13 @@ export default function ProductsHeader({productsCount}: {productsCount: number})
 						<InputGroup>
 							<label className="text-black-60 font-inter font-semibold text-[1rem]">Price</label>
 							<div className="flex mt-[0.4rem] w-[18rem]">
-								<Input size="sm" placeholder="From $1" className={cn(
-									'border pe-[2.5rem] rounded-r-none border-r-0',
+								<Input size="sm" placeholder="From $1" type="number" value={debouncedQuery.minPrice} onChange={(e) => setValue('minPrice', e.target.value)} className={cn(
+									'border rounded-r-none border-r-0',
 									'border-secondary bg-white/[.04] placeholder:text-black-60',
 									'focus:bg-white/[.06] filled:bg-white/[.06]',
 								)}/>
-								<Input size="sm" placeholder="To $2575" className={cn(
-									'border pe-[2.5rem] rounded-l-none',
+								<Input size="sm" placeholder="To $2575" type="number" value={debouncedQuery.maxPrice} onChange={(e) => setValue('maxPrice', e.target.value)} className={cn(
+									'border rounded-l-none',
 									'border-secondary bg-white/[.04] placeholder:text-black-60',
 									'focus:bg-white/[.06] filled:bg-white/[.06]',
 								)}/>
