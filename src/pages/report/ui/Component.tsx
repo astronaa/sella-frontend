@@ -45,20 +45,15 @@ export function Component() {
 			<div className='flex justify-between gap-14 max-md:flex-col max-md:gap-8'>
 				<div className='p-4 flex flex-col rounded-[1rem] border border-secondary bg-white/[.02] shadow-sm'>
 					<div className='flex justify-center items-center border border-secondary rounded-[1rem]
-						bg-black-06 min-h-[29.5rem]
-						relative
+							bg-black-06 min-h-[29.5rem] relative
 						'>
-						<div
-							className='absolute bottom-[3rem] bg-white/[.12] rounded-[100%] blur-[2.25rem] w-[80%] h-[2rem]'/>
+						<div className='absolute bottom-[3rem] bg-white/[.12] rounded-[100%] blur-[2.25rem] w-[80%] h-[2rem]'/>
 
-						<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-
-							{isProduct ? (
-								<ProductCard.Composed product={productMock} />
-							) : (
-								<StoreCard.Composed store={storeMock} />
-							)}
-						</div>
+						{isProduct ? (
+							<ProductCard.Composed className='bg-black-08 z-20' product={productMock}/>
+						) : (
+							<StoreCard.Composed className='bg-black-08 z-20' store={storeMock}/>
+						)}
 					</div>
 
 
@@ -99,7 +94,7 @@ export function Component() {
 								</VTextControl.Root>
 
 								<Field name='checkbox'>
-									{({ input: { value, onChange }}) => (
+									{({ input: { value, onChange } }) => (
 										<RadioGroup.Root
 											value={value}
 											onChange={onChange}
