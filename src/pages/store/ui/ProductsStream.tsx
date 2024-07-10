@@ -27,13 +27,12 @@ import {GetProductsQueryParams} from "~/entities/product/api/queries";
 interface ProductsStreamProps {
 	className?: string,
 }
-const defaultSort = 'new'
 export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const {searchParams, setSearchParams} = useSearchParams();
 
-	const sort = searchParams.sort as GetProductsQueryParams['sort'] || defaultSort
+	const sort = searchParams.sort as GetProductsQueryParams['sort'] || 'new'
 	const page = searchParams.page ? Number(searchParams.page) : 1
 	const limit = searchParams.limit ? Number(searchParams.limit) : PRODUCT_ITEMS_PER_PAGE
 
@@ -58,7 +57,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { data: user } = useUserGetQuery();
 	const products = data?.items;
 	const total = data?.total ?? 0;
-	const hasFilters = query.minPrice || query.maxPrice || query.query || sort !== defaultSort
+	const hasFilters = query.minPrice || query.maxPrice || query.query || sort !== 'new'
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setSearchParams({page: details.page}), [])
 

@@ -52,6 +52,8 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 		}
 	}
 
+	const hasFilters = filters.minPrice || filters.maxPrice || filters.query || sort !== 'new'
+
 	return (
 		<>
 			<div className="flex mt-[1.5rem] justify-between">
@@ -60,9 +62,12 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 					<span className="font-inter text-black-40 text-2xl font-semibold">{productsCount}</span>
 				</div>
 				<div className="flex gap-x-[1rem]">
-					<IconButton variant="ghost" size="sm" className={isExpanded ? 'bg-white hocus:bg-white' : ''} onClick={() => setIsExpanded(!isExpanded)}>
-						<Icons.FilterLines className={isExpanded ? "text-black-100 hocus:text-black-100" : ''} />
-					</IconButton>
+					<div className="relative">
+						<IconButton variant="ghost" size="sm" className={isExpanded ? 'bg-white hocus:bg-white' : ''} onClick={() => setIsExpanded(!isExpanded)}>
+							<Icons.FilterLines className={isExpanded ? "text-black-100 hocus:text-black-100" : ''} />
+						</IconButton>
+						{hasFilters && <div className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-accent-100"/>}
+					</div>
 					<SearchBar.Root value={filters.query} onChange={(value) => setValue('query', value)}>
 						<SearchBar.Input placeholder='Search products' />
 					</SearchBar.Root>
