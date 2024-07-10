@@ -16,6 +16,7 @@ export function NavSelect() {
 
 	return (
 		<Select.Root
+			variant="noBorder"
 			items={items}
 			defaultValue={pathname ? [pathname] : undefined}
 			className='max-sm:w-full max-sm:mt-[1rem]'

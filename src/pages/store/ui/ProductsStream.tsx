@@ -10,8 +10,7 @@ import { ProductCard, ProductImage, ProductLink, ProductPrice, productQueries } 
 import { useEditModeStrictContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
-import { PropsWithChildren, useCallback, useState } from "react";
-import { PageChangeDetails } from "@zag-js/pagination";
+import { PropsWithChildren } from "react";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
@@ -19,20 +18,39 @@ import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { ProductsHeader } from "~/pages/store/ui/ProductsHeader";
+import { Divider } from "~/shared/ui/kit/divider";
+import { useFiltersState, useFiltersStatePersist } from "../model/filters";
+import { usePagination } from "../model/pagination";
 
 interface ProductsStreamProps {
 	className?: string,
 }
 
+const limit = PRODUCT_ITEMS_PER_PAGE;
+
 export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
-	const [page, setPage] = useState(1);
+
+	const { value, persist } = useFiltersStatePersist();
+	const {
+		state: filters,
+		setState: setFilters,
+		hasFilters
+	} = useFiltersState({
+		value, onChange: persist
+	});
+
+	const { page, onPageChange } = usePagination();
 
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			limit: PRODUCT_ITEMS_PER_PAGE,
+			query: {
+				...filters,
+				page: 1, limit
+			}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
@@ -42,29 +60,8 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const products = data?.items;
 	const total = data?.total ?? 0;
 
-	const handlePageChange = useCallback((details: PageChangeDetails) => setPage(details.page), [])
-
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
-			{products && !products.length && (
-				<NotFoundScreen>
-					<Icons.PackageThin />
-
-					{`This store don't have any products yet`}
-
-					{!!user && user.username == store.ownerUsername && (
-						<ProductCreateDialog
-							storeUrl={store.url}
-							triggerElement={
-								<Button className='mt-[1rem]' size='lg'>
-									Add First Product
-								</Button>
-							}
-						/>
-					)}
-				</NotFoundScreen>
-			)}
-
 			{editModeEnabled ? (
 				<BleedingContainer>
 					<div className='w-full max-w-full overflow-x-auto'>
@@ -84,19 +81,45 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 					</div>
 				</BleedingContainer>
 			) : (
-				<ProductsGrid
-					products={products}
-					loading={isFetching}
-				/>
+				<div className="flex flex-col">
+					<Divider />
+					<ProductsHeader
+						productsCount={total}
+						defaultValue={filters}
+						onChange={setFilters}
+					/>
+					{products && !products.length ? (
+						<NotFoundScreen>
+							<Icons.PackageThin />
+
+							{hasFilters ? 'No products found for selected filters' : `This store doesn't have any products yet`}
+
+							{!!user && user.username == store.ownerUsername && !hasFilters && (
+								<ProductCreateDialog
+									storeUrl={store.url}
+									triggerElement={
+										<Button className='mt-[1rem]' size='lg'>
+											Add First Product
+										</Button>
+									}
+								/>
+							)}
+						</NotFoundScreen>
+					) : <ProductsGrid
+						products={products}
+						loading={isFetching}
+					/>}
+
+				</div>
 			)}
 
-			{total > PRODUCT_ITEMS_PER_PAGE && (
+			{total > limit && (
 				<Pagination
-					page={page}
-					onPageChange={handlePageChange}
+					defaultValue={page}
+					onPageChange={onPageChange}
 					className='w-min'
 					count={total}
-					pageSize={PRODUCT_ITEMS_PER_PAGE}
+					pageSize={limit}
 					siblingCount={1}
 				/>
 			)}
@@ -118,7 +141,7 @@ function ProductsGrid({ products, loading }: ProductsListProps) {
 		)}>
 			{loading && !products && (
 				Array.from({ length: 4 }).map((_, index) => (
-					<Skeleton 
+					<Skeleton
 						key={index} loading={true}
 						className='rounded-[1.25rem]'
 					>

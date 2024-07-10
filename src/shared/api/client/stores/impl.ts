@@ -6,7 +6,9 @@ import {
 	reportReasons,
 	schemaCreate,
 	schemaReport,
-	schemaUpdate
+	schemaUpdate,
+	schemaGetProducts, 
+	PayloadGetProducts
 } from "./schemas";
 
 import { authFetchClient } from "../fetch-client";
@@ -95,11 +97,11 @@ export function createStoresClient() {
 				}
 			},
 
-			async getProducts(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			async getProducts(pagination: PayloadPagination, payload: PayloadGetProducts) {
 				const { data, error } = await authFetchClient.GET('/api/stores/{url}/products', {
 					params: {
 						path: { url: storeUrl },
-						query: mapPaginationPayloadToDto(pagination)
+						query: {...mapPaginationPayloadToDto(pagination), ...payload}
 					},
 				});
 
@@ -159,6 +161,7 @@ export function createStoresClient() {
 		schemaCreate,
 		schemaUpdate,
 		schemaReport,
+		schemaGetProducts,
 		reportReasons,
 		ANOTHER_REASON_ID
 	}

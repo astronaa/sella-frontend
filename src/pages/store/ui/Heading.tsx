@@ -15,7 +15,7 @@ export function Heading() {
 	const { data: products } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			limit: PRODUCT_ITEMS_PER_PAGE,
+			query: {page: 1, limit: PRODUCT_ITEMS_PER_PAGE, sort: 'new'}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
@@ -24,7 +24,7 @@ export function Heading() {
 	const { data: user } = useUserGetQuery();
 
 	return (
-		<div className='flex mb-[4.5rem] items-end w-full gap-[1rem] justify-between \
+		<div className='flex mb-[4rem] items-end w-full gap-[1rem] justify-between \
 			max-lg:mb-[3rem] max-lg:flex-col max-lg:items-start'
 		>
 			<StoreCard.Root

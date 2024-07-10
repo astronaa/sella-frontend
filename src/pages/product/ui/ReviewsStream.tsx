@@ -55,6 +55,7 @@ export function ReviewsStream({ className, initialData, ...props }: ReviewsStrea
 				</div>
 				{reviewsPresent && (
 					<Select.Root
+						variant="noBorder"
 						items={options} defaultValue={[INITIAL_SORT]}
 						onValueChange={v => setSort(v.value[0] as typeof sort)}
 						className='w-[13rem]'

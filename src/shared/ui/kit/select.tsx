@@ -12,8 +12,8 @@ const styles = tv(
 		defaultVariants: { size: 'md' },
 		slots: {
 			label: '',
-			positioner: 'w-[calc(var(--reference-width)+0.25rem*2)]',
-			trigger: 'min-w-[8.625rem] w-full justify-between [&_svg]:size-[1rem]',
+			positioner: 'select__positioner w-[calc(var(--reference-width)+0.25rem*2)]',
+			trigger: 'select__trigger',
 			indicator: 'select__indicator',
 			clearTrigger: 'select__clearTrigger',
 			item: [
@@ -25,12 +25,24 @@ const styles = tv(
 			itemIndicator: 'select__itemIndicator',
 			itemGroup: 'select__itemGroup flex flex-col w-full gap-[0.25rem]',
 			itemGroupLabel: 'select__itemGroupLabel',
-			content: 'select__content bg-white/[.04] backdrop-blur-[1rem] rounded-[1rem] pt-[3.5rem]',
-			root: 'flex flex-col',
+			content: 'select__content',
+			root: 'select__root flex flex-col',
 			control: 'select__control z-dropdown',
 			valueText: 'select__valueText',
 		},
 		variants: {
+			variant: {
+				border: {
+					label: 'text-black-60 font-inter font-semibold text-[1rem]',
+					trigger: "border border-white/[.04] bg-white/[.04] rounded-[0.75rem] pl-[1rem] pr-[0.75rem] h-[2.4rem] font-medium",
+					content: 'bg-white/[.04] backdrop-blur-[1rem] rounded-[1rem] pt-[3.5rem]',
+				},
+				noBorder: {
+					label: '',
+					trigger: 'min-w-[8.625rem] w-full justify-between [&_svg]:size-[1rem]',
+					content: 'bg-white/[.04] backdrop-blur-[1rem] rounded-[1rem] pt-[3.5rem]',
+				}
+			},
 			size: {
 				md: {
 					label: '',

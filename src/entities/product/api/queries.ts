@@ -6,24 +6,31 @@ import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
 
+export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts>{
+	page: number,
+	limit: number,
+}
 interface GetFromStoreOptions {
 	storeUrl: string,
-	page?: number,
-	limit?: number,
+	query: GetProductsQueryParams,
 }
 
-export const getFromStoreOptions = ({ storeUrl, page = 1, limit = 10 }: GetFromStoreOptions) =>
-	queryOptions({
-		queryKey: [QUERY_KEY, { page, storeUrl, limit }],
+export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) => {
+	const {page, limit, ...rest} = query
+	return queryOptions({
+		queryKey: [QUERY_KEY, query],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({ page, limit });
+			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({page, limit }, rest);
 
 			if (error)
 				throw error;
 
 			return data;
 		},
+		placeholderData: (prev) => prev
 	})
+}
+
 
 export function useGetFromStore(args: GetFromStoreOptions) {
 	return useQuery(getFromStoreOptions(args))

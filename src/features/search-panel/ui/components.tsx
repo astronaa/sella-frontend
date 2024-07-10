@@ -43,7 +43,7 @@ export function Root({ children }: PropsWithChildren) {
 
 export function Input(props: InputProps) {
 	const { setSearchText, setOpen } = useSearchPanelStrictContext();
-	const debouncedSetSearchText = useDebounce(setSearchText, 300);
+	const { debounceFn } = useDebounce(setSearchText, 300);
 
 	return (
 		<BaseInput
@@ -54,7 +54,7 @@ export function Input(props: InputProps) {
 			}}
 			onChange={event => {
 				const value = event.target.value;
-				value.length ? debouncedSetSearchText(value) : setSearchText(value);
+				value.length ? debounceFn(value) : setSearchText(value);
 
 				props?.onChange?.(event);
 			}}
@@ -64,7 +64,7 @@ export function Input(props: InputProps) {
 
 export function SearchBarRoot(props: BaseSearchBar.RootProps) {
 	const { setSearchText, setOpen } = useSearchPanelStrictContext();
-	const debouncedSetSearchText = useDebounce(setSearchText, 300);
+	const { debounceFn } = useDebounce(setSearchText, 300);
 
 	return (
 		<BaseSearchBar.Root
@@ -74,7 +74,7 @@ export function SearchBarRoot(props: BaseSearchBar.RootProps) {
 				props?.onClick?.(e);
 			}}
 			onChange={value => {
-				value.length ? debouncedSetSearchText(value) : setSearchText(value);
+				value.length ? debounceFn(value) : setSearchText(value);
 				props?.onChange?.(value);
 			}}
 		/>

@@ -4,16 +4,21 @@ import { useRef, useState } from "react";
 export function useDebounce<T extends (...args: any) => void>(func: T, delayMs: number) {
 	const intervalRef = useRef<NodeJS.Timeout>();
 
-	return function (...args: Parameters<T>) {
+	function clearDebounce(){
 		if (intervalRef.current)
 			clearTimeout(intervalRef.current);
+	}
+	function debounceFn(...args: Parameters<T>) {
+		clearDebounce()
 		intervalRef.current = setTimeout(() => func.apply(null, [...args]), delayMs);
-	};
+	}
+
+	return {debounceFn, clearDebounce}
 }
 
 export function useDebouncedState<S = undefined>(delay: number, initialState: S) {
 	const [state, setState] = useState(initialState);
-	const debouncedSetState = useDebounce(setState, delay);
+	const {debounceFn} = useDebounce(setState, delay);
 
-	return [state, debouncedSetState, setState] as const;
+	return [state, debounceFn, setState] as const;
 }

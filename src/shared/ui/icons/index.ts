@@ -41,6 +41,8 @@ import PointsIcon from '../../assets/icons/point-icon.svg';
 import Lock from '../../assets/icons/lock.svg';
 import Copy from '../../assets/icons/copy.svg';
 
+import FilterLines from '../../assets/icons/filter-lines.svg';
+
 export const Icons = {
 	Add,
 	Check,
@@ -84,4 +86,6 @@ export const Icons = {
 	PointsIcon,
 	Lock,
 	Copy,
+	FilterLines
+
 }
