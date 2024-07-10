@@ -30,7 +30,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 }){
 	const [isExpanded, setIsExpanded] = useState(false)
 	const {searchParams, setSearchParams} = useSearchParams();
-	const debounceFn = useDebounce((key: string, value: string) => setSearchParams({...searchParams, [key]: value}), 300)
+	const {debounceFn, clearDebounce} = useDebounce((key: string, value: string) => setSearchParams({...searchParams, [key]: value}), 300)
 	const [filters, setFilters] = useControllableState<{[P in keyof Pick<GetProductsFilters, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
 		{
 			defaultValue: {
@@ -44,7 +44,12 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 		setFilters((prevState) => {
 			return {...prevState, [key]: value}
 		})
-		debounceFn(key, value)
+		if(value){
+			debounceFn(key, value)
+		}else{
+			clearDebounce()
+			setSearchParams({...searchParams, [key]: value})
+		}
 	}
 
 	return (
