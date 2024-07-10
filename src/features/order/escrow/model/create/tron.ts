@@ -22,7 +22,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 	const tronWallet = useTronWallet();
 
 	return {
-		async prepare({ chain, token }) {
+		async prepare({ chain, token, isNativeCoin }) {
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
@@ -85,7 +85,10 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 						const transactionCreateEscrow = await tw.transactionBuilder.triggerSmartContract(
 							tw.address.toHex(chain.contractAddress),
 							'createEscrow(address,address,uint256,uint256,string)',
-							{ feeLimit: 100000000 },
+							{ 
+								feeLimit: 100_000_000,
+								callValue: isNativeCoin ? tokenAmount : undefined
+							},
 							[
 								{
 									type: 'address',

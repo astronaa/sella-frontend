@@ -28,16 +28,21 @@ export function useCreateEscrowAction(order: Order) {
 		if (!token)
 			throw new EscrowError('generic', "cannot find corresponding token for input token type");
 
-		if(state.status == 'error')
+		if (state.status == 'error')
 			reset();
 
-		const methods = await prepare({ chain, token });
+		const isNativeCoin = Number(token.address) === 0;
+		const methods = await prepare({ chain, token, isNativeCoin });
 
 		do {
 			const state = stateRef.current;
 
 			switch (state.status) {
 				case 'idle':
+					if (isNativeCoin) {
+						setState(s => ({ ...s, status: 'escrow-write' }));
+						break;
+					}
 					setState(s => ({ ...s, status: 'approve-write' }));
 
 				case 'approve-write':

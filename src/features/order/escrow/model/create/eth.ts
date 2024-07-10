@@ -10,7 +10,7 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 	const wagmiConfig = useWagmiConfig();
 
 	return {
-		async prepare({ chain, token }) {
+		async prepare({ chain, token, isNativeCoin }) {
 			const {
 				chainId, address: currentWalletAddress
 			} = wagmi.getAccount(wagmiConfig);
@@ -62,6 +62,7 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 					abi: escrowContractAbi,
 					address: chainContractAddress,
 					functionName: 'createEscrow',
+					value: isNativeCoin ? tokenAmount : undefined,
 					args: [
 						sellerAddress,
 						tokenAddress,
