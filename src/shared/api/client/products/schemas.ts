@@ -29,7 +29,7 @@ export type PayloadUploadImages = z.infer<typeof schemaUploadImages>
 
 export const schemaSearch = z.object({
 	query: z.string().optional(),
-	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
+	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]).optional(),
 	minPrice: z.coerce.number().optional(),
 	maxPrice: z.coerce.number().optional(),
 	tagNames: z.array(z.string()).optional()

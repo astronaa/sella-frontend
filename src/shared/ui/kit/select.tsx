@@ -9,7 +9,7 @@ import { resolvedTwConfig } from '~/shared/lib/resolved-tw-config'
 const styles = tv(
 	{
 		base: 'select',
-		defaultVariants: { size: 'md' },
+		defaultVariants: { size: 'md', variant: 'noBorder' },
 		slots: {
 			label: '',
 			positioner: 'select__positioner w-[calc(var(--reference-width)+0.25rem*2)]',
