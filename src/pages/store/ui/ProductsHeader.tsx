@@ -3,13 +3,14 @@
 import { SearchBar } from "~/shared/ui/search-bar";
 import {Button, IconButton} from "~/shared/ui/kit/button";
 import {Icons} from "~/shared/ui/icons";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {Collapsible, Select} from "~/shared/ui/kit";
 import {Input, InputGroup} from "~/shared/ui/kit/input";
 import {cn} from "~/shared/lib/cn";
 import {PayloadGetProducts} from "~/entities/product/api/queries";
 import {useControllableState} from "~/shared/lib/use-controllable-state";
 import {useSearchParams} from "~/shared/lib/search-params";
+import {useDebounce} from "~/shared/lib/use-debounce";
 
 const options: {label: string, value: PayloadGetProducts['sort']}[] = [
 	{ label: "Newest first", value: "new" },
@@ -24,9 +25,9 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 	setSort: (sort: PayloadGetProducts['sort']) => void,
 	productsCount: number
 }){
-	const timeoutIdRef = useRef<number>()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const {searchParams, setSearchParams} = useSearchParams();
+	const debounceFn = useDebounce((key: string, value: string) => setSearchParams({...searchParams, [key]: value}), 300)
 	const [filters, setFilters] = useControllableState<{[P in keyof Pick<PayloadGetProducts, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
 		{
 			defaultValue: {
@@ -40,11 +41,8 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 		setFilters((prevState) => {
 			return {...prevState, [key]: value}
 		})
-		clearTimeout(timeoutIdRef.current)
 		if(value){
-			timeoutIdRef.current = window.setTimeout(() => {
-				setSearchParams({...searchParams, [key]: value})
-			}, 300)
+			debounceFn(key, value)
 		}else{
 			setSearchParams({...searchParams, [key]: value})
 		}
