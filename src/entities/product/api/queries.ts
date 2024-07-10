@@ -49,18 +49,24 @@ export function useGetOne(args: GetOneOptions) {
 	return useQuery(getGetOneOptions(args));
 }
 
-export function useGetProductReport({ productId }: { productId: ProductId }) {
-	return useQuery({
-		queryKey: ['product_report', productId],
-		queryFn: async () => {
-			const { data, error } = await apiClient.products.for(productId).getReport();
+interface GetProductReportOptions {
+	productId: ProductId
+}
 
-			if (error)
-				throw error;
+export const getGetProductReportOptions = ({ productId }: GetProductReportOptions) => queryOptions({
+	queryKey: ['product_report', productId],
+	queryFn: async () => {
+		const { data, error } = await apiClient.products.for(productId).getReport();
 
-			return data;
-		},
-	})
+		if (error)
+			throw error;
+
+		return data;
+	},
+})
+
+export function useGetProductReport(args: GetProductReportOptions) {
+	return useQuery(getGetProductReportOptions(args))
 }
 
 export function invalidateAll() {

@@ -5,9 +5,9 @@ import { ProductId } from "~/shared/api/client"
 import { ProductInitialData, fetchProduct, fetchProductReviews } from "../api";
 import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
-import { ProductReportFlow } from "~/features/product/report";
 import { StoreCard } from "~/entities/store";
 import { RatingRow } from "~/shared/ui/rating";
+import { ReportProduct } from "~/pages/product/ui/ReportProduct";
 
 export async function Component({ productId }: { productId: ProductId }) {
 	const product = await fetchProduct(productId);
@@ -24,7 +24,7 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<StoreWidget initialData={product} />
-						{product && <ProductReportFlow product={product}/>}
+						<ReportProduct />
 					</div>
 				</div>
 
