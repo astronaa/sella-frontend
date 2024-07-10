@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { schemaSearch } from "../products/schemas";
 
 export const schemaCreate = z.object({
 	name: z.string().min(3, 'Min length is 3'),
@@ -42,11 +43,6 @@ export const schemaReport = z.object({
 
 export type PayloadReport = z.infer<typeof schemaReport>
 
-export const schemaGetProducts = z.object({
-	query: z.string().optional(),
-	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]).optional(),
-	minPrice: z.coerce.number().optional(),
-	maxPrice: z.coerce.number().optional()
-})
+export const schemaGetProducts = schemaSearch;
 
 export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
