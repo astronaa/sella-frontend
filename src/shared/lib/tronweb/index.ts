@@ -12,6 +12,7 @@ type TronWeb = IncompleteTronWeb & {
 	},
 	toBigNumber(num: number | bigint): object,
 	toAscii(raw: string): string,
+	toSun(num: number | bigint): string,
 
 	trx: {
 		sendRawTransaction(transaction: object): Promise<{

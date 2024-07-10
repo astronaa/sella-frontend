@@ -88,7 +88,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 							'createEscrow(address,address,uint256,uint256,string)',
 							{ 
 								feeLimit: 100_000_000,
-								callValue: isNativeCoin ? tokenAmount : undefined
+								callValue: isNativeCoin ? tw.toSun(tokenAmount) : undefined
 							},
 							[
 								{
