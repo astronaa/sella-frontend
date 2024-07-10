@@ -16,7 +16,7 @@ export function useSearchParams(){
 	//merges old params with new params
 	function setSearchParams(values: Record<string, unknown>){
 		const params = objToSearchParams(values)
-		router.replace(`${pathname}?${params.toString()}`)
+		router.replace(`${pathname}?${params.toString()}`, {scroll: false})
 	}
 	return {
 		searchParams:  nextSearchParams ? Object.fromEntries(nextSearchParams.entries()) : {},
