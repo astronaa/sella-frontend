@@ -31,6 +31,7 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 
 			return data;
 		},
+		placeholderData: (prev) => prev
 	})
 
 export function useGetFromStore(args: GetFromStoreOptions) {

@@ -27,22 +27,29 @@ import {PayloadGetProducts} from "~/entities/product/api/queries";
 interface ProductsStreamProps {
 	className?: string,
 }
-
+const defaultSort = 'new'
 export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const {searchParams, setSearchParams} = useSearchParams();
 
-	const sort = searchParams.sort as PayloadGetProducts['sort'] || 'new'
+	const sort = searchParams.sort as PayloadGetProducts['sort'] || defaultSort
 	const page = searchParams.page ? Number(searchParams.page) : 1
 	const pageSize = searchParams.pageSize ? Number(searchParams.pageSize) : PRODUCT_ITEMS_PER_PAGE
+
+	const query = {
+		sort,
+		page,
+		pageSize,
+		minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
+		maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+		query: searchParams.query
+	}
 
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			query: {sort, page, pageSize, minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
-				maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
-				query: searchParams.query}
+			query
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
@@ -51,6 +58,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { data: user } = useUserGetQuery();
 	const products = data?.items;
 	const total = data?.total ?? 0;
+	const hasFilters = query.minPrice || query.maxPrice || query.query || sort !== defaultSort
 
 	const handlePageChange = useCallback((details: PageChangeDetails) => setSearchParams({page: details.page}), [])
 
@@ -88,9 +96,9 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 						<NotFoundScreen>
 							<Icons.PackageThin />
 
-							{`This store don't have any products yet`}
+							{hasFilters ? 'No products found for selected filters' : `This store doesn't have any products yet`}
 
-							{!!user && user.username == store.ownerUsername && (
+							{!!user && user.username == store.ownerUsername && !hasFilters && (
 								<ProductCreateDialog
 									storeUrl={store.url}
 									triggerElement={
