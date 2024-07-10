@@ -21,8 +21,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import ProductsHeader from "~/pages/store/ui/ProductsHeader";
 import {Divider} from "~/shared/ui/kit/divider";
-import {ProductsSortOption} from "~/entities/product/api/queries";
 import {useSearchParams} from "~/shared/lib/search-params";
+import {PayloadGetProducts} from "~/entities/product/api/queries";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -33,7 +33,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const {searchParams, setSearchParams} = useSearchParams();
 
-	const sort = searchParams.sort as ProductsSortOption || 'new'
+	const sort = searchParams.sort as PayloadGetProducts['sort'] || 'new'
 	const page = searchParams.page ? Number(searchParams.page) : 1
 	const pageSize = searchParams.pageSize ? Number(searchParams.pageSize) : PRODUCT_ITEMS_PER_PAGE
 

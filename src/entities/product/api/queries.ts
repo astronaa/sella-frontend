@@ -14,8 +14,6 @@ export const schemaGetProducts = z.object({
 	minPrice: z.number().optional(),
 	maxPrice: z.number().optional()
 })
-export type ProductsSortOption = "new" | "old" | "price_asc" | "price_desc" | "rating"
-
 export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
 interface GetFromStoreOptions {
 	storeUrl: string,

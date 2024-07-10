@@ -7,11 +7,11 @@ import {useRef, useState} from "react";
 import {Collapsible, Select} from "~/shared/ui/kit";
 import {Input, InputGroup} from "~/shared/ui/kit/input";
 import {cn} from "~/shared/lib/cn";
-import {PayloadGetProducts, ProductsSortOption} from "~/entities/product/api/queries";
+import {PayloadGetProducts} from "~/entities/product/api/queries";
 import {useControllableState} from "~/shared/lib/use-controllable-state";
 import {useSearchParams} from "~/shared/lib/search-params";
 
-const options: {label: string, value: ProductsSortOption}[] = [
+const options: {label: string, value: PayloadGetProducts['sort']}[] = [
 	{ label: "Newest first", value: "new" },
 	{ label: "Oldest first", value: "old" },
 	{ label: "Lowest price", value: "price_asc" },
@@ -20,14 +20,14 @@ const options: {label: string, value: ProductsSortOption}[] = [
 ];
 export default function ProductsHeader({sort, setSort, productsCount}:
 {
-	sort: ProductsSortOption,
-	setSort: (sort: ProductsSortOption) => void,
+	sort: PayloadGetProducts['sort'],
+	setSort: (sort: PayloadGetProducts['sort']) => void,
 	productsCount: number
 }){
 	const timeoutIdRef = useRef<number>()
 	const [isExpanded, setIsExpanded] = useState(false)
 	const {searchParams, setSearchParams} = useSearchParams();
-	const [debouncedQuery, setDebouncedQuery] = useControllableState<{[P in keyof Pick<PayloadGetProducts, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
+	const [filters, setFilters] = useControllableState<{[P in keyof Pick<PayloadGetProducts, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
 		{
 			defaultValue: {
 				minPrice: searchParams.minPrice,
@@ -37,7 +37,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 		}
 	)
 	function setValue(key: string, value: string){
-		setDebouncedQuery((prevState) => {
+		setFilters((prevState) => {
 			return {...prevState, [key]: value}
 		})
 		clearTimeout(timeoutIdRef.current)
@@ -61,7 +61,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 					<IconButton variant="ghost" size="sm" className={isExpanded ? 'bg-white hocus:bg-white' : ''} onClick={() => setIsExpanded(!isExpanded)}>
 						<Icons.FilterLines className={isExpanded ? "text-black-100 hocus:text-black-100" : ''} />
 					</IconButton>
-					<SearchBar.Root value={debouncedQuery.query} onChange={(value) => setValue('query', value)}>
+					<SearchBar.Root value={filters.query} onChange={(value) => setValue('query', value)}>
 						<SearchBar.Input placeholder='Search products' />
 					</SearchBar.Root>
 				</div>
@@ -76,7 +76,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 							variant="border"
 							value={[sort]}
 							items={options}
-							onValueChange={({value}) => setSort(value[0] as ProductsSortOption)}
+							onValueChange={({value}) => setSort(value[0] as PayloadGetProducts['sort'])}
 							className='w-[13rem]'
 						>
 							<Select.Label>Sort by</Select.Label>
@@ -103,12 +103,12 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 						<InputGroup>
 							<label className="text-black-60 font-inter font-semibold text-[1rem]">Price</label>
 							<div className="flex mt-[0.4rem] w-[18rem]">
-								<Input size="sm" placeholder="From $1" type="number" value={debouncedQuery.minPrice} onChange={(e) => setValue('minPrice', e.target.value)} className={cn(
+								<Input size="sm" placeholder="From $1" type="number" value={filters.minPrice} onChange={(e) => setValue('minPrice', e.target.value)} className={cn(
 									'border rounded-r-none border-r-0',
 									'border-secondary bg-white/[.04] placeholder:text-black-60',
 									'focus:bg-white/[.06] filled:bg-white/[.06]',
 								)}/>
-								<Input size="sm" placeholder="To $2575" type="number" value={debouncedQuery.maxPrice} onChange={(e) => setValue('maxPrice', e.target.value)} className={cn(
+								<Input size="sm" placeholder="To $2575" type="number" value={filters.maxPrice} onChange={(e) => setValue('maxPrice', e.target.value)} className={cn(
 									'border rounded-l-none',
 									'border-secondary bg-white/[.04] placeholder:text-black-60',
 									'focus:bg-white/[.06] filled:bg-white/[.06]',
