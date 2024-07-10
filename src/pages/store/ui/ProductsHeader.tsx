@@ -7,12 +7,15 @@ import {useState} from "react";
 import {Collapsible, Select} from "~/shared/ui/kit";
 import {Input, InputGroup} from "~/shared/ui/kit/input";
 import {cn} from "~/shared/lib/cn";
-import {PayloadGetProducts} from "~/entities/product/api/queries";
 import {useControllableState} from "~/shared/lib/use-controllable-state";
 import {useSearchParams} from "~/shared/lib/search-params";
 import {useDebounce} from "~/shared/lib/use-debounce";
+import {z} from "zod";
+import {apiClient} from "~/shared/api/client";
 
-const options: {label: string, value: PayloadGetProducts['sort']}[] = [
+type GetProductsFilters  = z.infer<typeof apiClient.stores.schemaGetProducts>;
+
+const options: {label: string, value: GetProductsFilters['sort']}[] = [
 	{ label: "Newest first", value: "new" },
 	{ label: "Oldest first", value: "old" },
 	{ label: "Lowest price", value: "price_asc" },
@@ -21,14 +24,14 @@ const options: {label: string, value: PayloadGetProducts['sort']}[] = [
 ];
 export default function ProductsHeader({sort, setSort, productsCount}:
 {
-	sort: PayloadGetProducts['sort'],
-	setSort: (sort: PayloadGetProducts['sort']) => void,
+	sort: GetProductsFilters['sort'],
+	setSort: (sort: GetProductsFilters['sort']) => void,
 	productsCount: number
 }){
 	const [isExpanded, setIsExpanded] = useState(false)
 	const {searchParams, setSearchParams} = useSearchParams();
 	const debounceFn = useDebounce((key: string, value: string) => setSearchParams({...searchParams, [key]: value}), 300)
-	const [filters, setFilters] = useControllableState<{[P in keyof Pick<PayloadGetProducts, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
+	const [filters, setFilters] = useControllableState<{[P in keyof Pick<GetProductsFilters, 'query' | 'minPrice' | 'maxPrice'>]: string}>(
 		{
 			defaultValue: {
 				minPrice: searchParams.minPrice,
@@ -41,11 +44,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 		setFilters((prevState) => {
 			return {...prevState, [key]: value}
 		})
-		if(value){
-			debounceFn(key, value)
-		}else{
-			setSearchParams({...searchParams, [key]: value})
-		}
+		debounceFn(key, value)
 	}
 
 	return (
@@ -74,7 +73,7 @@ export default function ProductsHeader({sort, setSort, productsCount}:
 							variant="border"
 							value={[sort]}
 							items={options}
-							onValueChange={({value}) => setSort(value[0] as PayloadGetProducts['sort'])}
+							onValueChange={({value}) => setSort(value[0] as GetProductsFilters['sort'])}
 							className='w-[13rem]'
 						>
 							<Select.Label>Sort by</Select.Label>

@@ -6,25 +6,21 @@ import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
 
-export const schemaGetProducts = z.object({
-	page: z.number(),
-	pageSize: z.number(),
-	query: z.string().optional(),
-	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
-	minPrice: z.number().optional(),
-	maxPrice: z.number().optional()
-})
-export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
+export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts>{
+	page: number,
+	limit: number,
+}
 interface GetFromStoreOptions {
 	storeUrl: string,
-	query: PayloadGetProducts,
+	query: GetProductsQueryParams,
 }
 
-export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
-	queryOptions({
+export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) => {
+	const {page, limit, ...rest} = query
+	return queryOptions({
 		queryKey: [QUERY_KEY, query],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).getProducts(query);
+			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({page, limit }, rest);
 
 			if (error)
 				throw error;
@@ -33,6 +29,8 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 		},
 		placeholderData: (prev) => prev
 	})
+}
+
 
 export function useGetFromStore(args: GetFromStoreOptions) {
 	return useQuery(getFromStoreOptions(args))

@@ -22,7 +22,7 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 import ProductsHeader from "~/pages/store/ui/ProductsHeader";
 import {Divider} from "~/shared/ui/kit/divider";
 import {useSearchParams} from "~/shared/lib/search-params";
-import {PayloadGetProducts} from "~/entities/product/api/queries";
+import {GetProductsQueryParams} from "~/entities/product/api/queries";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -33,14 +33,14 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
 	const {searchParams, setSearchParams} = useSearchParams();
 
-	const sort = searchParams.sort as PayloadGetProducts['sort'] || defaultSort
+	const sort = searchParams.sort as GetProductsQueryParams['sort'] || defaultSort
 	const page = searchParams.page ? Number(searchParams.page) : 1
-	const pageSize = searchParams.pageSize ? Number(searchParams.pageSize) : PRODUCT_ITEMS_PER_PAGE
+	const limit = searchParams.limit ? Number(searchParams.limit) : PRODUCT_ITEMS_PER_PAGE
 
 	const query = {
 		sort,
 		page,
-		pageSize,
+		limit,
 		minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
 		maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
 		query: searchParams.query
@@ -117,13 +117,13 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 				</div>
 			)}
 
-			{total > pageSize && (
+			{total > limit && (
 				<Pagination
 					page={page}
 					onPageChange={handlePageChange}
 					className='w-min'
 					count={total}
-					pageSize={pageSize}
+					pageSize={limit}
 					siblingCount={1}
 				/>
 			)}
