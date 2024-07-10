@@ -4,6 +4,7 @@ export interface CreateEscrowController {
 	prepare(api: {
 		chain: PaymentMethod;
 		token: PaymentMethod['tokens'][number];
+		isNativeCoin: boolean;
 	}): Promise<{
 		approve(): Promise<string>;
 		waitApproveTransaction(approveTransactionId: string): Promise<void>;
