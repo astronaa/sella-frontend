@@ -11,6 +11,7 @@ const waitForTransaction = async (txId: string, attemps = Infinity) => {
 	while(attemps-- > 0) {
 		try {
 			await tronWeb.trx.getConfirmedTransaction(txId);
+			break;
 		}
 		catch {
 			await new Promise(resolve => setTimeout(resolve, 1000));
