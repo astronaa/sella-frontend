@@ -44,9 +44,9 @@ export type PayloadReport = z.infer<typeof schemaReport>
 
 export const schemaGetProducts = z.object({
 	query: z.string().optional(),
-	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]),
-	minPrice: z.number().optional(),
-	maxPrice: z.number().optional()
+	sort: z.enum(["new" , "old" , "price_asc" , "price_desc" , "rating"]).optional(),
+	minPrice: z.coerce.number().optional(),
+	maxPrice: z.coerce.number().optional()
 })
 
 export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;

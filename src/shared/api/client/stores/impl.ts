@@ -7,7 +7,8 @@ import {
 	schemaCreate,
 	schemaReport,
 	schemaUpdate,
-	schemaGetProducts, PayloadGetProducts
+	schemaGetProducts, 
+	PayloadGetProducts
 } from "./schemas";
 
 import { authFetchClient } from "../fetch-client";

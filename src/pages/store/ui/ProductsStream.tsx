@@ -10,8 +10,7 @@ import { ProductCard, ProductImage, ProductLink, ProductPrice, productQueries } 
 import { useEditModeStrictContext } from "../model/edit-mode";
 import { cn } from "~/shared/lib/cn";
 import { BleedingContainer } from "./BleedingContainer";
-import {PropsWithChildren, useCallback} from "react";
-import { PageChangeDetails } from "@zag-js/pagination";
+import { PropsWithChildren } from "react";
 import { PRODUCT_ITEMS_PER_PAGE } from "~/pages/store/config";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ProductCreateDialog } from "~/features/product/create";
@@ -19,36 +18,39 @@ import { useUserGetQuery } from "~/entities/user";
 import { useStoreStrictContext } from "~/entities/store";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
-import ProductsHeader from "~/pages/store/ui/ProductsHeader";
-import {Divider} from "~/shared/ui/kit/divider";
-import {useSearchParams} from "~/shared/lib/search-params";
-import {GetProductsQueryParams} from "~/entities/product/api/queries";
+import { ProductsHeader } from "~/pages/store/ui/ProductsHeader";
+import { Divider } from "~/shared/ui/kit/divider";
+import { useFiltersState, useFiltersStatePersist } from "../model/filters";
+import { usePagination } from "../model/pagination";
 
 interface ProductsStreamProps {
 	className?: string,
 }
+
+const limit = PRODUCT_ITEMS_PER_PAGE;
+
 export function ProductsStream({ className }: ProductsStreamProps) {
 	const store = useStoreStrictContext();
 	const { enabled: editModeEnabled } = useEditModeStrictContext();
-	const {searchParams, setSearchParams} = useSearchParams();
 
-	const sort = searchParams.sort as GetProductsQueryParams['sort'] || 'new'
-	const page = searchParams.page ? Number(searchParams.page) : 1
-	const limit = searchParams.limit ? Number(searchParams.limit) : PRODUCT_ITEMS_PER_PAGE
+	const { value, persist } = useFiltersStatePersist();
+	const {
+		state: filters,
+		setState: setFilters,
+		hasFilters
+	} = useFiltersState({
+		value, onChange: persist
+	});
 
-	const query = {
-		sort,
-		page,
-		limit,
-		minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
-		maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
-		query: searchParams.query
-	}
+	const { page, onPageChange } = usePagination();
 
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({
 			storeUrl: store.url,
-			query
+			query: {
+				...filters,
+				page: 1, limit
+			}
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
@@ -57,9 +59,6 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 	const { data: user } = useUserGetQuery();
 	const products = data?.items;
 	const total = data?.total ?? 0;
-	const hasFilters = query.minPrice || query.maxPrice || query.query || sort !== 'new'
-
-	const handlePageChange = useCallback((details: PageChangeDetails) => setSearchParams({page: details.page}), [])
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
@@ -83,13 +82,11 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 				</BleedingContainer>
 			) : (
 				<div className="flex flex-col">
-					<Divider/>
+					<Divider />
 					<ProductsHeader
 						productsCount={total}
-						sort={sort}
-						setSort={(value) => {
-							setSearchParams({...searchParams, sort: value})
-						}}
+						defaultValue={filters}
+						onChange={setFilters}
 					/>
 					{products && !products.length ? (
 						<NotFoundScreen>
@@ -118,8 +115,8 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 
 			{total > limit && (
 				<Pagination
-					page={page}
-					onPageChange={handlePageChange}
+					defaultValue={page}
+					onPageChange={onPageChange}
 					className='w-min'
 					count={total}
 					pageSize={limit}
