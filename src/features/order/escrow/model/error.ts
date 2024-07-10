@@ -1,4 +1,4 @@
-type EscrowCause = 'generic' | 'eth-not-found';
+type EscrowCause = 'generic' | 'eth-not-found' | 'tron-not-found';
 
 export class EscrowError extends Error {
 	cause: EscrowCause;

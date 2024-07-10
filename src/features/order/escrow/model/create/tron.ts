@@ -24,6 +24,8 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 
 	return {
 		async prepare({ chain, token, isNativeCoin }) {
+			console.log(chain, token);
+			
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
@@ -40,7 +42,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 				throw new EscrowError('generic', `tronWeb instance is not defined`);
 
 			if (!tronWallet.wallet || !tronWallet.wallet?.adapter.address)
-				throw new EscrowError('generic', `tron wallet is not connected`);
+				throw new EscrowError('tron-not-found', `tron wallet is not connected`);
 
 			return {
 				approve: async () => {

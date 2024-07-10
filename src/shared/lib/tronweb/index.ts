@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import { TronWeb as IncompleteTronWeb } from "@tronweb3/tronwallet-adapters";
+import { useEffect } from "react";
 import { TRONGRID_API_KEY } from "~/shared/config/tron";
+import { useCallbackRef } from "../use-callback-ref";
 
 type TronWeb = IncompleteTronWeb & {
 	setHeader(headers: Record<string, string>): void,
@@ -29,3 +32,29 @@ export const tronWeb = typeof window !== 'undefined' ? (
 ) : undefined;
 
 tronWeb?.setHeader({ 'TRON-PRO-API-KEY': TRONGRID_API_KEY })
+
+interface UseAdpaterWatchArgs {
+	onConnect?: (address: string) => void;
+	onDisconnect?: () => void;
+}
+
+export function useWatchTronAdapter(args: UseAdpaterWatchArgs) {
+	const { wallet } = useWallet();
+	const adapter = wallet?.adapter;
+
+	const onConnect = useCallbackRef(args.onConnect);
+	const onDisconnect = useCallbackRef(args.onDisconnect);
+
+	useEffect(() => {
+		if (!adapter || (!onConnect && !onDisconnect))
+			return;
+
+		adapter.on('connect', onConnect);
+		adapter.on('disconnect', onDisconnect);
+
+		return () => {
+			adapter.off('connect', onConnect);
+			adapter.off('disconnect', onDisconnect);
+		}
+	}, [adapter, onConnect, onDisconnect])
+}

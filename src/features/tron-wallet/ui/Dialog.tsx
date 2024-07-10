@@ -8,9 +8,9 @@ import { useWalletConnectDialog } from "../model/dialog";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import { Button } from "~/shared/ui/kit/button";
 import { AdapterState } from "@tronweb3/tronwallet-abstract-adapter";
-import { useEffect } from "react";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { apiClient } from "~/shared/api/client";
+import { useWatchTronAdapter } from "~/shared/lib/tronweb";
 
 export function ConnectDialog(props: Dialog.RootProps) {
 	const { open, setOpen } = useWalletConnectDialog();
@@ -63,21 +63,12 @@ const adapterStatuses = new Map([
 ])
 
 function Form(props: FormProps) {
-	const { wallets, select, wallet } = useWallet();
-	const adapter = wallet?.adapter;
-
+	const { wallets, select } = useWallet();
 	const onActionFulfilled = useCallbackRef(props.onActionFulfilled);
 
-	useEffect(() => {
-		if (!adapter)
-			return;
-
-		adapter.on('connect', onActionFulfilled);
-
-		return () => {
-			adapter.off('connect', onActionFulfilled);
-		}
-	}, [adapter, onActionFulfilled])
+	useWatchTronAdapter({
+		onConnect: onActionFulfilled
+	})
 
 	return (
 		<div className='flex flex-col w-full gap-[1rem]'>
