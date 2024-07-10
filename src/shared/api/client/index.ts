@@ -10,6 +10,9 @@ export * from './sales/model';
 export * from './stores/model';
 export * from './stores/mock'
 export * from './users/model';
+export * from './chats/model';
+export * from './chats/mappers';
+export * from './categories/model';
 
 export * from './escrow/contract-abi'
 export * from './shared/models';

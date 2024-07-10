@@ -7,14 +7,21 @@ import { CategoriesRoulette } from "./categories-roulette";
 import { useCategoriesRouletteStrictContext } from "./categories-roulette/contex";
 
 export function InteractiveProvider({ children }: PropsWithChildren) {
+	// idiomatic react you say, huh?
 	return (
 		<MobileMenu.Root>
 			<SearchPanel.Root>
-				<CategoriesRoulette.Root>
-					<InteractivePopover>
-						{children}
-					</InteractivePopover>
-				</CategoriesRoulette.Root>
+				<SearchPanel.ContextConsumer>
+					{searchApi => (
+						<CategoriesRoulette.Root 
+							onChange={c => searchApi.setCategory(c)}
+						>
+							<InteractivePopover>
+								{children}
+							</InteractivePopover>
+						</CategoriesRoulette.Root>
+					)}
+				</SearchPanel.ContextConsumer>
 			</SearchPanel.Root>
 		</MobileMenu.Root>
 	);
@@ -79,7 +86,8 @@ function InteractivePopover({ children }: PropsWithChildren) {
 					>
 						<Collapsible.Content>
 							<CategoriesRoulette.Content
-								className='px-[1rem]' />
+								className='px-[1rem]'
+							/>
 						</Collapsible.Content>
 					</Collapsible.Root>
 

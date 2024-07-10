@@ -21,7 +21,7 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 		mutationFn: async () => {
 			const { data, error } = await apiClient.orders.create({
 				productId: product.id,
-				paymentType: method.token
+				...method
 			});
 
 			if (error)
@@ -38,7 +38,7 @@ export function ButtonCreateOrder({ method, onActionFulfilled, onActionRejected,
 			size='xl'
 			{...props}
 			onClick={() => create()}
-			disabled={isPending}
+			disabled={isPending || props?.disabled}
 		>
 			Pay Now
 		</Button>

@@ -12,11 +12,16 @@ import { Heading } from "~/shared/ui/kit/heading";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { paymentMethodsQueries } from "~/entities/payment-methods";
 import { PayloadPaymentToken, schemaPaymentToken } from "~/shared/api/client";
+import { useUserGetQuery } from "~/entities/user";
+
+type CardApi = PayloadPaymentToken & {
+	disabled: boolean | undefined;
+}
 
 export type BaseCardProps = WithControllableProps<
 	PayloadPaymentToken, Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 > & {
-	children?: MaybeRenderProp<PayloadPaymentToken>
+	children?: MaybeRenderProp<CardApi>
 } & ProductProp
 
 export function BaseCard({
@@ -26,13 +31,18 @@ export function BaseCard({
 	children, title = 'Pay for the order',
 	...props
 }: BaseCardProps) {
-	const { data } = paymentMethodsQueries.useGetForProduct(product.id);
+	const { data: user, isLoading: userLoading } = useUserGetQuery();
+	const { data: paymentMethods, isLoading: paymentMethodsLoading } = paymentMethodsQueries.useGetForProduct(product.id);
+	const loading = paymentMethodsLoading || userLoading;
+	const disabled = !paymentMethods?.length || (
+		!!user && user?.username === product.store?.owner.username
+	);
 
 	const [value, setValue] = useControllableState({
 		onChange, defaultValue, value: v
 	});
 
-	const availableTokens = data?.find(g => g.value == value.block)?.tokens;
+	const availableTokens = paymentMethods?.find(g => g.value == value.block)?.tokens;
 
 	return (
 		<div
@@ -49,21 +59,21 @@ export function BaseCard({
 					className='font-semibold text-[2.25rem]'
 				/>
 
-				{!data ? (
+				{!paymentMethods ? (
 					<Skeleton asChild loading>
 						<Button className='w-full' />
 					</Skeleton>
 				) : (
 					<Select.Root
-						variant="noBorder"
-						items={data}
+						disabled={disabled}
+						items={paymentMethods}
 						value={[value.block]}
 						// @ts-expect-error broken CollectionItem types in park-ui
 						itemToString={item => item.name}
 						// @ts-expect-error broken CollectionItem types in park-ui
 						itemToValue={item => item.value}
 						onValueChange={change => {
-							const newBlock = change.items[0] as typeof data[number];
+							const newBlock = change.items[0] as typeof paymentMethods[number];
 							const tokenNames = newBlock.tokens.map(t => t.name);
 
 							setValue(v => ({
@@ -85,7 +95,7 @@ export function BaseCard({
 						</Select.Control>
 						<Select.Positioner>
 							<Select.Content>
-								{data.map(g => (
+								{paymentMethods.map(g => (
 									<Select.Item key={g.value} item={g} >
 										<Select.ItemText>{g.name}</Select.ItemText>
 									</Select.Item>
@@ -97,9 +107,11 @@ export function BaseCard({
 
 				<Skeleton
 					asChild
-					loading={!data} className='min-h-[10rem]'
+					className='min-h-[10rem]'
+					loading={paymentMethodsLoading}
 				>
 					<RadioGroup.Root
+						disabled={disabled}
 						value={value.token}
 						onValueChange={change => {
 							setValue(v => schemaPaymentToken.parse({ ...v, token: change.value }));
@@ -135,7 +147,9 @@ export function BaseCard({
 					</p>
 				</div>
 
-				{transformRenderProps(children, value)}
+				{transformRenderProps(children, {
+					...value, disabled: loading ? undefined : disabled
+				})}
 			</ProductProvider>
 		</div>
 	);
