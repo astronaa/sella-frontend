@@ -11,7 +11,7 @@ import { SchemaType } from "../../api";
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
-import {ValidationErrors} from "final-form";
+import { ValidationErrors } from "final-form";
 import { CategoryVTagsInput } from "~/entities/category";
 
 export interface RootProps extends PropsWithChildren {
@@ -20,11 +20,16 @@ export interface RootProps extends PropsWithChildren {
 	validate: (values: SchemaType) => ValidationErrors
 }
 
+const initialValues = {
+	holdPeriod: 1
+}
+
 export function Root({ onSubmit, validate, children }: RootProps) {
 	return (
 		<Form
 			onSubmit={onSubmit}
 			validate={validate}
+			initialValues={initialValues}
 		>
 			{() => children}
 		</Form>
@@ -39,7 +44,7 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 					label='Attach Preview' name='previewImage'
 					className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
 				/>
-				<div className='flex flex-col justify-between max-md:gap-[1rem]'>
+				<div className='flex flex-col justify-between max-md:gap-[1rem] w-full'>
 					<VTextControl.Root className='w-full' name='name'>
 						<VTextControl.LabelOrError>
 							Product Name
@@ -47,27 +52,41 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 						<VTextControl.Input placeholder='Enter product name' />
 					</VTextControl.Root>
 
-					<VTextControl.Root className='w-full' name='price'>
-						<VTextControl.LabelOrError>
-							Product Price
-						</VTextControl.LabelOrError>
-						<VTextControl.Input
-							type='number' min={1} step={0.01}
-							placeholder='0 USDT'
-						/>
-					</VTextControl.Root>
+					<div className='flex gap-[2rem] w-full'>
+						<VTextControl.Root className='w-full' name='price'>
+							<VTextControl.Label>
+								Product Price
+							</VTextControl.Label>
+							<VTextControl.Input
+								type='number' min={1} step={0.01}
+								placeholder='0 USDT'
+							/>
+							<VTextAreaControl.ErrorText />
+						</VTextControl.Root>
+						<VTextControl.Root className='w-full' name='holdPeriod'>
+							<VTextControl.Label>
+								Escrow
+							</VTextControl.Label>
+							<VTextControl.Input
+								type='number'
+								min={1} step={1} max={60}
+								placeholder='days'
+							/>
+							<VTextAreaControl.ErrorText />
+						</VTextControl.Root>
+					</div>
 				</div>
 			</div>
 
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
-				<CategoryVTagsInput placeholder="Add category"/>
-				<VTextAreaControl.ErrorText/>
+				<CategoryVTagsInput placeholder="Add category" />
+				<VTextAreaControl.ErrorText />
 			</VTextControl.Root>
 		</div>
 	);
 }
-export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>){
+export function Description({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div {...props} className={cn('flex flex-col w-full gap-[2rem]', className)}>
 			<VTextControl.Root className='w-full' name='shortDescription'>

@@ -20,8 +20,10 @@ export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
 			const { data, error } = await authFetchClient.POST('/api/products', {
+				// @ts-expect-error expecting openapi changes
 				body: {
-					storeUrl, holdPeriod: 60, ...payload,
+					storeUrl, 
+					...payload,
 				}
 			});
 
@@ -69,6 +71,7 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
+					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 
