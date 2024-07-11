@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader, VTagsInput,
+	VImageUploader,
 	VTextAreaControl,
 	VTextControl,
 	VUploader
@@ -12,6 +12,7 @@ import { HTMLAttributes, PropsWithChildren } from "react";
 import { Form } from "react-final-form";
 import { cn } from "~/shared/lib/cn";
 import {ValidationErrors} from "final-form";
+import { CategoryVTagsInput } from "~/entities/category";
 
 export interface RootProps extends PropsWithChildren {
 	storeUrl: string;
@@ -60,7 +61,7 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
-				<VTagsInput placeholder="Add category"/>
+				<CategoryVTagsInput placeholder="Add category"/>
 				<VTextAreaControl.ErrorText/>
 			</VTextControl.Root>
 		</div>

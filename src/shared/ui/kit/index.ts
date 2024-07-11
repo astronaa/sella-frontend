@@ -11,4 +11,5 @@ export * as Clipboard from './clipboard'
 export * as Toast from './toast';
 export * as TagsInput from './tags-input';
 export * as Tooltip from './tooltip';
+export * as Combobox from './combobox';
 

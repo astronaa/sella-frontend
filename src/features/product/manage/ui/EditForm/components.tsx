@@ -2,7 +2,7 @@
 
 import {
 	VCheckbox,
-	VImageUploader, VTagsInput,
+	VImageUploader,
 	VTextAreaControl,
 	VTextControl,
 	VUploader
@@ -17,6 +17,7 @@ import {IconButton} from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
 import {ValidationErrors} from "final-form";
 import {Divider} from "~/shared/ui/kit/divider";
+import { CategoryVTagsInput } from "~/entities/category";
 
 
 export interface RootProps extends PropsWithChildren {
@@ -79,7 +80,7 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
-				<VTagsInput placeholder="Add category"/>
+				<CategoryVTagsInput placeholder="Add category"/>
 				<VTextAreaControl.ErrorText/>
 			</VTextControl.Root>
 
