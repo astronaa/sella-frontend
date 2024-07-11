@@ -837,18 +837,8 @@ export interface components {
             url: string;
             tagNames: string[];
         };
-        StoresInfoDto: {
-            /** Format: uuid */
-            imageId?: string;
-            name: string;
-            description?: string;
-            url: string;
-            /** Format: date-time */
-            createdAt: string;
-            rating: components["schemas"]["RatingDto"];
-        };
-        AllStoresResponseDto: {
-            data: components["schemas"]["StoresInfoDto"][];
+        StoresSearchResultDto: {
+            data: components["schemas"]["StoreInfoDto"][];
             total: number;
         };
         UpdateStoreDto: {
@@ -886,6 +876,7 @@ export interface components {
             url: string;
             /** Format: uuid */
             imageId?: string;
+            description?: string;
         };
         StoreOwnerDto: {
             username: string;
@@ -952,6 +943,9 @@ export interface components {
         ProductAddImageResultDto: {
             imageIds: string[];
         };
+        ChatAccessResponseDto: {
+            accessToken: string;
+        };
         ChatResponseDto: {
             chatId: string;
             buyerId: number;
@@ -959,12 +953,9 @@ export interface components {
             isFrozen: boolean;
             productName: string;
         };
-        ChatAccessResponseDto: {
-            accessToken: string;
-        };
         ChatResponseWithMetaDto: {
-            result: components["schemas"]["ChatResponseDto"];
             metadata: components["schemas"]["ChatAccessResponseDto"];
+            result: components["schemas"]["ChatResponseDto"];
         };
         CommentUserDto: {
             username: string;
@@ -995,7 +986,7 @@ export interface components {
         FeaturedTagDto: {
             name: string;
             /** Format: uuid */
-            imageId?: string;
+            imageId: string;
         };
         MessageDto: {
             id: string;
@@ -1579,7 +1570,9 @@ export interface operations {
             /** @description Store successfully updated */
             200: {
                 headers: Record<string, unknown>;
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["StoreInfoDto"];
+                };
             };
             /** @description Request data sent was not valid by schema */
             400: {
@@ -1605,6 +1598,9 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                query?: string;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path?: never;
@@ -1616,7 +1612,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["AllStoresResponseDto"];
+                    "application/json": components["schemas"]["StoresSearchResultDto"];
                 };
             };
         };
@@ -1638,7 +1634,7 @@ export interface operations {
             201: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["Store"];
+                    "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */

@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, Tabs } from '~/shared/ui/kit';
-import {ReactNode, useRef, useState} from 'react';
+import {ReactNode, useCallback, useRef, useState} from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { Product } from "~/shared/api/client"
 import { useDialogState } from '~/shared/lib/dialog';
@@ -29,9 +29,7 @@ export function CreateDialog({
 }: CreateDialogProps) {
 	const [selectedTab, setSelectedTab] = useState('1')
 	const validationErrorsRef = useRef<object>()
-
 	const { isOpen, handleOpenChange, close } = useDialogState(props)
-
 
 	const goToInvalidTab = (errorFields: object) => {
 		const keys = Object.keys(errorFields);
@@ -57,11 +55,11 @@ export function CreateDialog({
 		}
 	}
 
-	const validate = (values: object) => {
+	const validate = useCallback((values: object) => {
 		const errors = zValidate(values)
 		validationErrorsRef.current = errors
 		return errors
-	}
+	}, [validationErrorsRef]);
 
 	return (
 		<Dialog.Root
@@ -79,7 +77,7 @@ export function CreateDialog({
 
 			<Portal>
 				<Dialog.Positioner>
-					<Dialog.Content className='w-[34.375rem] gap-[1.5rem]'>
+					<Dialog.Content className='w-[40.625rem] gap-[1.5rem]'>
 						<Tabs.Root defaultValue="1" className="gap-[1.5rem]" value={selectedTab} onValueChange={(e) => {
 							setSelectedTab(e.value)
 						}}>

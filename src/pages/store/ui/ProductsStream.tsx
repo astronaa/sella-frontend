@@ -58,7 +58,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 
 	const { data: user } = useUserGetQuery();
 	const products = data?.items;
-	const total = data?.total ?? 0;
+	const total = data?.total;
 
 	return (
 		<div className={cn('flex flex-col gap-[3rem] w-full max-lg:items-center', className)}>
@@ -113,7 +113,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 				</div>
 			)}
 
-			{total > limit && (
+			{!!total && total > limit && (
 				<Pagination
 					defaultValue={page}
 					onPageChange={onPageChange}
