@@ -10,7 +10,7 @@ const tagsInput = tv(
 		slots: {
 			root: 'tagsInput__root',
 			label: 'tagsInput__label',
-			control: 'tagsInput__control bg-white/[.04] rounded-[0.625rem] transition hover:bg-white/[.06] border-0 focus-within:border-transparent focus-within:shadow-none text-white p-[10px] gap-[0.75rem] min-h-[58px]',
+			control: 'tagsInput__control bg-white/[.04] rounded-[0.625rem] transition hover:bg-white/[.06] border-0 focus-within:border-transparent focus-within:shadow-none text-white p-[0.625rem] gap-[0.75rem] min-h-[58px]',
 			input: 'tagsInput__input placeholder-black-40 text-white w-[8rem]',
 			clearTrigger: 'tagsInput__clearTrigger',
 			item: 'tagsInput__item',
@@ -26,6 +26,7 @@ const { withProvider, withContext } = createStyleContext(tagsInput)
 
 export interface RootProps extends TagsInput.RootProps, VariantProps<typeof tagsInput> {}
 export const Root = withProvider(TagsInput.Root, 'root')
+export const RootProdiver = withProvider(TagsInput.RootProvider, 'root')
 
 export const ClearTrigger = withContext(
 	TagsInput.ClearTrigger,

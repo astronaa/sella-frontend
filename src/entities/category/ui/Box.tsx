@@ -23,6 +23,7 @@ export function Box({ category, active, className, ...props }: BoxProps) {
 				src={category.image}
 				className='size-[5rem] border-none bg-transparent'
 				alt={`Category ${category.name} image`}
+				width={300} height={300}
 			/>
 
 			<span>{category.name}</span>

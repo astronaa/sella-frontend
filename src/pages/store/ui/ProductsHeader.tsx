@@ -21,7 +21,7 @@ const options: { label: string, value: NonNullable<ValueType>['sort'] }[] = [
 ];
 
 interface ProductsHeaderProps extends UseFiltersStateArgs {
-	productsCount: number
+	productsCount: number | undefined
 }
 
 const DEBOUNCE_TIME = 300;
