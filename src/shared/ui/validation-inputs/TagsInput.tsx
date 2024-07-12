@@ -54,7 +54,6 @@ export function VTagsInput({ placeholder, items = data, ...props }: VTagsInputPr
 	return (
 		<TagsInput.RootProdiver value={tagsInput}>
 			<Combobox.RootProvider
-				// @ts-expect-error broken CollectionItem types in park-ui
 				value={combobox}
 			>
 				<Combobox.Control>
