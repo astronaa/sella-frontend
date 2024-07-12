@@ -1,0 +1,1 @@
+export { PageChatsRoot as default } from "~/pages/chats";
