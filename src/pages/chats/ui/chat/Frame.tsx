@@ -58,7 +58,7 @@ export function ChatFrame({
 		<div
 			{...props}
 			className={cn(
-				"flex flex-col bg-white/[.04] pt-[16px] px-[16px] rounded-[20px] gap-[20px] h-[715px] border border-white/[.04] overflow-hidden",
+				"flex flex-col bg-white/[.04] pt-[1rem] px-[1rem] rounded-[1.25rem] gap-[1.25rem] h-[44.6875rem] border border-white/[.04] overflow-hidden",
 				className
 			)}
 		>
@@ -85,7 +85,7 @@ export function ChatFrame({
 					{({ handleSubmit }) => (
 						<form
 							className={cn(
-								"flex gap-[1rem] w-full py-[16px] absolute bottom-0 right-0 left-0",
+								"flex gap-[1rem] w-full py-[1rem] absolute bottom-0 right-0 left-0",
 								"bg-transparent backdrop-blur-sm"
 							)}
 							onSubmit={handleSubmit}
@@ -101,7 +101,7 @@ export function ChatFrame({
 							</Field>
 
 							<VSubmitButton className="rounded-[1.25rem] px-[1.5rem]">
-                Send
+								Send
 							</VSubmitButton>
 						</form>
 					)}

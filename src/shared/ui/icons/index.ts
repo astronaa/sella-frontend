@@ -22,6 +22,7 @@ import Building from "../../assets/icons/building.svg";
 import Package from "../../assets/icons/package.svg";
 import PackageThin from "../../assets/icons/package-thin.svg";
 import ChevronDown from "../../assets/icons/chevron-down.svg";
+import ChevronLeft from "../../assets/icons/chevron-left.svg";
 import AlertOctagon from "../../assets/icons/alert-octagon.svg";
 import Refresh from "../../assets/icons/refresh.svg";
 
@@ -69,6 +70,7 @@ export const Icons = {
 	Package,
 	PackageThin,
 	ChevronDown,
+	ChevronLeft,
 	AlertOctagon,
 	Refresh,
 

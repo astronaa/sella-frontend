@@ -2,57 +2,87 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 import { ProductImage, productQueries } from "~/entities/product";
 import { Product, productMock } from "~/shared/api/client";
+import { cn } from "~/shared/lib/cn";
+import { Icons } from "~/shared/ui/icons";
 import { PreviewImage } from "~/shared/ui/image";
-import { Button } from "~/shared/ui/kit/button";
+import { Button, ButtonProps } from "~/shared/ui/kit/button";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { ChatPanelTabProvider, PossibleTabs } from "../model/tabs";
+import { UnreadedBadge } from "./UnreadedBadge";
 
 export function PageRoot({ children }: PropsWithChildren) {
+	const params = useParams();
 	const { data: product } = productQueries.useGetOne({
 		productId: "2832b49b-af05-44a0-a21f-4361cd4ad5ee"
 	});
 
-	const params = useParams();
+	const [tab, setTab] = useState<PossibleTabs>(!!params?.productId ? 'chat' : 'chats-list');
+	const contextValue = useMemo(() => ({ tab, setTab }), [tab, setTab]);
+
+	if (false) {
+		return (
+			<NotFoundScreen className='w-full h-[44.6875rem] max-w-content mx-auto px-[1rem] '>
+				<Icons.Chat />
+				{"You don't have any chats yet"}
+
+				<Button
+					asChild className='mt-[2rem]'
+				>
+					<Link href='/marketplace'>
+						Expore Marketplace
+					</Link>
+				</Button>
+			</NotFoundScreen>
+		);
+	}
 
 	return (
-		<div className="flex gap-[1.25rem] justify-center">
-			<div className="flex flex-col gap-[0.5rem] w-[22.5rem] h-[44.6875rem] px-[0.75rem] py-[1rem] 
-				border border-white/[.04] rounded-[1.25rem]"
-			>
-				<div className="flex gap-[0.375rem] items-center px-[0.5rem]">
-					<p className="font-semibold text-[1.125rem] font-manrope leading-[1.3] truncate">
-						Chats
-					</p>
+		<ChatPanelTabProvider value={contextValue}>
+			<div className="flex gap-[1.25rem] justify-center w-full max-w-content mx-auto px-[1rem] h-[44.6875rem]">
+				<div
+					className={cn(
+						"flex flex-col gap-[0.5rem] w-full max-w-[22.5rem] px-[0.75rem] py-[1rem]",
+						"border border-white/[.04] rounded-[1.25rem]",
+						tab == 'chat' && 'max-lg:hidden'
+					)}
+				>
+					<div className="flex gap-[0.375rem] items-center px-[0.5rem]">
+						<p className="font-semibold text-[1.125rem] font-manrope leading-[1.3] truncate">
+							Chats
+						</p>
 
-					<p className="font-semibold text-[1.125rem] font-manrope leading-[1.3] truncate text-black-40">
-						17
-					</p>
+						<p className="font-semibold text-[1.125rem] font-manrope leading-[1.3] truncate text-black-40">
+							17
+						</p>
+					</div>
+
+					<Skeleton loading={!product}>
+						<ProductChatCard
+							product={product ?? productMock}
+							lastMessage="Let me know if you have any questions about the product, I'm happy to help!"
+							userName="Eunice Hogan"
+							unreadMessages={3}
+							active={product && params?.productId == product.id}
+							onClick={() => setTab('chat')}
+						/>
+					</Skeleton>
 				</div>
 
-				<Skeleton loading={!product}>
-					<ProductChatCard
-						product={product ?? productMock}
-						lastMessage="Let me know if you have any questions about the product, I'm happy to help!"
-						userName="Eunice Hogan"
-						unreadMessages={3}
-						isActive={product && params?.productId == product.id}
-					/>
-				</Skeleton>
+				<div className={cn("w-full", tab == 'chats-list' && 'max-lg:hidden')}>
+					{children}
+				</div>
 			</div>
-
-			<div className="w-full max-w-[48.75rem]">
-				{children}
-			</div>
-		</div>
+		</ChatPanelTabProvider>
 	);
 }
 
-interface ProductChatCard {
+interface ProductChatCard extends ButtonProps {
 	product: Product;
 	lastMessage: string;
-	isActive?: boolean;
 	avatarUrl?: string;
 	userName: string;
 	unreadMessages: number;
@@ -61,16 +91,17 @@ interface ProductChatCard {
 export function ProductChatCard({
 	product,
 	lastMessage,
-	isActive,
 	avatarUrl,
 	userName,
-	unreadMessages
+	unreadMessages,
+	className,
+	...props
 }: ProductChatCard) {
 	return (
 		<Button
-			active={isActive} variant='ghost'
-			className='flex gap-[0.75rem] h-auto items-stretch'
-			asChild
+			variant='ghost'
+			{...props} asChild
+			className={cn('flex gap-[0.75rem] h-auto items-stretch', className)}
 		>
 			<Link href={`/chats/${product.id}`}>
 				<ProductImage
@@ -105,16 +136,7 @@ export function ProductChatCard({
 							{lastMessage}
 						</p>
 
-						<div
-							className="flex items-center justify-center w-[1.5rem] h-[1.5rem] min-w-[1.5rem] min-h-[1.5rem] rounded-full"
-							style={{
-								backgroundColor: "rgba(244, 67, 54, 1)",
-							}}
-						>
-							<p className="font-normal text-[1rem] font-manrope leading-[1.2rem] text-white">
-								{unreadMessages}
-							</p>
-						</div>
+						<UnreadedBadge count={unreadMessages} />
 					</div>
 				</div>
 			</Link>
