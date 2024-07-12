@@ -4,51 +4,48 @@ import { PageProductCard } from "./PageProductCard";
 import { ProductProp } from "~/entities/product";
 import { z } from "zod";
 
-export const schemaPossibleTabs = z.enum(['chat', 'order-actions']);
+export const schemaPossibleTabs = z.enum(["chat", "order-actions"]);
 
-export type PossibleTabs = z.infer<typeof schemaPossibleTabs>
+export type PossibleTabs = z.infer<typeof schemaPossibleTabs>;
 
 interface PageLayoutProps extends ProductProp {
-	initialTab?: PossibleTabs
+  initialTab?: PossibleTabs;
 }
 
-export function PageLayout({ children, product, initialTab = 'chat' }: PropsWithChildren<PageLayoutProps>) {
+export function PageLayout({
+	children,
+	product,
+	initialTab = "chat",
+}: PropsWithChildren<PageLayoutProps>) {
 	const childrenArr = Children.toArray(children);
 
 	return (
-		<div className='flex flex-col w-full gap-[1rem] max-w-content mx-auto px-[1rem]'>
+		<div className="flex flex-col w-full gap-[1rem] max-w-content mx-auto px-[1rem]">
 			<PageProductCard
 				product={product}
-				className='w-full max-w-full lg:hidden flex-shrink-0'
+				className="w-full max-w-full lg:hidden flex-shrink-0"
 			/>
 
 			<Tabs.Root
 				defaultValue={initialTab}
-				className='flex lg:data-[orientation]:flex-row items-start gap-[2.5rem] w-full'
+				className="flex lg:data-[orientation]:flex-row items-start gap-[2.5rem] w-full"
 			>
-				<Tabs.List className='lg:hidden max-lg:w-full'>
-					<Tabs.Trigger value='order-actions'>
-						Pay for the order
-					</Tabs.Trigger>
-					<Tabs.Trigger value='chat'>
-						Chat with the seller
-					</Tabs.Trigger>
+				<Tabs.List className="lg:hidden max-lg:w-full">
+					<Tabs.Trigger value="order-actions">Pay for the order</Tabs.Trigger>
+					<Tabs.Trigger value="chat">Chat with the seller</Tabs.Trigger>
 					<Tabs.Indicator />
 				</Tabs.List>
 
 				{childrenArr[0] && (
-					<Tabs.Content
-						value='chat'
-						className='lg:!flex size-full'
-					>
+					<Tabs.Content value="chat" className="lg:!flex size-full">
 						{childrenArr[0]}
 					</Tabs.Content>
 				)}
 
 				{childrenArr[1] && (
 					<Tabs.Content
-						value='order-actions'
-						className='lg:!flex flex-shrink-0 w-full max-w-[22.5rem] max-lg:max-w-full'
+						value="order-actions"
+						className="lg:!flex flex-shrink-0 w-full max-w-[22.5rem] max-lg:max-w-full"
 					>
 						{childrenArr[1]}
 					</Tabs.Content>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useMobileMenuStrictContext } from "./context";
 import { cn } from "~/shared/lib/cn";
@@ -7,8 +7,7 @@ import { Link } from "~/shared/ui/nav-link";
 
 export function PhoneNavbarContent() {
 	const { open, setOpen } = useMobileMenuStrictContext();
-	if (!open)
-		return null;
+	if (!open) return null;
 
 	const handleLinkClick = () => {
 		setOpen(false);
@@ -29,31 +28,31 @@ export function PhoneNavbarContent() {
 				)}
 			>
 				<NavItem onClick={handleLinkClick} href="/">
-					Home
+          Home
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/marketplace">
-					Explore
+          Explore
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#features">
-					Features
+          Features
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#whitepaper">
-					Whitepaper
+          Whitepaper
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#roadmap">
-					Roadmap
+          Roadmap
 				</NavItem>
 			</div>
 
-			<UserNavBar className='flex-col-reverse [&_button]:w-full' />
+			<UserNavBar className="flex-col-reverse [&_button]:w-full" />
 		</div>
 	);
 }
 
 interface NavItemProps {
-	href: string;
-	onClick: () => void;
-	children: React.ReactNode;
+  href: string;
+  onClick: () => void;
+  children: React.ReactNode;
 }
 
 function NavItem({ href, onClick, children }: NavItemProps) {
