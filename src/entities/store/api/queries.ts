@@ -3,6 +3,7 @@ import { apiClient } from "~/shared/api/client";
 import { PayloadPagination } from "~/shared/api/client"
 import { Store } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
+import {z} from "zod";
 
 const QUERY_KEY = 'stores'
 
@@ -16,7 +17,14 @@ interface GetAllQueryOptions extends PayloadPagination {
 	initialData?: { items: Store[], total: number }
 }
 
-type GetForExploreQueryOptions = GetAllQueryOptions;
+export interface GetForExploreQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts>{
+	page: number,
+	limit: number,
+}
+interface GetForExploreOptions{
+	query: GetForExploreQueryParams
+	initialData?: { items: Store[], total: number }
+}
 
 export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptions) {
 	return useQuery({
@@ -68,14 +76,15 @@ export function useGetForUser() {
 	})
 }
 
-export function useGetForExplore({ 
-	page, limit,
-	initialData = { items: [], total: 0 }, 
-}: GetForExploreQueryOptions) {
+export function useGetForExplore({
+	initialData = { items: [], total: 0 },
+	query
+}: GetForExploreOptions) {
+	const {page, limit, ...rest} = query
 	return useQuery({
-		queryKey: [QUERY_KEY, 'explore', page],
+		queryKey: [QUERY_KEY, 'explore', query],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.getForExplore({ page, limit })
+			const { data, error } = await apiClient.stores.getForExplore({page, limit}, rest)
 
 			if (error)
 				throw error;

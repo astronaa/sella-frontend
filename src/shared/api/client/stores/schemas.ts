@@ -46,3 +46,7 @@ export type PayloadReport = z.infer<typeof schemaReport>
 export const schemaGetProducts = schemaSearch;
 
 export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
+
+export const schemaGetForExplore = schemaSearch.pick({query: true, tagNames: true})
+
+export type PayloadGetForExplore = z.infer<typeof schemaGetForExplore>

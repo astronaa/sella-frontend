@@ -21,8 +21,10 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 	const [page, setPage] = useState(1);
 
 	const { data, isFetching } = storeQueries.useGetForExplore({
-		page,
-		limit: ITEMS_PER_PAGE,
+		query: {
+			page,
+			limit: ITEMS_PER_PAGE
+		},
 		initialData
 	});
 

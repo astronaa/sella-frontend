@@ -7,8 +7,9 @@ import {
 	schemaCreate,
 	schemaReport,
 	schemaUpdate,
-	schemaGetProducts, 
-	PayloadGetProducts
+	schemaGetProducts,
+	schemaGetForExplore,
+	PayloadGetProducts, PayloadGetForExplore
 } from "./schemas";
 
 import { authFetchClient } from "../fetch-client";
@@ -37,10 +38,10 @@ export function createStoresClient() {
 			}
 		},
 
-		async getForExplore(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+		async getForExplore(pagination: PayloadPagination, payload: PayloadGetForExplore) {
 			const { data, error } = await authFetchClient.GET('/api/explore', {
 				params: {
-					query: mapPaginationPayloadToDto(pagination)
+					query: {...mapPaginationPayloadToDto(pagination), ...payload}
 				},
 			});
 
@@ -162,6 +163,7 @@ export function createStoresClient() {
 		schemaUpdate,
 		schemaReport,
 		schemaGetProducts,
+		schemaGetForExplore,
 		reportReasons,
 		ANOTHER_REASON_ID
 	}
