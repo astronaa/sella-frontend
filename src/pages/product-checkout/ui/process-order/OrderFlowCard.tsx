@@ -8,6 +8,9 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { toaster } from "~/shared/ui/toaster";
 import { useRegisterFlow } from "~/widgets/register-flow";
 import { useWatchAccount } from "~/shared/lib/wagmi";
+import { useTronWalletConnectDialog } from "~/features/tron-wallet";
+import { useRef } from "react";
+import { useWatchTronAdapter } from "~/shared/lib/tronweb";
 
 interface Props {
 	orderId: OrderId,
@@ -20,7 +23,17 @@ export function OrderFlowCard({ orderId }: Props) {
 	})
 
 	const watchAccount = useWatchAccount();
-	const startFlow = useRegisterFlow(s => s.startFlow);
+	const openEthWalletDialog = useRegisterFlow(s => s.startFlow);
+	const openTronWalletDialog = useTronWalletConnectDialog(s => s.setOpen);
+
+	const tronRetryRef = useRef<(() => void) | null>(null);
+
+	useWatchTronAdapter({
+		onConnect: () => {
+			tronRetryRef.current?.();
+			tronRetryRef.current = null;
+		}
+	})
 
 	if (isFetching || !order) {
 		return (
@@ -40,7 +53,7 @@ export function OrderFlowCard({ orderId }: Props) {
 				onActionRejected={(error, retry) => {
 					switch (error.cause) {
 						case "eth-not-found":
-							startFlow();
+							openEthWalletDialog();
 
 							watchAccount({
 								once: true,
@@ -48,7 +61,11 @@ export function OrderFlowCard({ orderId }: Props) {
 							})
 
 							break;
+						case 'tron-not-found':
+							openTronWalletDialog(true);
+							tronRetryRef.current = retry;
 
+							break;
 						default:
 							toaster.create({
 								type: 'error',

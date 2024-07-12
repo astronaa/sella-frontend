@@ -19,7 +19,7 @@ export function useCreateEscrowEth({ order }: { order: Order; }): CreateEscrowCo
 			const chainContractAddress = chain.contractAddress;
 			const sellerAddress = order.seller.address;
 			const tokenAmount = BigInt(order.transaction.tokenAmount);
-			const holdPeriod = order.product.holdPeriod;
+			const holdPeriod = order.transaction.holdPeriod;
 			
 			if (holdPeriod === undefined)
 				throw new EscrowError('generic', 'holdPeriod is not defined for product');
