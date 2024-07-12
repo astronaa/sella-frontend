@@ -29,7 +29,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
-			const holdPeriod = order.product.holdPeriod;
+			const holdPeriod = order.transaction.holdPeriod;
 			const tokenAmount = BigInt(order.transaction.tokenAmount);
 
 			if (holdPeriod === undefined)

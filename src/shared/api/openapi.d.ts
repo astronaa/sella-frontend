@@ -801,12 +801,12 @@ export interface components {
         EnumeratedProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             price: number;
             description: string | null;
             shortDescription: string;
+            holdPeriod: number;
             isFrozen: boolean;
             tagNames: string[];
         };
@@ -887,12 +887,12 @@ export interface components {
         ProductDetailsDTO: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -915,12 +915,12 @@ export interface components {
         ProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -1012,7 +1012,6 @@ export interface components {
         BaseProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
         };
@@ -1037,8 +1036,11 @@ export interface components {
             tokenAmount: number;
             /** @enum {string} */
             token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            contractEscrowId: Record<string, never>;
             /** @enum {string} */
             blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
+            holdPeriod: number;
+            holdEndingAt: Record<string, never>;
             /** Format: date-time */
             createdAt: string;
         };

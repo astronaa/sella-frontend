@@ -36,5 +36,6 @@ export const mapDtoToTransaction = (
 	totalPaid: obj.price,
 	tokenAmount: obj.tokenAmount,
 	block: obj.blockchain,
-	token: obj.token
+	token: obj.token,
+	holdPeriod: 'holdPeriod' in obj ? obj.holdPeriod : undefined
 })
