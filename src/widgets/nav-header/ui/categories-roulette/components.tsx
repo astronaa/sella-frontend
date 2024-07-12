@@ -68,9 +68,9 @@ export function Content(props: Scrollable.RootProps) {
 				{categories?.map(c => (
 					<CategoryBox
 						key={c.id}
-						category={c} active={category === c}
+						category={c} active={category?.id === c.id}
 						onClick={() => {
-							setCategory(c);
+							setCategory(category => category?.id == c.id ? null : c);
 							setOpen(false);
 						}}
 					/>
