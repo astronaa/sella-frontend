@@ -4,12 +4,18 @@ import { Icons } from "~/shared/ui/icons";
 import { Tooltip } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 import { NavHeader } from "~/widgets/nav-header";
+import { useWindowScroll } from "../lib/use-window-scroll";
 import { RegsiterFlowStartButton } from "~/widgets/register-flow";
 import { useUserProfileSettingsDialog } from "~/widgets/user/profile-settings";
 
 export function Header() {
+	const onTop = !useWindowScroll({ defaultValue: true });
+
 	return (
-		<NavHeader.Root className="sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header">
+		<NavHeader.Root
+			staticMode={onTop}
+			className="sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header"
+		>
 			<NavHeader.SlotUnauthorizedButtons>
 				<Button variant="outline">Buy $SELLA</Button>
 

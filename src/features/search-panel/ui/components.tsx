@@ -7,12 +7,14 @@ import { useDebounce } from "../../../shared/lib/use-debounce";
 import { useControllableState } from "~/shared/lib/use-controllable-state";
 import { cn } from "~/shared/lib/cn";
 import { Heading } from "~/shared/ui/kit/heading";
-import { ProductCard, ProductLink, productQueries } from "~/entities/product";
+import { ProductCard, ProductLink, ProductProp, productQueries } from "~/entities/product";
 import { Input as BaseInput, InputProps } from "~/shared/ui/kit/input";
-import { Scrollable } from "~/shared/ui/scrollable";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Category, productMock } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { Button } from "~/shared/ui/kit/button";
+import { useTwBreakpoint } from "~/shared/lib/responsive";
+import { Scrollable } from "~/shared/ui/scrollable";
 
 export function Root({ children }: PropsWithChildren) {
 	const [open, setOpen] = useState(false);
@@ -84,6 +86,7 @@ export function SearchBarRoot(props: BaseSearchBar.RootProps) {
 export const SearchBarInput = BaseSearchBar.Input;
 
 export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	const isMobile = !useTwBreakpoint('md');
 	const { searchText, open, category } = useSearchPanelStrictContext();
 
 	const { data: products, isLoading } = useQuery({
@@ -99,6 +102,7 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 
 	const items = products?.items;
 	const total = products?.total;
+	const showMore = !!total && total > 2;
 
 	return (
 		<div
@@ -107,13 +111,15 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 		>
 			<div className='flex flex-col gap-[1rem] w-full'>
 				<div className='flex gap-[1rem] justify-between items-center w-full'>
-					<Heading size='sm'>
+					<Heading size='sm' className='max-md:text-[1.25rem]'>
 						Products {total !== undefined && (
 							<span className='text-black-40'>{total}</span>
 						)}
 					</Heading>
-					{!!total && (
-						<a href='#' className='text-accent-100'>Show all results</a>
+					{!isMobile && showMore && (
+						<a href='#' className='text-accent-100'>
+							Show all results
+						</a>
 					)}
 				</div>
 
@@ -125,34 +131,62 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 					</div>
 				)}
 
-				<Scrollable.Root
-					scrollOptions={{ dragFree: false }}
-				>
-					<Scrollable.Container className='gap-[1rem]'>
-						{isLoading && Array(4).fill(productMock).map((p, index) => (
+				{isMobile ? (
+					<>
+						{isLoading && Array(2).fill(productMock).map((p, index) => (
 							<Skeleton
 								key={index}
 								loading asChild
 							>
-								<ProductCard.Composed
+								<MobileProductCard
 									product={p}
-									className='flex-shrink-0'
 								/>
 							</Skeleton>
 						))}
 
-						{items?.map((p, index) => (
-							<ProductCard.Root
+						{items?.slice(0, 2).map((p, index) => (
+							<MobileProductCard
 								key={index} product={p}
-								className='flex-shrink-0' asChild
-							>
-								<ProductLink>
-									<ProductCard.Composition />
-								</ProductLink>
-							</ProductCard.Root>
+							/>
 						))}
-					</Scrollable.Container>
-				</Scrollable.Root>
+
+					</>
+				) : (
+					<Scrollable.Root
+						scrollOptions={{ dragFree: false }}
+					>
+						<Scrollable.Container className='gap-[1rem]'>
+							{isLoading && Array(4).fill(productMock).map((p, index) => (
+								<Skeleton
+									key={index}
+									loading asChild
+								>
+									<ProductCard.Composed
+										product={p}
+										className='flex-shrink-0' 
+									/>
+								</Skeleton>
+							))}
+
+							{items?.map((p, index) => (
+								<ProductCard.Root
+									key={index} product={p}
+									className='flex-shrink-0' asChild
+								>
+									<ProductLink>
+										<ProductCard.Composition />
+									</ProductLink>
+								</ProductCard.Root>
+							))}
+						</Scrollable.Container>
+					</Scrollable.Root>
+				)}
+
+				{showMore && (
+					<Button colorPalette='gray' size='xl'>
+						Show More Results
+					</Button>
+				)}
 			</div>
 
 			{/* <div className='flex flex-col gap-[1rem] w-full'>
@@ -172,6 +206,26 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 				</div>
 			</div> */}
 		</div>
+	);
+}
+
+function MobileProductCard({ product }: ProductProp) {
+	return (
+		<ProductCard.Root
+			product={product} asChild
+			className='flex-row flex-shrink-0 max-w-full w-full p-[0.75rem] pb-[0.75rem] items-center'
+		>
+			<ProductLink product={product}>
+				<ProductCard.Image className='size-[6.25rem]' />
+				<ProductCard.Content className='gap-[0.5rem] px-0 max-w-full'>
+					<ProductCard.Title />
+					<ProductCard.Description
+						className='whitespace-normal line-clamp-2'
+					/>
+					<ProductCard.Price />
+				</ProductCard.Content>
+			</ProductLink>
+		</ProductCard.Root>
 	);
 }
 
