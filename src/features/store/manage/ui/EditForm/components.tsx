@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	VImageUploader, VTagsInput,
+	VImageUploader,
 	VTextAreaControl,
 	VTextControl
 } from "~/shared/ui/validation-inputs";
@@ -16,6 +16,7 @@ import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
 import {toaster} from "~/shared/ui/toaster";
+import { CategoryVTagsInput } from "~/entities/category";
 
 const validate = zodValidate(schema);
 
@@ -104,7 +105,7 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
-				<VTagsInput placeholder="Add category"/>
+				<CategoryVTagsInput placeholder="Add category"/>
 				<VTextAreaControl.ErrorText/>
 			</VTextControl.Root>
 		</div>

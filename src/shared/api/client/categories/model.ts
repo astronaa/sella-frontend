@@ -1,7 +1,9 @@
-import { StaticImageData } from "next/image";
+import { ImageEntry } from "../shared/models";
+
+export type CategoryId = string;
 
 export interface Category {
-	id: number,
+	id: CategoryId,
 	name: string,
-	image: StaticImageData
+	image: ImageEntry
 }

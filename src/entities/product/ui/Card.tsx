@@ -47,11 +47,14 @@ export function Title({ className, ...props }: HTMLArkProps<'h1'>) {
 }
 
 export function Description({ className, ...props }: HTMLArkProps<'p'>) {
-	const { description } = useProductStrictContext();
+	const { shortDescription } = useProductStrictContext();
+	
+	if(!shortDescription)
+		return null;
 
 	return (
 		<ark.p className={cn('text-black-60 leading-[1.3] truncate max-w-full', className)} {...props}>
-			{description}
+			{shortDescription}
 		</ark.p>
 	);
 }
