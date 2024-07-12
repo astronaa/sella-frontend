@@ -12,6 +12,8 @@ import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
 import { Scrollable } from "~/shared/ui/scrollable";
 import { CategoryBox, categoryQueries } from "~/entities/category";
+import {useFilters} from "~/pages/marketplace/model/filters";
+import {useDebounce} from "~/shared/lib/use-debounce";
 
 interface StoresStreamProps {
 	initialData: { items: Store[]; total: number; };
@@ -19,11 +21,13 @@ interface StoresStreamProps {
 
 export function StoresStream({ initialData }: StoresStreamProps) {
 	const [page, setPage] = useState(1);
-
+	const {filters, setFilters} = useFilters()
+	const {debounceFn: setQuery} = useDebounce((query) => setFilters({...filters, query}), 300)
 	const { data, isFetching } = storeQueries.useGetForExplore({
 		query: {
 			page,
-			limit: ITEMS_PER_PAGE
+			limit: ITEMS_PER_PAGE,
+			...filters
 		},
 		initialData
 	});
@@ -39,12 +43,21 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 						Featured Stores
 					</Heading>
 
-					<SearchBar.Root>
+					<SearchBar.Root defaultValue={filters.query} onChange={(value) => {
+						if(value) {
+							setQuery(value)
+						}else {
+							setFilters({...filters, query: value})
+						}
+					}}>
 						<SearchBar.Input placeholder='Search stores' />
 					</SearchBar.Root>
 				</div>
 
-				<CategoriesRoulette />
+				<CategoriesRoulette
+					selectedCategory={filters.tagNames?.[0]}
+					onSelect={(categoryName) => setFilters({...filters, tagNames: [categoryName]})}
+				/>
 			</div>
 
 			<div
@@ -79,17 +92,22 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 	);
 }
 
-function CategoriesRoulette() {
+function CategoriesRoulette({onSelect, selectedCategory}: {
+	onSelect: (categoryName: string) => void,
+	selectedCategory: string | undefined
+}) {
 	const { data: categories } = categoryQueries.useGetAll();
 
 	return (
 		<div className='relative'>
 			<Scrollable.Root className='mx-[-1rem] w-[calc(100%+1rem*2)]'>
 				<Scrollable.Container className='gap-[1.5rem] relative px-[1rem]'>
-					{categories?.map(c => (
+					{categories?.map(category => (
 						<CategoryBox
-							key={c.id}
-							category={c}
+							key={category.id}
+							category={category}
+							active={selectedCategory === category.name}
+							onClick={() => onSelect(category.name)}
 						/>
 					))}
 				</Scrollable.Container>
