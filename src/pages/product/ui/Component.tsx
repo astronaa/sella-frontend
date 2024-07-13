@@ -7,6 +7,7 @@ import { CheckoutWidget } from "./CheckoutWidget";
 import { ProductOnPageProvider } from "./ProductOnPageProvider";
 import { StoreCard } from "~/entities/store";
 import { RatingRow } from "~/shared/ui/rating";
+import { ReportProduct } from "~/pages/product/ui/ReportProduct";
 
 export async function Component({ productId }: { productId: ProductId }) {
 	const product = await fetchProduct(productId);
@@ -23,6 +24,7 @@ export async function Component({ productId }: { productId: ProductId }) {
 					<div className='flex flex-col w-full gap-[1rem]'>
 						<CheckoutWidget />
 						<StoreWidget initialData={product} />
+						<ReportProduct />
 					</div>
 				</div>
 
@@ -43,10 +45,10 @@ function StoreWidget({ initialData: product }: { initialData: ProductInitialData
 			{store && (
 				<StoreCard.Root
 					store={store}
-					className='flex-col p-0 border-none gap-[1rem]'
+					className='flex-col p-0 border-none gap-[1rem] md:items-start'
 				>
 					<div className='flex gap-[1rem] w-full'>
-						<StoreCard.ImageDesktop
+						<StoreCard.Image
 							className='size-[3.5rem]'
 						/>
 						<StoreCard.Content>

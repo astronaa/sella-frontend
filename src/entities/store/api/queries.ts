@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { queryOptions, useQuery } from "@tanstack/react-query"
 import { apiClient } from "~/shared/api/client";
 import { PayloadPagination } from "~/shared/api/client"
 import { Store } from "~/shared/api/client"
@@ -34,9 +34,9 @@ export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptio
 	})
 }
 
-export function useGetAll({ 
+export function useGetAll({
 	page, limit,
-	initialData = { items: [], total: 0 }, 
+	initialData = { items: [], total: 0 },
 }: GetAllQueryOptions) {
 	return useQuery({
 		queryKey: [QUERY_KEY, page],
@@ -68,9 +68,30 @@ export function useGetForUser() {
 	})
 }
 
-export function useGetForExplore({ 
+export const getReportOptions = (storeUrl: string) =>
+	queryOptions({
+		queryKey: ['store-report', storeUrl],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores.for(storeUrl).getReport();
+
+			if (error)
+				throw error;
+
+			return data;
+		}
+	})
+
+export function invalidateReport(storeUrl: string) {
+	return queryClient.invalidateQueries(getReportOptions(storeUrl));
+}
+
+export function useGetStoreReport(storeUrl: string) {
+	return useQuery(getReportOptions(storeUrl))
+}
+
+export function useGetForExplore({
 	page, limit,
-	initialData = { items: [], total: 0 }, 
+	initialData = { items: [], total: 0 },
 }: GetForExploreQueryOptions) {
 	return useQuery({
 		queryKey: [QUERY_KEY, 'explore', page],

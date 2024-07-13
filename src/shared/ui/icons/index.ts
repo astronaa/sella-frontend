@@ -25,16 +25,15 @@ import ChevronDown from "../../assets/icons/chevron-down.svg";
 import ChevronLeft from "../../assets/icons/chevron-left.svg";
 import ChevronRight from "../../assets/icons/chevron-right.svg";
 import AlertOctagon from "../../assets/icons/alert-octagon.svg";
+import AlertCircle from "../../assets/icons/alert-circle.svg";
 import Refresh from "../../assets/icons/refresh.svg";
-
-import CurrencyUsdt from "../../assets/icons/currency/usdt.svg";
-
 import Scales from "../../assets/icons/scales.svg";
 import Users from "../../assets/icons/users.svg";
 import Route from "../../assets/icons/route.svg";
 import Percent from "../../assets/icons/percent.svg";
 import Lightning from "../../assets/icons/lightning.svg";
 import Link from "../../assets/icons/link.svg";
+import LinkExternal from '../../assets/icons/link-external.svg';
 import Coins from "../../assets/icons/coins.svg";
 import Chat from "../../assets/icons/chat.svg";
 import Refresh01 from "../../assets/icons/refresh01.svg";
@@ -43,8 +42,8 @@ import SellaCardLogo from "../../assets/icons/sella-card-logo.svg";
 import PointsIcon from "../../assets/icons/point-icon.svg";
 import Lock from "../../assets/icons/lock.svg";
 import Copy from "../../assets/icons/copy.svg";
-
 import FilterLines from "../../assets/icons/filter-lines.svg";
+import CurrencyUsdt from "../../assets/icons/currency/usdt.svg";
 
 export const Icons = {
 	Add,
@@ -74,16 +73,15 @@ export const Icons = {
 	ChevronLeft,
 	ChevronRight,
 	AlertOctagon,
+	AlertCircle,
 	Refresh,
-
-	CurrencyUsdt,
-
 	Scales,
 	Users,
 	Route,
 	Percent,
 	Lightning,
 	Link,
+	LinkExternal,
 	Coins,
 	Chat,
 	Refresh01,
@@ -93,4 +91,5 @@ export const Icons = {
 	Lock,
 	Copy,
 	FilterLines,
+	CurrencyUsdt
 };

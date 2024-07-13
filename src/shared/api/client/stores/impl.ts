@@ -1,18 +1,21 @@
 import {
-	ANOTHER_REASON_ID,
 	PayloadCreate,
-	PayloadReport,
 	PayloadUpdate,
-	reportReasons,
 	schemaCreate,
-	schemaReport,
 	schemaUpdate,
 	schemaGetProducts, 
 	PayloadGetProducts
 } from "./schemas";
 
+import {
+	PayloadPagination,
+	schemaReport,
+	reportReasons,
+	PayloadReport,
+	ANOTHER_REASON_ID
+} from "../shared/schemas";
+
 import { authFetchClient } from "../fetch-client";
-import { PayloadPagination } from "../shared/schemas";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "./mappers";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
@@ -76,7 +79,7 @@ export function createStoresClient() {
 			});
 
 			return data ? {
-				data: mapDtoToStore(data), 
+				data: mapDtoToStore(data),
 				error, response
 			} : {
 				data, error,
@@ -130,6 +133,12 @@ export function createStoresClient() {
 			},
 			async delete() {
 				return await authFetchClient.DELETE('/api/stores/{url}', {
+					params: { path: { url: storeUrl } },
+					parseAs: 'text'
+				})
+			},
+			async getReport() {
+				return await authFetchClient.GET('/api/stores/{url}/report', {
 					params: { path: { url: storeUrl } },
 					parseAs: 'text'
 				})

@@ -9,14 +9,14 @@ import { Dialog } from '~/shared/ui/kit';
 import { VSubmitButton, VTextAreaControl, VTextControl } from '~/shared/ui/validation-inputs';
 import { Collapsible } from "~/shared/ui/kit";
 import { ToggleGroupField } from './ToggleGroupField';
-import { apiClient } from "~/shared/api/client";
+import { apiClient, ProductId } from "~/shared/api/client";
 import { useDialogState } from "~/shared/lib/dialog";
-import { storeQueries } from '~/entities/store';
+import { productQueries } from '~/entities/product';
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
 	cancelButton?: ReactNode
-	storeUrl: string
+	productId: ProductId
 };
 
 const {
@@ -37,12 +37,12 @@ const schema = schemaReport
 type SchemeType = z.infer<typeof schema>
 const validate = zodValidate(schema);
 
-export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, ...props }: ReportStoreDialogProps) {
+export function ReportProductDialog({ onActionFulfilled, cancelButton, productId, ...props }: ReportStoreDialogProps) {
 	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onSubmit = async (values: SchemeType) => {
-		await apiClient.stores.for(storeUrl).report(values);
-		storeQueries.invalidateReport(storeUrl);
+		await apiClient.products.for(productId).report(values);
+		productQueries.invalidateReport(productId);
 		onActionFulfilled?.();
 		close();
 	}
@@ -67,7 +67,7 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 							{() => (
 								<>
 									<Dialog.ContentHeading>
-										<Dialog.Title>Report Shop</Dialog.Title>
+										<Dialog.Title>Report Product</Dialog.Title>
 										<Dialog.Description>
 											Your report is anonymous, except if you&apos;re reporting an
 											intellectual property infringement. Your report is anonymous, except if

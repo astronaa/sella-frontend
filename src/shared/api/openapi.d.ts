@@ -2261,6 +2261,8 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path?: never;

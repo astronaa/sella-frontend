@@ -1,6 +1,6 @@
 'use client';
 
-import { StoreCard, useStoreStrictContext } from "~/entities/store";
+import { StoreCard, storeQueries, useStoreStrictContext } from "~/entities/store";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
@@ -19,6 +19,12 @@ export function Heading() {
 		}),
 		staleTime: 5000,
 		initialDataUpdatedAt: 0
+	})
+
+	const { data: report, isLoading: isReportLoading } = useQuery({
+		...storeQueries.getReportOptions(store.url),
+		retry: false,
+		refetchOnWindowFocus: false
 	})
 
 	const { data: user } = useUserGetQuery();
@@ -50,7 +56,9 @@ export function Heading() {
 							)}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.url} />
+						!isReportLoading && !report && (
+							<StoreReportFlow storeUrl={store.url} />
+						)
 					)}
 				</div>
 			)}
