@@ -10,10 +10,9 @@ export function ReportProduct() {
 	const { data: user, isLoading: isUserLoading } = useUserGetQuery()
 
 	const { data: reportData, isLoading: isReportLoading } = useQuery({
-		...productQueries.getGetProductReportOptions({
-			productId: product.id,
-		}),
-		retry: false
+		...productQueries.getGetReportOptions(product.id),
+		retry: false,
+		refetchOnWindowFocus: false
 	})
 
 	const isMyProduct = product.store?.owner.username === user?.username

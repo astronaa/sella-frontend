@@ -45,10 +45,10 @@ function StoreWidget({ initialData: product }: { initialData: ProductInitialData
 			{store && (
 				<StoreCard.Root
 					store={store}
-					className='flex-col p-0 border-none gap-[1rem]'
+					className='flex-col p-0 border-none gap-[1rem] md:items-start'
 				>
 					<div className='flex gap-[1rem] w-full'>
-						<StoreCard.ImageDesktop
+						<StoreCard.Image
 							className='size-[3.5rem]'
 						/>
 						<StoreCard.Content>

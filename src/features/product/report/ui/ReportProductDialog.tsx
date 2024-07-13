@@ -11,6 +11,7 @@ import { Collapsible } from "~/shared/ui/kit";
 import { ToggleGroupField } from './ToggleGroupField';
 import { apiClient, ProductId } from "~/shared/api/client";
 import { useDialogState } from "~/shared/lib/dialog";
+import { productQueries } from '~/entities/product';
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
@@ -41,6 +42,7 @@ export function ReportProductDialog({ onActionFulfilled, cancelButton, productId
 
 	const onSubmit = async (values: SchemeType) => {
 		await apiClient.products.for(productId).report(values);
+		productQueries.invalidateReport(productId);
 		onActionFulfilled?.();
 		close();
 	}

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { queryOptions, useQuery } from "@tanstack/react-query"
 import { apiClient } from "~/shared/api/client";
 import { PayloadPagination } from "~/shared/api/client"
 import { Store } from "~/shared/api/client"
@@ -68,18 +68,25 @@ export function useGetForUser() {
 	})
 }
 
-export function useGetStoreReport({ store }: { store: Store }) {
-	return useQuery({
-		queryKey: ['store_report', store.url],
+export const getReportOptions = (storeUrl: string) =>
+	queryOptions({
+		queryKey: ['store-report', storeUrl],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(store.url).getReport();
+			const { data, error } = await apiClient.stores.for(storeUrl).getReport();
 
 			if (error)
 				throw error;
 
 			return data;
-		},
+		}
 	})
+
+export function invalidateReport(storeUrl: string) {
+	return queryClient.invalidateQueries(getReportOptions(storeUrl));
+}
+
+export function useGetStoreReport(storeUrl: string) {
+	return useQuery(getReportOptions(storeUrl))
 }
 
 export function useGetForExplore({

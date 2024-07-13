@@ -1,6 +1,6 @@
 'use client';
 
-import { StoreCard, useStoreStrictContext } from "~/entities/store";
+import { StoreCard, storeQueries, useStoreStrictContext } from "~/entities/store";
 import { StoreReportFlow } from "~/features/store/report";
 import { ManageDialog } from "./ManageDialog";
 import { PRODUCT_ITEMS_PER_PAGE } from "../config";
@@ -8,7 +8,6 @@ import { productQueries } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 import { EditMode } from "./edit-mode";
 import { useQuery } from "@tanstack/react-query";
-import { useGetStoreReport } from "~/entities/store/api/queries";
 
 export function Heading() {
 	const store = useStoreStrictContext();
@@ -22,7 +21,11 @@ export function Heading() {
 		initialDataUpdatedAt: 0
 	})
 
-	const { data: report } = useGetStoreReport({ store })
+	const { data: report, isLoading: isReportLoading } = useQuery({
+		...storeQueries.getReportOptions(store.url),
+		retry: false,
+		refetchOnWindowFocus: false
+	})
 
 	const { data: user } = useUserGetQuery();
 
@@ -45,7 +48,7 @@ export function Heading() {
 
 			{!!user && (
 				<div className='flex gap-[1rem] md:self-end'>
-					{store.ownerUsername == user.username || report ? (
+					{store.ownerUsername == user.username ? (
 						<>
 							<ManageDialog />
 							{products && products.total > 0 && (
@@ -53,7 +56,9 @@ export function Heading() {
 							)}
 						</>
 					) : (
-						<StoreReportFlow storeUrl={store.url} />
+						!isReportLoading && !report && (
+							<StoreReportFlow storeUrl={store.url} />
+						)
 					)}
 				</div>
 			)}

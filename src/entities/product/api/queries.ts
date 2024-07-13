@@ -57,12 +57,8 @@ export function useGetOne(args: GetOneOptions) {
 	return useQuery(getGetOneOptions(args));
 }
 
-interface GetProductReportOptions {
-	productId: ProductId
-}
-
-export const getGetProductReportOptions = ({ productId }: GetProductReportOptions) => queryOptions({
-	queryKey: ['product_report', productId],
+export const getGetReportOptions = (productId: ProductId) => queryOptions({
+	queryKey: ['product-report', productId],
 	queryFn: async () => {
 		const { data, error } = await apiClient.products.for(productId).getReport();
 
@@ -73,8 +69,12 @@ export const getGetProductReportOptions = ({ productId }: GetProductReportOption
 	},
 })
 
-export function useGetProductReport(args: GetProductReportOptions) {
-	return useQuery(getGetProductReportOptions(args))
+export function invalidateReport(productId: ProductId) {
+	return queryClient.invalidateQueries(getGetReportOptions(productId))
+}
+
+export function useGetReport(productId: ProductId) {
+	return useQuery(getGetReportOptions(productId))
 }
 
 interface SearchOptions extends z.infer<typeof apiClient.products.schemaSearch> {
