@@ -8,7 +8,7 @@ export function Hero() {
 	return (
 		<div
 			className="flex flex-col rounded relative overflow-hidden px-[1rem] bg-black rounded-b-[3rem]
-				max-md:top-[-11rem] max-md:pt-[10.25rem] max-md:mb-[-10rem]"
+				max-md:top-[-12.5rem] max-md:pt-[10.25rem] max-md:mb-[-10rem]"
 		>
 			<Background />
 

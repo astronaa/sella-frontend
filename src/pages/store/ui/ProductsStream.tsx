@@ -21,7 +21,7 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { ProductsHeader } from "~/pages/store/ui/ProductsHeader";
 import { Divider } from "~/shared/ui/kit/divider";
 import { useFiltersState, useFiltersStatePersist } from "../model/filters";
-import { usePagination } from "../model/pagination";
+import { usePagination } from "~/shared/lib/use-pagination";
 
 interface ProductsStreamProps {
 	className?: string,
@@ -42,7 +42,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 		value, onChange: persist
 	});
 
-	const { page, onPageChange } = usePagination();
+	const { page, onPageChange } = usePagination(1);
 
 	const { data, isFetching } = useQuery({
 		...productQueries.getFromStoreOptions({

@@ -6,7 +6,7 @@ import { UserNavBar } from "./user-nav-bar";
 import { Collapsible, Popover } from "~/shared/ui/kit";
 import { useMobileMenuStrictContext } from "./mobile-menu";
 import { usePopoverContext } from "@ark-ui/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { HeaderDesktopView, HeaderTabletView, HeaderMobileView } from "./HeaderViews";
 import { InteractiveProvider } from "./Interactive";
@@ -34,11 +34,12 @@ function Header({ className, staticMode = false, ...props }: RootProps) {
 	const { open: popupOpen, setOpen: setPopupOpen } = usePopoverContext();
 
 	const pathname = usePathname();
+	const searchParams = useSearchParams();
 	const setOpenCb = useCallbackRef(setPopupOpen);
 
 	useEffect(() => {
 		setOpenCb(false);
-	}, [pathname, setOpenCb])
+	}, [pathname, searchParams, setOpenCb])
 
 	return (
 		<Popover.Anchor asChild>
@@ -89,7 +90,7 @@ function CategoriesRoulette(props: { open: boolean }) {
 						{categories?.map(c => (
 							<NavLink
 								key={c.id}
-								href={`/marketplace/?tagName=${c.name}`}
+								href={`/marketplace/?tagNames=${c.name}`}
 								className='whitespace-nowrap'
 							>
 								{c.name}
