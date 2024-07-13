@@ -15,7 +15,7 @@ export function UserNavBar(props: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<Skeleton 
 			asChild
-			className='rounded-[1rem]' 
+			className='rounded-[1rem] max-lg:pt-[1.5rem] max-lg:px-[1.25rem]' 
 			loading={user === undefined}
 		>
 			{!!isAuthorized ? (

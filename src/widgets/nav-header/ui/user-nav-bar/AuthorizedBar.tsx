@@ -12,7 +12,7 @@ export function AuthorizedBar({ className, ...props }: Props) {
 			{...props}
 			className={cn(
 				"flex gap-[0.75rem] items-center",
-				"max-lg:flex-col max-lg:pt-[1.5rem] max-lg:px-[1.25rem]",
+				"max-lg:flex-col",
 				className
 			)}
 		>

@@ -1,12 +1,12 @@
 "use client";
 
-import { HTMLAttributes, useEffect } from "react";
+import { HTMLAttributes, Suspense, useEffect } from "react";
 import { cn } from "~/shared/lib/cn";
 import { UserNavBar } from "./user-nav-bar";
 import { Collapsible, Popover } from "~/shared/ui/kit";
 import { useMobileMenuStrictContext } from "./mobile-menu";
 import { usePopoverContext } from "@ark-ui/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { HeaderDesktopView, HeaderTabletView, HeaderMobileView } from "./HeaderViews";
 import { InteractiveProvider } from "./Interactive";
@@ -24,6 +24,10 @@ export function Root({ children, ...props }: RootProps) {
 		<SlotsProvider value={children}>
 			<InteractiveProvider>
 				<Header {...props} />
+
+				<Suspense>
+					<AutoCloseOnUrlChange />
+				</Suspense>
 			</InteractiveProvider>
 		</SlotsProvider>
 	);
@@ -100,4 +104,20 @@ function CategoriesRoulette(props: { open: boolean }) {
 			</Collapsible.Content>
 		</Collapsible.Root>
 	);
+}
+
+function AutoCloseOnUrlChange() {
+	const { setOpen: setPopupOpen } = usePopoverContext();
+	const { setOpen: setMobileMenuOpen } = useMobileMenuStrictContext();
+
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const setOpenCb = useCallbackRef(setPopupOpen);
+
+	useEffect(() => {
+		setOpenCb(false);
+		setMobileMenuOpen(false);
+	}, [pathname, searchParams, setOpenCb, setMobileMenuOpen])
+
+	return null;
 }
