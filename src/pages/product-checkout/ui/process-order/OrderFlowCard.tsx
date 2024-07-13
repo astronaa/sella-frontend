@@ -6,7 +6,7 @@ import { OrderEscrowCreateCard, OrderEscrowHoldingCard } from "~/features/order/
 import { OrderId } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { toaster } from "~/shared/ui/toaster";
-import { useRegisterFlow } from "~/widgets/register-flow";
+import { useRegisterFlow } from "~/features/register";
 import { useWatchAccount } from "~/shared/lib/wagmi";
 import { useTronWalletConnectDialog } from "~/features/tron-wallet";
 import { useRef } from "react";

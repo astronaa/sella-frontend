@@ -7,14 +7,18 @@ import { Button } from '~/shared/ui/kit/button';
 import { Store } from "~/shared/api/client"
 import { useDialogState } from '~/shared/lib/dialog';
 import { VSubmitButton } from '~/shared/ui/validation-inputs';
+import { SchemaType } from '../api';
 
 type CreateDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: (store: Store) => void
 	cancelButton?: ReactNode,
-	triggerElement?: ReactNode
+	triggerElement?: ReactNode,
+	initialValues?: Partial<SchemaType>
 };
 
-export function CreateDialog({ onActionFulfilled, cancelButton, triggerElement, ...props }: CreateDialogProps) {
+export function CreateDialog({ 
+	onActionFulfilled, cancelButton, triggerElement, initialValues, ...props 
+}: CreateDialogProps) {
 	const { isOpen, handleOpenChange, close } = useDialogState(props)
 
 	const onFormSubmit = (store: Store) => {
@@ -27,6 +31,7 @@ export function CreateDialog({ onActionFulfilled, cancelButton, triggerElement, 
 			{...props}
 			open={isOpen}
 			onOpenChange={handleOpenChange}
+			unmountOnExit lazyMount
 		>
 			{triggerElement && (
 				<Dialog.Trigger asChild>
@@ -50,6 +55,7 @@ export function CreateDialog({ onActionFulfilled, cancelButton, triggerElement, 
 
 					<CreateForm.Root
 						onActionFulfilled={onFormSubmit}
+						initialValues={initialValues}
 					>
 						<CreateForm.Controls />
 

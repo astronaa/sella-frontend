@@ -7,6 +7,7 @@ import { useAccountEffect } from 'wagmi';
 import { useEffect } from 'react';
 import { wagmiConfig } from '~/shared/config/rainbow-kit';
 import { apiClient } from '~/shared/api/client';
+import { invalidateUserGetQuery } from '~/entities/user';
 
 type ModalTypes =
 	| 'wallet-connect'
@@ -27,7 +28,10 @@ interface StoreType {
 	openModal: (modal: ModalTypes) => () => void,
 	startFlow: () => Promise<void>,
 	hasTwitter: boolean,
-	hasUsername: boolean
+	hasUsername: boolean,
+
+	storeUrlToCreate: string | null,
+	setStoreUrlToCreate: (url: string | null) => void
 }
 
 export const useRegisterFlow = create<StoreType>(set => ({
@@ -37,6 +41,8 @@ export const useRegisterFlow = create<StoreType>(set => ({
 	openModal: modal => () => set({ open: true, currentModal: modal }),
 	hasTwitter: false,
 	hasUsername: false,
+	storeUrlToCreate: null,
+	setStoreUrlToCreate: url => set({ storeUrlToCreate: url }),
 
 	async startFlow() {
 		const { address } = getAccount(wagmiConfig);
@@ -69,6 +75,8 @@ export const useRegisterFlow = create<StoreType>(set => ({
 
 		if (!loginResponse)
 			return;
+
+		await invalidateUserGetQuery();
 
 		set({
 			hasTwitter: loginResponse.hasTwitter,

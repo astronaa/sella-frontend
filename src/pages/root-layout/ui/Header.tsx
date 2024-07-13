@@ -29,12 +29,12 @@ export function Header() {
 					<Icons.Building /> Stores
 				</NavHeader.NavIconButton>
 
-				<NavHeader.NavIconButton
+				{/* <NavHeader.NavIconButton
 					href="/dashboard/quests"
 					activeOnHrefs={["/dashboard/quests"]}
 				>
 					<Icons.Coins /> Quests
-				</NavHeader.NavIconButton>
+				</NavHeader.NavIconButton> */}
 
 				<NavHeader.NavIconButton href="/chats" activeOnHrefs={["/chats"]}>
 					<Icons.Chat /> Chats

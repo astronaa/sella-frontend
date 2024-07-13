@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, ButtonProps } from "~/shared/ui/kit/button";
-import { useRegisterFlow } from "../model/flow";
+import { useRegisterFlow } from "~/features/register";
 
 export function StartButton(props: ButtonProps) {
 	const startFlow = useRegisterFlow(s => s.startFlow);

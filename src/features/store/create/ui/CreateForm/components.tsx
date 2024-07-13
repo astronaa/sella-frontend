@@ -15,16 +15,17 @@ import { cn } from "~/shared/lib/cn";
 import { DividerWithElement } from "~/shared/ui/kit/divider";
 import { StoreInputAddon } from "~/entities/store";
 import { FormError } from "~/shared/lib/errors";
-import {toaster} from "~/shared/ui/toaster";
+import { toaster } from "~/shared/ui/toaster";
 import { CategoryVTagsInput } from "~/entities/category";
 
 const validate = zodValidate(schema);
 
 export interface RootProps extends PropsWithChildren {
 	onActionFulfilled?: (store: Store) => void;
+	initialValues?: Partial<SchemaType>
 }
 
-export function Root({ onActionFulfilled, children }: RootProps) {
+export function Root({ onActionFulfilled, children, initialValues }: RootProps) {
 	const onSubmit = async (values: SchemaType) => {
 		try {
 			const result = await createStore(values);
@@ -33,8 +34,8 @@ export function Root({ onActionFulfilled, children }: RootProps) {
 		catch (error) {
 			if (error instanceof FormError) {
 				return error.fields
-			}else if (error instanceof Error){
-				toaster.error({title: 'Error creating Store', description: error.message})
+			} else if (error instanceof Error) {
+				toaster.error({ title: 'Error creating Store', description: error.message })
 			}
 		}
 	}
@@ -43,6 +44,7 @@ export function Root({ onActionFulfilled, children }: RootProps) {
 		<Form
 			onSubmit={onSubmit}
 			validate={validate}
+			initialValues={initialValues}
 		>
 			{() => children}
 		</Form>
@@ -71,11 +73,11 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					<StoreInputAddon>
 						{({ Component: Addon, inputClassName }) => (
 							<VTextControl.Input className={inputClassName}>
-								<Addon/>
+								<Addon />
 							</VTextControl.Input>
 						)}
 					</StoreInputAddon>
-					<VTextControl.ErrorText/>
+					<VTextControl.ErrorText />
 				</VTextControl.Root>
 			</div>
 
@@ -85,13 +87,13 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					className='h-[6.25rem]'
 					placeholder="Can be one sentence, a short paragraph"
 				/>
-				<VTextAreaControl.ErrorText/>
+				<VTextAreaControl.ErrorText />
 			</VTextAreaControl.Root>
 
 			<VTextControl.Root name="tagNames">
 				<VTextControl.Label>Categories</VTextControl.Label>
-				<CategoryVTagsInput placeholder="Add category"/>
-				<VTextAreaControl.ErrorText/>
+				<CategoryVTagsInput placeholder="Add category" />
+				<VTextAreaControl.ErrorText />
 			</VTextControl.Root>
 		</div>
 	);
