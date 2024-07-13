@@ -2,7 +2,7 @@
 
 import { cn } from "~/shared/lib/cn";
 import { UserNavBar } from "../user-nav-bar";
-import { Link, NavLink } from "~/shared/ui/nav-link";
+import { NavLink } from "~/shared/ui/nav-link";
 import { categoryQueries } from "~/entities/category";
 import { Icons } from "~/shared/ui/icons";
 
