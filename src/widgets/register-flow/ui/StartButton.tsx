@@ -9,7 +9,7 @@ export function StartButton(props: ButtonProps) {
 	return (
 		<Button
 			{...props}
-			onClick={startFlow}
+			onClick={() => startFlow()}
 		>
 			Open Storefront
 		</Button>

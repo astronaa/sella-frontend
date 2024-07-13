@@ -70,7 +70,7 @@ export function OrderFlowCard({ orderId }: Props) {
 							toaster.create({
 								type: 'error',
 								title: 'Payment error',
-								description: 'shortMessage' in error ? String(error.shortMessage) : error.message
+								description: error.message.split('\n')[0]
 							})
 					}
 				}}

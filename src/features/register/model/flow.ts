@@ -26,12 +26,12 @@ interface StoreType {
 	setOpen: (open: boolean) => void,
 	currentModal: ModalTypes,
 	openModal: (modal: ModalTypes) => () => void,
-	startFlow: () => Promise<void>,
+	startFlow: (skipCreationModals?: boolean) => Promise<void>,
 	hasTwitter: boolean,
 	hasUsername: boolean,
-
 	storeUrlToCreate: string | null,
-	setStoreUrlToCreate: (url: string | null) => void
+	setStoreUrlToCreate: (url: string | null) => void,
+	skipCreationModals: boolean
 }
 
 export const useRegisterFlow = create<StoreType>(set => ({
@@ -43,8 +43,11 @@ export const useRegisterFlow = create<StoreType>(set => ({
 	hasUsername: false,
 	storeUrlToCreate: null,
 	setStoreUrlToCreate: url => set({ storeUrlToCreate: url }),
+	skipCreationModals: false,
 
-	async startFlow() {
+	async startFlow(skipCreationModals = false) {
+		set({ skipCreationModals });
+
 		const { address } = getAccount(wagmiConfig);
 		if (!address) {
 			set({ open: true, currentModal: 'wallet-connect' });

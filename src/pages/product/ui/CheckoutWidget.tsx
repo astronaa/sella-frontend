@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useProductStrictContext } from "~/entities/product";
+import { useUserGetQuery } from "~/entities/user";
 import { OrderCreateBaseCard } from "~/features/order/create";
+import { useRegisterFlow } from "~/features/register";
 import { objToSearchParams } from "~/shared/lib/search-params";
 import { Button } from "~/shared/ui/kit/button";
 
 export function CheckoutWidget() {
 	const product = useProductStrictContext();
+	const startFlow = useRegisterFlow(s => s.startFlow);
+	const { data: user } = useUserGetQuery();
 
 	return (
 		<OrderCreateBaseCard
@@ -19,6 +23,14 @@ export function CheckoutWidget() {
 					<Link
 						className='w-full'
 						href={`${product.id}/checkout?${objToSearchParams({ tab: 'order-actions', ...method })}`}
+						onClick={e => {
+							if(!user) {
+								e.preventDefault();
+								e.stopPropagation();
+
+								startFlow(true);
+							}
+						}}
 					>
 						<Button
 							className='w-full'
@@ -29,18 +41,20 @@ export function CheckoutWidget() {
 						</Button>
 					</Link>
 
-					<Link
-						className='w-full'
-						href={`${product.id}/checkout?${objToSearchParams({ tab: 'chat', ...method })}`}
-					>
-						<Button
+					{!!user && (
+						<Link
 							className='w-full'
-							colorPalette="gray"
-							disabled={disabled}
+							href={`${product.id}/checkout?${objToSearchParams({ tab: 'chat', ...method })}`}
 						>
-							Chat with a seller
-						</Button>
-					</Link>
+							<Button
+								className='w-full'
+								colorPalette="gray"
+								disabled={disabled}
+							>
+								Chat with a seller
+							</Button>
+						</Link>
+					)}
 				</div>
 			)}
 		</OrderCreateBaseCard>
