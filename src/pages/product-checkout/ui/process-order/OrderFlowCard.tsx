@@ -11,12 +11,14 @@ import { useWatchAccount } from "~/shared/lib/wagmi";
 import { useTronWalletConnectDialog } from "~/features/tron-wallet";
 import { useRef } from "react";
 import { useWatchTronAdapter } from "~/shared/lib/tronweb";
+import { useUserGetQuery } from "~/entities/user";
 
 interface Props {
 	orderId: OrderId,
 }
 
 export function OrderFlowCard({ orderId }: Props) {
+	const { data: user } = useUserGetQuery();
 	const { data: order, refetch, isFetching } = useQuery({
 		...ordersQueries.getByIdOptions(orderId),
 		staleTime: Infinity
@@ -35,7 +37,7 @@ export function OrderFlowCard({ orderId }: Props) {
 		}
 	})
 
-	if (isFetching || !order) {
+	if (isFetching || !order || !user) {
 		return (
 			<Skeleton
 				loading={true}
@@ -44,7 +46,7 @@ export function OrderFlowCard({ orderId }: Props) {
 		);
 	}
 
-	if (order.transaction.status == 'Unpaid') {
+	if (order.transaction.status == 'Unpaid' && order.seller.username != user.username) {
 		return (
 			<OrderEscrowCreateCard
 				className='w-full'
