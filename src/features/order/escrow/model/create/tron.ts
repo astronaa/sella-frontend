@@ -23,9 +23,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 	const tronWallet = useTronWallet();
 
 	return {
-		async prepare({ chain, token, isNativeCoin }) {
-			console.log(chain, token);
-			
+		async prepare({ chain, token, isNativeCoin }) {			
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;

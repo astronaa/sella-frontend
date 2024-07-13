@@ -8,8 +8,8 @@ import { usePathnameMatcher } from "~/shared/ui/nav-link";
 export function BaseNavIconButton({ className, ...props }: IconButtonProps) {
 	return (
 		<IconButton
-			className={cn('text-accent-100', className)}
-			colorPalette='gray' size='sm'
+			className={cn('border-none flex-col gap-[0.25rem] text-[0.875rem] [&_svg]:size-[1.25rem] p-[0.25rem]', className)}
+			colorPalette='gray' variant='ghost' size='sm'
 			{...props}
 		/>
 	);

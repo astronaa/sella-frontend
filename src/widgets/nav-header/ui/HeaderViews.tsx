@@ -53,7 +53,7 @@ export function HeaderTabletView() {
 				<AppLogo />
 			</Link>
 
-			<div className='flex gap-[0.75rem]'>
+			<div className='flex gap-[0.75rem] w-full'>
 				<CategoriesRoulette.Button
 					className='border border-secondary flex-shrink-0 px-0 max-lg:hidden'
 				/>

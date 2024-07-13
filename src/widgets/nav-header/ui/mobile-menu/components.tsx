@@ -24,7 +24,7 @@ export function Root({ children }: PropsWithChildren) {
 		<MobileMenuProvider value={value}>
 			{children}
 
-			<PhoneNavbarContent />
+			{open && <PhoneNavbarContent />}
 		</MobileMenuProvider>
 	);
 }

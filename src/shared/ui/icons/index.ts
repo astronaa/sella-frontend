@@ -23,6 +23,7 @@ import Package from "../../assets/icons/package.svg";
 import PackageThin from "../../assets/icons/package-thin.svg";
 import ChevronDown from "../../assets/icons/chevron-down.svg";
 import ChevronLeft from "../../assets/icons/chevron-left.svg";
+import ChevronRight from "../../assets/icons/chevron-right.svg";
 import AlertOctagon from "../../assets/icons/alert-octagon.svg";
 import Refresh from "../../assets/icons/refresh.svg";
 
@@ -71,6 +72,7 @@ export const Icons = {
 	PackageThin,
 	ChevronDown,
 	ChevronLeft,
+	ChevronRight,
 	AlertOctagon,
 	Refresh,
 

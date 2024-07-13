@@ -15,6 +15,8 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { Button } from "~/shared/ui/kit/button";
 import { useTwBreakpoint } from "~/shared/lib/responsive";
 import { Scrollable } from "~/shared/ui/scrollable";
+import { objToSearchParams } from "~/shared/lib/search-params";
+import Link from "next/link";
 
 export function Root({ children }: PropsWithChildren) {
 	const [open, setOpen] = useState(false);
@@ -88,10 +90,11 @@ export const SearchBarInput = BaseSearchBar.Input;
 export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const isMobile = !useTwBreakpoint('md');
 	const { searchText, open, category } = useSearchPanelStrictContext();
+	const resultsToShow = isMobile ? 2 : 4;
 
 	const { data: products, isLoading } = useQuery({
 		...productQueries.getSearchOptions({
-			page: 1, limit: 4,
+			page: 1, limit: 12,
 			sort: 'rating',
 			query: searchText,
 			tagNames: category ? [category.name] : undefined
@@ -100,9 +103,14 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 		placeholderData: keepPreviousData
 	})
 
-	const items = products?.items;
+	const items = products?.items.slice(0, resultsToShow);
 	const total = products?.total;
 	const showMore = !!total && total > 2;
+	const showMoreSearchParams = objToSearchParams({ 
+		query: searchText, 
+		tagNames: category 
+	});
+	const showMoreHref = `/products/search?${showMoreSearchParams}`;
 
 	return (
 		<div
@@ -116,11 +124,6 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 							<span className='text-black-40'>{total}</span>
 						)}
 					</Heading>
-					{!isMobile && showMore && (
-						<a href='#' className='text-accent-100'>
-							Show all results
-						</a>
-					)}
 				</div>
 
 				{items && items.length == 0 && (
@@ -133,7 +136,7 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 
 				{isMobile ? (
 					<>
-						{isLoading && Array(2).fill(productMock).map((p, index) => (
+						{isLoading && Array(resultsToShow).fill(productMock).map((p, index) => (
 							<Skeleton
 								key={index}
 								loading asChild
@@ -144,7 +147,7 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 							</Skeleton>
 						))}
 
-						{items?.slice(0, 2).map((p, index) => (
+						{items?.map((p, index) => (
 							<MobileProductCard
 								key={index} product={p}
 							/>
@@ -155,8 +158,8 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 					<Scrollable.Root
 						scrollOptions={{ dragFree: false }}
 					>
-						<Scrollable.Container className='gap-[1rem]'>
-							{isLoading && Array(4).fill(productMock).map((p, index) => (
+						<Scrollable.Container className='gap-[2.4rem]'>
+							{isLoading && Array(resultsToShow).fill(productMock).map((p, index) => (
 								<Skeleton
 									key={index}
 									loading asChild
@@ -183,8 +186,13 @@ export function Content({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 				)}
 
 				{showMore && (
-					<Button colorPalette='gray' size='xl'>
-						Show More Results
+					<Button 
+						asChild
+						colorPalette='gray' size='xl'
+					>
+						<Link href={showMoreHref}>
+							Show More Results
+						</Link>
 					</Button>
 				)}
 			</div>
