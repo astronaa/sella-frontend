@@ -31,7 +31,17 @@ export const tronWeb = typeof window !== 'undefined' ? (
 	window.tronWeb as TronWeb
 ) : undefined;
 
-tronWeb?.setHeader({ 'TRON-PRO-API-KEY': TRONGRID_API_KEY })
+export function setupApiHeader() {
+	try {
+		tronWeb?.setHeader({ 'TRON-PRO-API-KEY': TRONGRID_API_KEY });
+		return true;
+	}
+	catch {
+		return false;
+	}
+}
+
+setupApiHeader();
 
 interface UseAdpaterWatchArgs {
 	onConnect?: (address: string) => void;

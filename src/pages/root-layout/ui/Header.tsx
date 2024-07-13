@@ -1,12 +1,14 @@
 "use client";
 
 import { Icons } from "~/shared/ui/icons";
-import { Tooltip } from "~/shared/ui/kit";
 import { Button } from "~/shared/ui/kit/button";
 import { NavHeader } from "~/widgets/nav-header";
 import { useWindowScroll } from "../lib/use-window-scroll";
 import { RegsiterFlowStartButton } from "~/widgets/register-flow";
 import { useUserProfileSettingsDialog } from "~/widgets/user/profile-settings";
+import { Avatar } from "~/shared/ui/kit/avatar";
+import { useUserGetQuery } from "~/entities/user";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 export function Header() {
 	const onTop = !useWindowScroll({ defaultValue: true });
@@ -23,50 +25,49 @@ export function Header() {
 			</NavHeader.SlotUnauthorizedButtons>
 
 			<NavHeader.SlotAuthorizedNavButtons>
-				<Tooltip.Composed label="Orders/Sales">
-					<NavHeader.NavIconButton
-						href="/dashboard/sales"
-						activeOnHrefs={["/dashboard/orders"]}
-					>
-						<Icons.Package />
-					</NavHeader.NavIconButton>
-				</Tooltip.Composed>
+				<NavHeader.NavIconButton href="/dashboard" end>
+					<Icons.Building /> Stores
+				</NavHeader.NavIconButton>
 
-				<Tooltip.Composed label="Dashboard">
-					<NavHeader.NavIconButton href="/dashboard" end>
-						<Icons.Building />
-					</NavHeader.NavIconButton>
-				</Tooltip.Composed>
+				<NavHeader.NavIconButton
+					href="/dashboard/quests"
+					activeOnHrefs={["/dashboard/quests"]}
+				>
+					<Icons.Coins /> Quests
+				</NavHeader.NavIconButton>
 
-				<Tooltip.Composed label="Quests">
-					<NavHeader.NavIconButton
-						href="/dashboard/quests"
-						activeOnHrefs={["/dashboard/quests"]}
-					>
-						<Icons.Coins />
-					</NavHeader.NavIconButton>
-				</Tooltip.Composed>
+				<NavHeader.NavIconButton href="/chats" activeOnHrefs={["/chats"]}>
+					<Icons.Chat /> Chats
+				</NavHeader.NavIconButton>
 
-				<Tooltip.Composed label="Chats">
-					<NavHeader.NavIconButton href="/chats" activeOnHrefs={["/chats"]}>
-						<Icons.Chat />
-					</NavHeader.NavIconButton>
-				</Tooltip.Composed>
+				<NavHeader.NavIconButton
+					href="/dashboard/sales"
+					activeOnHrefs={["/dashboard/orders"]}
+				>
+					<Icons.Package /> Orders
+				</NavHeader.NavIconButton>
 
-				<Tooltip.Composed label="Settings">
-					<UserSettingsButton />
-				</Tooltip.Composed>
+				<UserSettingsButton />
 			</NavHeader.SlotAuthorizedNavButtons>
 		</NavHeader.Root>
 	);
 }
 
 function UserSettingsButton() {
-	const { open, setOpen } = useUserProfileSettingsDialog();
+	const { data: user, isLoading } = useUserGetQuery();
+	const setOpen = useUserProfileSettingsDialog(s => s.setOpen);
 
 	return (
-		<NavHeader.BaseNavIconButton active={open} onClick={() => setOpen(true)}>
-			<Icons.Settings />
-		</NavHeader.BaseNavIconButton>
+		<Skeleton
+			asChild 
+			loading={isLoading}
+		>
+			<Avatar
+				className='size-[2.625rem] cursor-pointer transition border border-transparent hover:border-accent-100'
+				name={user?.username}
+				src={user?.avatarImage ?? undefined}
+				onClick={() => setOpen(true)}
+			/>
+		</Skeleton>
 	);
 }

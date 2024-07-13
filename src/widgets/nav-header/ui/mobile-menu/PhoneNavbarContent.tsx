@@ -28,19 +28,19 @@ export function PhoneNavbarContent() {
 				)}
 			>
 				<NavItem onClick={handleLinkClick} href="/">
-          Home
+					Home
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/marketplace">
-          Explore
+					Explore
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#features">
-          Features
+					Features
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#whitepaper">
-          Whitepaper
+					Whitepaper
 				</NavItem>
 				<NavItem onClick={handleLinkClick} href="/#roadmap">
-          Roadmap
+					Roadmap
 				</NavItem>
 			</div>
 
@@ -50,9 +50,9 @@ export function PhoneNavbarContent() {
 }
 
 interface NavItemProps {
-  href: string;
-  onClick: () => void;
-  children: React.ReactNode;
+	href: string;
+	onClick: () => void;
+	children: React.ReactNode;
 }
 
 function NavItem({ href, onClick, children }: NavItemProps) {

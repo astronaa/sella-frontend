@@ -11,7 +11,7 @@ export function Component({ children }: PropsWithChildren) {
 		<>
 			<Header />
 
-			<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
+			<div className='w-full min-h-full pt-[6.25rem] pb-[7.5rem]'>
 				{children}
 			</div>
 
