@@ -8,3 +8,5 @@ export default function Page(props: { searchParams: unknown }) {
 		<PageProductSearchResults {...searchParams} />
 	)
 }
+
+export const revalidate = 0;

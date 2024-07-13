@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, useEffect } from "react";
+import { HTMLAttributes, Suspense, useEffect } from "react";
 import { cn } from "~/shared/lib/cn";
 import { UserNavBar } from "./user-nav-bar";
 import { Collapsible, Popover } from "~/shared/ui/kit";
@@ -23,7 +23,9 @@ export function Root({ children, ...props }: RootProps) {
 	return (
 		<SlotsProvider value={children}>
 			<InteractiveProvider>
-				<Header {...props} />
+				<Suspense>
+					<Header {...props} />
+				</Suspense>
 			</InteractiveProvider>
 		</SlotsProvider>
 	);
