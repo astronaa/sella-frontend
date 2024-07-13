@@ -7,7 +7,11 @@ import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 
 export function EscrowBuyerSeller() {
 	return (
-		<div className="flex flex-col relative overflow-hidden rounded-b-[3rem] pt-[7.5rem] max-xl:py-[5rem] rounded-[3rem] px-4 md:m-[1.25rem]">
+		<div
+			id='features'
+			className="flex flex-col relative overflow-hidden rounded-b-[3rem] pt-[7.5rem] 
+				max-xl:py-[5rem] rounded-[3rem] px-4 md:m-[1.25rem]"
+		>
 			<Background />
 			<div className="flex flex-grow items-center justify-between gap-[1rem] relative w-full max-w-content m-auto max-lg:justify-center">
 				<div className="flex flex-col gap-[3rem] max-w-[35rem] w-full flex-shrink-0">

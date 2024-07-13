@@ -22,13 +22,14 @@ export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivEl
 		close: closeDialog
 	} = useDialogState();
 
-	const open = shouldOpen && !!user;
 	const [storeUrl, setStoreUrl] = useDebouncedState(200, '');
 	const initialValues = useMemo(() => ({ url: storeUrl }), [storeUrl]);
-
+	
 	const startFlow = useRegisterFlow(s => s.startFlow);
 	const setFlowStoreUrlToCreate = useRegisterFlow(s => s.setStoreUrlToCreate);
+	const flowModalOpen = useRegisterFlow(s => s.open);
 	const currentFlowModal = useRegisterFlow(s => s.currentModal);
+	const open = shouldOpen && !!user && !flowModalOpen;
 
 	const onButtonClick = () => {
 		openDialog();

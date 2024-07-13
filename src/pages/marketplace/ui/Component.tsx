@@ -8,7 +8,7 @@ export async function Component() {
 
 	return (
 		<div className='px-4'>
-			<ExploreMarketplace className='mb-[3rem]'>
+			<ExploreMarketplace initialData={stores} className='mb-[3rem]'>
 				<StoresStream initialData={stores} />
 			</ExploreMarketplace>
 

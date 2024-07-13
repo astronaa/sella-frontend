@@ -16,7 +16,6 @@ export function FooterItems({
 		>
 			<Link href="/#explore">Explore</Link>
 			<Link href="/#features">Features</Link>
-			<Link href="/whitepaper">Whitepaper</Link>
 			<Link href="/#roadmap">Roadmap</Link>
 		</div>
 	);

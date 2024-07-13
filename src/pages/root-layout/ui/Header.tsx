@@ -1,7 +1,6 @@
 "use client";
 
 import { Icons } from "~/shared/ui/icons";
-import { Button } from "~/shared/ui/kit/button";
 import { NavHeader } from "~/widgets/nav-header";
 import { useWindowScroll } from "../lib/use-window-scroll";
 import { RegsiterFlowStartButton } from "~/widgets/register-flow";
@@ -19,7 +18,7 @@ export function Header() {
 			className="sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header"
 		>
 			<NavHeader.SlotUnauthorizedButtons>
-				<Button variant="outline">Buy $SELLA</Button>
+				{/* <Button variant="outline">Buy $SELLA</Button> */}
 
 				<RegsiterFlowStartButton />
 			</NavHeader.SlotUnauthorizedButtons>

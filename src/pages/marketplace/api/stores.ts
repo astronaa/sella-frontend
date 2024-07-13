@@ -9,3 +9,5 @@ export async function fetchMarketplaceStores(page = 1) {
 
 	return data;
 }
+
+export type StoresInitialData = Awaited<ReturnType<typeof fetchMarketplaceStores>>;

@@ -7,14 +7,14 @@ import { Pagination } from "~/shared/ui/kit/pagination";
 import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 import { storeQueries } from '~/entities/store';
-import { Store } from "~/shared/api/client"
 import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
 import { Scrollable } from "~/shared/ui/scrollable";
 import { CategoryBox, categoryQueries } from "~/entities/category";
+import { StoresInitialData } from "../api/stores";
 
 interface StoresStreamProps {
-	initialData: { items: Store[]; total: number; };
+	initialData: StoresInitialData;
 }
 
 export function StoresStream({ initialData }: StoresStreamProps) {
