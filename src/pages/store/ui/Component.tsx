@@ -14,7 +14,6 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 			<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
 				<EditMode.Root>
 					<Heading />
-
 					<ProductsStream
 						className='mb-[6rem] max-md:mb-[5rem]'
 					/>

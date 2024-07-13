@@ -4,7 +4,6 @@ import { OrderCreateCard } from "~/features/order/create";
 import { useTabsContext } from "@ark-ui/react";
 import { useRouter } from "next/navigation";
 import { ProductProp } from "~/entities/product";
-import { objToSearchParams } from "~/shared/lib/search-params";
 import { toaster } from "~/shared/ui/toaster";
 import { PayloadPaymentToken } from "~/shared/api/client";
 
@@ -21,9 +20,8 @@ export function OrderFlowCard({ product, method }: Props) {
 			className='w-full'
 			product={product}
 			defaultValue={method}
-			onActionFulfilled={(orderId, method) => {
-				if (method)
-					router.push(`/products/${product.id}/checkout/${orderId}?tab=${tab}&${objToSearchParams(method)}`)
+			onActionFulfilled={orderId => {
+				router.push(`/products/${product.id}/checkout/${orderId}?tab=${tab}`)
 			}}
 			onActionRejected={async error => {
 				toaster.create({

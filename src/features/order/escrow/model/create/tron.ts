@@ -11,6 +11,7 @@ const waitForTransaction = async (txId: string, attemps = Infinity) => {
 	while(attemps-- > 0) {
 		try {
 			await tronWeb.trx.getConfirmedTransaction(txId);
+			break;
 		}
 		catch {
 			await new Promise(resolve => setTimeout(resolve, 1000));
@@ -22,12 +23,12 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 	const tronWallet = useTronWallet();
 
 	return {
-		async prepare({ chain, token }) {
+		async prepare({ chain, token, isNativeCoin }) {			
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
-			const holdPeriod = order.product.holdPeriod;
-			const tokenAmount = BigInt(order.transaction.tokenAmount * 10 ** 6);
+			const holdPeriod = order.transaction.holdPeriod;
+			const tokenAmount = BigInt(order.transaction.tokenAmount);
 
 			if (holdPeriod === undefined)
 				throw new EscrowError('generic', 'holdPeriod is not defined for product');
@@ -39,7 +40,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 				throw new EscrowError('generic', `tronWeb instance is not defined`);
 
 			if (!tronWallet.wallet || !tronWallet.wallet?.adapter.address)
-				throw new EscrowError('generic', `tron wallet is not connected`);
+				throw new EscrowError('tron-not-found', `tron wallet is not connected`);
 
 			return {
 				approve: async () => {
@@ -85,7 +86,10 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 						const transactionCreateEscrow = await tw.transactionBuilder.triggerSmartContract(
 							tw.address.toHex(chain.contractAddress),
 							'createEscrow(address,address,uint256,uint256,string)',
-							{ feeLimit: 100000000 },
+							{ 
+								feeLimit: 100_000_000,
+								callValue: isNativeCoin ? tw.toSun(tokenAmount) : undefined
+							},
 							[
 								{
 									type: 'address',

@@ -1,8 +1,10 @@
 import {
 	PayloadCreate,
+	PayloadSearch,
 	PayloadUpdate,
 	PayloadUploadImages,
 	schemaCreate,
+	schemaSearch,
 	schemaUpdate,
 	schemaUploadImages,
 } from "./schemas";
@@ -12,19 +14,44 @@ import { authFetchClient } from "../fetch-client";
 import { PayloadReport } from "../shared/schemas";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
-import { mapDtoToPaymentMethod } from "../shared/mappers";
+import { mapDtoToPaymentMethod, mapPaginationPayloadToDto } from "../shared/mappers";
+import { PayloadPagination } from "../shared/schemas";
 
 export function createProductsClient() {
 	return {
 		async create(storeUrl: string, payload: PayloadCreate) {
 			const { data, error } = await authFetchClient.POST('/api/products', {
+				// @ts-expect-error expecting openapi changes
 				body: {
-					storeUrl, holdPeriod: 60, ...payload,
+					storeUrl, 
+					...payload,
 				}
 			});
 
 			return data ? {
 				data: mapDtoToProduct(data), error
+			} : {
+				data, error
+			}
+		},
+
+		async search({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination) {
+			const { data, error } = await authFetchClient.GET('/api/products-search', {
+				params: {
+					query: {
+						...mapPaginationPayloadToDto(pagination),
+						...payload,
+						tagName: tagNames
+					}
+				}
+			});
+
+			return data ? {
+				data: {
+					items: data.data.map(mapDtoToProduct),
+					total: data.total
+				},
+				error
 			} : {
 				data, error
 			}
@@ -45,6 +72,7 @@ export function createProductsClient() {
 			async update(payload: PayloadUpdate) {
 				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
 					params: { path: { id: productId } },
+					// @ts-expect-error expecting openapi changes
 					body: payload
 				});
 
@@ -166,9 +194,9 @@ export function createProductsClient() {
 			},
 		}),
 
-
 		schemaCreate,
 		schemaUpdate,
 		schemaUploadImages,
+		schemaSearch
 	}
 }

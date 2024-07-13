@@ -3,25 +3,37 @@
 import { useQuery } from "@tanstack/react-query";
 import { ordersQueries } from "~/entities/order";
 import { OrderEscrowCreateCard, OrderEscrowHoldingCard } from "~/features/order/escrow";
-import { OrderId, PayloadPaymentToken } from "~/shared/api/client";
+import { OrderId } from "~/shared/api/client";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { toaster } from "~/shared/ui/toaster";
 import { useRegisterFlow } from "~/widgets/register-flow";
 import { useWatchAccount } from "~/shared/lib/wagmi";
+import { useTronWalletConnectDialog } from "~/features/tron-wallet";
+import { useRef } from "react";
+import { useWatchTronAdapter } from "~/shared/lib/tronweb";
 
 interface Props {
 	orderId: OrderId,
-	method: PayloadPaymentToken
 }
 
-export function OrderFlowCard({ orderId, method }: Props) {
+export function OrderFlowCard({ orderId }: Props) {
 	const { data: order, refetch, isFetching } = useQuery({
 		...ordersQueries.getByIdOptions(orderId),
 		staleTime: Infinity
 	})
 
 	const watchAccount = useWatchAccount();
-	const startFlow = useRegisterFlow(s => s.startFlow);
+	const openEthWalletDialog = useRegisterFlow(s => s.startFlow);
+	const openTronWalletDialog = useTronWalletConnectDialog(s => s.setOpen);
+
+	const tronRetryRef = useRef<(() => void) | null>(null);
+
+	useWatchTronAdapter({
+		onConnect: () => {
+			tronRetryRef.current?.();
+			tronRetryRef.current = null;
+		}
+	})
 
 	if (isFetching || !order) {
 		return (
@@ -36,12 +48,12 @@ export function OrderFlowCard({ orderId, method }: Props) {
 		return (
 			<OrderEscrowCreateCard
 				className='w-full'
-				order={order} method={method}
+				order={order}
 				onActionFulfilled={refetch}
 				onActionRejected={(error, retry) => {
 					switch (error.cause) {
 						case "eth-not-found":
-							startFlow();
+							openEthWalletDialog();
 
 							watchAccount({
 								once: true,
@@ -49,12 +61,16 @@ export function OrderFlowCard({ orderId, method }: Props) {
 							})
 
 							break;
+						case 'tron-not-found':
+							openTronWalletDialog(true);
+							tronRetryRef.current = retry;
 
+							break;
 						default:
 							toaster.create({
 								type: 'error',
 								title: 'Payment error',
-								description: error.message
+								description: 'shortMessage' in error ? String(error.shortMessage) : error.message
 							})
 					}
 				}}

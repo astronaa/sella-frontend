@@ -10,6 +10,7 @@ export const mapDtoToProduct = (obj:
 	Schemes['ProductDto'] 
 	| Schemes['BaseProductDto'] 
 	| Schemes['ProductDetailsDTO']
+	| Schemes['EnumeratedProductDto']
 ) => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 

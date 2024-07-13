@@ -363,6 +363,7 @@ const SelectTest = () => {
 
 	return (
 		<Select.Root
+			variant="noBorder"
 			items={items}
 			defaultValue={['sales']}
 		>

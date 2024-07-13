@@ -1,5 +1,5 @@
 import { paymentMethodsQueries } from "~/entities/payment-methods";
-import { Order, PayloadPaymentToken } from "~/shared/api/client";
+import { Order, PayloadPaymentToken, isTronBlock } from "~/shared/api/client";
 import { useCreateEscrowState } from './state';
 import { EscrowError } from '../error';
 import { useCreateEscrowEth } from './eth';
@@ -18,7 +18,7 @@ export function useCreateEscrowAction(order: Order) {
 		if (!paymentMethods)
 			return;
 
-		const prepare = block == 'TRX' ? prepareCreateEscrowTron : prepareCreateEscrowEth;
+		const prepare = isTronBlock(block) ? prepareCreateEscrowTron : prepareCreateEscrowEth;
 
 		const chain = paymentMethods.find(m => m.value == block);
 		if (!chain)
@@ -28,16 +28,25 @@ export function useCreateEscrowAction(order: Order) {
 		if (!token)
 			throw new EscrowError('generic', "cannot find corresponding token for input token type");
 
-		if(state.status == 'error')
-			reset();
+		if (state.status == 'error') {
+			if (state.approveTransactionId)
+				setState(s => ({ ...s, status: 'escrow-write' }));
+			else
+				reset();
+		}
 
-		const methods = await prepare({ chain, token });
+		const isNativeCoin = Number(token.address) === 0;
+		const methods = await prepare({ chain, token, isNativeCoin });
 
 		do {
 			const state = stateRef.current;
 
 			switch (state.status) {
 				case 'idle':
+					if (isNativeCoin) {
+						setState(s => ({ ...s, status: 'escrow-write' }));
+						break;
+					}
 					setState(s => ({ ...s, status: 'approve-write' }));
 
 				case 'approve-write':

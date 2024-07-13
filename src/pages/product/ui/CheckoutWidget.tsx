@@ -14,18 +14,33 @@ export function CheckoutWidget() {
 			title='Choose Payment Method'
 			product={product}
 		>
-			{value => (
+			{({ disabled, ...method }) => (
 				<div className="flex flex-col gap-4">
-					<Button variant="solid" asChild>
-						<Link href={`${product.id}/checkout?${objToSearchParams({ tab: 'order-actions', ...value })}`}>
+					<Link
+						className='w-full'
+						href={`${product.id}/checkout?${objToSearchParams({ tab: 'order-actions', ...method })}`}
+					>
+						<Button
+							className='w-full'
+							variant="solid"
+							disabled={disabled}
+						>
 							Checkout
-						</Link>
-					</Button>
-					<Button colorPalette="gray" asChild>
-						<Link href={`${product.id}/checkout?${objToSearchParams({ tab: 'chat', ...value })}`}>
+						</Button>
+					</Link>
+
+					<Link
+						className='w-full'
+						href={`${product.id}/checkout?${objToSearchParams({ tab: 'chat', ...method })}`}
+					>
+						<Button
+							className='w-full'
+							colorPalette="gray"
+							disabled={disabled}
+						>
 							Chat with a seller
-						</Link>
-					</Button>
+						</Button>
+					</Link>
 				</div>
 			)}
 		</OrderCreateBaseCard>

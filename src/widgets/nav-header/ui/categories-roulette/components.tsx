@@ -1,19 +1,33 @@
 'use client';
 
+import {
+	WithControllableProps,
+	useControllableState
+} from "~/shared/lib/use-controllable-state";
+
+import {
+	CategoriesRouletteConsumer,
+	CategoriesRouletteProvider,
+	useCategoriesRouletteStrictContext
+} from "./contex";
+
 import { PropsWithChildren, useMemo, useState } from "react";
-import { CategoriesRouletteProvider, useCategoriesRouletteStrictContext } from "./contex";
 import { Button as BaseButton, ButtonProps } from "~/shared/ui/kit/button";
 import { cn } from "~/shared/lib/cn";
-import { PreviewImage } from "~/shared/ui/image";
 import { Icons } from "~/shared/ui/icons";
 import { Scrollable } from "~/shared/ui/scrollable";
+import { CategoryBox, categoryQueries } from "~/entities/category";
+import { Category } from "~/shared/api/client";
 
-export function Root({ children }: PropsWithChildren) {
+export type RootProps = WithControllableProps<Category | null, PropsWithChildren>
+
+export function Root({ children, ...rest }: RootProps) {
 	const [open, setOpen] = useState(false);
+	const [category, setCategory] = useControllableState(rest);
 
 	const value = useMemo(() => ({
-		open, setOpen
-	}), [open, setOpen])
+		open, setOpen, category, setCategory
+	}), [open, setOpen, category, setCategory])
 
 	return (
 		<CategoriesRouletteProvider value={value}>
@@ -44,33 +58,31 @@ export function Button({ className, children, ...props }: ButtonProps) {
 	);
 }
 
-const mockCategories = [
-	'Games', 'Accounts', 'Courses', 'Music', 'Phorography', 'Ebooks', 'Graphics', 'Sneakers', 'Magazines',
-	'Phorography', 'Ebooks', 'Graphics', 'Sneakers', 'Magazines'
-]
+export interface ContentProps extends Scrollable.RootProps {
+	itemsClassName?: string
+}
 
-export function Content(props: Scrollable.RootProps) {
+export function Content({ itemsClassName, ...props }: ContentProps) {
+	const { data: categories } = categoryQueries.useGetAll();
+	const { category, setCategory, setOpen } = useCategoriesRouletteStrictContext();
+
 	return (
 		<Scrollable.Root {...props}>
 			<Scrollable.Container className='gap-[1.5rem]'>
-				{mockCategories.map(c => (
-					<div
-						key={c}
-						className={cn(
-							'flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none',
-							'rounded-[0.75rem] bg-white/[.04] flex-shrink-0 transition hover:bg-white/[.06]',
-						)}
-					>
-						<PreviewImage
-							src={null}
-							className='size-[5rem] rounded-full bg-white/[.06] border-none'
-							alt={`Category ${c} image`}
-						/>
-
-						<span>{c}</span>
-					</div>
+				{categories?.map(c => (
+					<CategoryBox
+						key={c.id}
+						category={c} active={category?.id === c.id}
+						className={itemsClassName} truncateName
+						onClick={() => {
+							setCategory(category => category?.id == c.id ? null : c);
+							setOpen(false);
+						}}
+					/>
 				))}
 			</Scrollable.Container>
 		</Scrollable.Root>
 	);
 }
+
+export const ContextConsumer = CategoriesRouletteConsumer

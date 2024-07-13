@@ -25,11 +25,13 @@ export function TronWalletControl() {
 				{address ? (
 					<VTextControl.Input
 						className='pointer-events-none truncate max-w-full pe-[1rem]'
-						readOnly />
+						readOnly
+					/>
 				) : (
 					<TronWalletConnectButton
 						className='w-full'
-						type='button' />
+						type='button'
+					/>
 				)}
 			</VTextControl.Root>
 		</Skeleton>

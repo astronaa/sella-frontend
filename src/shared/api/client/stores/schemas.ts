@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { schemaSearch } from "../products/schemas";
 
 export const schemaCreate = z.object({
 	name: z.string().min(3, 'Min length is 3'),
@@ -14,3 +15,7 @@ export type PayloadCreate = z.infer<typeof schemaCreate>;
 export const schemaUpdate = schemaCreate.partial();
 
 export type PayloadUpdate = z.infer<typeof schemaUpdate>;
+
+export const schemaGetProducts = schemaSearch;
+
+export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;

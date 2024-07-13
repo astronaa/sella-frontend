@@ -462,6 +462,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/products-search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsSearchController_getProductsByStoreUrl"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/featured-tags": {
         parameters: {
             query?: never;
@@ -782,20 +798,20 @@ export interface components {
             /** @description Tron address */
             tronAddress: string;
         };
-        StoreProductDto: {
+        EnumeratedProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             price: number;
             description: string | null;
             shortDescription: string;
+            holdPeriod: number;
             isFrozen: boolean;
             tagNames: string[];
         };
         ProductsResponseDto: {
-            data: components["schemas"]["StoreProductDto"][];
+            data: components["schemas"]["EnumeratedProductDto"][];
             total: number;
         };
         RatingDto: {
@@ -821,18 +837,8 @@ export interface components {
             url: string;
             tagNames: string[];
         };
-        StoresInfoDto: {
-            /** Format: uuid */
-            imageId?: string;
-            name: string;
-            description?: string;
-            url: string;
-            /** Format: date-time */
-            createdAt: string;
-            rating: components["schemas"]["RatingDto"];
-        };
-        AllStoresResponseDto: {
-            data: components["schemas"]["StoresInfoDto"][];
+        StoresSearchResultDto: {
+            data: components["schemas"]["StoreInfoDto"][];
             total: number;
         };
         UpdateStoreDto: {
@@ -851,6 +857,7 @@ export interface components {
             name: string;
             /** @description The address of the token */
             address: string;
+            decimals: number;
         };
         PaymentMethod: {
             /** @description The name of the blockchain */
@@ -858,7 +865,7 @@ export interface components {
             /** @description Chain id of network */
             chainId: number;
             /** @enum {string} */
-            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC";
+            value: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             /** @description The contract address of the escrow contract */
             contractAddress: string;
             /** @description List of tokens associated with the blockchain */
@@ -869,6 +876,7 @@ export interface components {
             url: string;
             /** Format: uuid */
             imageId?: string;
+            description?: string;
         };
         StoreOwnerDto: {
             username: string;
@@ -879,17 +887,19 @@ export interface components {
         ProductDetailsDTO: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
             isFrozen: boolean;
             tagNames: string[];
+            /** Format: date-time */
+            createdAt: string;
             store: components["schemas"]["BaseStoreDto"];
             storeOwner: components["schemas"]["StoreOwnerDto"];
         };
@@ -905,17 +915,19 @@ export interface components {
         ProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
             isFrozen: boolean;
             tagNames: string[];
+            /** Format: date-time */
+            createdAt: string;
         };
         ProductUpdateDto: {
             name?: string;
@@ -931,6 +943,9 @@ export interface components {
         ProductAddImageResultDto: {
             imageIds: string[];
         };
+        ChatAccessResponseDto: {
+            accessToken: string;
+        };
         ChatResponseDto: {
             chatId: string;
             buyerId: number;
@@ -938,12 +953,9 @@ export interface components {
             isFrozen: boolean;
             productName: string;
         };
-        ChatAccessResponseDto: {
-            accessToken: string;
-        };
         ChatResponseWithMetaDto: {
-            result: components["schemas"]["ChatResponseDto"];
             metadata: components["schemas"]["ChatAccessResponseDto"];
+            result: components["schemas"]["ChatResponseDto"];
         };
         CommentUserDto: {
             username: string;
@@ -967,10 +979,14 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
+        ProductSearchResultDto: {
+            data: components["schemas"]["EnumeratedProductDto"][];
+            total: number;
+        };
         FeaturedTagDto: {
             name: string;
             /** Format: uuid */
-            imageId?: string;
+            imageId: string;
         };
         MessageDto: {
             id: string;
@@ -996,7 +1012,6 @@ export interface components {
         BaseProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
         };
@@ -1013,19 +1028,26 @@ export interface components {
             product: components["schemas"]["BaseProductDto"];
             seller: components["schemas"]["SellerDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved" | "Released";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
+            /** Format: int64 */
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            contractEscrowId: Record<string, never>;
+            /** @enum {string} */
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
+            holdPeriod: number;
+            holdEndingAt: Record<string, never>;
             /** Format: date-time */
             createdAt: string;
         };
         OrderCreateDto: {
             productId: string;
-            paymentType: string;
+            token: string;
+            blockchain: string;
         };
         OrdersResponseDto: {
             data: components["schemas"]["OrderInfoDto"][];
@@ -1042,13 +1064,16 @@ export interface components {
             buyer: components["schemas"]["BaseUserDto"];
             product: components["schemas"]["BaseProductDto"];
             /** @enum {string} */
-            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute";
+            status: "Unpaid" | "Hold" | "Claimed" | "Refunded" | "Dispute" | "Resolved" | "Released";
             /** @enum {string} */
             fulfillmentStatus: "Pending" | "Processing" | "Fulfilled" | "Dispute" | "Failed" | "Canceled";
             price: number;
+            /** Format: int64 */
             tokenAmount: number;
             /** @enum {string} */
-            token: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            /** @enum {string} */
+            blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             /** Format: date-time */
             createdAt: string;
         };
@@ -1455,6 +1480,14 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                query?: string;
+                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
+                /** @description Minimum price (inclusive) */
+                minPrice?: number;
+                /** @description Maximum price (inclusive) */
+                maxPrice?: number;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path: {
@@ -1539,7 +1572,9 @@ export interface operations {
             /** @description Store successfully updated */
             200: {
                 headers: Record<string, unknown>;
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["StoreInfoDto"];
+                };
             };
             /** @description Request data sent was not valid by schema */
             400: {
@@ -1565,6 +1600,9 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                query?: string;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path?: never;
@@ -1576,7 +1614,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["AllStoresResponseDto"];
+                    "application/json": components["schemas"]["StoresSearchResultDto"];
                 };
             };
         };
@@ -1598,7 +1636,7 @@ export interface operations {
             201: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["Store"];
+                    "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
@@ -2039,7 +2077,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                productId: string;
+                orderId: string;
             };
             cookie?: never;
         };
@@ -2068,6 +2106,35 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    ProductsSearchController_getProductsByStoreUrl: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+                query?: string;
+                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
+                /** @description Minimum price (inclusive) */
+                minPrice?: number;
+                /** @description Maximum price (inclusive) */
+                maxPrice?: number;
+                /** @description One of tags */
+                tagName?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of products */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductSearchResultDto"];
+                };
             };
         };
     };
@@ -2194,6 +2261,8 @@ export interface operations {
             query: {
                 page: number;
                 pageSize: number;
+                /** @description One of tags */
+                tagName?: string[];
             };
             header?: never;
             path?: never;
