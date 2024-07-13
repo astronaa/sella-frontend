@@ -4,15 +4,15 @@ import { dayJs } from "~/shared/lib/dayjs";
 import { PreviewImage } from "~/shared/ui/image";
 
 export interface Message {
-  title?: string;
-  body: string;
-  imageUrl?: string | null | undefined;
-  isSystem: boolean;
-  createdAt: string;
+	title?: string;
+	body: string;
+	imageUrl?: string | null | undefined;
+	isSystem: boolean;
+	createdAt: string;
 }
 
 interface ChatMessageBubbleProps extends HTMLAttributes<HTMLDivElement> {
-  message: Message;
+	message: Message;
 }
 
 export function ChatMessageBubble({
@@ -32,7 +32,8 @@ export function ChatMessageBubble({
 				<PreviewImage
 					src={message.imageUrl}
 					className="size-[2rem] rounded-full shadow-md flex-shrink-0"
-					alt=""
+					alt="Message sender avatar"
+					width={64} height={64}
 				/>
 			)}
 

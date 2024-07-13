@@ -13,7 +13,7 @@ export function Card({ order, ...props }: HTMLAttributes<HTMLDivElement> & Order
 			<EscrowCard.Wafer>
 				<EscrowCard.WaferHeading>
 					<span>Order has been paid</span>
-					<Price price={order.transaction.tokenAmount} />
+					<Price price={order.price} />
 				</EscrowCard.WaferHeading>
 
 				<EscrowCard.WaferContent>

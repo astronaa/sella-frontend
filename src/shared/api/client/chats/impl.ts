@@ -4,9 +4,28 @@ import { mapDtoToChat, mapDtoToChatMessage } from "./mappers";
 import { ChatId } from "./model";
 import { PayloadPagination } from "../shared/schemas";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
+import { OrderId } from "../orders/model";
 
 export function createChatsClient() {
 	return {
+		async getAll(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			const { data, error } = await authFetchClient.GET('/api/chats/all', {
+				params: {
+					query: mapPaginationPayloadToDto(pagination)
+				}
+			});
+
+			return data ? {
+				data: {
+					items: data.data.map(mapDtoToChat),
+					total: data.total
+				},
+				error
+			} : {
+				data, error
+			}
+		},
+
 		fromProduct: (productId: ProductId) => ({
 			async get() {
 				const { data, error } = await authFetchClient.GET('/api/products/{id}/chat', {
@@ -15,16 +34,34 @@ export function createChatsClient() {
 
 				return data ? {
 					data: {
-						chat: mapDtoToChat(data.result), 
-						accessToken: data.metadata.accessToken as string
+						chat: mapDtoToChat(data.result),
+						accessToken: data.metadata.accessToken
 					},
 					error
 				} : {
 					data, error
 				}
-			},
-
+			}
 		}),
+
+		fromOrder: (orderId: OrderId) => ({
+			async get() {
+				const { data, error } = await authFetchClient.GET('/api/orders/{id}/chat', {
+					params: { path: { id: orderId } }
+				});
+
+				return data ? {
+					data: {
+						chat: mapDtoToChat(data.result),
+						accessToken: data.metadata.accessToken
+					},
+					error
+				} : {
+					data, error
+				}
+			}
+		}),
+
 		for: (chatId: ChatId) => ({
 			async getMessages(pagination: PayloadPagination = { page: 1, limit: 10 }) {
 				const { data, error } = await authFetchClient.GET('/api/chats/{chatId}/messages', {
@@ -39,8 +76,8 @@ export function createChatsClient() {
 						items: data.data.map(mapDtoToChatMessage),
 						total: data.total,
 					}
-				} : {	
-					data, error 
+				} : {
+					data, error
 				}
 			}
 		})

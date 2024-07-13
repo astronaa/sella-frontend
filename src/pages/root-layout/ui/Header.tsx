@@ -40,7 +40,7 @@ export function Header() {
 				</NavHeader.NavIconButton>
 
 				<NavHeader.NavIconButton
-					href="/dashboard/sales"
+					href="/dashboard/orders"
 					activeOnHrefs={["/dashboard/orders"]}
 				>
 					<Icons.Package /> Orders

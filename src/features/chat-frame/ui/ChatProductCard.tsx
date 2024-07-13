@@ -1,7 +1,7 @@
 import { ProductCard, ProductProp } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 
-export function PageProductCard({
+export function ChatProductCard({
 	className,
 	...props
 }: ProductCard.RootProps & ProductProp) {

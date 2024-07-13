@@ -36,7 +36,7 @@ export function createProductsClient() {
 		},
 
 		async search({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination) {
-			const { data, error } = await authFetchClient.GET('/api/products-search', {
+			const { data, error } = await authFetchClient.GET('/api/products', {
 				params: {
 					query: {
 						...mapPaginationPayloadToDto(pagination),

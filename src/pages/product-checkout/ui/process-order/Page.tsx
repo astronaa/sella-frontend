@@ -1,8 +1,8 @@
-import { ChatFrame } from "../chat/Frame";
 import { PageLayout, PossibleTabs } from "../PageLayout";
 import { OrderFlowCard } from "./OrderFlowCard";
 import { OrderId, ProductId } from "~/shared/api/client";
 import { fetchProduct } from "../../api/product";
+import { ChatFrameByOrder } from "./Chat";
 
 interface PageProcessOrderProps {
 	productId: ProductId,
@@ -18,9 +18,8 @@ export async function PageProcessOrder({ orderId, productId, initialTab = 'chat'
 			initialTab={initialTab}
 			product={product}
 		>
-			<ChatFrame
-				product={product}
-				className='w-full'
+			<ChatFrameByOrder
+				orderId={orderId}
 			/>
 			<OrderFlowCard 
 				orderId={orderId} 

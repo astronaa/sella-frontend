@@ -1,7 +1,7 @@
 import { ProductId } from "~/shared/api/client";
 import { fetchProduct } from "../../api/product";
-import { ChatFrame } from "../chat/Frame";
 import { MobileHeader } from "./MobileHeader";
+import { ChatFrameByProduct } from "./Chat";
 
 export async function PageChatFrame({ productId }: { productId: ProductId }) {
 	const product = await fetchProduct(productId);
@@ -14,7 +14,9 @@ export async function PageChatFrame({ productId }: { productId: ProductId }) {
 					className='bg-white/[.02] w-full h-[1rem] rounded-t-[1.25rem]'
 				/>
 			</div>
-			<ChatFrame product={product} />
+			<ChatFrameByProduct
+				productId={product.id}
+			/>
 		</div>
 	);
 }

@@ -1,12 +1,27 @@
-import { ChatId, ProductId, apiClient } from "~/shared/api/client";
-import { infiniteQueryOptions, queryOptions, skipToken, useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { ChatId, OrderId, ProductId, apiClient } from "~/shared/api/client";
+import { infiniteQueryOptions, queryOptions, skipToken } from "@tanstack/react-query";
 
-export const getChatForProductOptions = (productId: ProductId) =>
+export const getFromProductOptions = (productId: ProductId) =>
 	queryOptions({
 		queryKey: ['chat', { productId }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.chats
 				.fromProduct(productId)
+				.get();
+
+			if (error)
+				throw error;
+
+			return data;
+		}
+	})
+
+export const getFromOrderOptions = (orderId: OrderId) =>
+	queryOptions({
+		queryKey: ['chat', { orderId }],
+		queryFn: async () => {
+			const { data, error } = await apiClient.chats
+				.fromOrder(orderId)
 				.get();
 
 			if (error)
@@ -50,23 +65,28 @@ export const getChatMessagesOptions = ({
 		}),
 	})
 
-interface UseGetChatMessagesForProductOptions {
-	productId: ProductId,
+interface GetChatsOptions {
+	initialPage?: number,
 	limit?: number
 }
 
-export function useGetChatMessagesForProduct(
-	{ productId, limit }: UseGetChatMessagesForProductOptions
-) {
-	const chatQuery = useQuery({
-		...getChatForProductOptions(productId),
-		staleTime: Infinity
-	});
+export const getChats = ({
+	initialPage = 1,
+	limit = 10
+}: GetChatsOptions = {}) =>
+	infiniteQueryOptions({
+		queryKey: ['chats', { limit }],
+		queryFn: (async ({ pageParam }) => {
+			const { data, error } = await apiClient.chats
+				.getAll({ limit, page: pageParam })
 
-	return useInfiniteQuery(
-		getChatMessagesOptions({
-			chatId: chatQuery.data?.chat.id ?? null,
-			limit
-		})
-	)
-}
+			if (error)
+				throw error;
+
+			return data;
+		}),
+		initialPageParam: initialPage,
+		getNextPageParam: (lastPage, pages, lastPageParam) =>
+			(lastPageParam * limit < lastPage.total) ? (lastPageParam + 1) : null,
+		staleTime: Infinity
+	})

@@ -13,6 +13,8 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { ChatPanelTabProvider, PossibleTabs } from "../model/tabs";
 import { UnreadedBadge } from "./UnreadedBadge";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { chatQueries } from "~/entities/chat";
 
 export function PageRoot({ children }: PropsWithChildren) {
 	const params = useParams();
@@ -23,7 +25,9 @@ export function PageRoot({ children }: PropsWithChildren) {
 	const [tab, setTab] = useState<PossibleTabs>(!!params?.productId ? 'chat' : 'chats-list');
 	const contextValue = useMemo(() => ({ tab, setTab }), [tab, setTab]);
 
-	if (false) {
+	const { data: chats } = useInfiniteQuery(chatQueries.getChats());
+
+	if (chats && chats.pages[0]?.total === 0) {
 		return (
 			<NotFoundScreen className='w-full h-[44.6875rem] max-w-content mx-auto px-[1rem] '>
 				<Icons.Chat />

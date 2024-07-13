@@ -1,1 +1,0 @@
-export * as chatQueries from './queries'
