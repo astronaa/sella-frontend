@@ -10,17 +10,18 @@ export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.
 	page: number,
 	limit: number,
 }
+
 interface GetFromStoreOptions {
 	storeUrl: string,
 	query: GetProductsQueryParams,
 }
 
 export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) => {
-	const {page, limit, ...rest} = query
+	const { page, limit, ...filters } = query
 	return queryOptions({
-		queryKey: [QUERY_KEY, query],
+		queryKey: [QUERY_KEY, { page, limit, storeUrl, ...filters }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({page, limit }, rest);
+			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({ page, limit }, filters);
 
 			if (error)
 				throw error;
@@ -30,7 +31,6 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 		placeholderData: (prev) => prev
 	})
 }
-
 
 export function useGetFromStore(args: GetFromStoreOptions) {
 	return useQuery(getFromStoreOptions(args))

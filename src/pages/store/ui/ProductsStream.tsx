@@ -81,7 +81,7 @@ export function ProductsStream({ className }: ProductsStreamProps) {
 					</div>
 				</BleedingContainer>
 			) : (
-				<div className="flex flex-col">
+				<div className="flex flex-col w-full">
 					<Divider />
 					<ProductsHeader
 						productsCount={total}

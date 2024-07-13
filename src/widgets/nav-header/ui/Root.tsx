@@ -1,12 +1,12 @@
 "use client";
 
-import { HTMLAttributes, Suspense, useEffect } from "react";
+import { HTMLAttributes, useEffect } from "react";
 import { cn } from "~/shared/lib/cn";
 import { UserNavBar } from "./user-nav-bar";
 import { Collapsible, Popover } from "~/shared/ui/kit";
 import { useMobileMenuStrictContext } from "./mobile-menu";
 import { usePopoverContext } from "@ark-ui/react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { HeaderDesktopView, HeaderTabletView, HeaderMobileView } from "./HeaderViews";
 import { InteractiveProvider } from "./Interactive";
@@ -23,9 +23,7 @@ export function Root({ children, ...props }: RootProps) {
 	return (
 		<SlotsProvider value={children}>
 			<InteractiveProvider>
-				<Suspense>
-					<Header {...props} />
-				</Suspense>
+				<Header {...props} />
 			</InteractiveProvider>
 		</SlotsProvider>
 	);
@@ -36,12 +34,11 @@ function Header({ className, staticMode = false, ...props }: RootProps) {
 	const { open: popupOpen, setOpen: setPopupOpen } = usePopoverContext();
 
 	const pathname = usePathname();
-	const searchParams = useSearchParams();
 	const setOpenCb = useCallbackRef(setPopupOpen);
 
 	useEffect(() => {
 		setOpenCb(false);
-	}, [pathname, searchParams, setOpenCb])
+	}, [pathname, setOpenCb])
 
 	return (
 		<Popover.Anchor asChild>

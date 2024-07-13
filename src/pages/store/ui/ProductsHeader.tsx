@@ -59,7 +59,7 @@ export function ProductsHeader({
 
 	return (
 		<>
-			<div className="flex mt-[1.5rem] justify-between">
+			<div className="flex mt-[1.5rem] justify-between w-full max-md:flex-col gap-[1rem]">
 				<div className="flex gap-x-[0.5rem] items-center">
 					<h2 className="font-inter text-white text-2xl font-semibold">Products</h2>
 					<span className="font-inter text-black-40 text-2xl font-semibold">{productsCount}</span>
@@ -93,14 +93,17 @@ export function ProductsHeader({
 				open={isExpanded}
 				className='mb-[2rem]'
 			>
-				<Collapsible.Content className="h-[148px] flex">
-					<div className="bg-white/[.04] p-[1.5rem] pb-[2rem] rounded-2xl mt-6 flex-1 border border-white/[.04] flex gap-x-6">
+				<Collapsible.Content className="flex">
+					<div 
+						className="bg-white/[.04] p-[1.5rem] pb-[2rem] rounded-2xl mt-6 flex-1 
+							border border-white/[.04] flex gap-6 max-md:flex-col"
+					>
 						<Select.Root
 							variant="border"
 							defaultValue={[filters.sort ?? 'new']}
 							items={options}
 							onValueChange={({ value }) => setSort(value[0] as typeof filters.sort)}
-							className='w-[13rem]'
+							className='w-full max-w-[13rem] max-md:max-w-full'
 						>
 							<Select.Label>Sort by</Select.Label>
 							<Select.Control>
@@ -127,14 +130,14 @@ export function ProductsHeader({
 							<label className="text-black-60 font-inter font-semibold text-[1rem]">
 								Price
 							</label>
-							<div className="flex mt-[0.4rem] w-[18rem]">
+							<div className="flex mt-[0.4rem] w-full max-w-[18rem] max-md:max-w-full">
 								<Input
 									size="sm" placeholder="From $1"
 									type="number"
 									defaultValue={filters.minPrice}
 									onChange={(e) => setMinPrice(Number(e.target.value) || undefined)}
 									className={cn(
-										'border rounded-r-none border-r-0',
+										'border rounded-r-none border-r-0 w-full',
 										'border-secondary bg-white/[.04] placeholder:text-black-60',
 										'focus:bg-white/[.06] filled:bg-white/[.06]',
 									)}
@@ -145,7 +148,7 @@ export function ProductsHeader({
 									defaultValue={filters.maxPrice}
 									onChange={(e) => setMaxPrice(Number(e.target.value) || undefined)}
 									className={cn(
-										'border rounded-l-none',
+										'border rounded-l-none w-full',
 										'border-secondary bg-white/[.04] placeholder:text-black-60',
 										'focus:bg-white/[.06] filled:bg-white/[.06]',
 									)}
