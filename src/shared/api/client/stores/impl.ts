@@ -3,7 +3,7 @@ import {
 	PayloadUpdate,
 	schemaCreate,
 	schemaUpdate,
-	schemaGetProducts, 
+	schemaGetProducts,
 	PayloadGetProducts
 } from "./schemas";
 
@@ -104,7 +104,7 @@ export function createStoresClient() {
 				const { data, error } = await authFetchClient.GET('/api/stores/{url}/products', {
 					params: {
 						path: { url: storeUrl },
-						query: {...mapPaginationPayloadToDto(pagination), ...payload}
+						query: { ...mapPaginationPayloadToDto(pagination), ...payload }
 					},
 				});
 
@@ -118,6 +118,26 @@ export function createStoresClient() {
 					data, error
 				}
 			},
+
+			async getProductsForOwner(pagination: PayloadPagination) {
+				const { data, error } = await authFetchClient.GET('/api/users/stores/{url}/products', {
+					params: {
+						path: { url: storeUrl },
+						query: mapPaginationPayloadToDto(pagination)
+					},
+				});
+
+				return data ? {
+					data: {
+						items: data.data.map(mapDtoToProduct),
+						total: data.total
+					},
+					error
+				} : {
+					data, error
+				}
+			},
+
 			async update(payload: PayloadUpdate) {
 				return await authFetchClient.PATCH('/api/stores/{url}', {
 					params: { path: { url: storeUrl } },
@@ -131,18 +151,21 @@ export function createStoresClient() {
 					parseAs: 'text'
 				});
 			},
+
 			async delete() {
 				return await authFetchClient.DELETE('/api/stores/{url}', {
 					params: { path: { url: storeUrl } },
 					parseAs: 'text'
 				})
 			},
+
 			async getReport() {
 				return await authFetchClient.GET('/api/stores/{url}/report', {
 					params: { path: { url: storeUrl } },
 					parseAs: 'text'
 				})
 			},
+
 			async report(payload: PayloadReport) {
 				return await authFetchClient.POST('/api/stores/{url}/report', {
 					params: { path: { url: storeUrl } },
@@ -153,6 +176,7 @@ export function createStoresClient() {
 					parseAs: 'text'
 				})
 			},
+
 			async setImage(image: File) {
 				return await authFetchClient.PATCH('/api/stores/{url}/image', {
 					params: { path: { url: storeUrl } },

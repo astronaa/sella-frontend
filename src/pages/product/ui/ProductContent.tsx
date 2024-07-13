@@ -44,8 +44,13 @@ export function ProductContent({ className, ...props }: HTMLAttributes<HTMLDivEl
 
 					<div className="flex flex-row gap-[1rem] flex-wrap">
 						{product.tagNames?.map(t => (
-							<Button key={t} colorPalette="gray" >
-								{t}
+							<Button
+								asChild
+								key={t} colorPalette="gray"
+							>
+								<Link href={`/marketplace/?tagNames=${t}`}>
+									{t}
+								</Link>
 							</Button>
 						))}
 					</div>

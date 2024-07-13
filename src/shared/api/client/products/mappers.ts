@@ -11,6 +11,7 @@ export const mapDtoToProduct = (obj:
 	| Schemes['BaseProductDto'] 
 	| Schemes['ProductDetailsDTO']
 	| Schemes['EnumeratedProductDto']
+	| Schemes['SellingProductDto']
 ) => {
 	const mappedImages = obj.imageIds.map(mapMediaIdToUrl);
 
@@ -35,6 +36,7 @@ export const mapDtoToProduct = (obj:
 		tagNames: 'tagNames' in obj ? obj.tagNames : undefined,
 		holdPeriod: 'holdPeriod' in obj ? obj.holdPeriod : undefined,
 		...imagesConfig,
+		totalSales: 'sold' in obj ? obj.sold : undefined,
 		rating: 'rating' in obj ? mapDtoToRating(obj.rating) : undefined,
 		store: 'store' in obj ? {
 			...mapDtoToStore(obj.store),

@@ -623,22 +623,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/my-sales": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["OrdersController_getMySales"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/quests": {
         parameters: {
             query?: never;
@@ -697,6 +681,38 @@ export interface paths {
         get: operations["ProductReportsController_getByProductId"];
         put?: never;
         post: operations["ProductReportsController_reportStoreByUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/stores/{url}/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DashboardController_getMySellingProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/my-sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DashboardController_getMySales"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1054,6 +1070,28 @@ export interface components {
             total: number;
             totalPrice: number;
         };
+        QuestsResponseDto: {
+            data: components["schemas"]["Quest"][];
+        };
+        CompleteQuestResponseDto: {
+            completed: boolean;
+        };
+        ReportProductDto: {
+            tags: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
+            message?: string;
+        };
+        SellingProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+            sold: number;
+            rating: components["schemas"]["RatingDto"];
+        };
+        SellingProductsResponseDto: {
+            data: components["schemas"]["SellingProductDto"][];
+            total: number;
+        };
         BaseUserDto: {
             username: string;
             /** Format: uuid */
@@ -1081,16 +1119,6 @@ export interface components {
             data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
-        };
-        QuestsResponseDto: {
-            data: components["schemas"]["Quest"][];
-        };
-        CompleteQuestResponseDto: {
-            completed: boolean;
-        };
-        ReportProductDto: {
-            tags: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
-            message?: string;
         };
     };
     responses: never;
@@ -2357,27 +2385,6 @@ export interface operations {
             };
         };
     };
-    OrdersController_getMySales: {
-        parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved user sales successfully */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["SalesResponseDto"];
-                };
-            };
-        };
-    };
     QuestsController_getQuests: {
         parameters: {
             query?: never;
@@ -2492,6 +2499,55 @@ export interface operations {
             404: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    DashboardController_getMySellingProducts: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user sailing products successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["SellingProductsResponseDto"];
+                };
+            };
+            /** @description Store not found or does not belong to the user */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    DashboardController_getMySales: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user sales successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["SalesResponseDto"];
+                };
             };
         };
     };

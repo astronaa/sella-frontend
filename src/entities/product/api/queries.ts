@@ -6,7 +6,7 @@ import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
 
-export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts>{
+export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts> {
 	page: number,
 	limit: number,
 }
@@ -21,7 +21,9 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 	return queryOptions({
 		queryKey: [QUERY_KEY, { page, limit, storeUrl, ...filters }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).getProducts({ page, limit }, filters);
+			const { data, error } = await apiClient.stores
+				.for(storeUrl)
+				.getProducts({ page, limit }, filters);
 
 			if (error)
 				throw error;
@@ -34,6 +36,33 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 
 export function useGetFromStore(args: GetFromStoreOptions) {
 	return useQuery(getFromStoreOptions(args))
+}
+
+interface GetFromStoreForOwnerOptions {
+	storeUrl: string,
+	page: number,
+	limit: number,
+}
+
+export const getFromStoreForOwnerOptions = ({ storeUrl, page, limit }: GetFromStoreForOwnerOptions) => {
+	return queryOptions({
+		queryKey: [`${QUERY_KEY}-for-owner`, { page, limit }],
+		queryFn: async () => {
+			const { data, error } = await apiClient.stores
+				.for(storeUrl)
+				.getProductsForOwner({ page, limit });
+
+			if (error)
+				throw error;
+
+			return data;
+		},
+		placeholderData: (prev) => prev
+	})
+}
+
+export function useGetFromStoreForOwner(args: GetFromStoreForOwnerOptions) {
+	return useQuery(getFromStoreForOwnerOptions(args))
 }
 
 interface GetOneOptions {
@@ -60,7 +89,9 @@ export function useGetOne(args: GetOneOptions) {
 export const getGetReportOptions = (productId: ProductId) => queryOptions({
 	queryKey: ['product-report', productId],
 	queryFn: async () => {
-		const { data, error } = await apiClient.products.for(productId).getReport();
+		const { data, error } = await apiClient.products
+			.for(productId)
+			.getReport();
 
 		if (error)
 			throw error;

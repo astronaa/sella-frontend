@@ -25,17 +25,24 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 	const autoscrollEnabledRef = useRef(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
+	const tryScrollToBottom = () => {
+		const container = containerRef.current;
+		if (!container)
+			return;
+
+		container.scrollTo({
+			behavior: 'smooth',
+			top: container.scrollHeight
+		});
+	}
+
 	const { sendMessage } = useChatSocketForProduct(product.id, {
 		onNewMessage: () => {
 			setTimeout(() => {
-				const container = containerRef.current;
-				if (!container || !autoscrollEnabledRef.current)
+				if (!autoscrollEnabledRef.current)
 					return;
 
-				container.scrollTo({
-					behavior: 'smooth',
-					top: container.scrollHeight
-				})
+				tryScrollToBottom();
 			}, 100);
 		}
 	});
@@ -48,6 +55,7 @@ export function ChatFrame({ product, className, ...props }: HTMLAttributes<HTMLD
 	const onSubmit = (values: SchemaType, form: FormApi<SchemaType>) => {
 		sendMessage(values.message);
 		form.reset();
+		tryScrollToBottom();
 	}
 
 	return (

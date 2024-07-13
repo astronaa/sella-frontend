@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ProductCard, ProductLink, productQueries } from "~/entities/product"
 import { apiClient, productMock } from "~/shared/api/client";
 import { cn } from "~/shared/lib/cn";
-import { usePagination } from "~/shared/lib/use-pagination";
+import { useSearchParamsPagination } from "~/shared/lib/search-params";
 import { Heading } from "~/shared/ui/kit/heading";
 import { Pagination } from "~/shared/ui/kit/pagination";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
@@ -15,7 +15,7 @@ type Props = z.infer<typeof apiClient.products.schemaSearch>
 const limit = 12;
 
 export function ProductResults({ query, tagNames, sort = 'rating' }: Props) {
-	const { page, onPageChange } = usePagination(1);
+	const { page, onPageChange } = useSearchParamsPagination(1);
 
 	const { data, isLoading } = useQuery({
 		...productQueries.getSearchOptions({

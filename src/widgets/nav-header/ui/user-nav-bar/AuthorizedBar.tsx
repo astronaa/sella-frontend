@@ -16,7 +16,7 @@ export function AuthorizedBar({ className, ...props }: Props) {
 				className
 			)}
 		>
-			<div className="flex gap-[1rem] items-center">
+			<div className="flex gap-[0.5rem] items-center">
 				<SlotAuthorizedNavButtons.Renderer />
 			</div>
 		</div>

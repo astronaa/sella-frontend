@@ -1,5 +1,6 @@
 import { NavigateOptions } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter, useSearchParams as useNextSearchParams } from "next/navigation";
+import { PaginationPageChangeDetails } from "@ark-ui/react";
 
 export function objToSearchParams(obj: Record<string, unknown>) {
 	return new URLSearchParams(Object.entries(obj).filter(([, v]) => !!v).map(([k, v]) => [k, String(v)]));
@@ -22,4 +23,15 @@ export function useSearchParams() {
 		nextSearchParams ? Object.fromEntries(nextSearchParams.entries()) : {},
 		setSearchParams
 	] as const
+}
+
+export function useSearchParamsPagination(defaultPage: number) {
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	return {
+		page: Number(searchParams.page ?? defaultPage.toString()),
+		onPageChange: (details: PaginationPageChangeDetails) => {
+			setSearchParams({ ...searchParams, page: details.page })
+		}
+	}
 }

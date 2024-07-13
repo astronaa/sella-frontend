@@ -1,5 +1,5 @@
 import { fetchStore } from "../api";
-import { ProductsStream } from "./ProductsStream";
+import { ProductsStream } from "./products-stream/Component";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { Heading } from "./Heading";
