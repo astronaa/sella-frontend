@@ -59,9 +59,10 @@ export function VTagsInput({ placeholder, items = data, ...props }: VTagsInputPr
 				<Combobox.Control>
 					<TagsInput.Control
 						className={cn(
-							'static border-b border-b-transparent',
+							'static border-b border-b-transparent cursor-pointer',
 							combobox.open && 'rounded-b-none  border-b-secondary'
 						)}
+						onClick={() => combobox.setOpen(true)}
 					>
 						{tagsInput.value.map((value, index) => (
 							<TagsInput.Item key={index} index={index} value={value}>
@@ -87,10 +88,10 @@ export function VTagsInput({ placeholder, items = data, ...props }: VTagsInputPr
 									colorPalette='gray' size='sm'
 									className='border-none top-[0.625rem]'
 								>
-									<Icons.Close
+									<Icons.ChevronDown
 										className={cn(
-											'transform rotate-45 transition-transform',
-											combobox.open && 'rotate-0'
+											'transform rotate-0 transition-transform',
+											combobox.open && 'rotate-180'
 										)}
 									/>
 								</IconButton>

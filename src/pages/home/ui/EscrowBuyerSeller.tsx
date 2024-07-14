@@ -1,9 +1,9 @@
-import { Button } from "~/shared/ui/kit/button";
 import { Background } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { Heading } from "~/shared/ui/kit/heading";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
+import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
 export function EscrowBuyerSeller() {
 	return (
@@ -29,9 +29,7 @@ export function EscrowBuyerSeller() {
 
 					<EscrowFeatures />
 
-					<Button className="w-44 max-md:w-full" size="lg">
-						Open Storefront
-					</Button>
+					<StorefrontOpenControls />
 				</div>
 
 				<VideoAnimationPlayer

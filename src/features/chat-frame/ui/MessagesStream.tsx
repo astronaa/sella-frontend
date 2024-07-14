@@ -10,6 +10,8 @@ import { Chat } from "~/shared/api/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { chatQueries } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { Icons } from "~/shared/ui/icons";
 
 const chatSkeleton = [
 	{
@@ -83,6 +85,8 @@ export function ChatMessagesStream({
 		threshold: 0.8,
 	});
 
+	const chatIsEmpty = messages && messages.pages[0]?.items.length === 0;
+
 	return (
 		<div
 			{...props}
@@ -93,6 +97,13 @@ export function ChatMessagesStream({
 				"--scrollbar-track-mb": "6rem",
 			} as React.CSSProperties}
 		>
+			{chatIsEmpty && (
+				<NotFoundScreen className='h-full border-none pb-[10rem]'>
+					<Icons.Chat />
+					There are no messages here yet. send the first chat message
+				</NotFoundScreen>
+			)}
+			
 			<div className="flex flex-col gap-[1rem] pb-[6rem]">
 				<div className="flex flex-col w-full gap-[1rem] mt-auto px-[4px]">
 					{(!chat || isLoading) && (

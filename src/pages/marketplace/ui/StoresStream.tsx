@@ -15,6 +15,8 @@ import { StoresInitialData } from "../api/stores";
 import { WithControllableProps, useControllableState } from "~/shared/lib/use-controllable-state";
 import { useSearchParamsPagination } from "~/shared/lib/search-params";
 import { useQuery } from "@tanstack/react-query";
+import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { Icons } from "~/shared/ui/icons";
 
 interface StoresStreamProps {
 	initialData: StoresInitialData;
@@ -67,6 +69,13 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 				/>
 			</div>
 
+			{data && data.items.length === 0 && (
+				<NotFoundScreen>
+					<Icons.Building />
+					{'No stores found by the query'}
+				</NotFoundScreen>
+			)}
+
 			<div
 				className={cn(
 					"grid grid-cols-2 gap-10 max-w-content max-md:grid-cols-1 w-full transition-opacity duration-300",
@@ -111,7 +120,7 @@ function CategoriesRoulette(props: CategoriesRouletteProps) {
 				<Scrollable.Container className='gap-[1.5rem] relative px-[1rem]'>
 					{categories?.map(c => (
 						<CategoryBox
-							key={c.id} category={c} 
+							key={c.id} category={c}
 							active={c.name === category}
 							onClick={() => {
 								setCategory(category => c.name != category ? c.name : null)
