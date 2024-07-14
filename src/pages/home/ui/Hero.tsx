@@ -6,8 +6,10 @@ import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
 export function Hero() {
 	return (
-		<div className={"flex flex-col rounded relative overflow-hidden px-[1rem] bg-black rounded-b-[3rem]\
-			max-md:top-[-10rem] max-md:pt-[9rem] max-md:mb-[-10rem]"}>
+		<div
+			className="flex flex-col rounded relative overflow-hidden px-[1rem] bg-black rounded-b-[3rem]
+				max-md:top-[-12.5rem] max-md:pt-[10.25rem] max-md:mb-[-10rem]"
+		>
 			<Background />
 
 			<div className="flex flex-grow items-end justify-between gap-[1rem] relative w-full max-w-content m-auto max-lg:justify-center">

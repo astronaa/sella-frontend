@@ -6,11 +6,12 @@ import {
 	schemaCreate,
 	schemaSearch,
 	schemaUpdate,
-	schemaUploadImages
+	schemaUploadImages,
 } from "./schemas";
 
 import { Product, ProductId } from "./model";
 import { authFetchClient } from "../fetch-client";
+import { PayloadReport } from "../shared/schemas";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
 import { mapDtoToPaymentMethod, mapPaginationPayloadToDto } from "../shared/mappers";
@@ -35,7 +36,7 @@ export function createProductsClient() {
 		},
 
 		async search({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination) {
-			const { data, error } = await authFetchClient.GET('/api/products-search', {
+			const { data, error } = await authFetchClient.GET('/api/products', {
 				params: {
 					query: {
 						...mapPaginationPayloadToDto(pagination),
@@ -80,6 +81,22 @@ export function createProductsClient() {
 				} : {
 					data, error
 				}
+			},
+			async getReport() {
+				return await authFetchClient.GET('/api/product/{id}/report', {
+					params: { path: { id: productId } },
+					parseAs: 'text'
+				})
+			},
+			async report(payload: PayloadReport) {
+				return await authFetchClient.POST('/api/product/{id}/report', {
+					params: { path: { id: productId } },
+					body: {
+						tags: payload.reasons,
+						message: payload.description
+					},
+					parseAs: 'text'
+				})
 			},
 			async uploadImages(
 				initialState: Required<Pick<Product, 'imageIds' | 'hasPreview'>>,

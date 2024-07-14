@@ -1,47 +1,37 @@
 import {
-	ANOTHER_REASON_ID,
 	PayloadCreate,
-	PayloadReport,
 	PayloadUpdate,
-	reportReasons,
 	schemaCreate,
-	schemaReport,
 	schemaUpdate,
 	schemaGetProducts,
-	schemaGetForExplore,
-	PayloadGetProducts, PayloadGetForExplore
+	PayloadGetProducts,
+	schemaSearch,
+	PayloadSearch
 } from "./schemas";
 
+import {
+	PayloadPagination,
+	schemaReport,
+	reportReasons,
+	PayloadReport,
+	ANOTHER_REASON_ID
+} from "../shared/schemas";
+
 import { authFetchClient } from "../fetch-client";
-import { PayloadPagination } from "../shared/schemas";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "./mappers";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
 
 export function createStoresClient() {
 	return {
-		async getAll(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+		async getAll({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination = { page: 1, limit: 10 }) {
 			const { data, error } = await authFetchClient.GET('/api/stores', {
 				params: {
-					query: mapPaginationPayloadToDto(pagination)
-				},
-			});
-
-			return data ? {
-				data: {
-					items: data.data.map(mapDtoToStore),
-					total: data.total
-				},
-				error
-			} : {
-				data, error
-			}
-		},
-
-		async getForExplore(pagination: PayloadPagination, payload: PayloadGetForExplore) {
-			const { data, error } = await authFetchClient.GET('/api/explore', {
-				params: {
-					query: {...mapPaginationPayloadToDto(pagination), ...payload}
+					query: {
+						...mapPaginationPayloadToDto(pagination),
+						...payload,
+						tagName: tagNames
+					}
 				},
 			});
 
@@ -77,7 +67,7 @@ export function createStoresClient() {
 			});
 
 			return data ? {
-				data: mapDtoToStore(data), 
+				data: mapDtoToStore(data),
 				error, response
 			} : {
 				data, error,
@@ -102,7 +92,7 @@ export function createStoresClient() {
 				const { data, error } = await authFetchClient.GET('/api/stores/{url}/products', {
 					params: {
 						path: { url: storeUrl },
-						query: {...mapPaginationPayloadToDto(pagination), ...payload}
+						query: { ...mapPaginationPayloadToDto(pagination), ...payload }
 					},
 				});
 
@@ -116,6 +106,26 @@ export function createStoresClient() {
 					data, error
 				}
 			},
+
+			async getProductsForOwner(pagination: PayloadPagination) {
+				const { data, error } = await authFetchClient.GET('/api/users/stores/{url}/products', {
+					params: {
+						path: { url: storeUrl },
+						query: mapPaginationPayloadToDto(pagination)
+					},
+				});
+
+				return data ? {
+					data: {
+						items: data.data.map(mapDtoToProduct),
+						total: data.total
+					},
+					error
+				} : {
+					data, error
+				}
+			},
+
 			async update(payload: PayloadUpdate) {
 				return await authFetchClient.PATCH('/api/stores/{url}', {
 					params: { path: { url: storeUrl } },
@@ -129,12 +139,21 @@ export function createStoresClient() {
 					parseAs: 'text'
 				});
 			},
+
 			async delete() {
 				return await authFetchClient.DELETE('/api/stores/{url}', {
 					params: { path: { url: storeUrl } },
 					parseAs: 'text'
 				})
 			},
+
+			async getReport() {
+				return await authFetchClient.GET('/api/stores/{url}/report', {
+					params: { path: { url: storeUrl } },
+					parseAs: 'text'
+				})
+			},
+
 			async report(payload: PayloadReport) {
 				return await authFetchClient.POST('/api/stores/{url}/report', {
 					params: { path: { url: storeUrl } },
@@ -145,6 +164,7 @@ export function createStoresClient() {
 					parseAs: 'text'
 				})
 			},
+
 			async setImage(image: File) {
 				return await authFetchClient.PATCH('/api/stores/{url}/image', {
 					params: { path: { url: storeUrl } },
@@ -163,7 +183,7 @@ export function createStoresClient() {
 		schemaUpdate,
 		schemaReport,
 		schemaGetProducts,
-		schemaGetForExplore,
+		schemaSearch,
 		reportReasons,
 		ANOTHER_REASON_ID
 	}

@@ -4,6 +4,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { Adapter } from "@tronweb3/tronwallet-abstract-adapter";
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { invariant } from "../lib/asserts";
+import { setupApiHeader } from "../lib/tronweb";
 
 export function TronWalletProvider({ children }: PropsWithChildren) {
 	const [adapters, setAdapters] = useState<Adapter<string>[]>([]);
@@ -34,6 +35,7 @@ export function TronWalletProvider({ children }: PropsWithChildren) {
 		<WalletProvider 
 			adapters={adapters} 
 			disableAutoConnectOnLoad={false}
+			onConnect={setupApiHeader}
 		>
 			{children}
 		</WalletProvider>

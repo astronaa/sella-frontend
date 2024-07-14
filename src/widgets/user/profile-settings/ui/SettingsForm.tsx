@@ -1,7 +1,6 @@
 'use client';
 
 import { useWallet as useTronWallet } from '@tronweb3/tronwallet-adapter-react-hooks';
-import { useAccount as useEthWallet } from 'wagmi';
 import { HTMLAttributes, useMemo } from 'react';
 import { Form } from 'react-final-form';
 import { z } from 'zod';
@@ -40,7 +39,6 @@ const validateForm = zodValidate(schema);
 
 export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionRejected, className, ...props }: SettingsFormProps) {
 	const { data: user } = useUserGetQuery();
-	const { address: ethAddress } = useEthWallet();
 	const { address: tronAddress } = useTronWallet();
 
 	const {
@@ -119,6 +117,8 @@ export function SettingsForm({ onActionFulfilled, onBeforeAction, onActionReject
 			}
 		}
 	};
+
+	const ethAddress = user?.address;
 
 	const initialValues = useMemo(() => ({
 		ethAddress,

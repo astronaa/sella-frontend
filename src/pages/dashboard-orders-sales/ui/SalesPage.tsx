@@ -32,7 +32,7 @@ export function SalesPage() {
 					max-sm:flex-col max-sm:items-start max-sm:w-full max-sm:gap-[0.25rem]'
 				>
 					{data && (
-						<p className='text-black-40 me-[1.5rem]'>
+						<p className='text-black-40 me-[1.5rem] whitespace-nowrap'>
 							Total: <span className='text-white'>
 								{data?.totalPrice ?? 0} USDT
 							</span>

@@ -1,14 +1,14 @@
 'use client';
 
-import { 
-	WithControllableProps, 
-	useControllableState 
+import {
+	WithControllableProps,
+	useControllableState
 } from "~/shared/lib/use-controllable-state";
 
-import { 
-	CategoriesRouletteConsumer, 
-	CategoriesRouletteProvider, 
-	useCategoriesRouletteStrictContext 
+import {
+	CategoriesRouletteConsumer,
+	CategoriesRouletteProvider,
+	useCategoriesRouletteStrictContext
 } from "./contex";
 
 import { PropsWithChildren, useMemo, useState } from "react";
@@ -58,7 +58,11 @@ export function Button({ className, children, ...props }: ButtonProps) {
 	);
 }
 
-export function Content(props: Scrollable.RootProps) {
+export interface ContentProps extends Scrollable.RootProps {
+	itemsClassName?: string
+}
+
+export function Content({ itemsClassName, ...props }: ContentProps) {
 	const { data: categories } = categoryQueries.useGetAll();
 	const { category, setCategory, setOpen } = useCategoriesRouletteStrictContext();
 
@@ -68,9 +72,10 @@ export function Content(props: Scrollable.RootProps) {
 				{categories?.map(c => (
 					<CategoryBox
 						key={c.id}
-						category={c} active={category === c}
+						category={c} active={category?.id === c.id}
+						className={itemsClassName} truncateName
 						onClick={() => {
-							setCategory(c);
+							setCategory(category => category?.id == c.id ? null : c);
 							setOpen(false);
 						}}
 					/>

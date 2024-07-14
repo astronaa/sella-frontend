@@ -1,18 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { 
+	RegisterSetupProfileDialog, 
+	RegisterConnectTwitterDialog, 
+	useRegisterFlow, 
+	useRegisterFlowWalletGuard 
+} from '~/features/register';
+
+import { useMemo, useState } from 'react';
 import { Dialog } from '~/shared/ui/kit';
 import { RegisterSuccessDialog } from './RegisterSuccessDialog';
 import { TwoFaSuccessDialog } from './TwoFaSuccessDialog';
 import { Button } from '~/shared/ui/kit/button';
-import { RegisterSetupProfileDialog, RegisterConnectTwitterDialog } from '~/features/register';
 import { StoreCreateDialog } from '~/features/store/create';
 import { AuthChannelsSetupTwoFaDialog } from '~/features/auth-channels';
 import { CreateStoreSuccessDialog } from './CreateStoreSuccessDialog';
 import { Store } from "~/shared/api/client"
 import { ProductCreateDialog } from '~/features/product/create';
 import { AllSetDialog } from './AllSetDialog';
-import { useRegisterFlow, useRegisterFlowWalletGuard } from '../model/flow';
 
 export function FlowDialog(props: Dialog.RootProps) {
 	const open = useRegisterFlow(s => s.open);
@@ -20,6 +25,11 @@ export function FlowDialog(props: Dialog.RootProps) {
 	const currentModal = useRegisterFlow(s => s.currentModal);
 	const openModalAction = useRegisterFlow(s => s.openModal);
 	const hasUsername = useRegisterFlow(s => s.hasUsername);
+	const storeUrlToCreate = useRegisterFlow(s => s.storeUrlToCreate);
+
+	const initialValues = useMemo(() => ({ 
+		url: storeUrlToCreate ?? undefined 
+	}), [storeUrlToCreate]);
 
 	const isOpen = (modal: typeof currentModal) =>
 		(!!props?.open || open) && currentModal == modal;
@@ -81,6 +91,7 @@ export function FlowDialog(props: Dialog.RootProps) {
 
 			<StoreCreateDialog
 				{...props}
+				initialValues={initialValues}
 				open={isOpen('create-store')}
 				onOpenChange={onOpenChange}
 				onActionFulfilled={store => {

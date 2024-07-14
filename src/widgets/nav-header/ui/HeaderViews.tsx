@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AppLogo } from "~/shared/ui/logo";
-import { NavItems } from "./NavItems";
 import { SearchPanel } from "~/features/search-panel";
 import { MobileMenu, useMobileMenuStrictContext } from "./mobile-menu";
 import { usePopoverContext } from "@ark-ui/react";
@@ -19,7 +18,7 @@ export function HeaderDesktopView() {
 				<AppLogo />
 			</Link>
 
-			<div className='flex'>
+			<div className='flex w-full'>
 				<CategoriesRoulette.Button
 					className='border border-secondary rounded-r-none flex-shrink-0 w-[9.5rem] justify-start'
 				>
@@ -31,15 +30,13 @@ export function HeaderDesktopView() {
 						)}
 					</CategoriesRoulette.ContextConsumer>
 				</CategoriesRoulette.Button>
-				<SearchPanel.SearchBarRoot className='w-full max-w-[18.75rem]'>
+				<SearchPanel.SearchBarRoot className='w-full'>
 					<SearchPanel.SearchBarInput
 						className='rounded-l-none border-l-0'
 						placeholder='Search products, stores'
 					/>
 				</SearchPanel.SearchBarRoot>
 			</div>
-
-			<NavItems />
 		</div>
 	);
 }
@@ -56,7 +53,7 @@ export function HeaderTabletView() {
 				<AppLogo />
 			</Link>
 
-			<div className='flex gap-[0.75rem]'>
+			<div className='flex gap-[0.75rem] w-full'>
 				<CategoriesRoulette.Button
 					className='border border-secondary flex-shrink-0 px-0 max-lg:hidden'
 				/>
@@ -78,8 +75,6 @@ export function HeaderTabletView() {
 					</IconButton>
 				)}
 			</div>
-
-			{!searchBarMaximized && <NavItems />}
 		</div>
 	);
 }

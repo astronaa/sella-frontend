@@ -11,6 +11,7 @@ import { Collapsible } from "~/shared/ui/kit";
 import { ToggleGroupField } from './ToggleGroupField';
 import { apiClient } from "~/shared/api/client";
 import { useDialogState } from "~/shared/lib/dialog";
+import { storeQueries } from '~/entities/store';
 
 type ReportStoreDialogProps = Dialog.RootProps & {
 	onActionFulfilled?: () => void,
@@ -41,6 +42,7 @@ export function ReportStoreDialog({ onActionFulfilled, cancelButton, storeUrl, .
 
 	const onSubmit = async (values: SchemeType) => {
 		await apiClient.stores.for(storeUrl).report(values);
+		storeQueries.invalidateReport(storeUrl);
 		onActionFulfilled?.();
 		close();
 	}

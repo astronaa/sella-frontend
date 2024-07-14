@@ -23,11 +23,11 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 	const tronWallet = useTronWallet();
 
 	return {
-		async prepare({ chain, token, isNativeCoin }) {
+		async prepare({ chain, token, isNativeCoin }) {			
 			const tw = tronWeb;
 			const sellerTronAddress = order.seller.tronAddress;
 			const chainContractAddress = chain.contractAddress;
-			const holdPeriod = order.product.holdPeriod;
+			const holdPeriod = order.transaction.holdPeriod;
 			const tokenAmount = BigInt(order.transaction.tokenAmount);
 
 			if (holdPeriod === undefined)
@@ -40,7 +40,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 				throw new EscrowError('generic', `tronWeb instance is not defined`);
 
 			if (!tronWallet.wallet || !tronWallet.wallet?.adapter.address)
-				throw new EscrowError('generic', `tron wallet is not connected`);
+				throw new EscrowError('tron-not-found', `tron wallet is not connected`);
 
 			return {
 				approve: async () => {
@@ -88,7 +88,7 @@ export function useCreateEscrowTron(order: Order): CreateEscrowController {
 							'createEscrow(address,address,uint256,uint256,string)',
 							{ 
 								feeLimit: 100_000_000,
-								callValue: isNativeCoin ? tokenAmount : undefined
+								callValue: isNativeCoin ? tw.toSun(tokenAmount) : undefined
 							},
 							[
 								{

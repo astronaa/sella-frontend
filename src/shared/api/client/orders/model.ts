@@ -10,6 +10,10 @@ export interface Order {
 	price: number;
 	product: Product;
 	store: Store;
-	transaction: Transaction;
+	transaction: Transaction & {
+		holdPeriod: number
+		holdEndingAt: string | null,
+		contractEscrowId: number | null
+	};
 	seller: User,
 }

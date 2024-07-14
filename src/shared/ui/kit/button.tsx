@@ -43,7 +43,7 @@ const styles = tv(
 				solid: [],
 				outline: [],
 				subtle: [],
-				ghost: ['hocus:bg-white/5'],
+				ghost: ['hocus:bg-white/5 data-[selected]:[&]:bg-white/[.08]'],
 				action: ['bg-black/50 text-white backdrop-blur-sm'],
 				unstyled: []
 			},

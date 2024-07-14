@@ -373,7 +373,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["ProductsController_getProductsByStoreUrl"];
         put?: never;
         post: operations["ProductsController_createProduct"];
         delete?: never;
@@ -462,22 +462,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products-search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ProductsSearchController_getProductsByStoreUrl"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/featured-tags": {
         parameters: {
             query?: never;
@@ -486,6 +470,54 @@ export interface paths {
             cookie?: never;
         };
         get: operations["TagController_getFeaturedTags"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getAllChats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/all/unread": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getAllUnreadChats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chats/{chatId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getChatInfo"];
         put?: never;
         post?: never;
         delete?: never;
@@ -559,22 +591,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/explore": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ExploreController_getExplore"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/orders/{id}": {
         parameters: {
             query?: never;
@@ -623,14 +639,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/my-sales": {
+    "/api/orders/{id}/chat": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["OrdersController_getMySales"];
+        get: operations["OrdersController_getOrCreateChat"];
         put?: never;
         post?: never;
         delete?: never;
@@ -697,6 +713,38 @@ export interface paths {
         get: operations["ProductReportsController_getByProductId"];
         put?: never;
         post: operations["ProductReportsController_reportStoreByUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/stores/{url}/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DashboardController_getMySellingProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/my-sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DashboardController_getMySales"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -801,12 +849,12 @@ export interface components {
         EnumeratedProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             price: number;
             description: string | null;
             shortDescription: string;
+            holdPeriod: number;
             isFrozen: boolean;
             tagNames: string[];
         };
@@ -830,6 +878,7 @@ export interface components {
             rating: components["schemas"]["RatingDto"];
             ownerUsername: string;
             tagNames: string[];
+            isFeatured: boolean;
         };
         CreateStoreDto: {
             name: string;
@@ -887,12 +936,12 @@ export interface components {
         ProductDetailsDTO: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -915,12 +964,12 @@ export interface components {
         ProductDto: {
             id: string;
             name: string;
-            holdPeriod: number;
             hasPreview: boolean;
             imageIds: string[];
             description?: string;
             shortDescription: string;
             price: number;
+            holdPeriod: number;
             storeUrl: string;
             rating: components["schemas"]["RatingDto"];
             /** @default false */
@@ -946,16 +995,44 @@ export interface components {
         ChatAccessResponseDto: {
             accessToken: string;
         };
-        ChatResponseDto: {
+        BaseUserDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
+        };
+        BaseProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+        };
+        Message: {
+            id: string;
+            senderId: number;
+            sender: components["schemas"]["User"];
             chatId: string;
-            buyerId: number;
-            sellerId: number;
+            content: Record<string, never>;
+            isRead: boolean;
+            isSystem: boolean;
+            /** @enum {string} */
+            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED";
+            systemData: Record<string, never>;
+            /** Format: date-time */
+            readAt: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ChatDTO: {
+            id: string;
+            buyer: components["schemas"]["BaseUserDto"];
             isFrozen: boolean;
-            productName: string;
+            product: components["schemas"]["BaseProductDto"];
+            lastMessage: components["schemas"]["Message"] | null;
+            unreadMessagesCount: number;
         };
         ChatResponseWithMetaDto: {
             metadata: components["schemas"]["ChatAccessResponseDto"];
-            result: components["schemas"]["ChatResponseDto"];
+            result: components["schemas"]["ChatDTO"];
         };
         CommentUserDto: {
             username: string;
@@ -979,14 +1056,14 @@ export interface components {
             text: string;
             isPositive: boolean;
         };
-        ProductSearchResultDto: {
-            data: components["schemas"]["EnumeratedProductDto"][];
-            total: number;
-        };
         FeaturedTagDto: {
             name: string;
             /** Format: uuid */
             imageId: string;
+        };
+        GetAllChatsResponseDto: {
+            data: components["schemas"]["ChatDTO"][];
+            total: number;
         };
         MessageDto: {
             id: string;
@@ -1000,21 +1077,14 @@ export interface components {
             /** Format: date-time */
             readAt: string;
             fileIds: string[];
+            isSystem: boolean;
+            /** @enum {string|null} */
+            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED" | null;
+            systemData: Record<string, never>;
         };
         GetMessagesResponseDto: {
             data: components["schemas"]["MessageDto"][];
             total: number;
-        };
-        GetExploreResponseDto: {
-            data: components["schemas"]["Store"][];
-            total: number;
-        };
-        BaseProductDto: {
-            id: string;
-            name: string;
-            holdPeriod: number;
-            hasPreview: boolean;
-            imageIds: string[];
         };
         SellerDto: {
             username: string;
@@ -1037,8 +1107,11 @@ export interface components {
             tokenAmount: number;
             /** @enum {string} */
             token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
+            contractEscrowId: number | null;
             /** @enum {string} */
             blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
+            holdPeriod: number;
+            holdEndingAt: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -1052,10 +1125,27 @@ export interface components {
             total: number;
             totalPrice: number;
         };
-        BaseUserDto: {
-            username: string;
-            /** Format: uuid */
-            profilePictureId: string | null;
+        QuestsResponseDto: {
+            data: components["schemas"]["Quest"][];
+        };
+        CompleteQuestResponseDto: {
+            completed: boolean;
+        };
+        ReportProductDto: {
+            tags: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
+            message?: string;
+        };
+        SellingProductDto: {
+            id: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+            sold: number;
+            rating: components["schemas"]["RatingDto"];
+        };
+        SellingProductsResponseDto: {
+            data: components["schemas"]["SellingProductDto"][];
+            total: number;
         };
         SalesInfoDto: {
             id: string;
@@ -1079,16 +1169,6 @@ export interface components {
             data: components["schemas"]["SalesInfoDto"][];
             total: number;
             totalPrice: number;
-        };
-        QuestsResponseDto: {
-            data: components["schemas"]["Quest"][];
-        };
-        CompleteQuestResponseDto: {
-            completed: boolean;
-        };
-        ReportProductDto: {
-            tags: ("Spam" | "Nudity" | "Scam" | "Illegal" | "Violence" | "HateSpeech" | "SomethingElse")[];
-            message?: string;
         };
     };
     responses: never;
@@ -1599,6 +1679,7 @@ export interface operations {
                 page: number;
                 pageSize: number;
                 query?: string;
+                sort?: "rating" | "featured_rating";
                 /** @description One of tags */
                 tagName?: string[];
             };
@@ -1911,6 +1992,35 @@ export interface operations {
             };
         };
     };
+    ProductsController_getProductsByStoreUrl: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+                query?: string;
+                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
+                /** @description Minimum price (inclusive) */
+                minPrice?: number;
+                /** @description Maximum price (inclusive) */
+                maxPrice?: number;
+                /** @description One of tags */
+                tagName?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns array of products */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ProductsResponseDto"];
+                };
+            };
+        };
+    };
     ProductsController_createProduct: {
         parameters: {
             query?: never;
@@ -2107,35 +2217,6 @@ export interface operations {
             };
         };
     };
-    ProductsSearchController_getProductsByStoreUrl: {
-        parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-                query?: string;
-                sort?: "new" | "old" | "price_asc" | "price_desc" | "rating";
-                /** @description Minimum price (inclusive) */
-                minPrice?: number;
-                /** @description Maximum price (inclusive) */
-                maxPrice?: number;
-                /** @description One of tags */
-                tagName?: string[];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns array of products */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["ProductSearchResultDto"];
-                };
-            };
-        };
-    };
     TagController_getFeaturedTags: {
         parameters: {
             query?: never;
@@ -2151,6 +2232,95 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["FeaturedTagDto"][];
                 };
+            };
+        };
+    };
+    ChatController_getAllChats: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Return all chats */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["GetAllChatsResponseDto"];
+                };
+            };
+            /** @description Chats not allowed */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ChatController_getAllUnreadChats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Return all unread chats */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["GetAllChatsResponseDto"];
+                };
+            };
+            /** @description Chats not allowed */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ChatController_getChatInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chatId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns chat info */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ChatResponseWithMetaDto"];
+                };
+            };
+            /** @description Invalid chat ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };
@@ -2254,27 +2424,6 @@ export interface operations {
             };
         };
     };
-    ExploreController_getExplore: {
-        parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns array of stores for explore page */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["GetExploreResponseDto"];
-                };
-            };
-        };
-    };
     OrdersController_getOrderInfo: {
         parameters: {
             query?: never;
@@ -2353,24 +2502,33 @@ export interface operations {
             };
         };
     };
-    OrdersController_getMySales: {
+    OrdersController_getOrCreateChat: {
         parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-            };
+            query?: never;
             header?: never;
-            path?: never;
+            path: {
+                id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved user sales successfully */
+            /** @description Chat retrieved or created successfully. Returns chat information with metadata */
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["SalesResponseDto"];
+                    "application/json": components["schemas"]["ChatResponseWithMetaDto"];
                 };
+            };
+            /** @description Invalid order ID */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
             };
         };
     };
@@ -2488,6 +2646,55 @@ export interface operations {
             404: {
                 headers: Record<string, unknown>;
                 content?: never;
+            };
+        };
+    };
+    DashboardController_getMySellingProducts: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path: {
+                url: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user sailing products successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["SellingProductsResponseDto"];
+                };
+            };
+            /** @description Store not found or does not belong to the user */
+            404: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    DashboardController_getMySales: {
+        parameters: {
+            query: {
+                page: number;
+                pageSize: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved user sales successfully */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["SalesResponseDto"];
+                };
             };
         };
     };

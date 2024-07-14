@@ -1,65 +1,37 @@
-'use client';
+"use client";
 
-import { useMobileMenuStrictContext } from "./context";
 import { cn } from "~/shared/lib/cn";
 import { UserNavBar } from "../user-nav-bar";
-import { Link } from "~/shared/ui/nav-link";
+import { NavLink } from "~/shared/ui/nav-link";
+import { categoryQueries } from "~/entities/category";
+import { Icons } from "~/shared/ui/icons";
 
 export function PhoneNavbarContent() {
-	const { open, setOpen } = useMobileMenuStrictContext();
-	if (!open)
-		return null;
-
-	const handleLinkClick = () => {
-		setOpen(false);
-	};
+	const { data: categories } = categoryQueries.useGetAll();
 
 	return (
 		<div
 			className={cn(
-				"backdrop-blur-[3rem] bg-black-06/50 flex flex-col p-4 justify-between h-screen pt-[8rem] pb-[2.875rem] w-full",
+				"backdrop-blur-[3rem] bg-black-06/50 flex flex-col p-4 justify-between h-screen pt-[6rem] pb-[2rem] w-full",
 				"fixed top-0 z-mobile-menu h-screen",
 				"lg:hidden"
 			)}
 		>
 			<div
-				className={cn(
-					"items-start gap-[2rem] flex flex-col md:flex",
-					"text-[2.5rem] gap-[2.25rem] pl-[1.25rem] font-semibold leading-[1]"
-				)}
+				className='flex flex-col w-full gap-[1rem] px-[1.25rem] max-h-full overflow-y-auto'
 			>
-				<NavItem onClick={handleLinkClick} href="/">
-					Home
-				</NavItem>
-				<NavItem onClick={handleLinkClick} href="/marketplace">
-					Explore
-				</NavItem>
-				<NavItem onClick={handleLinkClick} href="/#features">
-					Features
-				</NavItem>
-				<NavItem onClick={handleLinkClick} href="/#whitepaper">
-					Whitepaper
-				</NavItem>
-				<NavItem onClick={handleLinkClick} href="/#roadmap">
-					Roadmap
-				</NavItem>
+				{categories?.map(c => (
+					<NavLink
+						key={c.id}
+						href={`/marketplace/?tagNames=${encodeURIComponent(c.name)}`}
+						className='whitespace-nowrap text-black-60 text-[1.125rem] flex justify-between gap-[1rem]'
+					>
+						{c.name} <Icons.ChevronRight className='size-[1.25rem]' />
+					</NavLink>
+				))}
 			</div>
 
-			<UserNavBar className='flex-col-reverse [&_button]:w-full' />
+			<UserNavBar className="flex-col-reverse [&_button]:w-full" />
 		</div>
-	);
-}
-
-interface NavItemProps {
-	href: string;
-	onClick: () => void;
-	children: React.ReactNode;
-}
-
-function NavItem({ href, onClick, children }: NavItemProps) {
-	return (
-		<Link onClick={onClick} href={href}>
-			{children}
-		</Link>
 	);
 }

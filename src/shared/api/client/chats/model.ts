@@ -1,12 +1,14 @@
-import { User, UserId } from "../users/model";
+import { Product } from "../products/model";
+import { User } from "../users/model";
 
 export type ChatId = string;
 
 export interface Chat {
 	id: ChatId,
-	buyerId: UserId,
-	sellerId: UserId,
-	productName: string
+	buyer: User,
+	product: Product,
+	lastMessage: ChatMessage | null,
+	unreadMessagesCount: number
 }
 
 export type ChatMessageId = string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, ButtonProps } from "~/shared/ui/kit/button";
-import { useRegisterFlow } from "../model/flow";
+import { useRegisterFlow } from "~/features/register";
 
 export function StartButton(props: ButtonProps) {
 	const startFlow = useRegisterFlow(s => s.startFlow);
@@ -9,7 +9,7 @@ export function StartButton(props: ButtonProps) {
 	return (
 		<Button
 			{...props}
-			onClick={startFlow}
+			onClick={() => startFlow()}
 		>
 			Open Storefront
 		</Button>

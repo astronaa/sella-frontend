@@ -19,6 +19,7 @@ export interface Product {
 	isFrozen?: boolean,
 	tagNames?: string[],
 	holdPeriod?: number,
+	totalSales?: number,
 
 	rating?: {
 		likes: number;

@@ -13,7 +13,7 @@ export function InteractiveProvider({ children }: PropsWithChildren) {
 			<SearchPanel.Root>
 				<SearchPanel.ContextConsumer>
 					{searchApi => (
-						<CategoriesRoulette.Root 
+						<CategoriesRoulette.Root
 							onChange={c => searchApi.setCategory(c)}
 						>
 							<InteractivePopover>
@@ -77,19 +77,24 @@ function InteractivePopover({ children }: PropsWithChildren) {
 				<Popover.Content
 					className='max-w-full w-full backdrop-blur-[3rem] bg-black-08/[.80] 
 						border border-secondary rounded-[1.25rem] rounded-t-none
-						flex flex-col gap-[2rem]
-					'
+						flex flex-col gap-[2rem]'
 				>
-					<Collapsible.Root
-						open={categoriesOpen}
-						className='mx-[-1rem] w-[calc(100%+1rem*2)]'
-					>
-						<Collapsible.Content>
-							<CategoriesRoulette.Content
-								className='px-[1rem]'
-							/>
-						</Collapsible.Content>
-					</Collapsible.Root>
+					<div className='mx-[-1rem] w-[calc(100%+1rem*2)]'>
+						<CategoriesRoulette.Content
+							className='px-[1rem] md:hidden'
+							itemsClassName='size-[7.8125rem] gap-0'
+						/>
+						
+						<Collapsible.Root
+							open={categoriesOpen}
+						>
+							<Collapsible.Content>
+								<CategoriesRoulette.Content
+									className='px-[1rem]'
+								/>
+							</Collapsible.Content>
+						</Collapsible.Root>
+					</div>
 
 					<Collapsible.Root open={searchOpen}>
 						<Collapsible.Content>
