@@ -24,12 +24,13 @@ import { mapPaginationPayloadToDto } from "../shared/mappers";
 
 export function createStoresClient() {
 	return {
-		async getAll(payload: PayloadSearch, pagination: PayloadPagination = { page: 1, limit: 10 }) {
+		async getAll({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination = { page: 1, limit: 10 }) {
 			const { data, error } = await authFetchClient.GET('/api/stores', {
 				params: {
 					query: {
 						...mapPaginationPayloadToDto(pagination),
-						...payload
+						...payload,
+						tagName: tagNames
 					}
 				},
 			});

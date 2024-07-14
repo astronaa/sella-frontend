@@ -1,33 +1,43 @@
 'use client';
 
 import { cn } from "~/shared/lib/cn";
-import { useState } from "react";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { Pagination } from "~/shared/ui/kit/pagination";
-import { PageChangeDetails } from "@zag-js/pagination";
 import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 import { storeQueries } from '~/entities/store';
 import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
 import { Scrollable } from "~/shared/ui/scrollable";
 import { CategoryBox, categoryQueries } from "~/entities/category";
+import { useFilters } from "~/pages/marketplace/model/filters";
+import { useDebounce } from "~/shared/lib/use-debounce";
 import { StoresInitialData } from "../api/stores";
+import { WithControllableProps, useControllableState } from "~/shared/lib/use-controllable-state";
+import { useSearchParamsPagination } from "~/shared/lib/search-params";
+import { useQuery } from "@tanstack/react-query";
 
 interface StoresStreamProps {
 	initialData: StoresInitialData;
 }
 
 export function StoresStream({ initialData }: StoresStreamProps) {
-	const [page, setPage] = useState(1);
+	const { filters, setFilters } = useFilters()
+	const { page, onPageChange } = useSearchParamsPagination(1);
+	const { debounceFn: setQuery } = useDebounce(query => {
+		setFilters(f => ({ ...f, query }))
+	}, 300)
 
-	const { data, isFetching } = storeQueries.useGetAll({
-		page,
-		limit: ITEMS_PER_PAGE,
-		initialData
-	});
+	const { data, isFetching } = useQuery({
+		...storeQueries.getAllOptions({
+			page, limit: ITEMS_PER_PAGE,
+			...filters
+		}),
+		initialData,
+		initialDataUpdatedAt: 0
+	})
 
 	const total = data.total;
-	const handlePageChange = (details: PageChangeDetails) => setPage(details.page);
+	const category = filters.tagNames?.[0] ?? null;
 
 	return (
 		<div className="flex flex-col gap-[2rem] max-w-content m-auto w-full max-xl:items-center">
@@ -37,12 +47,24 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 						Featured Stores
 					</Heading>
 
-					<SearchBar.Root>
+					<SearchBar.Root
+						defaultValue={filters.query}
+						onChange={(value) => {
+							if (value) {
+								setQuery(value)
+							} else {
+								setFilters({ ...filters, query: value })
+							}
+						}}
+					>
 						<SearchBar.Input placeholder='Search stores' />
 					</SearchBar.Root>
 				</div>
 
-				<CategoriesRoulette />
+				<CategoriesRoulette
+					value={category}
+					onChange={category => setFilters(f => ({ ...f, tagNames: category ? [category] : [] }))}
+				/>
 			</div>
 
 			<div
@@ -65,8 +87,8 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 
 			{total > ITEMS_PER_PAGE && (
 				<Pagination
-					page={page}
-					onPageChange={handlePageChange}
+					defaultPage={page}
+					onPageChange={onPageChange}
 					className='w-min'
 					count={total}
 					pageSize={ITEMS_PER_PAGE}
@@ -77,7 +99,10 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 	);
 }
 
-function CategoriesRoulette() {
+type CategoriesRouletteProps = WithControllableProps<string | null, object>
+
+function CategoriesRoulette(props: CategoriesRouletteProps) {
+	const [category, setCategory] = useControllableState(props);
 	const { data: categories } = categoryQueries.useGetAll();
 
 	return (
@@ -86,8 +111,11 @@ function CategoriesRoulette() {
 				<Scrollable.Container className='gap-[1.5rem] relative px-[1rem]'>
 					{categories?.map(c => (
 						<CategoryBox
-							key={c.id}
-							category={c}
+							key={c.id} category={c} 
+							active={c.name === category}
+							onClick={() => {
+								setCategory(category => c.name != category ? c.name : null)
+							}}
 						/>
 					))}
 				</Scrollable.Container>

@@ -48,7 +48,7 @@ export function ProductContent({ className, ...props }: HTMLAttributes<HTMLDivEl
 								asChild
 								key={t} colorPalette="gray"
 							>
-								<Link href={`/marketplace/?tagNames=${t}`}>
+								<Link href={`/marketplace/?tagNames=${encodeURIComponent(t)}`}>
 									{t}
 								</Link>
 							</Button>

@@ -23,7 +23,7 @@ export function PhoneNavbarContent() {
 				{categories?.map(c => (
 					<NavLink
 						key={c.id}
-						href={`/marketplace/?tagNames=${c.name}`}
+						href={`/marketplace/?tagNames=${encodeURIComponent(c.name)}`}
 						className='whitespace-nowrap text-black-60 text-[1.125rem] flex justify-between gap-[1rem]'
 					>
 						{c.name} <Icons.ChevronRight className='size-[1.25rem]' />

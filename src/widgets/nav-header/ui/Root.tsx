@@ -93,7 +93,7 @@ function CategoriesRoulette(props: { open: boolean }) {
 						{categories?.map(c => (
 							<NavLink
 								key={c.id}
-								href={`/marketplace/?tagNames=${c.name}`}
+								href={`/marketplace/?tagNames=${encodeURIComponent(c.name)}`}
 								className='whitespace-nowrap'
 							>
 								{c.name}

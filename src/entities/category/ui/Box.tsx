@@ -1,16 +1,30 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useEffect, useRef } from "react";
 import { CategoryProp } from "./Prop";
 import { cn } from "~/shared/lib/cn";
 import { PreviewImage } from "~/shared/ui/image";
 
 export type BoxProps = HTMLAttributes<HTMLDivElement> & CategoryProp & {
 	active?: boolean,
-	truncateName?: boolean
+	truncateName?: boolean,
+	autoScrollOnActive?: boolean
 }
 
-export function Box({ category, active, className, truncateName, ...props }: BoxProps) {
+export function Box({ category, active, className, truncateName, autoScrollOnActive = true, ...props }: BoxProps) {
+	const ref = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (autoScrollOnActive && active) {
+			ref.current?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest',
+				inline: 'center'
+			})
+		}
+	}, [autoScrollOnActive, active])
+
 	return (
 		<div
+			ref={ref}
 			{...props}
 			className={cn(
 				'flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none p-[0.5rem]',

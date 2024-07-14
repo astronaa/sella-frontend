@@ -13,10 +13,6 @@ interface GetOneQueryOptions {
 	staleTime?: number
 }
 
-interface GetAllQueryOptions extends PayloadPagination, z.infer<typeof apiClient.stores.schemaSearch> {
-	initialData?: { items: Store[], total: number }
-}
-
 export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptions) {
 	return useQuery({
 		queryKey: [QUERY_KEY, storeUrl],
@@ -33,13 +29,11 @@ export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptio
 	})
 }
 
-export function useGetAll({
-	page, limit,
-	initialData = { items: [], total: 0 },
-	...filters
-}: GetAllQueryOptions) {
-	return useQuery({
-		queryKey: [QUERY_KEY, { page, limit, ...filters }],
+interface GetAllQueryOptions extends PayloadPagination, z.infer<typeof apiClient.stores.schemaSearch> { }
+
+export const getAllOptions = ({ page, limit, ...filters }: GetAllQueryOptions) =>
+	queryOptions({
+		queryKey: [QUERY_KEY, { page, limit, ...filters, tagNames: JSON.stringify(filters.tagNames ?? []) }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores.getAll(filters, { page, limit })
 
@@ -47,11 +41,11 @@ export function useGetAll({
 				throw error;
 
 			return data;
-		},
-		initialData,
-		staleTime: 5000,
-		initialDataUpdatedAt: 0
+		}
 	})
+
+export function useGetAll(args: GetAllQueryOptions) {
+	return useQuery(getAllOptions(args));
 }
 
 export function useGetForUser() {
