@@ -1,7 +1,6 @@
 import { fetchStore } from "../api";
 import { ProductsStream } from "./products-stream/Component";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
-import { SimilarStoreFronts } from "~/pages/store/ui/SimilarStoreFronts";
 import { Heading } from "./Heading";
 import { StoreOnPageProvider } from "./StoreOnPageProvider";
 import { EditMode } from "./edit-mode";
@@ -19,10 +18,10 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
 					/>
 				</EditMode.Root>
 
-				<SimilarStoreFronts
+				{/* <SimilarStoreFronts
 					className='mb-[6rem] max-md:mb-[3rem]'
 					storeUrl={storeUrl}
-				/>
+				/> */}
 
 				<StorefrontOpenBanner />
 			</div>

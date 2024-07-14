@@ -7,7 +7,7 @@ import { ChatId } from "~/shared/api/client";
 
 export function ChatFrameById({ chatId }: { chatId: ChatId }) {
 	const { data } = useQuery({
-		...chatQueries.getById(chatId),
+		...chatQueries.getByIdOptions(chatId),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false
 	});

@@ -10,8 +10,8 @@ export function UnreadBadge({ count, className, ...props }: UnreadBadgeProps) {
 		<span
 			{...props}
 			className={cn(
-				"flex items-center justify-center text-[0.75em]",
-				"min-w-[1.5rem] h-[1.5rem] rounded-full bg-red-100 text-white font-inter",
+				"flex items-center justify-center text-[0.75em] min-w-[1.5rem] h-[1.5rem] px-[0.25rem]",
+				"rounded-full bg-red-100 text-white font-inter",
 				"transform transition-transform scale-0",
 				count > 0 && "scale-100",
 				className

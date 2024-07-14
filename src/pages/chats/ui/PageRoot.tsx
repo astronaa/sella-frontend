@@ -16,7 +16,7 @@ export function PageRoot({ children }: PropsWithChildren) {
 	const params = useParams();
 	const [tab, setTab] = useState<PossibleTabs>(!!params?.chatId ? 'chat' : 'chats-list');
 	const contextValue = useMemo(() => ({ tab, setTab }), [tab, setTab]);
-	const { data: chats } = useInfiniteQuery(chatQueries.getChats());
+	const { data: chats } = useInfiniteQuery(chatQueries.getChatsOptions());
 	const total = chats?.pages[0]?.total;
 
 	if (total === 0) {

@@ -6,7 +6,8 @@ import { mapDtoToChatMessage } from "~/shared/api/client";
 import { components } from "~/shared/api/openapi";
 import { queryClient } from "~/shared/config/query-client";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
-import { getChatMessagesOptions, getFromProductOptions } from "./queries";
+import { getChatMessagesOptions, getChatsOptions, getFromProductOptions } from "./queries";
+import { produce } from "immer"
 
 const onNewMessage = (payload: components["schemas"]["MessageDto"]) => {
 	const message = mapDtoToChatMessage(payload);
@@ -14,24 +15,29 @@ const onNewMessage = (payload: components["schemas"]["MessageDto"]) => {
 		chatId: message.chatId,
 	});
 
-	type TDataType = Parameters<NonNullable<typeof queryOptions.select>>[0];
-
-	queryClient.setQueriesData<TDataType>(
+	queryClient.setQueriesData<Parameters<NonNullable<typeof queryOptions.select>>[0]>(
 		{ queryKey: queryOptions.queryKey },
 		(data) => {
 			if (!data) return;
 
-			return {
-				...data,
-				pages: data.pages.map((p, index) =>
-					index != 0
-						? p
-						: {
-							...p,
-							items: [...p.items, message],
-						}
-				),
-			};
+			return produce(data, draft => {
+				draft.pages[0]?.items.push(message);
+			});
+		}
+	);
+
+	const chatsListQueryOptions = getChatsOptions();
+
+	queryClient.setQueriesData<Parameters<NonNullable<typeof chatsListQueryOptions.select>>[0]>(
+		{ queryKey: chatsListQueryOptions.queryKey },
+		(data) => {
+			if (!data) return;
+
+			return produce(data, draft => {
+				const chat = draft.pages[0]?.items.find(c => c.id == message.chatId);
+				if(chat)
+					chat.lastMessage = message;
+			});
 		}
 	);
 };
