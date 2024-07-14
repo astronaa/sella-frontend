@@ -1,4 +1,5 @@
 import { queryOptions, useQuery } from "@tanstack/react-query"
+import { z } from "zod";
 import { apiClient } from "~/shared/api/client";
 import { PayloadPagination } from "~/shared/api/client"
 import { Store } from "~/shared/api/client"
@@ -12,11 +13,9 @@ interface GetOneQueryOptions {
 	staleTime?: number
 }
 
-interface GetAllQueryOptions extends PayloadPagination {
+interface GetAllQueryOptions extends PayloadPagination, z.infer<typeof apiClient.stores.schemaSearch> {
 	initialData?: { items: Store[], total: number }
 }
-
-type GetForExploreQueryOptions = GetAllQueryOptions;
 
 export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptions) {
 	return useQuery({
@@ -37,11 +36,12 @@ export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptio
 export function useGetAll({
 	page, limit,
 	initialData = { items: [], total: 0 },
+	...filters
 }: GetAllQueryOptions) {
 	return useQuery({
-		queryKey: [QUERY_KEY, page],
+		queryKey: [QUERY_KEY, { page, limit, ...filters }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.getAll({ page, limit })
+			const { data, error } = await apiClient.stores.getAll(filters, { page, limit })
 
 			if (error)
 				throw error;
@@ -87,26 +87,6 @@ export function invalidateReport(storeUrl: string) {
 
 export function useGetStoreReport(storeUrl: string) {
 	return useQuery(getReportOptions(storeUrl))
-}
-
-export function useGetForExplore({
-	page, limit,
-	initialData = { items: [], total: 0 },
-}: GetForExploreQueryOptions) {
-	return useQuery({
-		queryKey: [QUERY_KEY, 'explore', page],
-		queryFn: async () => {
-			const { data, error } = await apiClient.stores.getForExplore({ page, limit })
-
-			if (error)
-				throw error;
-
-			return data;
-		},
-		initialData,
-		staleTime: 5000,
-		initialDataUpdatedAt: 0
-	})
 }
 
 export function invalidateAll() {

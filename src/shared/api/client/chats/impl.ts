@@ -70,10 +70,8 @@ export function createChatsClient() {
 
 				return data ? {
 					data: {
-						chat: mapDtoToChat(data),
-						accessToken: null
-						// chat: mapDtoToChat(data.result),
-						// accessToken: data.metadata.accessToken
+						chat: mapDtoToChat(data.result),
+						accessToken: data.metadata.accessToken
 					},
 					error
 				} : {

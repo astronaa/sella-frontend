@@ -20,7 +20,7 @@ interface StoresStreamProps {
 export function StoresStream({ initialData }: StoresStreamProps) {
 	const [page, setPage] = useState(1);
 
-	const { data, isFetching } = storeQueries.useGetForExplore({
+	const { data, isFetching } = storeQueries.useGetAll({
 		page,
 		limit: ITEMS_PER_PAGE,
 		initialData

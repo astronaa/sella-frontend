@@ -5,12 +5,13 @@ import { Chat, ChatMessage } from "./model";
 
 type Schemes = components['schemas'];
 
-export const mapDtoToChat = (obj: Schemes['ChatResponseDto']) => ({
-	id: obj.chatId,
-	buyerId: obj.buyerId,
-	sellerId: obj.sellerId,
+export const mapDtoToChat = (obj: Schemes['ChatDTO']) => ({
+	id: obj.id,
+	buyer: mapDtoToUser(obj.buyer),
 	product: mapDtoToProduct(obj.product),
-	lastMessages: obj.messages.map(mapDtoToChatMessage)
+	// @ts-expect-error expecting openapi changes
+	lastMessage: obj.lastMessage ? mapDtoToChatMessage(obj.lastMessage) : null,
+	unreadMessagesCount: obj.unreadMessagesCount
 }) satisfies Chat
 
 export const mapDtoToChatMessage = (dto: Schemes['MessageDto']) => ({

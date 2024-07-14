@@ -68,7 +68,7 @@ export function useChatSocket({ chatId, accessToken, ...args }: UseChatSocket) {
 
 	const { socketRef } = useSocketIo({
 		accessToken: accessToken ?? undefined,
-		onConnect: (socket) => socket.emit("joinRoom", { chatId }),
+		onConnect: (socket) => socket.emit("listenChats"),
 		onCreated: (socket) => {
 			if (!onNewMessageListenersCount) {
 				socket.on("newMessage", onNewMessage);
@@ -92,9 +92,9 @@ export function useChatSocket({ chatId, accessToken, ...args }: UseChatSocket) {
 	return {
 		sendMessage: useCallback(
 			(content: string) => {
-				socketRef.current?.emit("sendMessage", { content });
+				socketRef.current?.emit("sendMessage", { chatId, content });
 			},
-			[socketRef]
+			[socketRef, chatId]
 		),
 	};
 }

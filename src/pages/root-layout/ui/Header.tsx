@@ -70,7 +70,7 @@ function UserSettingsButton() {
 			loading={isLoading}
 		>
 			<Avatar
-				className='size-[2.625rem] cursor-pointer transition border border-transparent hover:border-accent-100'
+				className='text-[2.625rem] cursor-pointer transition border border-transparent hover:border-accent-100'
 				name={user?.username}
 				src={user?.avatarImage ?? undefined}
 				onClick={() => setOpen(true)}

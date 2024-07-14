@@ -1,26 +1,22 @@
 'use client';
 
-import { HTMLAttributes, useEffect, useState } from "react";
-import { OrderProp } from "~/entities/order";
+import { useEffect } from "react";
 import { Button } from "~/shared/ui/kit/button";
 import { Price } from "~/shared/ui/price";
 import { EscrowCard } from "../Card";
 import { useCreateEscrowAction } from "../../model/create/action";
 import { EscrowError } from "../../model/error";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
-import { useInterval } from "usehooks-ts";
-import { dayJs } from "~/shared/lib/dayjs";
 import { cn } from "~/shared/lib/cn";
+import { FlowCardProps, RetryFn } from "../FlowCard";
+import { Stopwatch } from "../Stopwatch";
+import { OrderProp } from "~/entities/order";
 
-type RetryFn = () => Promise<void>
-
-interface CardProps extends HTMLAttributes<HTMLDivElement>, OrderProp {
+interface CreateCardProps extends Omit<FlowCardProps, 'orderId'>, OrderProp {
 	autoRun?: boolean;
-	onActionFulfilled?: () => void;
-	onActionRejected?: (error: EscrowError, retry: RetryFn) => void;
 }
 
-export function Card({ order, onActionFulfilled, onActionRejected, autoRun = true, ...props }: CardProps) {
+export function CreateCard({ order, onActionFulfilled, onActionRejected, autoRun = true, ...props }: CreateCardProps) {
 	const action = useCreateEscrowAction(order);
 
 	const handleError = useCallbackRef((error: unknown, retryFn: RetryFn) => {
@@ -34,9 +30,9 @@ export function Card({ order, onActionFulfilled, onActionRejected, autoRun = tru
 		const tryExecute = async () => {
 			try {
 				if (action.execute)
-					await action.execute(order.transaction);
+					await action.execute();
 				else if (action.continue)
-					await action.continue(order.transaction);
+					await action.continue();
 
 				onActionFulfilled?.();
 			}
@@ -123,16 +119,5 @@ export function Card({ order, onActionFulfilled, onActionRejected, autoRun = tru
 				{getButtonTextByStatus(action.status)}
 			</Button>
 		</EscrowCard.Root>
-	);
-}
-
-function Stopwatch(props: HTMLAttributes<HTMLSpanElement>) {
-	const [time, setTime] = useState(0);
-	useInterval(() => setTime(t => t + 1), 1000);
-
-	return (
-		<span {...props}>
-			{dayJs(time * 1000).format('mm:ss')}
-		</span>
 	);
 }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { schemaSearch } from "../products/schemas";
+import { schemaSearch as schemaSearchProducts } from "../products/schemas";
 
 export const schemaCreate = z.object({
 	name: z.string().min(3, 'Min length is 3'),
@@ -16,6 +16,14 @@ export const schemaUpdate = schemaCreate.partial();
 
 export type PayloadUpdate = z.infer<typeof schemaUpdate>;
 
-export const schemaGetProducts = schemaSearch;
+export const schemaGetProducts = schemaSearchProducts;
 
 export type PayloadGetProducts = z.infer<typeof schemaGetProducts>;
+
+export const schemaSearch = z.object({
+	query: z.string().optional(),
+	sort: z.enum(["rating", "featured_rating"]).optional(),
+	tagNames: z.array(z.string()).optional()
+})
+
+export type PayloadSearch = z.infer<typeof schemaSearch>

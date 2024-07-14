@@ -39,6 +39,5 @@ export interface Transaction {
 	createdAt: string;
 	tokenAmount: number;
 	block: BlockchainTypes,
-	token: string,
-	holdPeriod?: number
+	token: string
 }

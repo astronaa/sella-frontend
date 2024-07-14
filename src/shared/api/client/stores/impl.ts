@@ -4,7 +4,9 @@ import {
 	schemaCreate,
 	schemaUpdate,
 	schemaGetProducts,
-	PayloadGetProducts
+	PayloadGetProducts,
+	schemaSearch,
+	PayloadSearch
 } from "./schemas";
 
 import {
@@ -22,28 +24,13 @@ import { mapPaginationPayloadToDto } from "../shared/mappers";
 
 export function createStoresClient() {
 	return {
-		async getAll(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+		async getAll(payload: PayloadSearch, pagination: PayloadPagination = { page: 1, limit: 10 }) {
 			const { data, error } = await authFetchClient.GET('/api/stores', {
 				params: {
-					query: mapPaginationPayloadToDto(pagination)
-				},
-			});
-
-			return data ? {
-				data: {
-					items: data.data.map(mapDtoToStore),
-					total: data.total
-				},
-				error
-			} : {
-				data, error
-			}
-		},
-
-		async getForExplore(pagination: PayloadPagination = { page: 1, limit: 10 }) {
-			const { data, error } = await authFetchClient.GET('/api/explore', {
-				params: {
-					query: mapPaginationPayloadToDto(pagination)
+					query: {
+						...mapPaginationPayloadToDto(pagination),
+						...payload
+					}
 				},
 			});
 
@@ -195,6 +182,7 @@ export function createStoresClient() {
 		schemaUpdate,
 		schemaReport,
 		schemaGetProducts,
+		schemaSearch,
 		reportReasons,
 		ANOTHER_REASON_ID
 	}

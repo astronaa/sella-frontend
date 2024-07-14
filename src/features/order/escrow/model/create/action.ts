@@ -1,32 +1,25 @@
-import { paymentMethodsQueries } from "~/entities/payment-methods";
-import { Order, PayloadPaymentToken, isTronBlock } from "~/shared/api/client";
+import { Order, isTronBlock } from "~/shared/api/client";
 import { useCreateEscrowState } from './state';
-import { EscrowError } from '../error';
 import { useCreateEscrowEth } from './eth';
 import { useCreateEscrowTron } from './tron';
 import { useMutation } from "@tanstack/react-query";
-
-type CreateEscrowArgs = PayloadPaymentToken;
+import { usePaymentMethods } from "../payment-methods";
 
 export function useCreateEscrowAction(order: Order) {
 	const { prepare: prepareCreateEscrowEth } = useCreateEscrowEth({ order });
 	const { prepare: prepareCreateEscrowTron } = useCreateEscrowTron(order);
 	const { state, setState, stateRef, reset } = useCreateEscrowState(order.id);
-	const { data: paymentMethods } = paymentMethodsQueries.useGetForProduct(order.product.id);
+	const { 
+		getOrThrow: getPaymentMethodsOrThrow,
+		loading: paymentMethodsLoading
+	} = usePaymentMethods(order);
 
-	const execute = async ({ block, token: tokenName }: CreateEscrowArgs) => {
-		if (!paymentMethods)
+	const execute = async () => {
+		if (!getPaymentMethodsOrThrow)
 			return;
 
-		const prepare = isTronBlock(block) ? prepareCreateEscrowTron : prepareCreateEscrowEth;
-
-		const chain = paymentMethods.find(m => m.value == block);
-		if (!chain)
-			throw new EscrowError('generic', "cannot find corresponding chain for input block type");
-
-		const token = chain.tokens.find(t => t.name == tokenName);
-		if (!token)
-			throw new EscrowError('generic', "cannot find corresponding token for input token type");
+		const { chain, token } = getPaymentMethodsOrThrow();
+		const prepare = isTronBlock(order.transaction.block) ? prepareCreateEscrowTron : prepareCreateEscrowEth;
 
 		if (state.status == 'error') {
 			if (state.approveTransactionId)
@@ -89,7 +82,7 @@ export function useCreateEscrowAction(order: Order) {
 
 	const actionFn = isPending ? undefined : mutateAsync;
 
-	if (!paymentMethods) {
+	if (paymentMethodsLoading) {
 		return {
 			status: 'loading',
 			execute: undefined,

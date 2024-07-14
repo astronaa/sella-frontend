@@ -8,8 +8,8 @@ export interface AvatarProps extends AvatarRootProps, AvatarVariantProps {
 }
 
 export const Avatar = forwardRef<HTMLDivElement, AvatarProps>((props, ref) => {
-	const { size, className, name, src, ...rootProps } = props
-	const { root, fallback, image } = avatar({ size })
+	const { className, name, src, ...rootProps } = props
+	const { root, fallback, image } = avatar()
 
 	return (
 		<ArkAvatar.Root ref={ref} className={root({ className })} {...rootProps}>
@@ -28,21 +28,11 @@ type AvatarVariantProps = VariantProps<typeof avatar>
 const avatar = tv(
 	{
 		base: 'avatar',
-		defaultVariants: { size: 'md' },
 		slots: { 
-			root: 'avatar__root overflow-hidden', 
+			root: 'avatar__root overflow-hidden size-[1em]', 
 			image: 'avatar__image', 
-			fallback: 'avatar__fallback' 
-		},
-		variants: {
-			size: {
-				md: {
-					root: 'avatar__root--size_md',
-					image: 'avatar__image--size_md',
-					fallback: 'avatar__fallback--size_md',
-				},
-			},
-		},
+			fallback: 'avatar__fallback text-[0.55em]' 
+		}
 	},
 	{ twMerge: false },
 )

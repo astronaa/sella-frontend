@@ -591,22 +591,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/explore": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["ExploreController_getExplore"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/orders/{id}": {
         parameters: {
             query?: never;
@@ -894,6 +878,7 @@ export interface components {
             rating: components["schemas"]["RatingDto"];
             ownerUsername: string;
             tagNames: string[];
+            isFeatured: boolean;
         };
         CreateStoreDto: {
             name: string;
@@ -1010,35 +995,44 @@ export interface components {
         ChatAccessResponseDto: {
             accessToken: string;
         };
-        MessageDto: {
+        BaseUserDto: {
+            username: string;
+            /** Format: uuid */
+            profilePictureId: string | null;
+        };
+        BaseProductDto: {
             id: string;
-            chatId: string;
+            name: string;
+            hasPreview: boolean;
+            imageIds: string[];
+        };
+        Message: {
+            id: string;
             senderId: number;
             sender: components["schemas"]["User"];
-            store: components["schemas"]["Store"];
-            content: string;
-            /** Format: date-time */
-            createdAt: string;
+            chatId: string;
+            content: Record<string, never>;
+            isRead: boolean;
+            isSystem: boolean;
+            /** @enum {string} */
+            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED";
+            systemData: Record<string, never>;
             /** Format: date-time */
             readAt: string;
-            fileIds: string[];
-            isSystem: boolean;
-            /** @enum {string|null} */
-            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED" | null;
-            systemData: Record<string, never>;
+            /** Format: date-time */
+            createdAt: string;
         };
-        ChatResponseDto: {
-            chatId: string;
-            buyerId: number;
-            sellerId: number;
+        ChatDTO: {
+            id: string;
+            buyer: components["schemas"]["BaseUserDto"];
             isFrozen: boolean;
-            productName: string;
-            product: components["schemas"]["ProductDto"];
-            messages: components["schemas"]["MessageDto"][];
+            product: components["schemas"]["BaseProductDto"];
+            lastMessage: components["schemas"]["Message"] | null;
+            unreadMessagesCount: number;
         };
         ChatResponseWithMetaDto: {
             metadata: components["schemas"]["ChatAccessResponseDto"];
-            result: components["schemas"]["ChatResponseDto"];
+            result: components["schemas"]["ChatDTO"];
         };
         CommentUserDto: {
             username: string;
@@ -1068,22 +1062,29 @@ export interface components {
             imageId: string;
         };
         GetAllChatsResponseDto: {
-            data: components["schemas"]["ChatResponseDto"][];
+            data: components["schemas"]["ChatDTO"][];
             total: number;
+        };
+        MessageDto: {
+            id: string;
+            chatId: string;
+            senderId: number;
+            sender: components["schemas"]["User"];
+            store: components["schemas"]["Store"];
+            content: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            readAt: string;
+            fileIds: string[];
+            isSystem: boolean;
+            /** @enum {string|null} */
+            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED" | null;
+            systemData: Record<string, never>;
         };
         GetMessagesResponseDto: {
             data: components["schemas"]["MessageDto"][];
             total: number;
-        };
-        GetExploreResponseDto: {
-            data: components["schemas"]["Store"][];
-            total: number;
-        };
-        BaseProductDto: {
-            id: string;
-            name: string;
-            hasPreview: boolean;
-            imageIds: string[];
         };
         SellerDto: {
             username: string;
@@ -1106,11 +1107,11 @@ export interface components {
             tokenAmount: number;
             /** @enum {string} */
             token: "ETH" | "TRX" | "MATIC" | "USDT" | "USDC" | "DAI" | "SELLA";
-            contractEscrowId: Record<string, never>;
+            contractEscrowId: number | null;
             /** @enum {string} */
             blockchain: "ETH" | "SEPOLIA" | "TRX" | "MATIC" | "Nile";
             holdPeriod: number;
-            holdEndingAt: Record<string, never>;
+            holdEndingAt: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -1145,11 +1146,6 @@ export interface components {
         SellingProductsResponseDto: {
             data: components["schemas"]["SellingProductDto"][];
             total: number;
-        };
-        BaseUserDto: {
-            username: string;
-            /** Format: uuid */
-            profilePictureId: string | null;
         };
         SalesInfoDto: {
             id: string;
@@ -1683,6 +1679,7 @@ export interface operations {
                 page: number;
                 pageSize: number;
                 query?: string;
+                sort?: "rating" | "featured_rating";
                 /** @description One of tags */
                 tagName?: string[];
             };
@@ -2271,10 +2268,7 @@ export interface operations {
     };
     ChatController_getAllUnreadChats: {
         parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -2315,7 +2309,7 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["ChatResponseDto"];
+                    "application/json": components["schemas"]["ChatResponseWithMetaDto"];
                 };
             };
             /** @description Invalid chat ID */
@@ -2427,29 +2421,6 @@ export interface operations {
             200: {
                 headers: Record<string, unknown>;
                 content?: never;
-            };
-        };
-    };
-    ExploreController_getExplore: {
-        parameters: {
-            query: {
-                page: number;
-                pageSize: number;
-                /** @description One of tags */
-                tagName?: string[];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns array of stores for explore page */
-            200: {
-                headers: Record<string, unknown>;
-                content: {
-                    "application/json": components["schemas"]["GetExploreResponseDto"];
-                };
             };
         };
     };

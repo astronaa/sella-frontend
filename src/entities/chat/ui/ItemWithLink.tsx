@@ -8,9 +8,7 @@ import { dayJs } from "~/shared/lib/dayjs";
 import { UnreadBadge } from "./UnreadBadge";
 
 export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatProp) {
-	const username = 'Sharon Bruce';
-	const lastMessage = chat.lastMessages.at(-1);
-	const unreadCount = 3;
+	const { lastMessage, unreadMessagesCount } = chat;
 
 	return (
 		<Button
@@ -18,37 +16,39 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 			{...props} asChild
 			className={cn('flex gap-[0.75rem] h-auto items-stretch', className)}
 		>
-			<Link href={`/chats/${chat.product.id}`}>
+			<Link href={`/chats/${chat.id}`}>
 				<ProductImage
 					product={chat.product}
 					className="size-[3.875rem] my-[0.75rem]"
 				/>
 
-				<div className="flex flex-col gap-[0.125rem] min-w-0 max-w-full pt-[0.75rem] h-auto border-b border-secondary">
-					<div className="flex justify-between gap-[0.75rem]">
-						<div className="flex items-center gap-[0.375rem]">
-							<Avatar
-								className='size-[1.25rem]'
-								name={username}
-							/>
+				<div className="flex flex-col gap-[0.125rem] w-full min-w-0 max-w-full pt-[0.75rem] h-auto border-b border-secondary">
+					{lastMessage && (
+						<div className="flex justify-between gap-[0.75rem]">
+							<div className="flex items-center gap-[0.375rem]">
+								<Avatar
+									className='text-[1.25rem]'
+									name={lastMessage.sender.username ?? undefined}
+									src={lastMessage.sender.avatarImage ?? undefined}
+								/>
 
-							<p className="font-semibold text-[0.9375rem] font-manrope leading-[1.2188rem]">
-								{username}
-							</p>
-						</div>
+								<p className="font-semibold text-[0.9375rem] font-manrope leading-[1.2188rem]">
+									{lastMessage.sender.username}
+								</p>
+							</div>
 
-						{lastMessage && (
 							<p className="font-normal text-[0.875rem] font-manrope leading-[1.1375rem] text-black-60">
 								{dayJs(lastMessage.createdAt).calendar(null, {
 									sameDay: 'HH:mm',
 									lastDay: 'ddd',
-									sameElse: 'MM.DD.YYYY'
+									lastWeek: 'ddd',
+									sameElse: 'MM.DD.YYYY',
 								})}
 							</p>
-						)}
-					</div>
+						</div>
+					)}
 
-					<div className="flex gap-[0.75rem] text-black-60">
+					<div className="relative flex gap-[0.75rem] text-black-60">
 						<p
 							className="font-normal text-[0.9375rem] font-manrope leading-[1.2188rem] 
 								line-clamp-2 whitespace-normal text-start"
@@ -56,7 +56,10 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 							{lastMessage?.content}
 						</p>
 
-						<UnreadBadge count={unreadCount} />
+						<UnreadBadge 
+							count={unreadMessagesCount} 
+							className='absolute right-0'
+						/>
 					</div>
 				</div>
 			</Link>

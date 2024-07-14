@@ -70,7 +70,7 @@ export function PageRoot({ children }: PropsWithChildren) {
 							<ChatItemWithLink
 								key={c.id} chat={c}
 								onClick={() => setTab('chat')}
-								active={c && params?.chatId == c.id}
+								active={!!params?.chatId && params.chatId == c.id}
 							/>
 						))
 					))}
