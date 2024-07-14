@@ -3,11 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { chatQueries } from "~/entities/chat";
 import { ChatFrame } from "~/features/chat-frame";
-import { ProductId } from "~/shared/api/client";
+import { ChatId } from "~/shared/api/client";
 
-export function ChatFrameByProduct({ productId }: { productId: ProductId }) {
+export function ChatFrameById({ chatId }: { chatId: ChatId }) {
 	const { data } = useQuery({
-		...chatQueries.getFromProductOptions(productId),
+		...chatQueries.getById(chatId),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false
 	});

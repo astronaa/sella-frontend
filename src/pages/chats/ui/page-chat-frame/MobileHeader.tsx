@@ -3,7 +3,7 @@
 import { IconButton } from "~/shared/ui/kit/button";
 import { useChatPanelTabStrictContext } from "../../model/tabs";
 import { Icons } from "~/shared/ui/icons";
-import { UnreadedBadge } from "../UnreadedBadge";
+import { ChatOverallUnreadBadge } from "~/entities/chat";
 
 export function MobileHeader() {
 	const { setTab } = useChatPanelTabStrictContext();
@@ -16,7 +16,7 @@ export function MobileHeader() {
 				onClick={() => setTab('chats-list')}
 			>
 				<Icons.ChevronLeft />
-				<UnreadedBadge count={3} />
+				<ChatOverallUnreadBadge />
 			</IconButton>
 
 			<span>Sharon Bruce</span>

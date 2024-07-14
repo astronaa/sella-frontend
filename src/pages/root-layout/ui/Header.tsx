@@ -8,6 +8,7 @@ import { useUserProfileSettingsDialog } from "~/widgets/user/profile-settings";
 import { Avatar } from "~/shared/ui/kit/avatar";
 import { useUserGetQuery } from "~/entities/user";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { ChatOverallUnreadBadge } from "~/entities/chat";
 
 export function Header() {
 	const onTop = !useWindowScroll({ defaultValue: true });
@@ -35,8 +36,15 @@ export function Header() {
 					<Icons.Coins /> Quests
 				</NavHeader.NavIconButton> */}
 
-				<NavHeader.NavIconButton href="/chats" activeOnHrefs={["/chats"]}>
+				<NavHeader.NavIconButton 
+					href="/chats" 
+					activeOnHrefs={["/chats"]}
+				>
 					<Icons.Chat /> Chats
+
+					<ChatOverallUnreadBadge
+						className='absolute top-0 right-[0.5625rem] min-w-[1rem] h-[1rem]'
+					/>
 				</NavHeader.NavIconButton>
 
 				<NavHeader.NavIconButton

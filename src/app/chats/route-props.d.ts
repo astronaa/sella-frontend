@@ -1,3 +1,3 @@
 export interface RouteProps {
-	params: { productId: string }
+	params: { chatId: string }
 }

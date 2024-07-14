@@ -510,6 +510,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/chats/{chatId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ChatController_getChatInfo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/chats/{chatId}/messages": {
         parameters: {
             query?: never;
@@ -1017,8 +1033,8 @@ export interface components {
             sellerId: number;
             isFrozen: boolean;
             productName: string;
-            product?: components["schemas"]["ProductDto"];
-            messages?: components["schemas"]["MessageDto"][];
+            product: components["schemas"]["ProductDto"];
+            messages: components["schemas"]["MessageDto"][];
         };
         ChatResponseWithMetaDto: {
             metadata: components["schemas"]["ChatAccessResponseDto"];
@@ -2273,6 +2289,36 @@ export interface operations {
                 };
             };
             /** @description Chats not allowed */
+            400: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+            /** @description User is not authorized */
+            403: {
+                headers: Record<string, unknown>;
+                content?: never;
+            };
+        };
+    };
+    ChatController_getChatInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chatId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns chat info */
+            200: {
+                headers: Record<string, unknown>;
+                content: {
+                    "application/json": components["schemas"]["ChatResponseDto"];
+                };
+            };
+            /** @description Invalid chat ID */
             400: {
                 headers: Record<string, unknown>;
                 content?: never;

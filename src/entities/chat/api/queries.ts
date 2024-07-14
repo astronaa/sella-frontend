@@ -1,6 +1,21 @@
 import { ChatId, OrderId, ProductId, apiClient } from "~/shared/api/client";
 import { infiniteQueryOptions, queryOptions, skipToken } from "@tanstack/react-query";
 
+export const getById = (chatId: ChatId) =>
+	queryOptions({
+		queryKey: ['chat', { chatId }],
+		queryFn: async () => {
+			const { data, error } = await apiClient.chats
+				.for(chatId)
+				.get();
+
+			if (error)
+				throw error;
+
+			return data;
+		}
+	})
+
 export const getFromProductOptions = (productId: ProductId) =>
 	queryOptions({
 		queryKey: ['chat', { productId }],

@@ -63,6 +63,23 @@ export function createChatsClient() {
 		}),
 
 		for: (chatId: ChatId) => ({
+			async get() {
+				const { data, error } = await authFetchClient.GET('/api/chats/{chatId}', {
+					params: { path: { chatId } }
+				});
+
+				return data ? {
+					data: {
+						chat: mapDtoToChat(data),
+						accessToken: null
+						// chat: mapDtoToChat(data.result),
+						// accessToken: data.metadata.accessToken
+					},
+					error
+				} : {
+					data, error
+				}
+			},
 			async getMessages(pagination: PayloadPagination = { page: 1, limit: 10 }) {
 				const { data, error } = await authFetchClient.GET('/api/chats/{chatId}/messages', {
 					params: {

@@ -1,10 +1,7 @@
-import { ProductCard, ProductProp } from "~/entities/product";
+import { ProductCard } from "~/entities/product";
 import { cn } from "~/shared/lib/cn";
 
-export function ChatProductCard({
-	className,
-	...props
-}: ProductCard.RootProps & ProductProp) {
+export function ChatProductCard({ className, ...props }: ProductCard.RootProps) {
 	return (
 		<ProductCard.Root
 			{...props}
