@@ -39,7 +39,11 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 
 						{lastMessage && (
 							<p className="font-normal text-[0.875rem] font-manrope leading-[1.1375rem] text-black-60">
-								{dayJs(lastMessage.createdAt).format("HH:mm")}
+								{dayJs(lastMessage.createdAt).calendar(null, {
+									sameDay: 'HH:mm',
+									lastDay: 'ddd',
+									sameElse: 'MM.DD.YYYY'
+								})}
 							</p>
 						)}
 					</div>

@@ -4,7 +4,6 @@ import { Dialog } from '~/shared/ui/kit';
 import { useId, useState } from 'react';
 import { Button } from '~/shared/ui/kit/button';
 import { SettingsForm } from './SettingsForm';
-import { useAccount } from 'wagmi';
 import { Portal } from '@ark-ui/react';
 import { useSettingsDialog } from '../model/dialog';
 
@@ -14,7 +13,6 @@ type ProfileDialogProps = Dialog.RootProps & {
 
 export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProps) {
 	const formId = useId();
-	const { address } = useAccount();
 	const { open, setOpen } = useSettingsDialog();
 	const [loading, setLoading] = useState(false);
 
@@ -27,7 +25,7 @@ export function ProfileDialog({ onActionFulfilled, ...props }: ProfileDialogProp
 
 	return (
 		<Dialog.Root
-			{...props} open={open && !!address}
+			{...props} open={open}
 			onOpenChange={({ open }) => setOpen(open)}
 			unmountOnExit lazyMount
 		>
