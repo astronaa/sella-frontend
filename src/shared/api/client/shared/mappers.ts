@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "~/shared/config/api-base-url";
-import { PayloadPagination } from "./schemas";
+import { PayloadCursorPagination, PayloadPagination } from "./schemas";
 import { components } from "../../openapi";
 import { PaymentMethod, Rating, Transaction } from "./models";
 
@@ -14,6 +14,11 @@ export const mapMediaUrlToId = (mediaUrl: string) =>
 export const mapPaginationPayloadToDto = (obj: PayloadPagination) => ({
 	page: obj.page,
 	pageSize: obj.limit
+});
+
+export const mapCursorPaginationPayloadToDto = (obj: PayloadCursorPagination) => ({
+	offset: obj.offset,
+	limit: obj.limit
 });
 
 export const mapDtoToPaymentMethod = (obj: Schemas['PaymentMethod']): PaymentMethod => (

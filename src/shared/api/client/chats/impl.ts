@@ -2,8 +2,8 @@ import { ProductId } from "../products/model";
 import { authFetchClient } from "../fetch-client";
 import { mapDtoToChat, mapDtoToChatMessage } from "./mappers";
 import { ChatId } from "./model";
-import { PayloadPagination } from "../shared/schemas";
-import { mapPaginationPayloadToDto } from "../shared/mappers";
+import { PayloadCursorPagination, PayloadPagination } from "../shared/schemas";
+import { mapCursorPaginationPayloadToDto, mapPaginationPayloadToDto } from "../shared/mappers";
 import { OrderId } from "../orders/model";
 
 export function createChatsClient() {
@@ -78,18 +78,20 @@ export function createChatsClient() {
 					data, error
 				}
 			},
-			async getMessages(pagination: PayloadPagination = { page: 1, limit: 10 }) {
+			async getMessages(pagination: PayloadCursorPagination = { limit: 10 }) {
 				const { data, error } = await authFetchClient.GET('/api/chats/{chatId}/messages', {
 					params: {
 						path: { chatId },
-						query: mapPaginationPayloadToDto(pagination)
+						// @ts-expect-error expecting openapi changes
+						query: mapCursorPaginationPayloadToDto(pagination)
 					}
 				});
 
 				return data ? {
 					data: {
 						items: data.data.map(mapDtoToChatMessage),
-						total: data.total,
+						hasNextPage: data.hasNextPage,
+						hasPreviousPage: data.hasPreviousPage
 					}
 				} : {
 					data, error

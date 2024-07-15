@@ -11,7 +11,7 @@ export interface Chat {
 	unreadMessagesCount: number
 }
 
-export type ChatMessageId = string;
+export type ChatMessageId = number;
 
 export interface ChatMessage {
 	id: ChatMessageId,

@@ -17,6 +17,12 @@ export const schemaPaginationPayload = z.object({
 
 export type PayloadPagination = z.infer<typeof schemaPaginationPayload>;
 
+export const schemaCursorPaginationPayload = z.object({
+	offset: z.coerce.number().optional(),
+	limit: z.coerce.number()
+})
+
+export type PayloadCursorPagination = z.infer<typeof schemaCursorPaginationPayload>;
 
 export const schemaPaymentMethods = z.enum(blockchainTypes)
 

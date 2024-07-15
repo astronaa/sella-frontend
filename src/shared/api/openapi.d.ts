@@ -1007,7 +1007,7 @@ export interface components {
             imageIds: string[];
         };
         Message: {
-            id: string;
+            id: number;
             senderId: number;
             sender: components["schemas"]["User"];
             chatId: string;
@@ -1015,7 +1015,7 @@ export interface components {
             isRead: boolean;
             isSystem: boolean;
             /** @enum {string} */
-            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED";
+            systemType: "NEW_CHAT" | "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED";
             systemData: Record<string, never>;
             /** Format: date-time */
             readAt: string;
@@ -1066,7 +1066,7 @@ export interface components {
             total: number;
         };
         MessageDto: {
-            id: string;
+            id: number;
             chatId: string;
             senderId: number;
             sender: components["schemas"]["User"];
@@ -1079,12 +1079,13 @@ export interface components {
             fileIds: string[];
             isSystem: boolean;
             /** @enum {string|null} */
-            systemType: "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED" | null;
+            systemType: "NEW_CHAT" | "DISPUTE_RESOLVED" | "DISPUTE_STARTED" | "TRANSACTION_COMPLETED" | "TRANSACTION_FAILED" | "TRANSACTION_PENDING" | "FUNDS_DEPOSITED" | "FUNDS_RELEASED" | "FUNDS_CLAIMED" | "FUNDS_REFUNDED" | null;
             systemData: Record<string, never>;
         };
         GetMessagesResponseDto: {
             data: components["schemas"]["MessageDto"][];
-            total: number;
+            hasNextPage: boolean;
+            hasPreviousPage: boolean;
         };
         SellerDto: {
             username: string;
@@ -2327,8 +2328,8 @@ export interface operations {
     ChatController_getMessages: {
         parameters: {
             query: {
-                page: number;
-                pageSize: number;
+                offset: number;
+                limit: number;
             };
             header?: never;
             path: {

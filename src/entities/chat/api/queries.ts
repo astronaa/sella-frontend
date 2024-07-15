@@ -1,5 +1,6 @@
 import { ChatId, OrderId, ProductId, apiClient } from "~/shared/api/client";
 import { infiniteQueryOptions, queryOptions, skipToken } from "@tanstack/react-query";
+import { produce } from "immer";
 
 export const getByIdOptions = (chatId: ChatId) =>
 	queryOptions({
@@ -48,13 +49,11 @@ export const getFromOrderOptions = (orderId: OrderId) =>
 
 interface GetChatMessagesOptions {
 	chatId: ChatId | null,
-	initialPage?: number,
 	limit?: number
 }
 
 export const getChatMessagesOptions = ({
 	chatId,
-	initialPage = 1,
 	limit = 10
 }: GetChatMessagesOptions) =>
 	infiniteQueryOptions({
@@ -63,16 +62,16 @@ export const getChatMessagesOptions = ({
 		queryFn: chatId ? (async ({ pageParam }) => {
 			const { data, error } = await apiClient.chats
 				.for(chatId)
-				.getMessages({ limit, page: pageParam })
+				.getMessages({ limit, offset: pageParam })
 
 			if (error)
 				throw error;
 
-			return data;
+			return produce(data, draft => { draft.items.reverse() });
 		}) : skipToken,
-		initialPageParam: initialPage,
-		getNextPageParam: (lastPage, pages, lastPageParam) =>
-			(lastPageParam * limit < lastPage.total) ? (lastPageParam + 1) : null,
+		initialPageParam: -1,
+		getNextPageParam: (lastPage) =>
+			lastPage.hasNextPage ? lastPage.items?.[0].id : undefined,
 		staleTime: Infinity,
 		select: (data) => ({
 			pages: [...data.pages].reverse(),
