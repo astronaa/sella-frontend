@@ -39,6 +39,7 @@ export function Box({ category, active, className, truncateName, autoScrollOnAct
 				className='size-[5rem] border-none bg-transparent'
 				alt={`Category ${category.name} image`}
 				width={300} height={300}
+				priority={true}
 			/>
 
 			<span className={cn(truncateName && 'truncate max-w-full')}>

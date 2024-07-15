@@ -13,7 +13,7 @@ export function Root({ name, id, onValueChange, ...props }: ToggleGroup.RootProp
 				value={value}
 				onValueChange={(v) => {
 					onValueChange?.(v)
-					onChange(v.value)
+					onChange(props?.multiple ? v.value : v.value[0])
 				}}
 				{...props}
 			/>

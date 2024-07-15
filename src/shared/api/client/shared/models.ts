@@ -13,6 +13,9 @@ export type BlockchainTypes = typeof blockchainTypes[number];
 export const isTronBlock = (block: BlockchainTypes) =>
 	block == 'TRX' || block == 'Nile';
 
+export const isCompletedTransactionStatus = (status: TransactionStatus) =>
+	status == 'Claimed' || status == 'Released' || status == 'Resolved' || status == 'Refunded';
+
 export interface PaymentMethod {
 	name: string;
 	value: BlockchainTypes;

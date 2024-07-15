@@ -8,6 +8,7 @@ import { useWatchAccount } from "~/shared/lib/wagmi";
 import { useTronWalletConnectDialog } from "~/features/tron-wallet";
 import { useRef } from "react";
 import { useWatchTronAdapter } from "~/shared/lib/tronweb";
+import { useRouter } from "next/navigation";
 
 interface Props {
 	orderId: OrderId,
@@ -18,6 +19,7 @@ export function OrderFlowCard({ orderId }: Props) {
 	const openEthWalletDialog = useRegisterFlow(s => s.startFlow);
 	const openTronWalletDialog = useTronWalletConnectDialog(s => s.setOpen);
 
+	const router = useRouter();
 	const tronRetryRef = useRef<(() => void) | null>(null);
 
 	useWatchTronAdapter({
@@ -31,6 +33,7 @@ export function OrderFlowCard({ orderId }: Props) {
 		<OrderEscrowFlowCard
 			className='w-full'
 			orderId={orderId}
+			onActionFulfilled={() => router.push('review')}
 			onActionRejected={(error, retry) => {
 				switch (error.cause) {
 					case "eth-not-found":

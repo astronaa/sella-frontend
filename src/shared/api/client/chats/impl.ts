@@ -101,6 +101,11 @@ export function createChatsClient() {
 				} : {
 					data, error
 				}
+			},
+			async read() {
+				return await authFetchClient.POST('/api/chats/{chatId}/messages/read', {
+					params: { path: { chatId } }
+				})
 			}
 		})
 	}

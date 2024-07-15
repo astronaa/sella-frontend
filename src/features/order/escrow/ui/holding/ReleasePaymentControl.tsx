@@ -6,11 +6,14 @@ import { useReleaseEscrowAction } from "../../model/release/action";
 import { ActionCallbacks, RetryFn } from "../FlowCard";
 import { EscrowError } from "../../model/error";
 import { Stopwatch } from "../Stopwatch";
+import { useInterval } from "usehooks-ts";
 
-interface ReleasePaymentControlProps extends ButtonProps, OrderProp, ActionCallbacks { };
+interface ReleasePaymentControlProps extends ButtonProps, OrderProp, ActionCallbacks {
+	onRequestRefetch?: () => void
+};
 
 export function ReleasePaymentControl({
-	order, onActionFulfilled, onActionRejected, ...props
+	order, onActionFulfilled, onActionRejected, onRequestRefetch, ...props
 }: ReleasePaymentControlProps) {
 	const action = useReleaseEscrowAction(order);
 
@@ -38,6 +41,11 @@ export function ReleasePaymentControl({
 		tryExecute();
 	}
 
+	useInterval(
+		() => onRequestRefetch?.(),
+		action.status == 'done' ? 1000 : null
+	);
+
 	return (
 		<div className='flex flex-col gap-[1rem] w-full'>
 			{action.status == 'error' && (
@@ -56,7 +64,7 @@ export function ReleasePaymentControl({
 				{...props} onClick={onButtonClick}
 				disabled={(action.status != 'idle' && action.status != 'error') || !!props?.disabled}
 			>
-				{action.status == 'submitting' ? (
+				{action.status == 'submitting' || action.status == 'done' ? (
 					<>
 						Releasing <Stopwatch />
 					</>

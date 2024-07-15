@@ -1,15 +1,16 @@
-import { ChatMessage } from "~/shared/api/client";
+import { ChatId, ChatMessage } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
-import { getChatMessagesOptions, getChatsOptions } from "./queries";
+import { getByIdOptions, getChatMessagesOptions, getChatsOptions } from "./queries";
 import { produce } from "immer";
 import { useChatSocket } from "./socket";
+import { InferQueryOptionsFnData } from "~/shared/lib/utility-types";
 
 export const onNewMessage = (message: ChatMessage) => {
 	const queryOptions = getChatMessagesOptions({
 		chatId: message.chatId,
 	});
 
-	queryClient.setQueriesData<Parameters<NonNullable<typeof queryOptions.select>>[0]>(
+	queryClient.setQueriesData<InferQueryOptionsFnData<typeof queryOptions>>(
 		{ queryKey: queryOptions.queryKey },
 		(data) => {
 			if (!data) return;
@@ -22,7 +23,7 @@ export const onNewMessage = (message: ChatMessage) => {
 
 	const chatsListQueryOptions = getChatsOptions();
 
-	queryClient.setQueriesData<Parameters<NonNullable<typeof chatsListQueryOptions.select>>[0]>(
+	queryClient.setQueriesData<InferQueryOptionsFnData<typeof chatsListQueryOptions>>(
 		{ queryKey: chatsListQueryOptions.queryKey },
 		(data) => {
 			if (!data) return;
@@ -44,6 +45,21 @@ export const onNewMessage = (message: ChatMessage) => {
 		}
 	);
 };
+
+export function onChatFreeze(chatId: ChatId) {
+	const queryOptions = getByIdOptions(chatId);
+
+	queryClient.setQueriesData<InferQueryOptionsFnData<typeof queryOptions>>(
+		{ queryKey: queryOptions.queryKey },
+		(data) => {
+			if (!data) return;
+
+			return produce(data, draft => {
+				draft.isFrozen = true;
+			})
+		}
+	);
+}
 
 export function useGlobalListener() {
 	return useChatSocket({ onNewMessage })

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { HTMLAttributes, UIEventHandler, useRef } from "react";
+import React, { HTMLAttributes, UIEventHandler, useEffect, useRef } from "react";
 import { cn } from "~/shared/lib/cn";
 import { Input } from "~/shared/ui/kit/input";
 import { ChatMessagesStream } from "./MessagesStream";
@@ -10,8 +10,8 @@ import { z } from "zod";
 import { VSubmitButton } from "~/shared/ui/validation-inputs";
 import { FormApi } from "final-form";
 import { ChatProductCard } from "./ChatProductCard";
-import { Chat, productMock } from "~/shared/api/client";
-import { useChatSocket } from "~/entities/chat";
+import { Chat, ChatId, apiClient, productMock } from "~/shared/api/client";
+import { chatQueries, useChatSocket } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 const schema = z.object({
@@ -30,6 +30,8 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 	const autoscrollEnabledRef = useRef(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
+	useReadMessagesOnMount(chat?.id);
+
 	const tryScrollToBottom = () => {
 		const container = containerRef.current;
 		if (!container)
@@ -41,15 +43,17 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 		});
 	}
 
-	const { sendMessage } = useChatSocket({
+	const { sendMessage, readMessage } = useChatSocket({
 		chatId: chat?.id ?? null,
-		onNewMessage: () => {
+		onNewMessage: message => {
 			setTimeout(() => {
 				if (!autoscrollEnabledRef.current)
 					return;
 
 				tryScrollToBottom();
 			}, 100);
+
+			readMessage(message.id);
 		}
 	})
 
@@ -64,6 +68,8 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 		tryScrollToBottom();
 	}
 
+	const disabled = !!chat?.isFrozen;
+
 	return (
 		<div
 			{...props}
@@ -73,7 +79,7 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 				className
 			)}
 		>
-			<Skeleton 
+			<Skeleton
 				asChild loading={!chat?.product}
 			>
 				<ChatProductCard
@@ -96,7 +102,11 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 					onScroll={onMessagesStreamScroll}
 				/>
 
-				<Form validate={validator} onSubmit={onSubmit} subscription={{}}>
+				<Form 
+					validate={validator} 
+					onSubmit={onSubmit} 
+					subscription={{}}
+				>
 					{({ handleSubmit }) => (
 						<form
 							className={cn(
@@ -108,14 +118,19 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 							<Field name="message">
 								{(props) => (
 									<Input
+										key={String(disabled)}
 										className="w-full min-h-full rounded-[1.25rem] border border-secondary"
 										placeholder="Your Message"
+										autoComplete="off" disabled={disabled}
 										{...props.input}
 									/>
 								)}
 							</Field>
 
-							<VSubmitButton className="rounded-[1.25rem] px-[1.5rem]">
+							<VSubmitButton 
+								disabled={disabled}
+								className="rounded-[1.25rem] px-[1.5rem]"
+							>
 								Send
 							</VSubmitButton>
 						</form>
@@ -124,4 +139,17 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 			</div>
 		</div>
 	);
+}
+
+function useReadMessagesOnMount(chatId: ChatId | undefined) {
+	useEffect(() => {
+		if (!chatId)
+			return;
+
+		const read = async () => {
+			await apiClient.chats.for(chatId).read();
+			chatQueries.invalidateOverallReadCount();
+		}
+		read();
+	}, [chatId])
 }

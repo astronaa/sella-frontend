@@ -3,11 +3,11 @@
 import { OrderProp } from "~/entities/order";
 import { Price } from "~/shared/ui/price";
 import { EscrowCard } from "../Card";
-import { FlowCardProps } from "../FlowCard";
+import { ActionCallbacks } from "../FlowCard";
 import { AutomaticEscrowTimer } from "./AutomaticEscrowTimer";
 import { ClaimPaymentButton } from "./ClaimPaymentButton";
 
-interface SellerHoldCardProps extends Omit<FlowCardProps, 'orderId'>, OrderProp { }
+interface SellerHoldCardProps extends ActionCallbacks, OrderProp, EscrowCard.RootProps { }
 
 export function SellerHoldCard({ order, ...props }: SellerHoldCardProps) {
 	const { holdEndingAt } = order.transaction;

@@ -43,6 +43,19 @@ export function useGetById(orderId: OrderId) {
 	return useQuery(getByIdOptions(orderId))
 }
 
+export const getReviewOptions = (orderId: OrderId) =>
+	queryOptions({
+		queryKey: [`${QUERY_KEY}-review`, orderId],
+		queryFn: async () => {
+			const { data, error } = await apiClient.orders.for(orderId).getReview();
+
+			if (error)
+				throw error;
+
+			return data;
+		}
+	})
+
 export function invalidateAll() {
 	return queryClient.invalidateQueries({
 		predicate: q => q.queryKey.includes(QUERY_KEY)

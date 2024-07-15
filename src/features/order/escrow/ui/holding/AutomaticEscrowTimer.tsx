@@ -15,7 +15,7 @@ export function AutomaticEscrowTimer({ holdEndingAt, className, ...props }: Auto
 	const [timerString, setTimerString] = useState(formatTimer());
 
 	function formatTimer() {
-		const duration = dayJs.duration(holdEndingDate.diff());
+		const duration = dayJs.duration(Math.max(holdEndingDate.diff(), 0));
 		const days = duration.asDays() | 0;
 		const daysFormat = days ? `${days} ${days > 1 ? 'days' : 'day'}` : '';
 		const restFormat = duration.format('HH:mm:ss');

@@ -3,14 +3,16 @@
 import { OrderProp } from "~/entities/order";
 import { Price } from "~/shared/ui/price";
 import { EscrowCard } from "../Card";
-import { FlowCardProps } from "../FlowCard";
+import { ActionCallbacks } from "../FlowCard";
 import { AutomaticEscrowTimer } from "./AutomaticEscrowTimer";
 import { ReleasePaymentControl } from "./ReleasePaymentControl";
 
-interface BuyerHoldCardProps extends Omit<FlowCardProps, 'orderId'>, OrderProp { }
+interface BuyerHoldCardProps extends ActionCallbacks, OrderProp, EscrowCard.RootProps {
+	onRequestRefetch?: () => void
+}
 
-export function BuyerHoldCard({ 
-	order, onActionFulfilled, onActionRejected, ...props 
+export function BuyerHoldCard({
+	order, onActionFulfilled, onActionRejected, onRequestRefetch, ...props
 }: BuyerHoldCardProps) {
 	const { holdEndingAt } = order.transaction;
 	const holdHours = order.transaction.holdPeriod * 24;
@@ -41,6 +43,7 @@ export function BuyerHoldCard({
 				order={order}
 				onActionFulfilled={onActionFulfilled}
 				onActionRejected={onActionRejected}
+				onRequestRefetch={onRequestRefetch}
 			/>
 
 			{/* <Button variant='subtle' colorPalette='red' size='xl'>

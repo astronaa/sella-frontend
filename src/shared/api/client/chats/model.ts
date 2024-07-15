@@ -8,7 +8,8 @@ export interface Chat {
 	buyer: User,
 	product: Product,
 	lastMessage: ChatMessage | null,
-	unreadMessagesCount: number
+	unreadMessagesCount: number,
+	isFrozen: boolean
 }
 
 export type ChatMessageId = number;

@@ -1,44 +1,70 @@
-import { HTMLAttributes } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { HTMLAttributes, useMemo } from "react";
 import { Form } from "react-final-form";
 import { z } from "zod";
-import { OrderProp } from "~/entities/order";
+import { ordersQueries } from "~/entities/order";
+import { OrderId, apiClient } from "~/shared/api/client";
 import { cn } from "~/shared/lib/cn";
 import { zodValidate } from "~/shared/lib/zod-final-form";
 import { Icons } from "~/shared/ui/icons";
 import { Button } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
-import { VTextAreaControl, VToggleGroup } from "~/shared/ui/validation-inputs";
+import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { VSubmitButton, VTextAreaControl, VToggleGroup } from "~/shared/ui/validation-inputs";
 
-type CardProps = HTMLAttributes<HTMLDivElement> & OrderProp & {
+type CardProps = HTMLAttributes<HTMLDivElement> & {
+	orderId: OrderId
 	onActionFulfilled?: (values: SchemaType) => void;
 };
 
-const schema = z.object({
-	text: z.string().min(3, 'Min length is 3'),
-	rating: z.array(
-		z.enum(['positive', 'negative']),
-		{ required_error: 'Rate the product' }
-	).transform(v => v[0])
-});
+const schema = apiClient.orders.schemaCreateReview
 
 type SchemaType = z.infer<typeof schema>
 
-export function Card({ className, onActionFulfilled, ...props }: CardProps) {
-	const onSubmit = (values: SchemaType) => {
-		onActionFulfilled?.(values);
+const validate = zodValidate(schema);
+
+export function Card({ className, onActionFulfilled, orderId, ...props }: CardProps) {
+	const { data: review, isLoading } = useQuery({
+		...ordersQueries.getReviewOptions(orderId),
+		staleTime: Infinity,
+		retry: false,
+		refetchOnWindowFocus: false
+	})
+
+	const onSubmit = async (values: SchemaType) => {
+		const { error } = await apiClient.orders.for(orderId).createReview(values);
+		if (!error)
+			onActionFulfilled?.(values);
 	}
 
-	return (
-		<div {...props} className={cn('flex flex-col p-[1rem] gap-[1rem] rounded-[1.25rem] border border-secondary', className)}>
-			<Heading size='xs'>Leave your review</Heading>
+	const initialValues = useMemo(() => ({
+		content: review?.content,
+		rating: review?.rating
+	}), [review?.content, review?.rating])
 
-			<Form onSubmit={onSubmit} validate={zodValidate(schema)}>
+	const disabled = !!review;
+
+	return (
+		<Skeleton
+			{...props}
+			loading={isLoading}
+			className={cn('flex flex-col p-[1rem] gap-[1rem] rounded-[1.25rem] border border-secondary', className)}
+		>
+			<Heading size='xs'>
+				{disabled ? `Your review` : `Leave your review`}
+			</Heading>
+
+			<Form
+				initialValues={initialValues}
+				onSubmit={onSubmit} validate={validate}
+			>
 				{({ handleSubmit }) => (
 					<form
 						onSubmit={handleSubmit}
 						className='flex flex-col w-full gap-[1rem]'
 					>
 						<VToggleGroup.Root
+							disabled={disabled}
 							variant='unstyled' name='rating'
 							className='flex-col'
 						>
@@ -56,7 +82,7 @@ export function Card({ className, onActionFulfilled, ...props }: CardProps) {
 										variant='subtle' colorPalette='red'
 										className='w-full'
 									>
-										<Icons.ThumbDown />Negavite
+										<Icons.ThumbDown /> Negavite
 									</Button>
 								</VToggleGroup.Item>
 							</div>
@@ -64,18 +90,24 @@ export function Card({ className, onActionFulfilled, ...props }: CardProps) {
 							<VToggleGroup.ErrorText />
 						</VToggleGroup.Root>
 
-						<VTextAreaControl.Root name='text'>
+						<VTextAreaControl.Root name='content'>
 							<VTextAreaControl.Label>Your Review</VTextAreaControl.Label>
-							<VTextAreaControl.Input placeholder='Keep it short and sweet' />
+							<VTextAreaControl.Input
+								className='min-h-[6rem]'
+								placeholder='Keep it short and sweet'
+								disabled={disabled}
+							/>
 							<VTextAreaControl.ErrorText />
 						</VTextAreaControl.Root>
 
-						<Button size='xl'>
-							Leave a review
-						</Button>
+						{!disabled && (
+							<VSubmitButton size='xl'>
+								Leave a review
+							</VSubmitButton>
+						)}
 					</form>
 				)}
 			</Form>
-		</div>
+		</Skeleton>
 	);
 }

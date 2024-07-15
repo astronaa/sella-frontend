@@ -1044,7 +1044,7 @@ export interface components {
             id: string;
             text: string;
             isPositive: boolean;
-            user?: components["schemas"]["CommentUserDto"];
+            user: components["schemas"]["CommentUserDto"];
             /** Format: date-time */
             createdAt: string;
         };

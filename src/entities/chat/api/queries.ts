@@ -1,6 +1,7 @@
 import { ChatId, OrderId, ProductId, apiClient } from "~/shared/api/client";
 import { infiniteQueryOptions, queryOptions, skipToken, useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
+import { queryClient } from "~/shared/config/query-client";
 
 export const getByIdOptions = (chatId: ChatId) =>
 	queryOptions({
@@ -59,6 +60,10 @@ export const getChatsInfoOptions = queryOptions({
 		return data;
 	}
 })
+
+export function invalidateOverallReadCount() {
+	queryClient.invalidateQueries(getChatsInfoOptions);
+}
 
 export function useGetChatsInfo() {
 	return useQuery(getChatsInfoOptions);

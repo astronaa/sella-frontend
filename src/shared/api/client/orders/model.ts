@@ -17,3 +17,17 @@ export interface Order {
 	};
 	seller: User,
 }
+
+export type OrderReviewId = string;
+
+export const orderReviewRatingTypes = ['positive', 'negative'] as const;
+
+export type OrderReviewType = typeof orderReviewRatingTypes[number];
+
+export interface OrderReview {
+	id: OrderReviewId,
+	content: string,
+	rating: OrderReviewType,
+	createdAt: string
+	user: User,
+}

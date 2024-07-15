@@ -1,9 +1,15 @@
+import { 
+	PayloadCreate, 
+	PayloadCreateReview, 
+	schemaCreate, 
+	schemaCreateReview 
+} from "./schemas";
+
 import { authFetchClient } from "../fetch-client";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
 import { PayloadPagination } from "../shared/schemas";
-import { mapDtoToOrder } from "./mappers";
+import { mapDtoToOrder, mapDtoToOrderReview } from "./mappers";
 import { OrderId } from "./model";
-import { PayloadCreate, schemaCreate } from "./schemas";
 
 export function createOrdersClient() {
 	return {
@@ -53,9 +59,30 @@ export function createOrdersClient() {
 				} : {
 					data, error
 				}
+			},
+			async getReview() {
+				const { data, error } = await authFetchClient.GET('/api/orders/{orderId}/review', {
+					params: { path: { orderId } }
+				});
+
+				return data ? {
+					data: mapDtoToOrderReview(data), error
+				} : {
+					data, error
+				}
+			},
+			async createReview(payload: PayloadCreateReview) {
+				return await authFetchClient.POST('/api/orders/{orderId}/review', {
+					params: { path: { orderId } },
+					body: {
+						text: payload.content,
+						isPositive: payload.rating == 'positive'
+					}
+				});
 			}
 		}),
 
-		schemaCreate
+		schemaCreate,
+		schemaCreateReview
 	}
 }

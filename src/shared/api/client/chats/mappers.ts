@@ -11,7 +11,8 @@ export const mapDtoToChat = (obj: Schemes['ChatDTO']) => ({
 	product: mapDtoToProduct(obj.product),
 	// @ts-expect-error expecting openapi changes
 	lastMessage: obj.lastMessage ? mapDtoToChatMessage(obj.lastMessage) : null,
-	unreadMessagesCount: obj.unreadMessagesCount
+	unreadMessagesCount: obj.unreadMessagesCount,
+	isFrozen: obj.isFrozen
 }) satisfies Chat
 
 export const mapDtoToChatMessage = (dto: Schemes['MessageDto']): ChatMessage => ({

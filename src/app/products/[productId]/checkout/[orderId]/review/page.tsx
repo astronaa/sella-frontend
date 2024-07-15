@@ -1,15 +1,13 @@
-import { PageProductProcessOrder } from "~/pages/product-checkout";
+import { PageProductLeaveReviewForOrder } from "~/pages/product-checkout";
 import { PageProps as ParentPageProps } from "../page"
 
-export type PageProps = ParentPageProps & {
-	params: { orderId: string },
-}
+type PageProps = ParentPageProps;
 
 export default function Page({ params, searchParams }: PageProps) {
 	const { tab } = searchParams;
 
 	return (
-		<PageProductProcessOrder
+		<PageProductLeaveReviewForOrder
 			{...params}
 			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : undefined}
 		/>

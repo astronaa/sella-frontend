@@ -1,16 +1,16 @@
 import { PageLayout, PossibleTabs } from "../PageLayout";
-import { OrderFlowCard } from "./OrderFlowCard";
+import { LeaveReviewFlowCard } from "./LeaveReviewFlowCard";
 import { OrderId, ProductId } from "~/shared/api/client";
 import { fetchProduct } from "../../api/product";
 import { ChatFrameByOrder } from "../ChatFrameByOrder";
 
-interface PageProcessOrderProps {
+interface PageLeaveReviewForOrderProps {
 	productId: ProductId,
 	orderId: OrderId,
 	initialTab?: PossibleTabs,
 }
 
-export async function PageProcessOrder({ orderId, productId, initialTab = 'chat' }: PageProcessOrderProps) {
+export async function PageLeaveReviewForOrder({ orderId, productId, initialTab = 'chat' }: PageLeaveReviewForOrderProps) {
 	const product = await fetchProduct(productId);
  
 	return (
@@ -21,7 +21,7 @@ export async function PageProcessOrder({ orderId, productId, initialTab = 'chat'
 			<ChatFrameByOrder
 				orderId={orderId}
 			/>
-			<OrderFlowCard 
+			<LeaveReviewFlowCard 
 				orderId={orderId} 
 			/>
 		</PageLayout>

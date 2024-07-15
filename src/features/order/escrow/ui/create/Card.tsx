@@ -8,11 +8,11 @@ import { useCreateEscrowAction } from "../../model/create/action";
 import { EscrowError } from "../../model/error";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
 import { cn } from "~/shared/lib/cn";
-import { FlowCardProps, RetryFn } from "../FlowCard";
+import { ActionCallbacks, RetryFn } from "../FlowCard";
 import { Stopwatch } from "../Stopwatch";
 import { OrderProp } from "~/entities/order";
 
-interface CreateCardProps extends Omit<FlowCardProps, 'orderId'>, OrderProp {
+interface CreateCardProps extends ActionCallbacks, OrderProp, EscrowCard.RootProps {
 	autoRun?: boolean;
 }
 

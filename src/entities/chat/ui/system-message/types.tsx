@@ -22,7 +22,7 @@ export const systemMessageTypes = new Map<ChatSystemMessageTypes, SystemMessageA
 		title: 'Transaction Complete',
 		description: `Transaction has been processed, the seller has been notified to initiate delivery. 
 			The funds will be held in escrow until you confirm receipt.`,
-		Icon: Icons.CircleChecked,
+		Icon: Icons.CircleCheckedOutline,
 		className: 'text-green-100',
 		Meta: ({ data }) => (
 			<Price
@@ -34,13 +34,13 @@ export const systemMessageTypes = new Map<ChatSystemMessageTypes, SystemMessageA
 	['FUNDS_RELEASED', {
 		title: 'Payment Released',
 		description: `The buyer received the product and released the payment to the seller.`,
-		Icon: Icons.CircleChecked,
+		Icon: Icons.CircleCheckedOutline,
 		className: 'text-green-100'
 	}],
 	['FUNDS_CLAIMED', {
 		title: 'Payment Claimed',
 		description: `The seller took the payment for himself after the expiration of the escrow time.`,
-		Icon: Icons.CircleChecked,
+		Icon: Icons.CircleCheckedOutline,
 		className: 'text-accent-100'
 	}],
 ])

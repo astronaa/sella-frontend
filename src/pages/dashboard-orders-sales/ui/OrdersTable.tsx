@@ -10,6 +10,7 @@ import { dayJs } from "~/shared/lib/dayjs";
 import { TableSkeletons } from "./TableSkeletons";
 import { IconButton } from "~/shared/ui/kit/button";
 import Link from "next/link";
+import { getLinkToOrder } from "../lib/link-to-order";
 
 const config = [
 	{ width: '3.75rem' },
@@ -83,7 +84,7 @@ export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
 										{o.price} USDT
 									</span>
 									<span className='sticky right-0'>
-										<Link href={`/products/${o.product.id}/checkout/${o.id}`}>
+										<Link href={getLinkToOrder(o)}>
 											<Tooltip.Composed 
 												label='Go to order'
 												closeDelay={0} usePortal

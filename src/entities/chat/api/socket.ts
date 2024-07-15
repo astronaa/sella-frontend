@@ -1,4 +1,4 @@
-import { ChatId, ChatMessage, mapDtoToChatMessage } from "~/shared/api/client";
+import { ChatId, ChatMessage, ChatMessageId, mapDtoToChatMessage } from "~/shared/api/client";
 import { useSocketIo } from "../lib/use-socket-io";
 import { useCallback } from "react";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
@@ -8,26 +8,31 @@ import { components } from "~/shared/api/openapi";
 interface UseChatSocket {
 	chatId?: ChatId | null,
 	onNewMessage?: (message: ChatMessage) => void;
+	onChatFreeze?: (chatId: ChatId) => void;
 }
 
 export function useChatSocket({ chatId = null, ...args }: UseChatSocket) {
-	const { data: chatsInfo } = useGetChatsInfo(); 
-	
-	const onNewMessageCb = useCallbackRef(
+	const { data: chatsInfo } = useGetChatsInfo();
+
+	const onNewMessage = useCallbackRef(
 		(payload: components["schemas"]["MessageDto"]) => {
 			const message = mapDtoToChatMessage(payload)
 			args?.onNewMessage?.(message);
 		}
 	);
 
+	const onChatFreeze = useCallbackRef(args.onChatFreeze);
+
 	const { socketRef } = useSocketIo({
 		accessToken: chatsInfo?.accessToken,
 		onConnect: (socket) => socket.emit("listenChats"),
 		onCreated: (socket) => {
-			socket.on("newMessage", onNewMessageCb);
+			socket.on("newMessage", onNewMessage);
+			socket.on("chatFreeze", onChatFreeze);
 		},
 		onDestroyed: (socket) => {
-			socket.off("newMessage", onNewMessageCb);
+			socket.off("newMessage", onNewMessage);
+			socket.off("chatFreeze", onChatFreeze);
 		},
 	});
 
@@ -38,5 +43,11 @@ export function useChatSocket({ chatId = null, ...args }: UseChatSocket) {
 			},
 			[socketRef, chatId]
 		),
+		readMessage: useCallback(
+			(messageId: ChatMessageId) => {
+				socketRef.current?.emit("readMessage", { messageId });
+			},
+			[socketRef]
+		)
 	};
 }

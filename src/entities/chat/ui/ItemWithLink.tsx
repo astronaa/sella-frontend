@@ -58,7 +58,7 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 								className='flex-row items-center gap-[0.25rem] py-[0.5rem]'
 								message={lastMessage}
 							>
-								<SystemMessage.Icon className='size-[1.5rem]' />
+								{/* <SystemMessage.Icon className='size-[1.5rem]' /> */}
 								<SystemMessage.TitleOrDescription 
 									className='text-[0.9375rem] font-normal truncate max-w-full' 
 								/>

@@ -13,6 +13,7 @@ import ThumbUp from "../../assets/icons/thumbs-up.svg";
 import ThumbDown from "../../assets/icons/thumbs-down.svg";
 import CircleError from "../../assets/icons/circle-error.svg";
 import CircleChecked from "../../assets/icons/circle-checked.svg";
+import CircleCheckedOutline from "../../assets/icons/circle-checked-outline.svg";
 import Verified from "../../assets/icons/verified.svg";
 import Tick from "../../assets/icons/tick.svg";
 import Add from "../../assets/icons/add.svg";
@@ -64,6 +65,7 @@ export const Icons = {
 	ThumbDown,
 	CircleError,
 	CircleChecked,
+	CircleCheckedOutline,
 	Verified,
 	UploadCloud,
 	Settings,
