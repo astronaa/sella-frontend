@@ -5,7 +5,6 @@ import { ProductRating, useProductStrictContext } from "~/entities/product";
 import { reviewQueries } from "~/entities/reviews";
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
-import { PreviewImage } from "~/shared/ui/image";
 import { Select } from "~/shared/ui/kit";
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Heading } from "~/shared/ui/kit/heading";
@@ -13,6 +12,7 @@ import { INITIAL_PAGE, INITIAL_SORT, ITEMS_PER_PAGE } from "../config";
 import { Review } from "~/shared/api/client"
 import { dayJs } from "~/shared/lib/dayjs";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
+import { Avatar } from "~/shared/ui/kit/avatar";
 
 const options = [
 	{ label: "Show Newest", value: "newest" },
@@ -93,10 +93,10 @@ export function ReviewsStream({ className, initialData, ...props }: ReviewsStrea
 					<div key={r.id} className="flex flex-col px-4 py-6 gap-6 rounded-[1.25rem] border border-white/[.04]">
 						{r.user && (
 							<div className="flex gap-2 items-center">
-								<PreviewImage
-									alt={`Image of ${r.user.username}`}
-									src={r.user.avatarImage}
-									className="size-8 rounded-full flex-shrink-0 shadow-sm"
+								<Avatar
+									className='size-[2rem] flex-shrink-0 shadow-sm'
+									name={r.user.username ?? undefined}
+									src={r.user.avatarImage ?? undefined}
 								/>
 								<div className="text-white text-[1.125rem]/[1.4625rem] font-semibold">
 									{r.user.username}

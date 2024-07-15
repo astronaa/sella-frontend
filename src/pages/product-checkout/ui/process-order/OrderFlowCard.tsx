@@ -33,7 +33,7 @@ export function OrderFlowCard({ orderId }: Props) {
 		<OrderEscrowFlowCard
 			className='w-full'
 			orderId={orderId}
-			onActionFulfilled={() => router.push('review')}
+			onActionFulfilled={o => router.push(`/products/${o.product.id}/checkout/${o.id}/review`)}
 			onActionRejected={(error, retry) => {
 				switch (error.cause) {
 					case "eth-not-found":
