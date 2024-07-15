@@ -1,11 +1,11 @@
-import { ChatId, ChatMessage } from "~/shared/api/client";
+import { Chat, ChatMessage } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
 import { getByIdOptions, getChatMessagesOptions, getChatsOptions } from "./queries";
 import { produce } from "immer";
 import { useChatSocket } from "./socket";
 import { InferQueryOptionsFnData } from "~/shared/lib/utility-types";
 
-export const onNewMessage = (message: ChatMessage) => {
+const onNewMessage = (message: ChatMessage) => {
 	const queryOptions = getChatMessagesOptions({
 		chatId: message.chatId,
 	});
@@ -46,21 +46,31 @@ export const onNewMessage = (message: ChatMessage) => {
 	);
 };
 
-export function onChatFreeze(chatId: ChatId) {
-	const queryOptions = getByIdOptions(chatId);
+function onChatUpdate(chat: Chat) {
+	const queryOptions = getByIdOptions(chat.id);
 
 	queryClient.setQueriesData<InferQueryOptionsFnData<typeof queryOptions>>(
 		{ queryKey: queryOptions.queryKey },
+		() => chat
+	);
+
+	const chatsListQueryOptions = getChatsOptions();
+
+	queryClient.setQueriesData<InferQueryOptionsFnData<typeof chatsListQueryOptions>>(
+		{ queryKey: chatsListQueryOptions.queryKey },
 		(data) => {
 			if (!data) return;
 
 			return produce(data, draft => {
-				draft.isFrozen = true;
-			})
+				const chats = draft.pages[0]?.items;
+				const index = chats?.findIndex(c => c.id == chat.id);
+				if(index != -1)
+					chats[index] = chat
+			});
 		}
 	);
 }
 
 export function useGlobalListener() {
-	return useChatSocket({ onNewMessage })
+	return useChatSocket({ onNewMessage, onChatUpdate })
 }

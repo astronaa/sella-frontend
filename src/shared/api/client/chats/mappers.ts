@@ -5,7 +5,7 @@ import { Chat, ChatMessage } from "./model";
 
 type Schemes = components['schemas'];
 
-export const mapDtoToChat = (obj: Schemes['ChatDTO']) => ({
+export const mapDtoToChat = (obj: Schemes['ChatDTO']): Chat => ({
 	id: obj.id,
 	buyer: mapDtoToUser(obj.buyer),
 	product: mapDtoToProduct(obj.product),
@@ -13,7 +13,7 @@ export const mapDtoToChat = (obj: Schemes['ChatDTO']) => ({
 	lastMessage: obj.lastMessage ? mapDtoToChatMessage(obj.lastMessage) : null,
 	unreadMessagesCount: obj.unreadMessagesCount,
 	isFrozen: obj.isFrozen
-}) satisfies Chat
+}) // satisfies Chat
 
 export const mapDtoToChatMessage = (dto: Schemes['MessageDto']): ChatMessage => ({
 	id: dto.id,
@@ -26,4 +26,4 @@ export const mapDtoToChatMessage = (dto: Schemes['MessageDto']): ChatMessage => 
 	systemType: dto.systemType,
 	systemData: dto.systemData,
 	sender: mapDtoToUser(dto.sender)
-}) 
+}) // satisfies ChatMessage
