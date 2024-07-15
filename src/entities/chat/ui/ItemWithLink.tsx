@@ -52,15 +52,15 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 						</div>
 					)}
 
-					<div className="relative flex gap-[0.75rem] text-black-60">
+					<div className="relative flex gap-[0.75rem] text-black-60 pe-[2rem]">
 						{!!lastMessage?.systemType ? (
 							<SystemMessage.Root 
-								className='flex-row items-center gap-[0.25rem] py-[0.25rem]'
+								className='flex-row items-center gap-[0.25rem] py-[0.5rem]'
 								message={lastMessage}
 							>
 								<SystemMessage.Icon className='size-[1.5rem]' />
-								<SystemMessage.Title 
-									className='text-[0.9375rem] font-normal' 
+								<SystemMessage.TitleOrDescription 
+									className='text-[0.9375rem] font-normal truncate max-w-full' 
 								/>
 							</SystemMessage.Root>
 						) : (

@@ -25,7 +25,7 @@ export function Root({ message, className, children, ...props }: RootProps) {
 	const value = useMemo(() => {
 		if (!systemType)
 			return null;
-		
+
 		const attrs = systemMessageTypes.get(systemType);
 		if (!attrs)
 			return null;
@@ -56,7 +56,7 @@ export function Icon({ className, ...props }: IconProps) {
 	return (
 		<div
 			{...props}
-			className={cn('flex items-center justify-center size-[2rem] rounded-full bg-current', className)}
+			className={cn('flex items-center justify-center size-[2rem] rounded-full bg-current flex-shrink-0', className)}
 		>
 			<Icon className='size-[62.5%] text-black-100' />
 		</div>
@@ -101,6 +101,19 @@ export function Description(props: DescriptionProps) {
 		<p {...props}>
 			{description}
 		</p>
+	)
+}
+
+
+export type TitleOrDescriptionProps = DescriptionProps & TitleProps;
+
+export function TitleOrDescription(props: TitleOrDescriptionProps) {
+	const { title } = useSystemMessageStrictContext();
+
+	return title ? (
+		<Title {...props} /> 
+	) : (
+		<Description  {...props}/>
 	)
 }
 
