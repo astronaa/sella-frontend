@@ -6,9 +6,11 @@ import Link from "next/link";
 import { Avatar } from "~/shared/ui/kit/avatar";
 import { dayJs } from "~/shared/lib/dayjs";
 import { UnreadBadge } from "./UnreadBadge";
+import { SystemMessage } from "./system-message";
 
 export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatProp) {
-	const { lastMessage, unreadMessagesCount } = chat;
+	const { lastMessage, unreadMessagesCount, buyer } = chat;
+	const user = lastMessage ? lastMessage.sender : buyer;
 
 	return (
 		<Button
@@ -23,41 +25,59 @@ export function ItemWithLink({ chat, className, ...props }: ButtonProps & ChatPr
 				/>
 
 				<div className="flex flex-col gap-[0.125rem] w-full min-w-0 max-w-full pt-[0.75rem] h-auto border-b border-secondary">
-					{lastMessage && (
+					{user && (
 						<div className="flex justify-between gap-[0.75rem]">
 							<div className="flex items-center gap-[0.375rem]">
 								<Avatar
 									className='text-[1.25rem]'
-									name={lastMessage.sender.username ?? undefined}
-									src={lastMessage.sender.avatarImage ?? undefined}
+									name={user.username ?? undefined}
+									src={user.avatarImage ?? undefined}
 								/>
 
 								<p className="font-semibold text-[0.9375rem] font-manrope leading-[1.2188rem]">
-									{lastMessage.sender.username}
+									{user.username}
 								</p>
 							</div>
 
-							<p className="font-normal text-[0.875rem] font-manrope leading-[1.1375rem] text-black-60">
-								{dayJs(lastMessage.createdAt).calendar(null, {
-									sameDay: 'HH:mm',
-									lastDay: 'ddd',
-									lastWeek: 'ddd',
-									sameElse: 'MM.DD.YYYY',
-								})}
-							</p>
+							{lastMessage && (
+								<p className="font-normal text-[0.875rem] font-manrope leading-[1.1375rem] text-black-60">
+									{dayJs(lastMessage.createdAt).calendar(null, {
+										sameDay: 'HH:mm',
+										lastDay: 'ddd',
+										lastWeek: 'ddd',
+										sameElse: 'MM.DD.YYYY',
+									})}
+								</p>
+							)}
 						</div>
 					)}
 
 					<div className="relative flex gap-[0.75rem] text-black-60">
-						<p
-							className="font-normal text-[0.9375rem] font-manrope leading-[1.2188rem] 
-								line-clamp-2 whitespace-normal text-start"
-						>
-							{lastMessage?.content}
-						</p>
+						{!!lastMessage?.systemType ? (
+							<SystemMessage.Root 
+								className='flex-row items-center gap-[0.25rem] py-[0.25rem]'
+								message={lastMessage}
+							>
+								<SystemMessage.Icon className='size-[1.5rem]' />
+								<SystemMessage.Title 
+									className='text-[0.9375rem] font-normal' 
+								/>
+							</SystemMessage.Root>
+						) : (
+							<p
+								className="font-normal text-[0.9375rem] font-manrope leading-[1.2188rem] 
+									line-clamp-2 whitespace-normal text-start"
+							>
+								{lastMessage ? (
+									lastMessage.content
+								) : (
+									<span className='text-black-40'>No messages yet</span>
+								)}
+							</p>
+						)}
 
-						<UnreadBadge 
-							count={unreadMessagesCount} 
+						<UnreadBadge
+							count={unreadMessagesCount}
 							className='absolute right-0'
 						/>
 					</div>

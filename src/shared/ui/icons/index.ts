@@ -43,6 +43,7 @@ import PointsIcon from "../../assets/icons/point-icon.svg";
 import Lock from "../../assets/icons/lock.svg";
 import Copy from "../../assets/icons/copy.svg";
 import FilterLines from "../../assets/icons/filter-lines.svg";
+import SellaInside from "../../assets/icons/sella-inside.svg";
 import CurrencyUsdt from "../../assets/icons/currency/usdt.svg";
 
 export const Icons = {
@@ -91,5 +92,6 @@ export const Icons = {
 	Lock,
 	Copy,
 	FilterLines,
+	SellaInside,
 	CurrencyUsdt
 };

@@ -16,3 +16,6 @@ export {
 export {
 	ChatsListener as ChatsWebsocketListener
 } from './ui/ChatsListener'
+
+export { SystemMessage as ChatSystemMessage } from './ui/system-message'
+export { MessageBubble as ChatMessageBubble } from './ui/MessageBubble';

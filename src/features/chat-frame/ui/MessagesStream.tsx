@@ -2,13 +2,12 @@
 
 import React, { Fragment, HTMLAttributes, RefObject, useRef } from "react";
 import { cn } from "~/shared/lib/cn";
-import { ChatMessageBubble } from "./MessageBubble";
 import { useUserGetQuery } from "~/entities/user";
 import { useScrollPagination } from "~/shared/lib/use-scroll-pagination";
 import { useMergeRefs } from "~/shared/lib/use-merge-refs";
 import { Chat } from "~/shared/api/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { chatQueries } from "~/entities/chat";
+import { ChatMessageBubble, ChatSystemMessage, chatQueries } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
 import { Icons } from "~/shared/ui/icons";
@@ -103,7 +102,7 @@ export function ChatMessagesStream({
 					There are no messages here yet. send the first chat message
 				</NotFoundScreen>
 			)}
-			
+
 			<div className="flex flex-col gap-[1rem] pb-[6rem]">
 				<div className="flex flex-col w-full gap-[1rem] mt-auto px-[4px]">
 					{(!chat || isLoading) && (
@@ -127,6 +126,16 @@ export function ChatMessagesStream({
 					{messages?.pages.map((page) => (
 						<Fragment key={page.items[0]?.id}>
 							{page.items.map((m) => {
+								if (m.isSystem && m.systemType) {
+									return (
+										<ChatSystemMessage.Composed
+											key={m.id}
+											className='mx-auto my-[1.5rem]'
+											message={m}
+										/>
+									)
+								}
+
 								const isLocalMsg = m.sender.username == user?.username;
 
 								return (
@@ -136,8 +145,7 @@ export function ChatMessagesStream({
 											title: isLocalMsg ? undefined : m.sender.username ?? undefined,
 											imageUrl: isLocalMsg ? undefined : m.sender.avatarImage,
 											body: m.content,
-											createdAt: m.createdAt,
-											isSystem: false,
+											createdAt: m.createdAt
 										}}
 										className={cn(
 											isLocalMsg

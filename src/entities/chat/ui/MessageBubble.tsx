@@ -1,25 +1,22 @@
-import React, { HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn";
 import { dayJs } from "~/shared/lib/dayjs";
 import { PreviewImage } from "~/shared/ui/image";
 
-export interface Message {
-	title?: string;
-	body: string;
-	imageUrl?: string | null | undefined;
-	isSystem: boolean;
-	createdAt: string;
+interface MessageBubbleProps extends HTMLAttributes<HTMLDivElement> {
+	message: {
+		title?: string;
+		body: string;
+		imageUrl?: string | null | undefined;
+		createdAt: string;
+	};
 }
 
-interface ChatMessageBubbleProps extends HTMLAttributes<HTMLDivElement> {
-	message: Message;
-}
-
-export function ChatMessageBubble({
+export function MessageBubble({
 	message,
 	className,
 	...props
-}: ChatMessageBubbleProps) {
+}: MessageBubbleProps) {
 	return (
 		<div
 			{...props}
@@ -38,10 +35,7 @@ export function ChatMessageBubble({
 			)}
 
 			<div
-				className={cn(
-					"flex flex-col gap-[0.5rem] w-full",
-					message.isSystem ? "text-accent-100" : "text-black-74"
-				)}
+				className={"flex flex-col gap-[0.5rem] w-full text-black-74"}
 			>
 				{!!message.title && (
 					<h3 className="text-accent-100">{message.title}</h3>
