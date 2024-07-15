@@ -58,7 +58,7 @@ export function Icon({ className, ...props }: IconProps) {
 			{...props}
 			className={cn('flex items-center justify-center size-[2rem] rounded-full bg-current', className)}
 		>
-			<Icon className='size-[62.5%] text-black' />
+			<Icon className='size-[62.5%] text-black-100' />
 		</div>
 	)
 }
