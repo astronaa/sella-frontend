@@ -494,7 +494,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/chats/all/unread": {
+    "/api/chats/info": {
         parameters: {
             query?: never;
             header?: never;
@@ -1064,6 +1064,10 @@ export interface components {
         GetAllChatsResponseDto: {
             data: components["schemas"]["ChatDTO"][];
             total: number;
+        };
+        UnreadMessagesCountResponseDto: {
+            unreadMessagesCount: number;
+            metadata: components["schemas"]["ChatAccessResponseDto"];
         };
         MessageDto: {
             id: number;
@@ -2276,11 +2280,11 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Return all unread chats */
+            /** @description Return count unread messages */
             200: {
                 headers: Record<string, unknown>;
                 content: {
-                    "application/json": components["schemas"]["GetAllChatsResponseDto"];
+                    "application/json": components["schemas"]["UnreadMessagesCountResponseDto"];
                 };
             };
             /** @description Chats not allowed */

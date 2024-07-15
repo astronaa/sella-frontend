@@ -5,6 +5,7 @@ import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { UserProfileSettingsDialog } from "~/widgets/user/profile-settings";
 import { TronWalletConnectDialog } from "~/features/tron-wallet";
 import { Toaster } from "~/widgets/toaster";
+import { ChatsWebsocketListener } from "~/entities/chat";
 
 export function Component({ children }: PropsWithChildren) {
 	return (
@@ -21,6 +22,8 @@ export function Component({ children }: PropsWithChildren) {
 			<RegisterFlowDialog />
 			<UserProfileSettingsDialog />
 			<TronWalletConnectDialog />
+			
+			<ChatsWebsocketListener />
 		</>
 	);
 }

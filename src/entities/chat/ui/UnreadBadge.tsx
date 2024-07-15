@@ -1,11 +1,14 @@
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn"
+import { useGetChatsInfo } from "../api/queries";
 
 export interface UnreadBadgeProps extends HTMLAttributes<HTMLSpanElement> {
-	count: number
+	count: number | undefined
 }
 
 export function UnreadBadge({ count, className, ...props }: UnreadBadgeProps) {
+	const showBadge = count && count > 0;
+
 	return (
 		<span
 			{...props}
@@ -13,15 +16,22 @@ export function UnreadBadge({ count, className, ...props }: UnreadBadgeProps) {
 				"flex items-center justify-center text-[0.75em] min-w-[1.5rem] h-[1.5rem] px-[0.25rem]",
 				"rounded-full bg-red-100 text-white font-inter",
 				"transform transition-transform scale-0",
-				count > 0 && "scale-100",
+				showBadge && "scale-100",
 				className
 			)}
 		>
-			{count > 0 ? count : null}
+			{showBadge ? count : null}
 		</span>
 	);
 }
 
 export function OverallUnreadBadge(props: Omit<UnreadBadgeProps, 'count'>) {
-	return <UnreadBadge {...props} count={3} />
+	const { data } = useGetChatsInfo();
+
+	return (
+		<UnreadBadge
+			{...props}
+			count={data?.unreadMessagesCount}
+		/>
+	)
 }

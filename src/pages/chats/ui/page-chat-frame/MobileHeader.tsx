@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function MobileHeader({ chatId }: { chatId: ChatId }) {
 	const { setTab } = useChatPanelTabStrictContext();
-	const { data } = useQuery({
+	const { data: chat } = useQuery({
 		...chatQueries.getByIdOptions(chatId),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false
@@ -26,7 +26,7 @@ export function MobileHeader({ chatId }: { chatId: ChatId }) {
 				<ChatOverallUnreadBadge />
 			</IconButton>
 
-			<span>{data?.chat.buyer.username}</span>
+			<span>{chat?.buyer.username}</span>
 		</div>
 	);
 }

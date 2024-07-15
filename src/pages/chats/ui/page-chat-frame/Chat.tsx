@@ -6,7 +6,7 @@ import { ChatFrame } from "~/features/chat-frame";
 import { ChatId } from "~/shared/api/client";
 
 export function ChatFrameById({ chatId }: { chatId: ChatId }) {
-	const { data } = useQuery({
+	const { data: chat } = useQuery({
 		...chatQueries.getByIdOptions(chatId),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false
@@ -14,8 +14,7 @@ export function ChatFrameById({ chatId }: { chatId: ChatId }) {
 
 	return (
 		<ChatFrame
-			chat={data?.chat ?? null}
-			accessToken={data?.accessToken ?? null}
+			chat={chat ?? null}
 			className='w-full'
 		/>
 	);

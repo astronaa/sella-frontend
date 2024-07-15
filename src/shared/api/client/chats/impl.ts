@@ -26,6 +26,20 @@ export function createChatsClient() {
 			}
 		},
 
+		async getChatsInfo() {
+			const { data, error } = await authFetchClient.GET('/api/chats/info');
+
+			return data ? {
+				data: {
+					accessToken: data.metadata.accessToken,
+					unreadMessagesCount: data.unreadMessagesCount
+				},
+				error
+			} : {
+				data, error
+			}
+		},
+
 		fromProduct: (productId: ProductId) => ({
 			async get() {
 				const { data, error } = await authFetchClient.GET('/api/products/{id}/chat', {
@@ -33,10 +47,7 @@ export function createChatsClient() {
 				});
 
 				return data ? {
-					data: {
-						chat: mapDtoToChat(data.result),
-						accessToken: data.metadata.accessToken
-					},
+					data: mapDtoToChat(data.result),
 					error
 				} : {
 					data, error
@@ -51,10 +62,7 @@ export function createChatsClient() {
 				});
 
 				return data ? {
-					data: {
-						chat: mapDtoToChat(data.result),
-						accessToken: data.metadata.accessToken
-					},
+					data: mapDtoToChat(data.result),
 					error
 				} : {
 					data, error
@@ -69,10 +77,7 @@ export function createChatsClient() {
 				});
 
 				return data ? {
-					data: {
-						chat: mapDtoToChat(data.result),
-						accessToken: data.metadata.accessToken
-					},
+					data: mapDtoToChat(data.result),
 					error
 				} : {
 					data, error

@@ -23,11 +23,10 @@ type SchemaType = z.infer<typeof schema>;
 const validator = zodValidate(schema);
 
 export interface ChatFrameProps extends HTMLAttributes<HTMLDivElement> {
-	chat: Chat | null,
-	accessToken: string | null
+	chat: Chat | null
 }
 
-export function ChatFrame({ chat, className, accessToken, ...props }: ChatFrameProps) {
+export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 	const autoscrollEnabledRef = useRef(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +43,6 @@ export function ChatFrame({ chat, className, accessToken, ...props }: ChatFrameP
 
 	const { sendMessage } = useChatSocket({
 		chatId: chat?.id ?? null,
-		accessToken,
 		onNewMessage: () => {
 			setTimeout(() => {
 				if (!autoscrollEnabledRef.current)

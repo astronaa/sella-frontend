@@ -1,5 +1,5 @@
 import { ChatId, OrderId, ProductId, apiClient } from "~/shared/api/client";
-import { infiniteQueryOptions, queryOptions, skipToken } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions, skipToken, useQuery } from "@tanstack/react-query";
 import { produce } from "immer";
 
 export const getByIdOptions = (chatId: ChatId) =>
@@ -46,6 +46,23 @@ export const getFromOrderOptions = (orderId: OrderId) =>
 			return data;
 		}
 	})
+
+export const getChatsInfoOptions = queryOptions({
+	queryKey: ['chats-info'],
+	queryFn: async () => {
+		const { data, error } = await apiClient.chats
+			.getChatsInfo();
+
+		if (error)
+			throw error;
+
+		return data;
+	}
+})
+
+export function useGetChatsInfo() {
+	return useQuery(getChatsInfoOptions);
+}
 
 interface GetChatMessagesOptions {
 	chatId: ChatId | null,

@@ -133,7 +133,7 @@ export function ChatMessagesStream({
 									<ChatMessageBubble
 										key={m.id}
 										message={{
-											title: isLocalMsg ? undefined : m.sender.username,
+											title: isLocalMsg ? undefined : m.sender.username ?? undefined,
 											imageUrl: isLocalMsg ? undefined : m.sender.avatarImage,
 											body: m.content,
 											createdAt: m.createdAt,

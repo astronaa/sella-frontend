@@ -14,7 +14,15 @@ export const mapDtoToChat = (obj: Schemes['ChatDTO']) => ({
 	unreadMessagesCount: obj.unreadMessagesCount
 }) satisfies Chat
 
-export const mapDtoToChatMessage = (dto: Schemes['MessageDto']) => ({
-	...dto,
+export const mapDtoToChatMessage = (dto: Schemes['MessageDto']): ChatMessage => ({
+	id: dto.id,
+	chatId: dto.chatId,
+	content: dto.content,
+	createdAt: dto.createdAt, 
+	fileIds: dto.fileIds,
+	readAt: dto.readAt,
+	isSystem: dto.isSystem,
+	systemType: dto.systemType,
+	systemData: dto.systemData,
 	sender: mapDtoToUser(dto.sender)
-}) satisfies ChatMessage
+}) 

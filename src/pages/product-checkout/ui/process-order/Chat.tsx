@@ -6,7 +6,7 @@ import { ChatFrame } from "~/features/chat-frame";
 import { OrderId } from "~/shared/api/client";
 
 export function ChatFrameByOrder({ orderId }: { orderId: OrderId }) {
-	const { data } = useQuery({
+	const { data: chat } = useQuery({
 		...chatQueries.getFromOrderOptions(orderId),
 		staleTime: Infinity,
 		refetchOnWindowFocus: false
@@ -14,8 +14,7 @@ export function ChatFrameByOrder({ orderId }: { orderId: OrderId }) {
 
 	return (
 		<ChatFrame
-			chat={data?.chat ?? null}
-			accessToken={data?.accessToken ?? null}
+			chat={chat ?? null}
 			className='w-full'
 		/>
 	);
