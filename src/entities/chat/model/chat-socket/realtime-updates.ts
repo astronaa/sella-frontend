@@ -1,6 +1,12 @@
+import { 
+	getByIdOptions, 
+	getChatMessagesOptions, 
+	getChatsOptions, 
+	invalidateOverallReadCount 
+} from "../../api/queries";
+
 import { Chat, ChatMessage } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
-import { getByIdOptions, getChatMessagesOptions, getChatsOptions } from "../../api/queries";
 import { produce } from "immer";
 import { InferQueryOptionsFnData } from "~/shared/lib/utility-types";
 import { useChatSocket } from "./context";
@@ -18,6 +24,8 @@ const onNewChat = (chat: Chat) => {
 			});
 		}
 	);
+
+	invalidateOverallReadCount();
 }
 
 const onNewMessage = (message: ChatMessage) => {
