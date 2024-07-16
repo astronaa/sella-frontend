@@ -105,7 +105,7 @@ export function CreateCard({ order, onActionFulfilled, onActionRejected, autoRun
 				</div>
 
 				{action.status == 'error' && (
-					<span className='break-words text-black-40 max-h-[9rem] overflow-y-auto'>
+					<span className='break-words text-black-40 max-h-[9rem] overflow-y-auto whitespace-pre-wrap'>
 						{action.errorMessage}
 					</span>
 				)}

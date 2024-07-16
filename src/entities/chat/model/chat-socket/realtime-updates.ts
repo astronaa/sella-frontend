@@ -1,9 +1,24 @@
 import { Chat, ChatMessage } from "~/shared/api/client";
 import { queryClient } from "~/shared/config/query-client";
-import { getByIdOptions, getChatMessagesOptions, getChatsOptions } from "./queries";
+import { getByIdOptions, getChatMessagesOptions, getChatsOptions } from "../../api/queries";
 import { produce } from "immer";
-import { useChatSocket } from "./socket";
 import { InferQueryOptionsFnData } from "~/shared/lib/utility-types";
+import { useChatSocket } from "./context";
+
+const onNewChat = (chat: Chat) => {
+	const chatsListQueryOptions = getChatsOptions();
+
+	queryClient.setQueriesData<InferQueryOptionsFnData<typeof chatsListQueryOptions>>(
+		{ queryKey: chatsListQueryOptions.queryKey },
+		(data) => {
+			if (!data) return;
+
+			return produce(data, draft => {
+				draft.pages[0]?.items?.unshift(chat);
+			});
+		}
+	);
+}
 
 const onNewMessage = (message: ChatMessage) => {
 	const queryOptions = getChatMessagesOptions({
@@ -71,6 +86,7 @@ function onChatUpdate(chat: Chat) {
 	);
 }
 
-export function useGlobalListener() {
-	return useChatSocket({ onNewMessage, onChatUpdate })
+export function ChatRealtimeUpdates() {
+	useChatSocket({ onNewMessage, onChatUpdate, onNewChat })
+	return null;
 }

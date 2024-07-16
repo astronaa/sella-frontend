@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useMemo, useRef, useState } from "react";
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
 import { Button } from "~/shared/ui/kit/button";
@@ -11,12 +11,27 @@ import { ChatPanelTabProvider, PossibleTabs } from "../model/tabs";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { ChatItemWithLink, chatQueries } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { useScrollPagination } from "~/shared/lib/use-scroll-pagination";
 
 export function PageRoot({ children }: PropsWithChildren) {
 	const params = useParams();
 	const [tab, setTab] = useState<PossibleTabs>(!!params?.chatId ? 'chat' : 'chats-list');
 	const contextValue = useMemo(() => ({ tab, setTab }), [tab, setTab]);
-	const { data: chats } = useInfiniteQuery(chatQueries.getChatsOptions());
+	const listContainerRef = useRef<HTMLDivElement>(null);
+
+	const { 
+		data: chats,
+		isFetchingNextPage,
+		hasNextPage,
+		fetchNextPage
+	} = useInfiniteQuery(chatQueries.getChatsOptions());
+
+	useScrollPagination(listContainerRef, {
+		shouldObserve: !isFetchingNextPage && hasNextPage,
+		onLoadMore: fetchNextPage,
+		threshold: 0.8,
+	});
+
 	const total = chats?.pages[0]?.total;
 
 	if (total === 0) {
@@ -58,22 +73,27 @@ export function PageRoot({ children }: PropsWithChildren) {
 						)}
 					</div>
 
-					{!chats && Array(4).fill(0).map((_, index) => (
-						<Skeleton
-							key={index} loading
-							className='w-full h-[5.625rem] rounded-[0.75rem]'
-						/>
-					))}
-
-					{chats?.pages.map(page => (
-						page.items.map(c => (
-							<ChatItemWithLink
-								key={c.id} chat={c}
-								onClick={() => setTab('chat')}
-								active={!!params?.chatId && params.chatId == c.id}
+					<div 
+						ref={listContainerRef}
+						className='flex flex-col gap-[0.5rem] flex-grow overflow-y-auto pe-[0.25rem]'
+					>
+						{!chats && Array(4).fill(0).map((_, index) => (
+							<Skeleton
+								key={index} loading
+								className='w-full h-[5.625rem] rounded-[0.75rem]'
 							/>
-						))
-					))}
+						))}
+
+						{chats?.pages.map(page => (
+							page.items.map(c => (
+								<ChatItemWithLink
+									key={c.id} chat={c}
+									onClick={() => setTab('chat')}
+									active={!!params?.chatId && params.chatId == c.id}
+								/>
+							))
+						))}
+					</div>
 				</div>
 
 				<div className={cn("w-full", tab == 'chats-list' && 'max-lg:hidden')}>

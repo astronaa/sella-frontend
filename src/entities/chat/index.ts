@@ -1,8 +1,9 @@
 export * as chatQueries from './api/queries';
 
 export {
-	useChatSocket
-} from './api/socket'
+	useChatSocket,
+	ChatSocketProvider
+} from './model/chat-socket/context'
 
 export {
 	ItemWithLink as ChatItemWithLink
@@ -12,10 +13,6 @@ export {
 	UnreadBadge as ChatUnreadBadge,
 	OverallUnreadBadge as ChatOverallUnreadBadge
 } from './ui/UnreadBadge';
-
-export {
-	ChatsListener as ChatsWebsocketListener
-} from './ui/ChatsListener'
 
 export { SystemMessage as ChatSystemMessage } from './ui/system-message'
 export { MessageBubble as ChatMessageBubble } from './ui/MessageBubble';

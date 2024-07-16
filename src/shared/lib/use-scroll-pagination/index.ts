@@ -31,7 +31,7 @@ export function useScrollPagination<T extends HTMLElement = HTMLElement>(
 
 			const curDir = scrollTop > oldScroll ? 'to-bottom' : 'to-top';
 			oldScroll = scrollTop;
-
+			
 			if(curDir != direction)
 				return;
 

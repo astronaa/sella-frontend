@@ -53,7 +53,7 @@ export function ReleasePaymentControl({
 					<span className='text-error-100'>
 						An error has occurred
 					</span>
-					<span className='break-words text-black-40 max-h-[9rem] overflow-y-auto'>
+					<span className='break-words text-black-40 max-h-[9rem] overflow-y-auto whitespace-pre-wrap'>
 						{action.errorMessage}
 					</span>
 				</div>

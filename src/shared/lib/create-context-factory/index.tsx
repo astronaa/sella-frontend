@@ -26,10 +26,10 @@ export function createContextFactory<Name extends string>(name: Name) {
 	return function create<Data>(options: CreateContextOptions<Data> = {}) {
 		const {
 			errorMessage,
-			defaultValue = null,
+			defaultValue = undefined,
 		} = options
 
-		const context = createContext<Data | null>(defaultValue);
+		const context = createContext<Data | undefined>(defaultValue);
 		const capitilizeName = capitalize(name);
 
 		context.displayName = `${capitilizeName}Context`;
@@ -42,7 +42,7 @@ export function createContextFactory<Name extends string>(name: Name) {
 
 		function useStrictContext() {
 			const value = useReactContext(context);
-			if (!value) {
+			if (value === undefined) {
 				const error = new Error(errorMessage ?? (
 					`${strictHookName} returned \`undefined\`. Seems you forgot to wrap component within ${providerName}`
 				))
@@ -57,7 +57,7 @@ export function createContextFactory<Name extends string>(name: Name) {
 			const contextValue = useReactContext(context) 
 			const value = prop ?? contextValue;
 
-			if (!value) {
+			if (value === undefined) {
 				const error = new Error(errorMessage ?? (
 					`${hookOrPropName} returned \`undefined\`. Seems you forgot to wrap component within ${providerName} or to value pass prop`
 				))
