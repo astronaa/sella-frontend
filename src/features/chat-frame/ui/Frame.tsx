@@ -1,6 +1,6 @@
 "use client";
 
-import React, { HTMLAttributes, UIEventHandler, useEffect, useRef } from "react";
+import React, { HTMLAttributes, UIEventHandler, useRef } from "react";
 import { cn } from "~/shared/lib/cn";
 import { Input } from "~/shared/ui/kit/input";
 import { ChatMessagesStream } from "./MessagesStream";
@@ -10,9 +10,10 @@ import { z } from "zod";
 import { VSubmitButton } from "~/shared/ui/validation-inputs";
 import { FormApi } from "final-form";
 import { ChatProductCard } from "./ChatProductCard";
-import { Chat, ChatId, apiClient, productMock } from "~/shared/api/client";
-import { chatQueries, useChatSocket } from "~/entities/chat";
+import { Chat, productMock } from "~/shared/api/client";
+import { useChatSocket } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
+import { useReadMessagesOnMount } from "../api/read-chat";
 
 const schema = z.object({
 	message: z.string().min(1),
@@ -139,17 +140,4 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 			</div>
 		</div>
 	);
-}
-
-function useReadMessagesOnMount(chatId: ChatId | undefined) {
-	useEffect(() => {
-		if (!chatId)
-			return;
-
-		const read = async () => {
-			await apiClient.chats.for(chatId).read();
-			chatQueries.invalidateOverallReadCount();
-		}
-		read();
-	}, [chatId])
 }
