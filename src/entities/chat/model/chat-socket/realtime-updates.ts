@@ -20,7 +20,12 @@ const onNewChat = (chat: Chat) => {
 			if (!data) return;
 
 			return produce(data, draft => {
-				draft.pages[0]?.items?.unshift(chat);
+				const page = draft.pages[0];
+
+				if(page) {
+					page.items.unshift(chat);
+					page.total++;
+				}
 			});
 		}
 	);

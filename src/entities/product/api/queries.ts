@@ -5,6 +5,7 @@ import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
 
 const QUERY_KEY = 'products'
+const QUERY_KEY_FOR_OWNER = `${QUERY_KEY}-for-owner`
 
 export interface GetProductsQueryParams extends z.infer<typeof apiClient.stores.schemaGetProducts> {
 	page: number,
@@ -46,7 +47,7 @@ interface GetFromStoreForOwnerOptions {
 
 export const getFromStoreForOwnerOptions = ({ storeUrl, page, limit }: GetFromStoreForOwnerOptions) => {
 	return queryOptions({
-		queryKey: [`${QUERY_KEY}-for-owner`, { page, limit }],
+		queryKey: [QUERY_KEY_FOR_OWNER, { page, limit }],
 		queryFn: async () => {
 			const { data, error } = await apiClient.stores
 				.for(storeUrl)
@@ -132,6 +133,6 @@ export function useSearch(args: SearchOptions) {
 
 export function invalidateAll() {
 	return queryClient.invalidateQueries({
-		predicate: q => q.queryKey.includes(QUERY_KEY)
+		predicate: q => q.queryKey.includes(QUERY_KEY) || q.queryKey.includes(QUERY_KEY_FOR_OWNER)
 	})
 }

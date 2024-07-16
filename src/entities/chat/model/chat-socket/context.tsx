@@ -47,9 +47,12 @@ interface UseChatSocket {
 }
 
 export function useChatSocket({ chatId = null, ...args }: UseChatSocket) {
+	const socket = useChatSocketStrictContext();
+
 	const onNewChat = useCallbackRef(
 		(payload: components["schemas"]["ChatDTO"]) => {
-			const chat = mapDtoToChat(payload)
+			const chat = mapDtoToChat(payload);
+			socket?.emit("listenChats");
 			args?.onNewChat?.(chat);
 		}
 	);
@@ -67,8 +70,6 @@ export function useChatSocket({ chatId = null, ...args }: UseChatSocket) {
 			args?.onChatUpdate?.(chat);
 		}
 	);
-
-	const socket = useChatSocketStrictContext();
 
 	useSocketIoEvents(socket, {
 		onConnect: (socket) => socket.emit("listenChats"),
