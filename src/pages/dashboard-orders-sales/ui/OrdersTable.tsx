@@ -1,7 +1,7 @@
 import { TransactionStatusBadge } from "./TransactionElements";
 import { FlexTable, Tooltip } from "~/shared/ui/kit";
 import { OrdersResponse } from "../api/orders";
-import { ProductRow } from "~/entities/product";
+import { ProductLink, ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
@@ -10,7 +10,8 @@ import { dayJs } from "~/shared/lib/dayjs";
 import { TableSkeletons } from "./TableSkeletons";
 import { IconButton } from "~/shared/ui/kit/button";
 import Link from "next/link";
-import { getLinkToOrder } from "../lib/link-to-order";
+import { Order, isCompletedTransactionStatus } from "~/shared/api/client";
+import { PATH_ORDER_PAGE, PATH_ORDER_REVIEW_PAGE } from "~/shared/config/urls";
 
 const config = [
 	{ width: '3.75rem' },
@@ -65,7 +66,9 @@ export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
 										{dayJs(o.transaction.createdAt).format('MMM DD, hh:mm A')}
 									</span>
 									<span className='text-white'>
-										<ProductRow product={o.product} />
+										<ProductLink product={o.product}>
+											<ProductRow product={o.product} />
+										</ProductLink>
 									</span>
 									<span className='text-black-60'>
 										{o.store.name}
@@ -85,7 +88,7 @@ export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
 									</span>
 									<span className='sticky right-0'>
 										<Link href={getLinkToOrder(o)}>
-											<Tooltip.Composed 
+											<Tooltip.Composed
 												label='Go to order'
 												closeDelay={0} usePortal
 											>
@@ -106,3 +109,9 @@ export function OrdersTable({ data, loading, startIndex }: OrdersTableProps) {
 		</BleedingContainer>
 	);
 }
+
+export function getLinkToOrder(order: Order) {
+	return isCompletedTransactionStatus(order.transaction.status)
+		? PATH_ORDER_REVIEW_PAGE(order)
+		: PATH_ORDER_PAGE(order)
+}		

@@ -2,29 +2,22 @@
 
 import { OrderProp } from "~/entities/order";
 import { Button } from "~/shared/ui/kit/button";
-import { useReleaseEscrowAction } from "../../model/release/action";
-import { ActionCallbacks, RetryFn } from "../FlowCard";
+import { useClaimEscrowAction } from "../../model/claim/action";
+import { ActionCallbacks } from "../FlowCard";
 import { EscrowError } from "../../model/error";
-import { Stopwatch } from "../Stopwatch";
 import { useInterval } from "usehooks-ts";
-import { cn } from "~/shared/lib/cn";
 import { HTMLAttributes } from "react";
+import { cn } from "~/shared/lib/cn";
+import { Stopwatch } from "../Stopwatch";
 
-interface ReleasePaymentControlProps extends HTMLAttributes<HTMLDivElement>, OrderProp, ActionCallbacks {
+interface ClaimPaymentControlProps extends HTMLAttributes<HTMLDivElement>, OrderProp, ActionCallbacks {
 	onRequestRefetch?: () => void
 };
 
-export function ReleasePaymentControl({
+export function ClaimPaymentControl({
 	order, className, onActionFulfilled, onActionRejected, onRequestRefetch, ...props
-}: ReleasePaymentControlProps) {
-	const action = useReleaseEscrowAction(order);
-
-	const handleError = (error: unknown, retryFn: RetryFn) => {
-		if (error instanceof EscrowError)
-			onActionRejected?.(error, retryFn);
-		else if (error instanceof Error)
-			onActionRejected?.(new EscrowError('generic', error.message), retryFn);
-	};
+}: ClaimPaymentControlProps) {
+	const action = useClaimEscrowAction(order);
 
 	const onButtonClick = async () => {
 		if (!action.execute)
@@ -36,7 +29,10 @@ export function ReleasePaymentControl({
 				onActionFulfilled?.();
 			}
 			catch (error) {
-				handleError(error, tryExecute);
+				if (error instanceof EscrowError)
+					onActionRejected?.(error, tryExecute);
+				else if (error instanceof Error)
+					onActionRejected?.(new EscrowError('generic', error.message), tryExecute);
 			}
 		};
 
@@ -49,7 +45,7 @@ export function ReleasePaymentControl({
 	);
 
 	return (
-		<div {...props} className={cn('flex flex-col gap-[1rem] w-full', className)} >
+		<div {...props} className={cn('flex flex-col gap-[1rem] w-full', className)}>
 			{action.status == 'error' && (
 				<div className='flex flex-col gap-[0.5rem] w-full'>
 					<span className='text-error-100'>
@@ -63,15 +59,15 @@ export function ReleasePaymentControl({
 
 			<Button
 				size='xl'
-				onClick={onButtonClick}
 				disabled={!action.execute}
+				onClick={onButtonClick}
 			>
 				{action.status == 'submitting' || action.status == 'done' ? (
 					<>
-						Releasing <Stopwatch />
+						Claiming <Stopwatch />
 					</>
 				) : (
-					'Release payment to seller'
+					'Claim payment'
 				)}
 			</Button>
 		</div>

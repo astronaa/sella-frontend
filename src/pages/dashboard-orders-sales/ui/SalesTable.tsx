@@ -1,7 +1,7 @@
 import { TransactionStatusBadge } from "./TransactionElements";
 import { FlexTable, Tooltip } from "~/shared/ui/kit";
 import { SalesResponse } from "../api/sales";
-import { ProductRow } from "~/entities/product";
+import { ProductLink, ProductRow } from "~/entities/product";
 import { Badge } from "~/shared/ui/kit/badge";
 import { Icons } from "~/shared/ui/icons";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
@@ -10,7 +10,7 @@ import { dayJs } from "~/shared/lib/dayjs";
 import { TableSkeletons } from "./TableSkeletons";
 import Link from "next/link";
 import { IconButton } from "~/shared/ui/kit/button";
-import { getLinkToOrder } from "../lib/link-to-order";
+import { PATH_ORDER_PAGE } from "~/shared/config/urls";
 
 const config = [
 	{ width: '3.75rem' },
@@ -65,7 +65,9 @@ export function SalesTable({ data, loading, startIndex }: SalesTableProps) {
 										{dayJs(sale.transaction.createdAt).format('MMM DD, hh:mm A')}
 									</span>
 									<span className='text-white'>
-										<ProductRow product={sale.product} />
+										<ProductLink product={sale.product}>
+											<ProductRow product={sale.product} />
+										</ProductLink>
 									</span>
 									<span className='text-black-60'>
 										{sale.user.username}
@@ -84,7 +86,7 @@ export function SalesTable({ data, loading, startIndex }: SalesTableProps) {
 										{sale.price} USDT
 									</span>
 									<span className='sticky right-0'>
-										<Link href={getLinkToOrder(sale)}>
+										<Link href={PATH_ORDER_PAGE(sale)}>
 											<Tooltip.Composed
 												label='Go to sale'
 												closeDelay={0} usePortal

@@ -9,7 +9,7 @@ export function BaseNavIconButton({ className, ...props }: IconButtonProps) {
 	return (
 		<IconButton
 			className={cn(
-				'relative border-none flex-col gap-[0.25rem] text-[0.875rem] [&_svg]:size-[1.25rem] py-[0.25rem] px-[0.5rem]', 
+				'relative border-none flex-col gap-[0.25rem] text-[0.875rem] [&_svg]:size-[1.25rem] py-[0.25rem] px-[0.5rem] h-full', 
 				className
 			)}
 			colorPalette='gray' variant='ghost' size='sm'
@@ -31,7 +31,7 @@ export function NavIconButton({ href, end, activeOnHrefs, ...props }: NavIconBut
 	return (
 		<Link href={href}>
 			<BaseNavIconButton
-				className='h-full' {...props}
+				{...props}
 				active={active} tabIndex={-1}
 			/>
 		</Link>

@@ -3,6 +3,7 @@ import { HTMLAttributes, useMemo } from "react";
 import { Form } from "react-final-form";
 import { z } from "zod";
 import { ordersQueries } from "~/entities/order";
+import { reviewQueries } from "~/entities/reviews";
 import { OrderId, apiClient } from "~/shared/api/client";
 import { cn } from "~/shared/lib/cn";
 import { zodValidate } from "~/shared/lib/zod-final-form";
@@ -33,6 +34,7 @@ export function Card({ className, onActionFulfilled, orderId, ...props }: CardPr
 
 	const onSubmit = async (values: SchemaType) => {
 		const { error } = await apiClient.orders.for(orderId).createReview(values);
+		reviewQueries.invalidateAll();
 		if (!error)
 			onActionFulfilled?.(values);
 	}

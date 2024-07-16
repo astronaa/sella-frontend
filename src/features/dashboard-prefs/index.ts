@@ -1,0 +1,1 @@
+export { useOrdersPage as useDashboardPreferedOrdersPage } from './model/use-orders-page';

@@ -5,11 +5,15 @@ import { Price } from "~/shared/ui/price";
 import { EscrowCard } from "../Card";
 import { ActionCallbacks } from "../FlowCard";
 import { AutomaticEscrowTimer } from "./AutomaticEscrowTimer";
-import { ClaimPaymentButton } from "./ClaimPaymentButton";
+import { ClaimPaymentControl } from "./ClaimPaymentControl";
 
-interface SellerHoldCardProps extends ActionCallbacks, OrderProp, EscrowCard.RootProps { }
+interface SellerHoldCardProps extends ActionCallbacks, OrderProp, EscrowCard.RootProps {
+	onRequestRefetch?: () => void
+}
 
-export function SellerHoldCard({ order, ...props }: SellerHoldCardProps) {
+export function SellerHoldCard({
+	order, onActionFulfilled, onActionRejected, onRequestRefetch, ...props
+}: SellerHoldCardProps) {
 	const { holdEndingAt } = order.transaction;
 	const holdHours = order.transaction.holdPeriod * 24;
 
@@ -35,9 +39,12 @@ export function SellerHoldCard({ order, ...props }: SellerHoldCardProps) {
 				/>
 			)}
 
-			<ClaimPaymentButton order={order}>
-				Claim payment
-			</ClaimPaymentButton>
+			<ClaimPaymentControl
+				order={order}
+				onActionFulfilled={onActionFulfilled}
+				onActionRejected={onActionRejected}
+				onRequestRefetch={onRequestRefetch}
+			/>
 
 			{/* <Button variant='subtle' colorPalette='red' size='xl'>
 				Open Dispute

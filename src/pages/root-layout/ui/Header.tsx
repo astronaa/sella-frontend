@@ -9,6 +9,8 @@ import { Avatar } from "~/shared/ui/kit/avatar";
 import { useUserGetQuery } from "~/entities/user";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { ChatOverallUnreadBadge } from "~/entities/chat";
+import { PATH_DASHBOARD_ORDERS_PAGE, PATH_DASHBOARD_SALES_PAGE } from "~/shared/config/urls";
+import { useDashboardPreferedOrdersPage } from "~/features/dashboard-prefs";
 
 export function Header() {
 	const onTop = !useWindowScroll({ defaultValue: true });
@@ -36,8 +38,8 @@ export function Header() {
 					<Icons.Coins /> Quests
 				</NavHeader.NavIconButton> */}
 
-				<NavHeader.NavIconButton 
-					href="/chats" 
+				<NavHeader.NavIconButton
+					href="/chats"
 					activeOnHrefs={["/chats"]}
 				>
 					<Icons.Chat /> Chats
@@ -47,12 +49,7 @@ export function Header() {
 					/>
 				</NavHeader.NavIconButton>
 
-				<NavHeader.NavIconButton
-					href="/dashboard/orders"
-					activeOnHrefs={["/dashboard/orders"]}
-				>
-					<Icons.Package /> Orders
-				</NavHeader.NavIconButton>
+				<OrdersPreferedButton />
 
 				<UserSettingsButton />
 			</NavHeader.SlotAuthorizedNavButtons>
@@ -66,7 +63,7 @@ function UserSettingsButton() {
 
 	return (
 		<Skeleton
-			asChild 
+			asChild
 			loading={isLoading}
 		>
 			<Avatar
@@ -77,4 +74,27 @@ function UserSettingsButton() {
 			/>
 		</Skeleton>
 	);
+}
+
+function OrdersPreferedButton() {
+	const [page] = useDashboardPreferedOrdersPage();
+	const className = 'min-w-[3.875rem]';
+
+	return page == 'orders' ? (
+		<NavHeader.NavIconButton
+			className={className}
+			href={PATH_DASHBOARD_ORDERS_PAGE}
+			activeOnHrefs={[PATH_DASHBOARD_ORDERS_PAGE]}
+		>
+			<Icons.Package /> Orders
+		</NavHeader.NavIconButton>
+	) : (
+		<NavHeader.NavIconButton
+			className={className}
+			href={PATH_DASHBOARD_SALES_PAGE}
+			activeOnHrefs={[PATH_DASHBOARD_SALES_PAGE]}
+		>
+			<Icons.Package /> Sales
+		</NavHeader.NavIconButton>
+	)
 }

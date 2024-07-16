@@ -65,7 +65,7 @@ export function Likes({ className, ...props }: HTMLArkProps<'div'>) {
 }
 
 export function Dislikes({ className, ...props }: HTMLArkProps<'div'>) {
-	const { likes } = useRatingStrictContext();
+	const { dislikes } = useRatingStrictContext();
 
 	return (
 		<div
@@ -73,7 +73,7 @@ export function Dislikes({ className, ...props }: HTMLArkProps<'div'>) {
 			className={cn("flex gap-[0.25rem] text-red-100 items-center font-semibold", className)}
 		>
 			<Icons.Dislikes className="size-[1em]" />
-			<span>{likes}</span>
+			<span>{dislikes}</span>
 		</div>
 	);
 }

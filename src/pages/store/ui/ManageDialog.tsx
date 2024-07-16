@@ -4,6 +4,7 @@ import { Button } from "~/shared/ui/kit/button";
 import { StoreManageDialog } from "~/features/store/manage";
 import { getStorePathname, useStoreStrictContext } from "~/entities/store";
 import { useRouter } from "next/navigation";
+import { PATH_DASHBOARD } from "~/shared/config/urls";
 
 export function ManageDialog() {
 	const router = useRouter();
@@ -17,7 +18,7 @@ export function ManageDialog() {
 					Settings
 				</Button>
 			}
-			onActionDeleteFulfilled={() => router.push(`/dashboard`)}
+			onActionDeleteFulfilled={() => router.push(PATH_DASHBOARD)}
 			onActionEditFulfilled={newStore => {
 				if(store.url != newStore.url)
 					router.push(getStorePathname(newStore.url))
