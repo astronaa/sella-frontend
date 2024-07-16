@@ -1,12 +1,12 @@
 'use client';
 
-import { 
-	Chat, 
-	ChatId, 
-	ChatMessage, 
-	ChatMessageId, 
-	mapDtoToChat, 
-	mapDtoToChatMessage 
+import {
+	Chat,
+	ChatId,
+	ChatMessage,
+	ChatMessageId,
+	mapDtoToChat,
+	mapDtoToChatMessage
 } from "~/shared/api/client";
 
 import { Socket } from "socket.io-client";
@@ -53,20 +53,30 @@ export function useChatSocket({ chatId = null, ...args }: UseChatSocket) {
 		(payload: components["schemas"]["ChatDTO"]) => {
 			const chat = mapDtoToChat(payload);
 			socket?.emit("listenChats");
+
+			if (chatId && chat.id != chatId)
+				return;
+			
 			args?.onNewChat?.(chat);
 		}
 	);
 
 	const onNewMessage = useCallbackRef(
 		(payload: components["schemas"]["MessageDto"]) => {
-			const message = mapDtoToChatMessage(payload)
+			const message = mapDtoToChatMessage(payload);
+			if (chatId && message.chatId != chatId)
+				return;
+
 			args?.onNewMessage?.(message);
 		}
 	);
 
 	const onChatUpdate = useCallbackRef(
 		(payload: components["schemas"]["ChatDTO"]) => {
-			const chat = mapDtoToChat(payload)
+			const chat = mapDtoToChat(payload);
+			if (chatId && chat.id != chatId)
+				return;
+
 			args?.onChatUpdate?.(chat);
 		}
 	);

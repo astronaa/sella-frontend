@@ -11,7 +11,7 @@ import { VSubmitButton } from "~/shared/ui/validation-inputs";
 import { FormApi } from "final-form";
 import { ChatProductCard } from "./ChatProductCard";
 import { Chat, productMock } from "~/shared/api/client";
-import { useChatSocket } from "~/entities/chat";
+import { useChatSetActive, useChatSocket } from "~/entities/chat";
 import { Skeleton } from "~/shared/ui/kit/skeleton";
 import { useReadMessagesOnMount } from "../api/read-chat";
 
@@ -31,6 +31,7 @@ export function ChatFrame({ chat, className, ...props }: ChatFrameProps) {
 	const autoscrollEnabledRef = useRef(true);
 	const containerRef = useRef<HTMLDivElement>(null);
 
+	useChatSetActive(chat?.id);
 	useReadMessagesOnMount(chat?.id);
 
 	const tryScrollToBottom = () => {

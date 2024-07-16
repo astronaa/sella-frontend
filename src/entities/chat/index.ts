@@ -6,6 +6,10 @@ export {
 } from './model/chat-socket/context'
 
 export {
+	useSetActive as useChatSetActive
+} from './model/active-chat';
+
+export {
 	ItemWithLink as ChatItemWithLink
 } from './ui/ItemWithLink';
 

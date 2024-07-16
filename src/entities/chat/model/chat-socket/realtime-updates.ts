@@ -10,6 +10,7 @@ import { queryClient } from "~/shared/config/query-client";
 import { produce } from "immer";
 import { InferQueryOptionsFnData } from "~/shared/lib/utility-types";
 import { useChatSocket } from "./context";
+import { isActiveChat } from "../active-chat";
 
 const onNewChat = (chat: Chat) => {
 	const chatsListQueryOptions = getChatsOptions();
@@ -63,6 +64,9 @@ const onNewMessage = (message: ChatMessage) => {
 				if (index != -1) {
 					const chat = chats[index];
 					chat.lastMessage = message;
+
+					if(!isActiveChat(chat.id))
+						chat.unreadMessagesCount++;
 					
 					if(index != 0) {
 						chats.splice(index, 1);
@@ -72,6 +76,9 @@ const onNewMessage = (message: ChatMessage) => {
 			});
 		}
 	);
+
+	if(!isActiveChat(message.chatId))
+		invalidateOverallReadCount();
 };
 
 function onChatUpdate(chat: Chat) {
