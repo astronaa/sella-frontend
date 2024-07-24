@@ -1,18 +1,15 @@
-/** @type {import('next').NextConfig} */
+const baseUrlMediaPattern = new URL('/api/media/**', process.env.NEXT_PUBLIC_API_URL);
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'https',
-				hostname: 'sella.veydlin.com',
-				pathname: '/api/media/**'
-			},
-			{
-				protocol: 'http',
-				hostname: 'localhost',
-				pathname: '/api/media/**'
-			},
+				hostname: baseUrlMediaPattern.hostname,
+				pathname: baseUrlMediaPattern.pathname,
+				port: baseUrlMediaPattern.port,
+				protocol: baseUrlMediaPattern.protocol.startsWith('https') ? 'https' : 'http'
+			}
 		]
 	},
 	webpack(config) {
