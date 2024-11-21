@@ -5,10 +5,11 @@ import { cn } from "~/shared/lib/cn";
 
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
-import { NavHeader } from "~/widgets/nav-header";
-import { Footer } from "~/widgets/footer";
+import { fontTTNorms } from "~/shared/assets/fonts/tt-norms-pro";
+// import { NavHeader } from "~/widgets/nav-header";
+// import { Footer } from "~/widgets/footer";
 
-const fontVariables = [fontInter.variable, fontManrope.variable];
+const fontVariables = [fontInter.variable, fontManrope.variable, fontTTNorms.variable];
 
 export const metadata: Metadata = {
 	title: "Sella.me",
@@ -23,11 +24,12 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={cn(...fontVariables, 'bg-black-06 text-white font-inter')}>
-				<NavHeader className='sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header' />
-				<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>
+				{/*<NavHeader className='sticky top-[1rem] w-[calc(100%-2rem)] mx-auto z-header' />*/}
+				{/*<div className='w-full min-h-full pt-[5rem] pb-[7.5rem]'>*/}
+				<div className='w-full min-h-full'>
 					{children}
 				</div>
-				<Footer />
+				{/*<Footer />*/}
 			</body>
 		</html>
 	);
