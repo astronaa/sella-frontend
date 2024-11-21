@@ -47,11 +47,11 @@ After you have found it, use the `ui` command:
 yarn ui add button # or something else instead of button
 ```
 
-Use snake-case to write the component name
+Use snake-case to write the component name.
 
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API;
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.

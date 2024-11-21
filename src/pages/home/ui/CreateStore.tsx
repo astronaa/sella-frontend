@@ -1,4 +1,4 @@
-import { Background } from "~/shared/ui/gradient-background";
+import { GradientBackground } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
@@ -8,7 +8,7 @@ import { StorefrontOpenControls } from "~/widgets/storefront-open";
 export function CreateStore() {
 	return (
 		<div className="flex flex-col relative overflow-hidden rounded-b-[3rem] pt-[7.5rem] max-xl:pt-[5rem] rounded-[3rem] px-4 md:mx-[1.25rem]">
-			<Background />
+			<GradientBackground />
 			<div className="flex justify-between items-end gap-[1rem] relative w-full max-w-content mx-auto max-lg:justify-center">
 				<div className="flex flex-col gap-[3rem] max-w-[35rem] w-full mb-[6.25rem] max-xl:mb-[5rem] flex-shrink-0">
 					<div className="flex flex-col gap-[1.5rem]">

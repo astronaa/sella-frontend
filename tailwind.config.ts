@@ -33,6 +33,7 @@ const config = {
 			fontFamily: {
 				inter: ['var(--font-inter)'],
 				manrope: ['var(--font-manrope)'],
+				tt: ['var(--font-tt-norms)'],
 			},
 			borderColor: {
 				secondary: 'rgba(255, 255, 255, 0.06)'
@@ -46,7 +47,7 @@ const config = {
 			},
 			maxWidth: {
 				content: '72.5rem'
-			}
+			},
 		},
 	},
 	parkUI: {
