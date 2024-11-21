@@ -1,4 +1,4 @@
-import { Background } from "~/shared/ui/gradient-background";
+import { GradientBackground } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { Heading } from "~/shared/ui/kit/heading";
@@ -12,7 +12,7 @@ export function EscrowBuyerSeller() {
 			className="flex flex-col relative overflow-hidden rounded-b-[3rem] pt-[7.5rem] 
 				max-xl:py-[5rem] rounded-[3rem] px-4 md:m-[1.25rem]"
 		>
-			<Background />
+			<GradientBackground />
 			<div className="flex flex-grow items-center justify-between gap-[1rem] relative w-full max-w-content m-auto max-lg:justify-center">
 				<div className="flex flex-col gap-[3rem] max-w-[35rem] w-full flex-shrink-0">
 					<div className="flex flex-col gap-[1.5rem]">

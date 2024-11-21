@@ -48,9 +48,6 @@ const config = {
 			maxWidth: {
 				content: '72.5rem'
 			},
-			rotate: {
-				'15': '15deg',
-			}
 		},
 	},
 	parkUI: {

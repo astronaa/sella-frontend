@@ -1,9 +1,7 @@
 import { HTMLAttributes } from "react";
 import { cn } from "~/shared/lib/cn";
 
-export function Background({
-	                           className
-}: HTMLAttributes<HTMLDivElement>) {
+export function GradientBackground({ className }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div className={cn("absolute top-0 left-0 w-full h-full bg-[#ffffff0f]", className)}>
 			<div

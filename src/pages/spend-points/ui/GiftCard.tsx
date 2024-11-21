@@ -1,4 +1,4 @@
-import { Background } from "src/shared/ui/gradient-background";
+import { GradientBackground } from "src/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 
 export function GiftCard({
@@ -10,7 +10,7 @@ export function GiftCard({
 }) {
 	return (
 		<div className='relative overflow-hidden border border-secondary rounded-[1.25rem] p-4 pr-8 flex flex-col justify-between'>
-			<Background className='z-[-1]' />
+			<GradientBackground className='z-[-1]' />
 
 			<div className='text-5xl text-white'>${price}</div>
 
