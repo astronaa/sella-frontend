@@ -7,11 +7,12 @@ import type { Metadata } from "next";
 import { cn } from "~/shared/lib/cn";
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
+import { fontTTNorms } from "~/shared/assets/fonts/tt-norms-pro";
 import { Providers } from "./_providers";
 import { PageRootLayout } from "~/pages/root-layout";
 
 
-const fontVariables = [fontInter.variable, fontManrope.variable];
+const fontVariables = [fontInter.variable, fontManrope.variable, fontTTNorms.variable];
 
 export const metadata: Metadata = {
 	title: "Sella.me",
@@ -33,6 +34,5 @@ export default function RootLayout({
 				</Providers>
 			</body>
 		</html>
-
 	);
 }
