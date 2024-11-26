@@ -7,18 +7,18 @@ export function Component() {
 	return (
 		<div className="lg:h-screen lg:overflow-hidden">
 			<div className="flex flex-col items-center min-h-screen relative text-center font-tt bg-black">
-				<GradientBackground className='z-1 lg:fixed lg:bottom-0' />
+				<GradientBackground className='z-1 lg:fixed lg:bottom-0 bg-transparent' />
 
 				<Logo className="mt-6 mb-24 relative z-10" />
 
-				<div className='relative z-10'>
+				<div className='flex flex-col relative z-10 max-md:gap-[1rem]'>
 					<p className='text-xl max-md:text-sm uppercase text-black-74 text-center font-[600] tracking-[0.1875rem]'>
 						the marketplace of tomorrow
 					</p>
 
 					<p
-						className="text-9xl text-center bg-clip-text text-transparent font-[600] 
-							max-md:text-7xl leading-normal max-md:leading-normal max-sm:leading-tight"
+						className="text-9xl text-center bg-clip-text text-transparent font-[500] 
+							max-md:text-7xl leading-normal max-md:leading-[100%]"
 						style={{ backgroundImage: 'linear-gradient(180deg, #EC9515 0%, #FFDD00 100%)', }}
 					>
 						Coming Soon
