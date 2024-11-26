@@ -19,7 +19,7 @@ export function Component() {
 					<p
 						className="text-9xl text-center bg-clip-text text-transparent font-[600] 
 							max-md:text-7xl leading-normal max-md:leading-normal max-sm:leading-tight"
-						style={{ background: 'linear-gradient(180deg, #EC9515 0%, #FFDD00 100%)', }}
+						style={{ backgroundImage: 'linear-gradient(180deg, #EC9515 0%, #FFDD00 100%)', }}
 					>
 						Coming Soon
 					</p>
