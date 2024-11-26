@@ -5,7 +5,7 @@ import { GradientBackground } from '~/shared/ui/gradient-background';
 
 export function Component() {
 	return (
-		<div className="lg:h-screen lg:overflow-hidden">
+		<div className="h-screen overflow-hidden">
 			<div className="flex flex-col items-center min-h-screen relative text-center font-tt bg-black">
 				<GradientBackground className='z-1 lg:fixed lg:bottom-0 bg-transparent' />
 
@@ -25,7 +25,7 @@ export function Component() {
 					</p>
 				</div>
 
-				<div className="w-full overflow-hidden flex justify-center items-center">
+				<div className="relative md:top-[-7rem] w-full overflow-hidden flex justify-center items-center pointer-events-none">
 					<Image
 						className='rotate-[-15deg] max-md:scale-125 max-md:mt-[4rem]'
 						src={ImgSrc}
