@@ -1025,6 +1025,7 @@ export interface components {
         ChatDTO: {
             id: string;
             buyer: components["schemas"]["BaseUserDto"];
+            seller: components["schemas"]["BaseUserDto"];
             isFrozen: boolean;
             product: components["schemas"]["BaseProductDto"];
             lastMessage: components["schemas"]["Message"] | null;
