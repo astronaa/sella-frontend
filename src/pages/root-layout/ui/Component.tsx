@@ -7,7 +7,8 @@ import { ChatSocketProvider } from "~/entities/chat";
 import { Header } from "./Header";
 import { Footer } from "~/widgets/footer";
 
-export function Component({ children }: PropsWithChildren) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function Component({ children }: PropsWithChildren) {
 	return (
 		<div className='w-full min-h-full'>
 			{children}
@@ -34,3 +35,5 @@ function ProductionComponent({ children }: PropsWithChildren) {
 		</ChatSocketProvider>
 	);
 }
+
+export { ProductionComponent as Component }
