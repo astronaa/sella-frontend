@@ -77,7 +77,7 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 						</VTextControl.Root>
 						<VTextControl.Root className='w-full' name='holdPeriod'>
 							<VTextControl.Label>
-								Escrow
+								Escrow (days)
 							</VTextControl.Label>
 							<VTextControl.Input
 								type='number'
