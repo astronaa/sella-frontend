@@ -332,7 +332,7 @@ function Setup2faDialogTest() {
 	);
 }
 
-export function RegisterFlowDialogTest() {
+function RegisterFlowDialogTest() {
 	const { isOpen, open, handleOpenChange } = useDialogState();
 
 	return (
