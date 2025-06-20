@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import { DotLottiePlayer } from '@dotlottie/react-player';
-import { Button } from '~/shared/ui/kit/button';
-import { Dialog } from '~/shared/ui/kit';
+import { DotLottiePlayer } from "@dotlottie/react-player";
+import { Button } from "~/shared/ui/kit/button";
+import { Dialog } from "~/shared/ui/kit";
 
-type RegisterSuccessDialog = Dialog.RootProps & {
-	onContinue: () => void
+interface RegisterSuccessDialog extends Dialog.BaseDialogProps {
+  onContinue: () => void;
 }
 
-export function RegisterSuccessDialog({ onContinue, ...props }: RegisterSuccessDialog) {
+export function RegisterSuccessDialog({
+	onContinue,
+	...props
+}: RegisterSuccessDialog) {
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />
@@ -20,22 +23,21 @@ export function RegisterSuccessDialog({ onContinue, ...props }: RegisterSuccessD
 					<Dialog.ContentHeading>
 						<Dialog.Title>Welcome, @username</Dialog.Title>
 						<Dialog.Description>
-							This could be the beginning of something special. Just a few more formalities,
-							and we&apos;ll have your shop set up in no time.
+              This could be the beginning of something special. Just a few more
+              formalities, and we&apos;ll have your shop set up in no time.
 						</Dialog.Description>
 					</Dialog.ContentHeading>
 
 					<DotLottiePlayer
-						src='/lottie/chicken.lottie'
-						className='size-[11rem]' autoplay loop
+						src="/lottie/chicken.lottie"
+						className="size-[11rem]"
+						autoplay
+						loop
 					/>
 
 					<Dialog.ContentFooter>
-						<Button 
-							className='w-full' size='lg'
-							onClick={onContinue}
-						>
-							Continue
+						<Button className="w-full" size="lg" onClick={onContinue}>
+              Continue
 						</Button>
 					</Dialog.ContentFooter>
 				</Dialog.Content>

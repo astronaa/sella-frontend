@@ -1,16 +1,20 @@
-'use client';
+"use client";
 
-import { DotLottiePlayer } from '@dotlottie/react-player';
-import { Store } from '~/shared/api/model';
-import { Button } from '~/shared/ui/kit/button';
-import { Dialog } from '~/shared/ui/kit';
+import { DotLottiePlayer } from "@dotlottie/react-player";
+import { Store } from "~/shared/api/model";
+import { Button } from "~/shared/ui/kit/button";
+import { Dialog } from "~/shared/ui/kit";
 
-type RegisterSuccessDialog = Dialog.RootProps & {
-	store: Store | null,
-	onContinue: () => void
+interface RegisterSuccessDialog extends Dialog.BaseDialogProps {
+  store: Store | null;
+  onContinue: () => void;
 }
 
-export function CreateStoreSuccessDialog({ onContinue, store, ...props }: RegisterSuccessDialog) {
+export function CreateStoreSuccessDialog({
+	onContinue,
+	store,
+	...props
+}: RegisterSuccessDialog) {
 	return (
 		<Dialog.Root {...props}>
 			<Dialog.Backdrop />
@@ -20,23 +24,26 @@ export function CreateStoreSuccessDialog({ onContinue, store, ...props }: Regist
 					<Dialog.CloseButton />
 
 					<Dialog.ContentHeading>
-						<Dialog.Title>Yoohoo!<br /> {store?.name} is now open!</Dialog.Title>
+						<Dialog.Title>
+              Yoohoo!
+							<br /> {store?.name} is now open!
+						</Dialog.Title>
 						<Dialog.Description>
-							Let&apos;s upload your first item to start showcasing what you have to offer.
+              Let&apos;s upload your first item to start showcasing what you
+              have to offer.
 						</Dialog.Description>
 					</Dialog.ContentHeading>
 
 					<DotLottiePlayer
-						src='/lottie/hooyak.lottie'
-						className='size-[11rem]' autoplay loop
+						src="/lottie/hooyak.lottie"
+						className="size-[11rem]"
+						autoplay
+						loop
 					/>
 
 					<Dialog.ContentFooter>
-						<Button
-							className='w-full' size='lg'
-							onClick={onContinue}
-						>
-							Add your first item
+						<Button className="w-full" size="lg" onClick={onContinue}>
+              Add your first item
 						</Button>
 					</Dialog.ContentFooter>
 				</Dialog.Content>
