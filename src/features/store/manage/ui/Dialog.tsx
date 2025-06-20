@@ -1,40 +1,42 @@
-'use client';
+"use client";
 
-import { Dialog } from '~/shared/ui/kit';
-import { EditForm } from './EditForm';
-import { ReactNode, useId } from 'react';
-import { Button } from '~/shared/ui/kit/button';
-import { Store } from '~/shared/api/model';
-import { DeleteButton } from './DeleteButton';
+import { Dialog } from "~/shared/ui/kit";
+import { EditForm } from "./EditForm";
+import { ReactNode, useId } from "react";
+import { Button } from "~/shared/ui/kit/button";
+import { Store } from "~/shared/api/model";
+import { DeleteButton } from "./DeleteButton";
 
-type ManageDialogProps = Dialog.RootProps & {
-	store: Store,
-	triggerElement?: ReactNode
-};
+interface ManageDialogProps extends Dialog.BaseDialogProps {
+  store: Store;
+  triggerElement?: ReactNode;
+}
 
-export function ManageDialog({ store, triggerElement, ...props }: ManageDialogProps) {
+export function ManageDialog({
+	store,
+	triggerElement,
+	...props
+}: ManageDialogProps) {
 	const formId = useId();
 
 	const onStoreEdit = () => {
-		props?.onOpenChange?.({ open: false })
-	}
+		props?.onOpenChange?.({ open: false });
+	};
 
 	const onStoreDelete = () => {
-		props?.onOpenChange?.({ open: false })
-	}
+		props?.onOpenChange?.({ open: false });
+	};
 
 	return (
 		<Dialog.Root {...props}>
 			{triggerElement && (
-				<Dialog.Trigger asChild>
-					{triggerElement}
-				</Dialog.Trigger>
+				<Dialog.Trigger asChild>{triggerElement}</Dialog.Trigger>
 			)}
 
 			<Dialog.Backdrop />
 
 			<Dialog.Positioner>
-				<Dialog.Content className='items-start w-[37.5rem] p-[2.1875rem] gap-[2rem]'>
+				<Dialog.Content className="items-start w-[37.5rem] p-[2.1875rem] gap-[2rem]">
 					<Dialog.CloseButton />
 
 					<Dialog.ContentHeading>
@@ -42,8 +44,9 @@ export function ManageDialog({ store, triggerElement, ...props }: ManageDialogPr
 					</Dialog.ContentHeading>
 
 					<EditForm
-						className='gap-[2rem]'
-						id={formId} store={store}
+						className="gap-[2rem]"
+						id={formId}
+						store={store}
 						onActionFulfilled={onStoreEdit}
 					/>
 
@@ -53,8 +56,8 @@ export function ManageDialog({ store, triggerElement, ...props }: ManageDialogPr
 							onActionFulfilled={onStoreDelete}
 						/>
 
-						<Button form={formId} className='w-full' size='lg'>
-							Save and Close
+						<Button form={formId} className="w-full" size="lg">
+              Save and Close
 						</Button>
 					</Dialog.ContentFooter>
 				</Dialog.Content>
