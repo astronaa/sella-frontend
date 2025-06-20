@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button, IconButton } from "~/shared/ui/kit/button";
 import { Icons } from "~/shared/ui/icons";
@@ -21,45 +21,39 @@ import { ProductCreateDialog } from "~/features/product/create";
 import { RadioGroup, ToggleGroup, Select } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
-import {ReportShopDialog, ReportSuccessDialog} from "~/features/report-shop";
+import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
 
 export default function Home() {
 	return (
 		<main className="flex min-h-screen flex-col items-center gap-16 p-24">
-			<div className='flex gap-4 max-md:flex-wrap'>
-				<Button variant='outline'>
-					Buy $SELLA
-				</Button>
-				<Button variant='solid'>
-					Open Storefront
-				</Button>
-				<Button colorPalette='gray'>
-					Open Storefront
-				</Button>
+			<div className="flex gap-4 max-md:flex-wrap">
+				<Button variant="outline">Buy $SELLA</Button>
+				<Button variant="solid">Open Storefront</Button>
+				<Button colorPalette="gray">Open Storefront</Button>
 
-				<div className='flex flex-col gap-3'>
-					<Button variant='subtle' colorPalette='red'>
+				<div className="flex flex-col gap-3">
+					<Button variant="subtle" colorPalette="red">
 						<Icons.ThumbDown /> Negative
 					</Button>
-					<Button variant='subtle' colorPalette='red' active>
+					<Button variant="subtle" colorPalette="red" active>
 						<Icons.ThumbDown /> Negative
 					</Button>
-					<Button variant='subtle' colorPalette='green'>
+					<Button variant="subtle" colorPalette="green">
 						<Icons.ThumbUp /> Positive
 					</Button>
-					<Button variant='subtle' colorPalette='green' active>
+					<Button variant="subtle" colorPalette="green" active>
 						<Icons.ThumbUp /> Positive
 					</Button>
 				</div>
 
-				<div className='flex flex-col gap-4'>
-					<div className='flex gap-4 max-md:flex-wrap'>
+				<div className="flex flex-col gap-4">
+					<div className="flex gap-4 max-md:flex-wrap">
 						{Object.entries(Icons).map(([iconName, Icon]) => (
-							<Icon className='text-accent-100' key={iconName} />
+							<Icon className="text-accent-100" key={iconName} />
 						))}
 					</div>
 
-					<div className='grid grid-cols-3 gap-4 max-md:grid-cols-1'>
+					<div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
 						<RegisterDialogTest />
 						<Setup2faDialogTest />
 						<StoreCreateDialogTest />
@@ -72,33 +66,42 @@ export default function Home() {
 				</div>
 			</div>
 
-			<div className='flex gap-8 max-md:flex-wrap'>
+			<div className="flex gap-8 max-md:flex-wrap">
 				<RadioGroupTest />
 
-				<div className='flex flex-col gap-3'>
-					<PinInput length={4} defaultValue={['2', '3']} />
-					<PinInput length={4} error defaultValue={['2']} />
+				<div className="flex flex-col gap-3">
+					<PinInput length={4} defaultValue={["2", "3"]} />
+					<PinInput length={4} error defaultValue={["2"]} />
 				</div>
 
-				<div className='flex flex-col gap-3'>
-					<div className='flex gap-4'>
+				<div className="flex flex-col gap-3">
+					<div className="flex gap-4">
 						<ValidationTest />
 						<SelectTest />
 					</div>
 
-					<Pagination count={190} pageSize={10} siblingCount={1} defaultPage={1} />
+					<Pagination
+						count={190}
+						pageSize={10}
+						siblingCount={1}
+						defaultPage={1}
+					/>
 				</div>
 			</div>
 
-			<div className='flex gap-3 max-md:flex-wrap'>
+			<div className="flex gap-3 max-md:flex-wrap">
 				<ToggleGroupTest />
 			</div>
 
-			<div className='flex gap-8 items-start max-md:flex-wrap'>
+			<div className="flex gap-8 items-start max-md:flex-wrap">
 				<StoreCardTest />
 				<ProductCardTest />
 
-				<DotLottiePlayer className='size-[15rem]' src='/lottie/chicken.lottie' autoplay>
+				<DotLottiePlayer
+					className="size-[15rem]"
+					src="/lottie/chicken.lottie"
+					autoplay
+				>
 					<Controls />
 				</DotLottiePlayer>
 			</div>
@@ -108,60 +111,64 @@ export default function Home() {
 
 function ToggleGroupTest(props: ToggleGroup.RootProps) {
 	const options = [
-		{ id: '1', label: 'Spam' },
-		{ id: '2', label: 'Nudity' },
-		{ id: '3', label: 'Scam' },
-		{ id: '4', label: 'Illegal' },
-	]
+		{ id: "1", label: "Spam" },
+		{ id: "2", label: "Nudity" },
+		{ id: "3", label: "Scam" },
+		{ id: "4", label: "Illegal" },
+	];
 
 	return (
-		<ToggleGroup.Root multiple {...props}>
+		<ToggleGroup.Root {...props} multiple>
 			{options.map(({ id, label }) => (
 				<ToggleGroup.Item key={id} value={id} aria-label={label}>
 					{label}
 				</ToggleGroup.Item>
 			))}
 		</ToggleGroup.Root>
-	)
+	);
 }
 
 function RadioGroupTest(props: RadioGroup.RootProps) {
 	const options = [
-		{ id: '1', label: 'Pay with $SELLA' },
-		{ id: '2', label: 'Pay with $USDT' },
-		{ id: '3', label: 'Pay with $CLICK', disabled: true },
-	]
+		{ id: "1", label: "Pay with $SELLA" },
+		{ id: "2", label: "Pay with $USDT" },
+		{ id: "3", label: "Pay with $CLICK", disabled: true },
+	];
 
 	return (
 		<RadioGroup.Root defaultValue="react" {...props}>
 			{options.map((option) => (
-				<RadioGroup.Item key={option.id} value={option.id} disabled={option.disabled}>
+				<RadioGroup.Item
+					key={option.id}
+					value={option.id}
+					disabled={option.disabled}
+				>
 					<RadioGroup.ItemControl />
 					<RadioGroup.ItemText>{option.label}</RadioGroup.ItemText>
 				</RadioGroup.Item>
 			))}
 		</RadioGroup.Root>
-	)
+	);
 }
 
 const schema = z.object({
-	test: z.string().min(3, 'Min 3 symbols')
-})
+	test: z.string().min(3, "Min 3 symbols"),
+});
 
 function ValidationTest() {
 	return (
 		<Form
-			onSubmit={() => { return; }}
+			onSubmit={() => {
+				return;
+			}}
 			validate={zodValidate(schema)}
 		>
 			{() => (
-				<div className='flex gap-4'>
-					<VTextControl.Root name='test'>
+				<div className="flex gap-4">
+					<VTextControl.Root name="test">
 						<VTextControl.Label>Input</VTextControl.Label>
 						<VTextControl.Input />
-						<VTextControl.Description>
-							Description
-						</VTextControl.Description>
+						<VTextControl.Description>Description</VTextControl.Description>
 						<VTextControl.ErrorText />
 					</VTextControl.Root>
 				</div>
@@ -172,17 +179,17 @@ function ValidationTest() {
 
 const store: Store = {
 	id: 1,
-	name: 'Store Name',
-	shortName: '@storename',
-	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
+	name: "Store Name",
+	shortName: "@storename",
+	description: "Market, Limit, Stop Limit, and Auction Mode orders.",
 	isVerified: true,
 	previewImage: null,
 	rating: {
 		likes: 10,
 		dislikes: 2,
-		reviewsCount: 575
-	}
-}
+		reviewsCount: 575,
+	},
+};
 
 function StoreCardTest() {
 	return (
@@ -202,14 +209,14 @@ function StoreCardTest() {
 
 const product: Product = {
 	id: 2,
-	name: 'Product Name',
-	description: 'Market, Limit, Stop Limit, and Auction Mode orders.',
-	shortDescription: 'Market, Limit, Stop Limit, and Auction Mode orders.',
+	name: "Product Name",
+	description: "Market, Limit, Stop Limit, and Auction Mode orders.",
+	shortDescription: "Market, Limit, Stop Limit, and Auction Mode orders.",
 	previewImage: null,
 	galleryImages: [],
-	category: 'Category',
-	price: 2.99
-}
+	category: "Category",
+	price: 2.99,
+};
 
 function ProductCardTest() {
 	return (
@@ -230,13 +237,11 @@ function RegisterDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Register
+			<Button colorPalette="gray" onClick={open}>
+        Register
 			</Button>
 
-			<RegisterDialog
-				open={isOpen} onOpenChange={handleOpenChange}
-			/>
+			<RegisterDialog open={isOpen} onOpenChange={handleOpenChange} />
 		</>
 	);
 }
@@ -246,13 +251,11 @@ function StoreCreateDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Create Store
+			<Button colorPalette="gray" onClick={open}>
+        Create Store
 			</Button>
 
-			<StoreCreateDialog
-				open={isOpen} onOpenChange={handleOpenChange}
-			/>
+			<StoreCreateDialog open={isOpen} onOpenChange={handleOpenChange} />
 		</>
 	);
 }
@@ -262,8 +265,8 @@ function StoreManageDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Manage Store
+			<Button colorPalette="gray" onClick={open}>
+        Manage Store
 			</Button>
 
 			<StoreManageDialog
@@ -280,8 +283,8 @@ function ProductCreateDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Create Product
+			<Button colorPalette="gray" onClick={open}>
+        Create Product
 			</Button>
 
 			<ProductCreateDialog
@@ -298,8 +301,8 @@ function ProductManageDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Manage Product
+			<Button colorPalette="gray" onClick={open}>
+        Manage Product
 			</Button>
 
 			<ProductManageDialog
@@ -316,15 +319,16 @@ function Setup2faDialogTest() {
 
 	return (
 		<>
-			<Button colorPalette='gray' onClick={open}>
-				Setup 2fa
+			<Button colorPalette="gray" onClick={open}>
+        Setup 2fa
 			</Button>
 
 			<AuthChannelsSetupTwoFaDialog
-				open={isOpen} onOpenChange={handleOpenChange}
+				open={isOpen}
+				onOpenChange={handleOpenChange}
 				cancelButton={
-					<Button className='w-full' colorPalette='gray'>
-						Setup Later
+					<Button className="w-full" colorPalette="gray">
+            Setup Later
 					</Button>
 				}
 			/>
@@ -337,18 +341,12 @@ function RegisterFlowDialogTest() {
 
 	return (
 		<>
-			<Button onClick={open}>
-				Register Flow
-			</Button>
+			<Button onClick={open}>Register Flow</Button>
 
-			<RegisterFlowDialog
-				open={isOpen}
-				onOpenChange={handleOpenChange}
-			/>
+			<RegisterFlowDialog open={isOpen} onOpenChange={handleOpenChange} />
 		</>
 	);
 }
-
 
 function ReportShopDialogTest() {
 	const { isOpen, open, handleOpenChange } = useDialogState();
@@ -357,8 +355,8 @@ function ReportShopDialogTest() {
 	return (
 		<>
 			<IconButton
-				size='lg'
-				colorPalette='gray'
+				size="lg"
+				colorPalette="gray"
 				aria-label="Report"
 				onClick={open}
 			>
@@ -371,29 +369,29 @@ function ReportShopDialogTest() {
 				onActionFulfilled={toggleSucess}
 			/>
 
-			<ReportSuccessDialog open={isOpenSucess} onContinue={() => {
-				toggleSucess()
-				handleOpenChange({ open: false })
-			}} />
+			<ReportSuccessDialog
+				open={isOpenSucess}
+				onContinue={() => {
+					toggleSucess();
+					handleOpenChange({ open: false });
+				}}
+			/>
 		</>
 	);
 }
 
 const SelectTest = () => {
 	const items = [
-		{ label: 'My Sales', value: 'sales' },
-		{ label: 'My Orders', value: 'orders' },
-	]
+		{ label: "My Sales", value: "sales" },
+		{ label: "My Orders", value: "orders" },
+	];
 
 	return (
-		<Select.Root
-			items={items}
-			defaultValue={['sales']}
-		>
+		<Select.Root items={items} defaultValue={["sales"]}>
 			<Select.Label>Framework</Select.Label>
 			<Select.Control>
 				<Select.Trigger asChild>
-					<Button colorPalette='gray'>
+					<Button colorPalette="gray">
 						<Select.ValueText />
 						<Icons.ChevronDown />
 					</Button>
@@ -401,7 +399,7 @@ const SelectTest = () => {
 			</Select.Control>
 			<Select.Positioner>
 				<Select.Content>
-					<Select.ItemGroup id='options'>
+					<Select.ItemGroup id="options">
 						{items.map((item) => (
 							<Select.Item key={item.value} item={item}>
 								<Select.ItemText>{item.label}</Select.ItemText>
@@ -411,5 +409,5 @@ const SelectTest = () => {
 				</Select.Content>
 			</Select.Positioner>
 		</Select.Root>
-	)
-}
+	);
+};
