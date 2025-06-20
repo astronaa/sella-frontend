@@ -98,7 +98,8 @@ const BasePositioner = forwardRef<
 
 BasePositioner.displayName = "BaseSelectPositioner";
 
-export const Root = withProvider(BaseRoot, "root");
+const WrappedRoot = withProvider(BaseRoot, "root");
+export const Root = WrappedRoot as typeof BaseRoot;
 export const ClearTrigger = withContext(Select.ClearTrigger, "clearTrigger");
 export const Content = withContext(Select.Content, "content");
 export const Control = withContext(Select.Control, "control");
