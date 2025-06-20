@@ -1,45 +1,47 @@
-'use client';
+"use client";
 
-import { ReactNode, useState } from 'react';
-import { Form } from 'react-final-form';
-import { z } from 'zod';
-import { zodValidate } from '~/shared/lib/zod-final-form';
-import { Icons } from '~/shared/ui/icons';
-import { Button } from '~/shared/ui/kit/button';
-import { Dialog } from '~/shared/ui/kit';
-import { DividerWithElement } from '~/shared/ui/kit/divider';
-import { VTextControl } from '~/shared/ui/validation-inputs';
-import { VerifyEmailDialogContent } from './VerifyEmailDialog';
+import { ReactNode, useState } from "react";
+import { Form } from "react-final-form";
+import { z } from "zod";
+import { zodValidate } from "~/shared/lib/zod-final-form";
+import { Icons } from "~/shared/ui/icons";
+import { Button } from "~/shared/ui/kit/button";
+import { Dialog } from "~/shared/ui/kit";
+import { DividerWithElement } from "~/shared/ui/kit/divider";
+import { VTextControl } from "~/shared/ui/validation-inputs";
+import { VerifyEmailDialogContent } from "./VerifyEmailDialog";
 
-type SetupTwoFaDialogProps = Dialog.RootProps & {
-	onActionFulfilled?: () => void,
-	cancelButton?: ReactNode
-};
+interface SetupTwoFaDialogProps extends Dialog.BaseDialogProps {
+  onActionFulfilled?: () => void;
+  cancelButton?: ReactNode;
+}
 
 const schema = z.object({
-	email: z.string().email().optional()
+	email: z.string().email().optional(),
 });
 
-export function SetupTwoFaDialog({ onActionFulfilled, cancelButton, ...props }: SetupTwoFaDialogProps) {
+export function SetupTwoFaDialog({
+	onActionFulfilled,
+	cancelButton,
+	...props
+}: SetupTwoFaDialogProps) {
 	const [isVerifyEmailOpened, setIsVerifyEmailOpened] = useState(false);
 	const open = !!props?.open;
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onSubmit = (values: z.infer<typeof schema>) => {
 		setIsVerifyEmailOpened(true);
-	}
+	};
 
 	return (
 		<>
 			<VerifyEmailDialogContent
-				{...props} open={open && isVerifyEmailOpened}
+				{...props}
+				open={open && isVerifyEmailOpened}
 				onActionFulfilled={onActionFulfilled}
 			/>
 
-			<Dialog.Root
-				{...props}
-				open={open && !isVerifyEmailOpened}
-			>
+			<Dialog.Root {...props} open={open && !isVerifyEmailOpened}>
 				<Dialog.Backdrop />
 
 				<Dialog.Positioner>
@@ -52,26 +54,28 @@ export function SetupTwoFaDialog({ onActionFulfilled, cancelButton, ...props }: 
 									<Dialog.ContentHeading>
 										<Dialog.Title>Set up 2FA</Dialog.Title>
 										<Dialog.Description>
-											What’s your preferred method for receiving Sella alerts?
-											Select email, Telegram, or both –and you can always change this later.
+                      What’s your preferred method for receiving Sella alerts?
+                      Select email, Telegram, or both –and you can always change
+                      this later.
 										</Dialog.Description>
 									</Dialog.ContentHeading>
 
-									<div className='flex flex-col gap-[2rem] w-full'>
+									<div className="flex flex-col gap-[2rem] w-full">
 										<Button
-											className='w-full gap-[0.5rem]'
-											colorPalette='social' size='lg'
+											className="w-full gap-[0.5rem]"
+											colorPalette="social"
+											size="lg"
 										>
 											<Icons.Telegram /> Telegram
 										</Button>
 
-										<DividerWithElement className='w-full'>
-											Or
+										<DividerWithElement className="w-full">
+                      Or
 										</DividerWithElement>
 
-										<VTextControl.Root name='email'>
+										<VTextControl.Root name="email">
 											<VTextControl.Label>Email Address</VTextControl.Label>
-											<VTextControl.Input type='email' />
+											<VTextControl.Input type="email" />
 											<VTextControl.ErrorText />
 										</VTextControl.Root>
 									</div>
@@ -79,13 +83,13 @@ export function SetupTwoFaDialog({ onActionFulfilled, cancelButton, ...props }: 
 									<Dialog.ContentFooter>
 										{cancelButton ?? (
 											<Dialog.CloseTrigger asChild>
-												<Button className='w-full' colorPalette='gray'>
-													Cancel
+												<Button className="w-full" colorPalette="gray">
+                          Cancel
 												</Button>
 											</Dialog.CloseTrigger>
 										)}
-										<Button onClick={form.submit} className='w-full' size='lg'>
-											Continue
+										<Button onClick={form.submit} className="w-full" size="lg">
+                      Continue
 										</Button>
 									</Dialog.ContentFooter>
 								</>
