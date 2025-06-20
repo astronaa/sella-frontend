@@ -18,7 +18,7 @@ import { AuthChannelsSetupTwoFaDialog } from "~/features/auth-channels";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { StoreCreateDialog } from "~/features/store/create";
 import { ProductCreateDialog } from "~/features/product/create";
-import { RadioGroup, ToggleGroup, Select } from "~/shared/ui/kit";
+import { RadioGroup, Select, ToggleGroup } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
 import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
@@ -118,7 +118,7 @@ function ToggleGroupTest(props: ToggleGroup.RootProps) {
 	];
 
 	return (
-		<ToggleGroup.Root {...props} multiple>
+		<ToggleGroup.Root multiple {...props}>
 			{options.map(({ id, label }) => (
 				<ToggleGroup.Item key={id} value={id} aria-label={label}>
 					{label}
