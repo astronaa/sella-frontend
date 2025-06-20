@@ -18,7 +18,7 @@ import { AuthChannelsSetupTwoFaDialog } from "~/features/auth-channels";
 import { RegisterFlowDialog } from "~/widgets/register-flow";
 import { StoreCreateDialog } from "~/features/store/create";
 import { ProductCreateDialog } from "~/features/product/create";
-import { /* RadioGroup */ Select /* ToggleGroup */ } from "~/shared/ui/kit";
+import { RadioGroup, Select, ToggleGroup } from "~/shared/ui/kit";
 import { ProductManageDialog } from "~/features/product/manage";
 import { StoreManageDialog } from "~/features/store/manage";
 import { ReportShopDialog, ReportSuccessDialog } from "~/features/report-shop";
@@ -67,7 +67,7 @@ export default function Home() {
 			</div>
 
 			<div className="flex gap-8 max-md:flex-wrap">
-				{/* <RadioGroupTest /> */}
+				<RadioGroupTest />
 
 				<div className="flex flex-col gap-3">
 					<PinInput length={4} defaultValue={["2", "3"]} />
@@ -90,7 +90,7 @@ export default function Home() {
 			</div>
 
 			<div className="flex gap-3 max-md:flex-wrap">
-				{/* <ToggleGroupTest /> */}
+				<ToggleGroupTest />
 			</div>
 
 			<div className="flex gap-8 items-start max-md:flex-wrap">
@@ -109,7 +109,7 @@ export default function Home() {
 	);
 }
 
-/* function ToggleGroupTest(props: ToggleGroup.RootProps) {
+function ToggleGroupTest(props: ToggleGroup.RootProps) {
 	const options = [
 		{ id: "1", label: "Spam" },
 		{ id: "2", label: "Nudity" },
@@ -126,9 +126,9 @@ export default function Home() {
 			))}
 		</ToggleGroup.Root>
 	);
-} */
+}
 
-/* function RadioGroupTest(props: RadioGroup.RootProps) {
+function RadioGroupTest(props: RadioGroup.RootProps) {
 	const options = [
 		{ id: "1", label: "Pay with $SELLA" },
 		{ id: "2", label: "Pay with $USDT" },
@@ -150,7 +150,7 @@ export default function Home() {
 		</RadioGroup.Root>
 	);
 }
- */
+
 const schema = z.object({
 	test: z.string().min(3, "Min 3 symbols"),
 });
