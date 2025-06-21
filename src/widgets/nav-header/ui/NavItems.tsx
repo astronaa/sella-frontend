@@ -14,7 +14,7 @@ export function NavItems({ className, ...props }: HTMLAttributes<HTMLDivElement>
 			<Link href='/#features'>
 				Features
 			</Link>
-			<Link href='/#whitepaper'>
+			<Link href='https://sellastore.gitbook.io/whitepaper'>
 				Whitepaper
 			</Link>
 			<Link href='/#roadmap'>
