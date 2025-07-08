@@ -30,5 +30,3 @@ function Addon({ className, ...props }: AddonProps) {
 		</span>
 	);
 }
-
-
