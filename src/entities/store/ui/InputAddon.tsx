@@ -20,7 +20,7 @@ function Addon({ className, ...props }: AddonProps) {
 			{...props}
 			className={cn('flex items-center absolute top-0 h-full ps-[1rem] text-black-60 cursor-default', className)}
 		>
-			sella.me/
+			sella.store/
 		</span>
 	);
 }
