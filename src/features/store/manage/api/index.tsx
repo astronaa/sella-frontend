@@ -7,9 +7,15 @@ import { apiClient } from "~/shared/api/client";
 import { FormError } from '~/shared/lib/errors';
 import { storeQueries } from '~/entities/store';
 
+const fileSchema = typeof File !== 'undefined'
+	? z.instanceof(File)
+	: z.any().refine(val => val && typeof val.name === 'string' && typeof val.size === 'number', {
+		message: "Expected a File object"
+	});
+
 export const schema = apiClient.stores.schemaUpdate.merge(
 	z.object({
-		previewImage: z.instanceof(File).optional()
+		previewImage: fileSchema.optional()
 	})
 );
 
