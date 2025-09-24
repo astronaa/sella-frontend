@@ -5,6 +5,10 @@ const baseUrlMediaPattern = new URL(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  experimental: {
+    outputFileTracingRoot: undefined,
+  },
   images: {
     remotePatterns: [
       {
