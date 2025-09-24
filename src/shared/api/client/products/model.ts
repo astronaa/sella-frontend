@@ -28,7 +28,7 @@ export interface Product {
 	};
 
 	store?: Store & {
-		owner: User & {
+		owner: Pick<User, 'username' | 'avatarImage'> & {
 			overallRating: Rating
 		}
 	}

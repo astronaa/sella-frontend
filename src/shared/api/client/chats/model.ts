@@ -5,7 +5,7 @@ export type ChatId = string;
 
 export interface Chat {
 	id: ChatId,
-	buyer: User,
+	buyer: Pick<User, 'username' | 'avatarImage'>,
 	product: Product,
 	lastMessage: ChatMessage | null,
 	unreadMessagesCount: number,

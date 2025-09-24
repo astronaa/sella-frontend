@@ -5,5 +5,5 @@ export interface Review {
 	body: string;
 	isPositive: boolean;
 	createdAt: string;
-	user: User | null;
+	user: Pick<User, 'username' | 'avatarImage'> | null;
 }

@@ -59,6 +59,9 @@ export function createAuthClient() {
 				body: payload,
 			})
 		},
+		async logout() {
+			return authFetchClient.POST('/api/auth/logout', {});
+		},
 
 		schemaGenerateNonce,
 		schemaLogin,

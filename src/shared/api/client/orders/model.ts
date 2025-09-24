@@ -15,7 +15,7 @@ export interface Order {
 		holdEndingAt: string | null,
 		contractEscrowId: number | null
 	};
-	seller: User,
+	seller: Pick<User, 'username' | 'avatarImage' | 'address' | 'tronAddress'>,
 }
 
 export type OrderReviewId = string;
@@ -29,5 +29,5 @@ export interface OrderReview {
 	content: string,
 	rating: OrderReviewType,
 	createdAt: string
-	user: User,
+	user: Pick<User, 'username' | 'avatarImage'>,
 }

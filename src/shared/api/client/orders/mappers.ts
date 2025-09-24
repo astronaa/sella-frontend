@@ -2,7 +2,7 @@ import { components } from "~/shared/api/openapi";
 import { Order, OrderReview } from "./model";
 import { mapDtoToProduct } from "../products/mappers";
 import { mapDtoToStore } from "../stores/mappers";
-import { mapDtoToUser } from "../users/mappers";
+import { mapSellerDtoToUser, mapCommentUserDtoToUser } from "../users/mappers";
 import { mapDtoToTransaction } from "../shared/mappers";
 
 type Schemas = components['schemas'];
@@ -18,7 +18,7 @@ export const mapDtoToOrder = (obj: Schemas['OrderInfoDto']) => ({
 	},
 	store: mapDtoToStore(obj.store),
 	product: mapDtoToProduct(obj.product),
-	seller: mapDtoToUser(obj.seller)
+	seller: mapSellerDtoToUser(obj.seller)
 }) satisfies Order
 
 export const mapDtoToOrderReview = (obj: Schemas['ReviewDto']) => ({
@@ -26,5 +26,5 @@ export const mapDtoToOrderReview = (obj: Schemas['ReviewDto']) => ({
 	content: obj.text,
 	rating: obj.isPositive ? 'positive' : 'negative',
 	createdAt: obj.createdAt,
-	user: mapDtoToUser(obj.user)
+	user: mapCommentUserDtoToUser(obj.user)
 }) satisfies OrderReview

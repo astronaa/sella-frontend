@@ -2,7 +2,7 @@ import { OrderId } from "../orders/model";
 import { ProductId } from "../products/model";
 import { authFetchClient } from "../fetch-client";
 import { PayloadPagination } from "../shared/schemas";
-import { mapDtoToReview } from "./mappers";
+import { mapDtoToReview, mapPayloadToCreateReviewDto } from "./mappers";
 import { PayloadGetAll, schemaGetAll, sortTypes } from "./schemas";
 import { mapPaginationPayloadToDto } from "../shared/mappers";
 
@@ -30,9 +30,26 @@ export function createReviewsClient() {
 				}
 			}
 		}),
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		forOrder: (orderId: OrderId) => ({
+			async get() {
+				const { data, error } = await authFetchClient.GET('/api/orders/{orderId}/review', {
+					params: { path: { orderId } }
+				});
 
+				return data ? {
+					data: mapDtoToReview(data),
+					error
+				} : {
+					data, error
+				}
+			},
+
+			async create(payload: { rating: number; comment: string }) {
+				return await authFetchClient.POST('/api/orders/{orderId}/review', {
+					params: { path: { orderId } },
+					body: mapPayloadToCreateReviewDto(payload)
+				});
+			}
 		}),
 
 		schemaGetAll,
