@@ -1,21 +1,14 @@
 'use client';
 
 import { z } from 'zod';
-import { Store } from "~/shared/api/client"
+import { Store, apiClient, browserSafeFileSchema } from "~/shared/api/client"
 import { zodValidate } from '~/shared/lib/zod-final-form';
-import { apiClient } from "~/shared/api/client";
 import { FormError } from '~/shared/lib/errors';
 import { storeQueries } from '~/entities/store';
 
-const fileSchema = typeof File !== 'undefined'
-	? z.instanceof(File)
-	: z.any().refine(val => val && typeof val.name === 'string' && typeof val.size === 'number', {
-		message: "Expected a File object"
-	});
-
 export const schema = apiClient.stores.schemaUpdate.merge(
 	z.object({
-		previewImage: fileSchema.optional()
+		previewImage: browserSafeFileSchema.optional()
 	})
 );
 

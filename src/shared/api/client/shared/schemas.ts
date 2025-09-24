@@ -2,13 +2,29 @@ import { z } from "zod";
 import { formatFileSize } from "~/shared/lib/format-file-size";
 import { blockchainTypes } from "./models";
 
-export const schemaFile = (maxSize = Infinity) => (
-	z.instanceof(File)
+// Browser-safe File validation
+const createFileSchema = (maxSize = Infinity) => {
+	const fileSchema = typeof File !== 'undefined'
+		? z.instanceof(File)
+		: z.any().refine(val => val && typeof val.name === 'string' && typeof val.size === 'number', {
+			message: "Expected a File object"
+		});
+
+	return fileSchema
 		.refine((v) => v.size <= maxSize, {
 			message: `The file size should not exceed ${formatFileSize(maxSize)}`
 		})
-		.nullable()
-)
+		.nullable();
+};
+
+export const schemaFile = (maxSize = Infinity) => createFileSchema(maxSize);
+
+// Export browser-safe File schema for reuse
+export const browserSafeFileSchema = typeof File !== 'undefined'
+	? z.instanceof(File)
+	: z.any().refine(val => val && typeof val.name === 'string' && typeof val.size === 'number', {
+		message: "Expected a File object"
+	});
 
 export const schemaPaginationPayload = z.object({
 	page: z.coerce.number(),

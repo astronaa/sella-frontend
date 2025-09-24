@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { browserSafeFileSchema } from "../shared/schemas";
 
 const schemaHoldPeriod = z.coerce
 	.number({ required_error: 'Escrow value is required' })
@@ -27,8 +28,8 @@ export const schemaUpdate = schemaCreate.partial().merge(
 export type PayloadUpdate = z.infer<typeof schemaUpdate>
 
 export const schemaUploadImages = z.object({
-	previewImage: z.instanceof(File).optional().nullable(),
-	galleryImages: z.array(z.instanceof(File).or(z.string())).optional()
+	previewImage: browserSafeFileSchema.optional().nullable(),
+	galleryImages: z.array(browserSafeFileSchema.or(z.string())).optional()
 })
 
 export type PayloadUploadImages = z.infer<typeof schemaUploadImages>
