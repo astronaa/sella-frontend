@@ -117,6 +117,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Route to logout user by clearing authentication cookies */
+        post: operations["AuthController_logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users/profile-picture": {
         parameters: {
             query?: never;
@@ -759,7 +776,9 @@ export interface components {
             username: string;
         };
         BadRequestDto: {
-            message: Record<string, string | undefined>;
+            message: {
+                [key: string]: string | undefined;
+            };
             error: string;
             statusCode: number;
         };
@@ -1200,19 +1219,25 @@ export interface operations {
         responses: {
             /** @description Username set successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
             /** @description User with given username already exists */
             409: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1234,21 +1259,27 @@ export interface operations {
         responses: {
             /** @description User logged in with wallet, if hasTwitter and hasUsername equals true, then redirect to the profile page on a client, otherwise process login by current step */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["LoginResponseDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
             /** @description Sent signature was invalid, user does not own address */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1270,19 +1301,25 @@ export interface operations {
         responses: {
             /** @description Code is valid, email changed. */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
             /** @description Sent code is invalid, email has not changed */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1304,26 +1341,34 @@ export interface operations {
         responses: {
             /** @description Verification code successfully sent */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
             /** @description User with given email already exists */
             409: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
             };
             /** @description Rate limited */
             429: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1341,19 +1386,25 @@ export interface operations {
         responses: {
             /** @description User has successfully connected telegram account, redirecting to login */
             302: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Data send in callback was not valid */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
             };
             /** @description Telegram account was already connected to another user */
             409: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1371,19 +1422,25 @@ export interface operations {
         responses: {
             /** @description accessToken successfully refreshed, in Cookie header new accessToken sent */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Refresh token no longer valid */
             401: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
             };
             /** @description User does not have refreshToken */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["HttpExceptionDto"];
                 };
@@ -1405,17 +1462,39 @@ export interface operations {
         responses: {
             /** @description Address is valid and nonce returned */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["NonceResponseDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
+            };
+        };
+    };
+    AuthController_logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User logged out successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -1430,7 +1509,9 @@ export interface operations {
         responses: {
             /** @description Profile picture deleted successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1453,12 +1534,16 @@ export interface operations {
         responses: {
             /** @description Profile picture updated successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Invalid file type or file size */
             422: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1474,7 +1559,9 @@ export interface operations {
         responses: {
             /** @description User information */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["User"];
                 };
@@ -1494,7 +1581,9 @@ export interface operations {
         responses: {
             /** @description Response if username taken or not */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ExistsResponseDto"];
                 };
@@ -1514,7 +1603,9 @@ export interface operations {
         responses: {
             /** @description Successfully sent list of stores */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["Store"][];
                 };
@@ -1532,7 +1623,9 @@ export interface operations {
         responses: {
             /** @description Successfully sent list of stores */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["Store"][];
                 };
@@ -1554,7 +1647,9 @@ export interface operations {
         responses: {
             /** @description Sucessfully changed tron address */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1583,7 +1678,9 @@ export interface operations {
         responses: {
             /** @description Returns array of products for stores */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductsResponseDto"];
                 };
@@ -1603,14 +1700,18 @@ export interface operations {
         responses: {
             /** @description Returns stores by given url address */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Store was not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1628,12 +1729,16 @@ export interface operations {
         responses: {
             /** @description Store successfully deleted */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User does not own stores */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1655,26 +1760,34 @@ export interface operations {
         responses: {
             /** @description Store successfully updated */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
             };
             /** @description User does not own stores */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Store with given url already exists */
             409: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1697,7 +1810,9 @@ export interface operations {
         responses: {
             /** @description Returns all the stores in application */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["StoresSearchResultDto"];
                 };
@@ -1719,14 +1834,18 @@ export interface operations {
         responses: {
             /** @description Store created successfully, new stores was return in message body */
             201: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["StoreInfoDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
@@ -1746,14 +1865,18 @@ export interface operations {
         responses: {
             /** @description Store report successfully retrieved */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ReportStoreDto"];
                 };
             };
             /** @description Report was not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1775,12 +1898,16 @@ export interface operations {
         responses: {
             /** @description Store successfully reported */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
@@ -1807,17 +1934,23 @@ export interface operations {
         responses: {
             /** @description User successfully changed stores image */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User does not own stores */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User sent not valid image */
             422: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
@@ -1837,7 +1970,9 @@ export interface operations {
         responses: {
             /** @description Response if url taken or not */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ExistsResponseDto"];
                 };
@@ -1858,12 +1993,16 @@ export interface operations {
         responses: {
             /** @description Requested media */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Media with that ID was not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1885,7 +2024,9 @@ export interface operations {
         responses: {
             /** @description Successfully sent payment methods */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["PaymentMethod"][];
                 };
@@ -1909,14 +2050,18 @@ export interface operations {
         responses: {
             /** @description Product retrieved successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductDetailsDTO"];
                 };
             };
             /** @description Product not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1938,19 +2083,25 @@ export interface operations {
         responses: {
             /** @description Product deleted successfully. */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description User cannot delete this product */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Product not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -1976,24 +2127,32 @@ export interface operations {
         responses: {
             /** @description Product updated successfully. Returns updated product info */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User cannot edit this product */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Product not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2020,7 +2179,9 @@ export interface operations {
         responses: {
             /** @description Returns array of products */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductsResponseDto"];
                 };
@@ -2042,19 +2203,25 @@ export interface operations {
         responses: {
             /** @description Product created successfully. Returns ID of a new product */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductDto"];
                 };
             };
             /** @description Invalid product data or maximum number of images reached */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User does not own this stores */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2082,29 +2249,39 @@ export interface operations {
         responses: {
             /** @description Images added successfully. Returns an array of new product images IDs */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ProductAddImageResultDto"];
                 };
             };
             /** @description Maximum number of images reached */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User cannot edit this product */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Product not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Invalid file type or file size */
             422: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2126,19 +2303,25 @@ export interface operations {
         responses: {
             /** @description Chat retrieved or created successfully. Returns chat information with metadata */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ChatResponseWithMetaDto"];
                 };
             };
             /** @description Invalid product ID */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2159,7 +2342,9 @@ export interface operations {
         responses: {
             /** @description List of reviews for product with given ID */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ReviewsResponseDto"];
                 };
@@ -2179,7 +2364,9 @@ export interface operations {
         responses: {
             /** @description Review for order with given ID */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ReviewDto"];
                 };
@@ -2202,7 +2389,9 @@ export interface operations {
         };
         responses: {
             201: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2218,7 +2407,9 @@ export interface operations {
         responses: {
             /** @description Handle webhook telegram */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2234,7 +2425,9 @@ export interface operations {
         responses: {
             /** @description Featured tags retrieved successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["FeaturedTagDto"][];
                 };
@@ -2255,19 +2448,25 @@ export interface operations {
         responses: {
             /** @description Return all chats */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["GetAllChatsResponseDto"];
                 };
             };
             /** @description Chats not allowed */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2283,19 +2482,25 @@ export interface operations {
         responses: {
             /** @description Return count unread messages */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["UnreadMessagesCountResponseDto"];
                 };
             };
             /** @description Chats not allowed */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2313,19 +2518,25 @@ export interface operations {
         responses: {
             /** @description Returns chat info */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ChatResponseWithMetaDto"];
                 };
             };
             /** @description Invalid chat ID */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2346,19 +2557,25 @@ export interface operations {
         responses: {
             /** @description Returns messages in chat */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["GetMessagesResponseDto"];
                 };
             };
             /** @description Invalid chat ID */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2376,17 +2593,23 @@ export interface operations {
         responses: {
             /** @description Marks messages as read in chat */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Invalid chat ID */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2407,7 +2630,9 @@ export interface operations {
         responses: {
             /** @description Successful redirect link creation */
             302: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2425,7 +2650,9 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2443,14 +2670,18 @@ export interface operations {
         responses: {
             /** @description Retrieved order info successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["OrderInfoDto"];
                 };
             };
             /** @description Order not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2470,19 +2701,25 @@ export interface operations {
         responses: {
             /** @description Order created successfully. Returns ID of the new order */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["OrderInfoDto"];
                 };
             };
             /** @description Invalid order data */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2501,7 +2738,9 @@ export interface operations {
         responses: {
             /** @description Retrieved user orders successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["OrdersResponseDto"];
                 };
@@ -2521,19 +2760,25 @@ export interface operations {
         responses: {
             /** @description Chat retrieved or created successfully. Returns chat information with metadata */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ChatResponseWithMetaDto"];
                 };
             };
             /** @description Invalid order ID */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User is not authorized */
             403: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2549,7 +2794,9 @@ export interface operations {
         responses: {
             /** @description Retrieved list quests successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["QuestsResponseDto"];
                 };
@@ -2569,14 +2816,18 @@ export interface operations {
         responses: {
             /** @description Complete Quest successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["CompleteQuestResponseDto"];
                 };
             };
             /** @description Request data sent was not valid by schema */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["BadRequestDto"];
                 };
@@ -2593,7 +2844,9 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2611,14 +2864,18 @@ export interface operations {
         responses: {
             /** @description Product report successfully retrieved */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["ReportProductDto"];
                 };
             };
             /** @description Report was not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2640,17 +2897,23 @@ export interface operations {
         responses: {
             /** @description Product successfully reported */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description User has already reported this product */
             400: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
             /** @description Product not found */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2671,14 +2934,18 @@ export interface operations {
         responses: {
             /** @description Retrieved user sailing products successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["SellingProductsResponseDto"];
                 };
             };
             /** @description Store not found or does not belong to the user */
             404: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content?: never;
             };
         };
@@ -2697,7 +2964,9 @@ export interface operations {
         responses: {
             /** @description Retrieved user sales successfully */
             200: {
-                headers: Record<string, unknown>;
+                headers: {
+                    [name: string]: unknown;
+                };
                 content: {
                     "application/json": components["schemas"]["SalesResponseDto"];
                 };

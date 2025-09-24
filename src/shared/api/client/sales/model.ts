@@ -8,6 +8,6 @@ export interface Sale {
 	id: SaleId;
 	price: number,
 	product: Product;
-	user: User;
+	user: Pick<User, 'username' | 'avatarImage'>;
 	transaction: Transaction;
 }

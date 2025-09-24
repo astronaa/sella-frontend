@@ -1,13 +1,13 @@
 import { components } from "../../openapi";
 import { mapDtoToProduct } from "../products/mappers";
-import { mapDtoToUser } from "../users/mappers";
+import { mapDtoToUser, mapBaseUserDtoToUser } from "../users/mappers";
 import { Chat, ChatMessage } from "./model";
 
 type Schemes = components['schemas'];
 
 export const mapDtoToChat = (obj: Schemes['ChatDTO']): Chat => ({
 	id: obj.id,
-	buyer: mapDtoToUser(obj.buyer),
+	buyer: mapBaseUserDtoToUser(obj.buyer),
 	product: mapDtoToProduct(obj.product),
 	// @ts-expect-error expecting openapi changes
 	lastMessage: obj.lastMessage ? mapDtoToChatMessage(obj.lastMessage) : null,

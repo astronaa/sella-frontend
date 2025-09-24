@@ -1,7 +1,7 @@
 import { Product } from "./model";
 import { components } from "../../openapi";
 import { mapDtoToRating, mapMediaIdToUrl } from "../shared/mappers";
-import { mapDtoToUser } from "../users/mappers";
+import { mapStoreOwnerDtoToUser } from "../users/mappers";
 import { mapDtoToStore } from "../stores/mappers";
 
 type Schemes = components['schemas'];
@@ -41,7 +41,7 @@ export const mapDtoToProduct = (obj:
 		store: 'store' in obj ? {
 			...mapDtoToStore(obj.store),
 			owner: {
-				...mapDtoToUser(obj.storeOwner),
+				...mapStoreOwnerDtoToUser(obj.storeOwner),
 				overallRating: mapDtoToRating(obj.storeOwner.rating)
 			}
 		} : undefined	
