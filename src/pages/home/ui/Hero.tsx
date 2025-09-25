@@ -1,6 +1,6 @@
 import { FeaturesList } from "./Features";
 import { GradientBackground } from "~/shared/ui/gradient-background";
-/* import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player"; */
+import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
@@ -20,13 +20,11 @@ export function Hero() {
           <StorefrontOpenControls />
         </div>
 
-        {/* Temporarily disabled large video files for performance
-				<VideoAnimationPlayer
+        <VideoAnimationPlayer
 					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block h-[48rem]'
 					src='/videos/hero-anim2.webm'
 					srcHevc='/videos/hero-anim2.mov'
 				/>
-				*/}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { GradientBackground } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
-/* import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player"; */
+import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
@@ -25,13 +25,11 @@ export function CreateStore() {
           <StorefrontOpenControls />
         </div>
 
-        {/* Temporarily disabled large video files for performance
-				<VideoAnimationPlayer
+        <VideoAnimationPlayer
 					className='flex-shrink-0 w-[26rem] xl:w-[48rem] hidden lg:block h-[48rem]'
 					src='/videos/hero-anim2.webm'
 					srcHevc='/videos/hero-anim2.mov'
 				/>
-				*/}
       </div>
     </div>
   );

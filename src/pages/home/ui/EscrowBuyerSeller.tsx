@@ -2,7 +2,7 @@ import { GradientBackground } from "~/shared/ui/gradient-background";
 import { Icons } from "~/shared/ui/icons";
 import { PropsWithChildren } from "react";
 import { Heading } from "~/shared/ui/kit/heading";
-/* import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player"; */
+import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
 
 export function EscrowBuyerSeller() {
@@ -30,13 +30,11 @@ export function EscrowBuyerSeller() {
           <StorefrontOpenControls />
         </div>
 
-        {/* Temporarily disabled video files for performance
-				<VideoAnimationPlayer
+        <VideoAnimationPlayer
 					src='/videos/ecrow.webm'
 					srcHevc='/videos/ecrow.mov'
 					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
 				/>
-				*/}
 
         {/* <Image
 					src={ImageEscrow}
