@@ -5,6 +5,7 @@ const baseUrlMediaPattern = new URL(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  staticPageGenerationTimeout: 600,
   images: {
     remotePatterns: [
       {
