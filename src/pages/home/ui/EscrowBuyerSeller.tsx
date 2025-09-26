@@ -31,10 +31,10 @@ export function EscrowBuyerSeller() {
         </div>
 
         <VideoAnimationPlayer
-					src='/videos/ecrow.webm'
-					srcHevc='/videos/ecrow.mov'
-					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block'
-				/>
+          src="/videos/ecrow.webm"
+          srcHevc="/videos/ecrow.mov"
+          className="flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block"
+        />
 
         {/* <Image
 					src={ImageEscrow}
@@ -50,9 +50,9 @@ function EscrowFeatures() {
   return (
     <div className="flex flex-col gap-[1.8rem] max-w-[32rem] ">
       <Feature label="As fair as it gets">
-        Unlike other platforms, sella.me prioritizes the security of all parties
-        involved. We don&apos;t take sides; our focus is on providing a safe and
-        fair environment for everyone
+        Unlike other platforms, sella.store prioritizes the security of all
+        parties involved. We don&apos;t take sides; our focus is on providing a
+        safe and fair environment for everyone
       </Feature>
       <Feature label="Escrow-Protected Transactions">
         Every transaction is safeguarded by established escrow procedures. The
