@@ -77,9 +77,7 @@ export function Component({ children }: { children: ReactNode }) {
             title="Redeem Points"
             items={[
               { Icon: Icons.Coins, text: "Top Up Your Sella Balance" },
-              {/*
-              { Icon: Icons.Refresh01, text: "Get Vested $SELLA Tokens" },
-               */}
+              //{ Icon: Icons.Refresh01, text: "Get Vested $SELLA Tokens" },
               { Icon: Icons.Gift, text: "Exchange Points for Gift Cards" },
             ]}
           />
