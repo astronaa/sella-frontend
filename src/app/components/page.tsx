@@ -28,8 +28,10 @@ export default function Home() {
 	return (
 		<main className="flex min-h-screen flex-col items-center gap-16 p-24">
 			<div className='flex gap-4 max-md:flex-wrap'>
+				{/*
 				<Button variant='outline'>
 					Buy $SELLA
+					*/}
 				</Button>
 				<Button variant='solid'>
 					Open Storefront
@@ -130,7 +132,9 @@ function ToggleGroupTest(props: ToggleGroup.RootProps) {
 
 function RadioGroupTest(props: RadioGroup.RootProps) {
 	const options = [
+		{/*
 		{ id: '1', label: 'Pay with $SELLA' },
+		 */}
 		{ id: '2', label: 'Pay with $USDT' },
 		{ id: '3', label: 'Pay with $CLICK', disabled: true },
 	]

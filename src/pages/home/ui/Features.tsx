@@ -15,9 +15,11 @@ export function FeaturesList() {
 			<Feature label="Robust Escrow">
 				Buyer or seller, we got your back
 			</Feature>
+			{/*
 			<Feature label="Powered by $SELLA">
 				Exclusive benefits & perks
 			</Feature>
+			*/}
 		</div>
 	);
 }
