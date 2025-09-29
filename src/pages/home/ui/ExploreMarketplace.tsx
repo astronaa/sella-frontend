@@ -12,7 +12,7 @@ export async function ExploreMarketPlace() {
 				<div className="space-y-12">
 					<div className="space-y-4">
 						<Heading size='lg'>
-							Explore marketplace
+							Explore the marketplace
 						</Heading>
 
 						<div className="text-black-60 text-balance w-full md:w-1/2 xl:w-1/3">
