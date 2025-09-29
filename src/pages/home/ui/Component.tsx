@@ -13,7 +13,7 @@ export function Component() {
 			<EscrowBuyerSeller />
 			<SellaFeautes />
 			<CreateStore />
-			<Roadmap />
+			{/*<Roadmap />*/}
 		</div>
 	);
 }

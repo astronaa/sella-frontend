@@ -38,9 +38,9 @@ const features: Feature[] = [
 	},
 
 	{
-		title: "Revenue share",
+		title: "Tap into a new market",
 		description:
-			"Earn a portion of the platform fees & ads revenue by staking $SELLA.",
+			"Expand your business by selling on an emerging 3T market.",
 		image: ImageRevenueShare,
 	},
 	{
