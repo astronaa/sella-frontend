@@ -8,7 +8,7 @@ export function FeaturesList() {
 				Launch storefront in 30 seconds
 			</Feature>
 			<Feature label="Sell Anything">
-				Digital or Physical, Good or Service
+				Digital or Physical, Goods or Services
 			</Feature>
 			<Feature label="No KYC">Quick and easy</Feature>
 			<Feature label="100% Free">No hidden fees</Feature>
