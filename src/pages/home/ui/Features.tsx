@@ -5,11 +5,11 @@ export function FeaturesList() {
   return (
     <div className="flex flex-col gap-[1rem] max-w-[28.75rem]">
       <Feature label="Rocket Start">Launch storefront in 30 seconds</Feature>
-      <Feature label="Sell Anything">
+      <Feature label="Sell Anything*">
         Digital or Physical, Goods or Services
       </Feature>
       <Feature label="No KYC">Quick and easy</Feature>
-      <Feature label="100% Free">No hidden fees</Feature>
+      <Feature label="No subscription">No hidden fees</Feature>
       <Feature label="Robust Escrow">Buyer or seller, we got your back</Feature>
       {/*
 			<Feature label="Powered by $SELLA">

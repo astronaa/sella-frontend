@@ -24,7 +24,7 @@ const features: Feature[] = [
 		image: ImageNoKyc,
 	},
 	{
-		title: "Sell Anything",
+		title: "Sell Anything*",
 		description:
 			"We believe in freedom of commerce, without restrictions. However, illegal or harmful items and services are not permitted!",
 		image: ImageSellAnything,
