@@ -41,7 +41,7 @@ function CreateStoreFeatures() {
       <Feature label="Hassle Free">
         It takes about 30 seconds to get your storefront running
       </Feature>
-      <Feature label="Sell Anything">
+      <Feature label="Sell Anything*">
         From digital goods, to physical items, services and anything else in
         between
       </Feature>

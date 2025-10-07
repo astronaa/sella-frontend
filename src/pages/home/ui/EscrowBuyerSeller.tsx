@@ -57,7 +57,7 @@ function EscrowFeatures() {
       <Feature label="Escrow-Protected Transactions">
         Every transaction is safeguarded by established escrow procedures. The
         funds are only released to the seller when the buyer confirms receipt of
-        the good or service.
+        the goods or services.
       </Feature>
       <Feature label="Efficient Dispute Resolution">
         We review chat history and engage with both parties to help find a
