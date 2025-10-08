@@ -6,25 +6,23 @@ import { StoreOnPageProvider } from "./StoreOnPageProvider";
 import { EditMode } from "./edit-mode";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
-	const store = await fetchStore(storeUrl);
+  const store = await fetchStore(storeUrl);
 
-	return (
-		<StoreOnPageProvider initialData={store}>
-			<div className='flex flex-col w-full max-w-content mx-auto max-xl:px-4'>
-				<EditMode.Root>
-					<Heading />
-					<ProductsStream
-						className='mb-[6rem] max-md:mb-[5rem]'
-					/>
-				</EditMode.Root>
+  return (
+    <StoreOnPageProvider initialData={store}>
+      <div className="flex flex-col w-full max-w-content mx-auto max-xl:px-4">
+        <EditMode.Root>
+          <Heading />
+          <ProductsStream className="mb-[6rem] max-md:mb-[5rem]" />
+        </EditMode.Root>
 
-				{/* <SimilarStoreFronts
+        {/* <SimilarStoreFronts
 					className='mb-[6rem] max-md:mb-[3rem]'
 					storeUrl={storeUrl}
 				/> */}
 
-				<StorefrontOpenBanner />
-			</div>
-		</StoreOnPageProvider>
-	);
+        <StorefrontOpenBanner />
+      </div>
+    </StoreOnPageProvider>
+  );
 }

@@ -18,6 +18,10 @@ const nextConfig = {
           ? "https"
           : "http",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
   webpack(config) {
