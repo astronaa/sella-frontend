@@ -1,12 +1,12 @@
 import {
-	PayloadCreate,
-	PayloadSearch,
-	PayloadUpdate,
-	PayloadUploadImages,
-	schemaCreate,
-	schemaSearch,
-	schemaUpdate,
-	schemaUploadImages,
+  PayloadCreate,
+  PayloadSearch,
+  PayloadUpdate,
+  PayloadUploadImages,
+  schemaCreate,
+  schemaSearch,
+  schemaUpdate,
+  schemaUploadImages,
 } from "./schemas";
 
 import { Product, ProductId } from "./model";
@@ -14,189 +14,239 @@ import { authFetchClient } from "../fetch-client";
 import { PayloadReport } from "../shared/schemas";
 import { mapDtoToProduct } from "./mappers";
 import { invariant } from "~/shared/lib/asserts";
-import { mapDtoToPaymentMethod, mapPaginationPayloadToDto } from "../shared/mappers";
+import {
+  mapDtoToPaymentMethod,
+  mapPaginationPayloadToDto,
+} from "../shared/mappers";
 import { PayloadPagination } from "../shared/schemas";
 
 export function createProductsClient() {
-	return {
-		async create(storeUrl: string, payload: PayloadCreate) {
-			const { data, error } = await authFetchClient.POST('/api/products', {
-				// @ts-expect-error expecting openapi changes
-				body: {
-					storeUrl, 
-					...payload,
-				}
-			});
+  return {
+    async create(storeUrl: string, payload: PayloadCreate) {
+      const { data, error } = await authFetchClient.POST("/api/products", {
+        // @ts-expect-error expecting openapi changes
+        body: {
+          storeUrl,
+          ...payload,
+        },
+      });
 
-			return data ? {
-				data: mapDtoToProduct(data), error
-			} : {
-				data, error
-			}
-		},
+      return data
+        ? {
+            data: mapDtoToProduct(data),
+            error,
+          }
+        : {
+            data,
+            error,
+          };
+    },
 
-		async search({ tagNames, ...payload }: PayloadSearch, pagination: PayloadPagination) {
-			const { data, error } = await authFetchClient.GET('/api/products', {
-				params: {
-					query: {
-						...mapPaginationPayloadToDto(pagination),
-						...payload,
-						tagName: tagNames
-					}
-				}
-			});
+    async search(
+      { tagNames, ...payload }: PayloadSearch,
+      pagination: PayloadPagination
+    ) {
+      const { data, error } = await authFetchClient.GET("/api/products", {
+        params: {
+          query: {
+            ...mapPaginationPayloadToDto(pagination),
+            ...payload,
+            tagName: tagNames,
+          },
+        },
+      });
 
-			return data ? {
-				data: {
-					items: data.data.map(mapDtoToProduct),
-					total: data.total
-				},
-				error
-			} : {
-				data, error
-			}
-		},
+      return data
+        ? {
+            data: {
+              items: data.data.map(mapDtoToProduct),
+              total: data.total,
+            },
+            error,
+          }
+        : {
+            data,
+            error,
+          };
+    },
 
-		for: (productId: ProductId) => ({
-			async get() {
-				const { data, error } = await authFetchClient.GET('/api/products/{id}', {
-					params: { path: { id: productId } }
-				});
+    for: (productId: ProductId) => ({
+      async get() {
+        const { data, error } = await authFetchClient.GET(
+          "/api/products/{id}",
+          {
+            params: { path: { id: productId } },
+          }
+        );
 
-				return data ? {
-					data: mapDtoToProduct(data), error
-				} : {
-					data, error
-				}
-			},
-			async update(payload: PayloadUpdate) {
-				const { data, error } = await authFetchClient.PATCH('/api/products/{id}', {
-					params: { path: { id: productId } },
-					// @ts-expect-error expecting openapi changes
-					body: payload
-				});
+        return data
+          ? {
+              data: mapDtoToProduct(data),
+              error,
+            }
+          : {
+              data,
+              error,
+            };
+      },
+      async update(payload: PayloadUpdate) {
+        const { data, error } = await authFetchClient.PATCH(
+          "/api/products/{id}",
+          {
+            params: { path: { id: productId } },
+            // @ts-expect-error expecting openapi changes
+            body: payload,
+          }
+        );
 
-				return data ? {
-					data: mapDtoToProduct(data), error
-				} : {
-					data, error
-				}
-			},
-			async getReport() {
-				return await authFetchClient.GET('/api/product/{id}/report', {
-					params: { path: { id: productId } },
-					parseAs: 'text'
-				})
-			},
-			async report(payload: PayloadReport) {
-				return await authFetchClient.POST('/api/product/{id}/report', {
-					params: { path: { id: productId } },
-					body: {
-						tags: payload.reasons,
-						message: payload.description
-					},
-					parseAs: 'text'
-				})
-			},
-			async uploadImages(
-				initialState: Required<Pick<Product, 'imageIds' | 'hasPreview'>>,
-				payload: PayloadUploadImages,
-			) {
-				if (payload.previewImage === undefined && payload.galleryImages === undefined)
-					return false;
+        return data
+          ? {
+              data: mapDtoToProduct(data),
+              error,
+            }
+          : {
+              data,
+              error,
+            };
+      },
+      async getReport() {
+        return await authFetchClient.GET("/api/product/{id}/report", {
+          params: { path: { id: productId } },
+          parseAs: "text",
+        });
+      },
+      async report(payload: PayloadReport) {
+        return await authFetchClient.POST("/api/product/{id}/report", {
+          params: { path: { id: productId } },
+          body: {
+            tags: payload.reasons,
+            message: payload.description,
+          },
+          parseAs: "text",
+        });
+      },
+      async uploadImages(
+        initialState: Required<Pick<Product, "imageIds" | "hasPreview">>,
+        payload: PayloadUploadImages
+      ) {
+        if (
+          payload.previewImage === undefined &&
+          payload.galleryImages === undefined
+        )
+          return false;
 
-				const syncImages = async (input: (File | string)[]) => {
-					const filesToUpload = input.filter((i): i is File => i instanceof File);
-					if (!filesToUpload.length)
-						return input.filter((i): i is string => typeof i == 'string');
+        const syncImages = async (input: (File | string)[]) => {
+          const filesToUpload = input.filter(
+            (i): i is File => i instanceof File
+          );
+          if (!filesToUpload.length)
+            return input.filter((i): i is string => typeof i == "string");
 
-					const { data } = await authFetchClient.POST('/api/products/{id}/images', {
-						params: { path: { id: productId } },
-						body: { files: [] },
-						bodySerializer: () => {
-							const formData = new FormData();
-							filesToUpload.forEach(f => formData.append('files', f));
-							return formData;
-						}
-					});
+          const { data, error } = await authFetchClient.POST(
+            "/api/products/{id}/images",
+            {
+              params: { path: { id: productId } },
+              body: { files: [] },
+              bodySerializer: () => {
+                const formData = new FormData();
+                filesToUpload.forEach((f) => formData.append("files", f));
+                return formData;
+              },
+            }
+          );
 
-					const uploadedImages = data?.imageIds;
-					const uploadedImagesCount = uploadedImages?.length;
-					if (!uploadedImages || !uploadedImagesCount)
-						return []
+          const uploadedImages = data?.imageIds;
+          const uploadedImagesCount = uploadedImages?.length;
+          if (!uploadedImages || !uploadedImagesCount) {
+            throw new Error(error?.message || "Failed to upload images");
+          }
 
-					invariant(uploadedImagesCount == filesToUpload.length, 'Upload images endpoint works incorrect');
+          invariant(
+            uploadedImagesCount == filesToUpload.length,
+            "Upload images endpoint works incorrect"
+          );
 
-					let index = 0;
-					return input.map(img => img instanceof File ? data.imageIds[index++] : img)
-				}
+          let index = 0;
+          return input.map((img) =>
+            img instanceof File ? data.imageIds[index++] : img
+          );
+        };
 
-				const patch = async (payload: { imageIds: string[], hasPreview: boolean }) => {
-					const { error } = await authFetchClient.PATCH('/api/products/{id}', {
-						params: { path: { id: productId } },
-						body: payload
-					});
-					return !error;
-				}
+        const patch = async (payload: {
+          imageIds: string[];
+          hasPreview: boolean;
+        }) => {
+          const { error } = await authFetchClient.PATCH("/api/products/{id}", {
+            params: { path: { id: productId } },
+            body: payload,
+          });
+          return !error;
+        };
 
-				if (payload.previewImage !== undefined && payload.galleryImages !== undefined) {
-					const imagesToUpload = payload.galleryImages;
-					if (payload.previewImage !== null)
-						imagesToUpload.unshift(payload.previewImage);
+        if (
+          payload.previewImage !== undefined &&
+          payload.galleryImages !== undefined
+        ) {
+          const imagesToUpload = payload.galleryImages;
+          if (payload.previewImage !== null)
+            imagesToUpload.unshift(payload.previewImage);
 
-					const uploadedFileIds = await syncImages(imagesToUpload);
+          const uploadedFileIds = await syncImages(imagesToUpload);
 
-					return await patch({
-						hasPreview: payload.previewImage !== null,
-						imageIds: uploadedFileIds
-					})
-				}
-				else if (payload.previewImage !== undefined) {
-					const imagesToUpload: (File | string)[] = initialState.imageIds;
+          return await patch({
+            hasPreview: payload.previewImage !== null,
+            imageIds: uploadedFileIds,
+          });
+        } else if (payload.previewImage !== undefined) {
+          const imagesToUpload: (File | string)[] = initialState.imageIds;
 
-					if (initialState.hasPreview)
-						imagesToUpload.shift();
+          if (initialState.hasPreview) imagesToUpload.shift();
 
-					if (payload.previewImage !== null)
-						imagesToUpload.unshift(payload.previewImage);
+          if (payload.previewImage !== null)
+            imagesToUpload.unshift(payload.previewImage);
 
-					const uploadedFileIds = await syncImages(imagesToUpload);
+          const uploadedFileIds = await syncImages(imagesToUpload);
 
-					return await patch({
-						hasPreview: payload.previewImage !== null,
-						imageIds: uploadedFileIds
-					})
-				}
-				else if (payload.galleryImages !== undefined) {
-					const uploadedFileIds = await syncImages(payload.galleryImages);
-					if (initialState.hasPreview && initialState.imageIds[0])
-						uploadedFileIds.unshift(initialState.imageIds[0])
+          return await patch({
+            hasPreview: payload.previewImage !== null,
+            imageIds: uploadedFileIds,
+          });
+        } else if (payload.galleryImages !== undefined) {
+          const uploadedFileIds = await syncImages(payload.galleryImages);
+          if (initialState.hasPreview && initialState.imageIds[0])
+            uploadedFileIds.unshift(initialState.imageIds[0]);
 
-					return await patch({
-						hasPreview: initialState.hasPreview,
-						imageIds: uploadedFileIds
-					})
-				}
-				return false;
-			},
+          return await patch({
+            hasPreview: initialState.hasPreview,
+            imageIds: uploadedFileIds,
+          });
+        }
+        return false;
+      },
 
-			async getPaymentMethods() {
-				const { data, error } = await authFetchClient.GET('/api/products/{id}/payment-methods', {
-					params: { path: { id: productId } }
-				});
+      async getPaymentMethods() {
+        const { data, error } = await authFetchClient.GET(
+          "/api/products/{id}/payment-methods",
+          {
+            params: { path: { id: productId } },
+          }
+        );
 
-				return data ? {
-					data: data.map(mapDtoToPaymentMethod),
-					error
-				} : {
-					data, error
-				}
-			},
-		}),
+        return data
+          ? {
+              data: data.map(mapDtoToPaymentMethod),
+              error,
+            }
+          : {
+              data,
+              error,
+            };
+      },
+    }),
 
-		schemaCreate,
-		schemaUpdate,
-		schemaUploadImages,
-		schemaSearch
-	}
+    schemaCreate,
+    schemaUpdate,
+    schemaUploadImages,
+    schemaSearch,
+  };
 }

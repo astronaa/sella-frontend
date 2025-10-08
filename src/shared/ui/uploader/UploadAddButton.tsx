@@ -5,54 +5,76 @@ import { Icons } from "../icons";
 import { cn } from "~/shared/lib/cn";
 
 export function UploadAddButton({ className, ...props }: ButtonProps) {
-	const {
-		inputRef, name, accept,
-		multiple, setFiles, files,
-		maxSizePerFile
-	} = useUploadStrictContext();
+  const {
+    inputRef,
+    name,
+    accept,
+    multiple,
+    setFiles,
+    files,
+    maxSizePerFile,
+    onBeforeAdd,
+  } = useUploadStrictContext();
 
-	const validateFile = (file: File) => {
-		if (maxSizePerFile && file.size > maxSizePerFile)
-			return `File is too big (${formatFileSize(file.size)}, allowed only ${formatFileSize(maxSizePerFile)})`;
+  const validateFile = (file: File) => {
+    if (maxSizePerFile && file.size > maxSizePerFile)
+      return `File is too big (${formatFileSize(
+        file.size
+      )}, allowed only ${formatFileSize(maxSizePerFile)})`;
 
-		return true;
-	}
+    return true;
+  };
 
-	const handleFilesInputChange = (newFiles: File[]) => {
-		const checkedFiles = newFiles.map(file => ({ file, result: validateFile(file) }));
+  const handleFilesInputChange = (newFiles: File[]) => {
+    if (onBeforeAdd && !onBeforeAdd(newFiles)) {
+      return;
+    }
 
-		const errorsString = checkedFiles
-			.filter(entry => entry.result !== true)
-			.reduce(
-				(text, { file, result }) => (
-					text + `Can't validate file '${file.name}': ${result}\n`
-				),
-				''
-			);
+    const checkedFiles = newFiles.map((file) => ({
+      file,
+      result: validateFile(file),
+    }));
 
-		if (errorsString.length)
-			alert(errorsString)
+    const errorsString = checkedFiles
+      .filter((entry) => entry.result !== true)
+      .reduce(
+        (text, { file, result }) =>
+          text + `Can't validate file '${file.name}': ${result}\n`,
+        ""
+      );
 
-		const validatedFiles = checkedFiles
-			.filter(entry => entry.result === true)
-			.map(entry => entry.file)
+    if (errorsString.length) alert(errorsString);
 
-		setFiles(multiple ? [...files, ...validatedFiles] : validatedFiles);
-	}
+    const validatedFiles = checkedFiles
+      .filter((entry) => entry.result === true)
+      .map((entry) => entry.file);
 
-	return (
-		<IconButton
-			colorPalette='gray' size='xl' {...props}
-			className={cn('size-[5rem] rounded-[0.625rem] relative text-black-40 hover:text-white', className)}
-		>
-			<Icons.Add className='size-[1.125rem]' />
+    setFiles(multiple ? [...files, ...validatedFiles] : validatedFiles);
+  };
 
-			<input
-				className='size-full absolute top-0 right-0 opacity-0 cursor-pointer'
-				ref={inputRef} type='file'
-				multiple={multiple} name={name} accept={accept}
-				onChange={e => handleFilesInputChange(Array.from(e.target.files ?? []))}
-			/>
-		</IconButton>
-	);
+  return (
+    <IconButton
+      colorPalette="gray"
+      size="xl"
+      {...props}
+      className={cn(
+        "size-[5rem] rounded-[0.625rem] relative text-black-40 hover:text-white",
+        className
+      )}
+    >
+      <Icons.Add className="size-[1.125rem]" />
+
+      <input
+        className="size-full absolute top-0 right-0 opacity-0 cursor-pointer"
+        ref={inputRef}
+        type="file"
+        multiple={multiple}
+        name={name}
+        accept={accept}
+        onChange={(e) =>
+          handleFilesInputChange(Array.from(e.target.files ?? []))
+        }
+      />
+    </IconButton>
+  );
 }
