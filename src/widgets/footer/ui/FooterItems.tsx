@@ -17,7 +17,7 @@ export function FooterItems({
       <Link href="/#explore">Explore</Link>
       <Link href="/#features">Features</Link>
       <Link href="https://sellastore.gitbook.io/whitepaper">Whitepaper</Link>
-      <Link href="/#roadmap">Roadmap</Link>
+      {/* <Link href="/#roadmap">Roadmap</Link> */}
     </div>
   );
 }

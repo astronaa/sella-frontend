@@ -20,7 +20,7 @@ export function Component({ children }: { children: ReactNode }) {
   return (
     <div className="px-4">
       <div className="max-w-content m-auto flex flex-col gap-12">
-        <Heading>Quests</Heading>
+        <Heading>Quests (Coming soon. Stay tuned!)</Heading>
 
         <div className="border border-secondary p-[1rem] rounded-[1.25rem] flex gap-4 items-center justify-between max-md:flex-col">
           <ClipboardInput />
