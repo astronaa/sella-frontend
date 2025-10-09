@@ -172,31 +172,38 @@ function ImagesUploader() {
       multiple
       rootProps={{ className: "w-full" }}
       onBeforeAdd={(newFiles) => {
-        if (totalImageCount + newFiles.length > MAX_IMAGES) {
+        // Calculate what the total would be after adding new files
+        const totalAfterAdd = totalImageCount + newFiles.length;
+
+        // Allow if we're within limits
+        if (totalAfterAdd <= MAX_IMAGES) {
+          return true;
+        }
+
+        // If we're at the limit and trying to add files, show helpful message
+        if (totalImageCount === MAX_IMAGES) {
           const previewInfo = hasPreviewImage
             ? ` (including 1 preview image)`
             : "";
 
-          let description: string;
-          if (remainingSlots === 0) {
-            description = `You currently have ${totalImageCount} image${
-              totalImageCount !== 1 ? "s" : ""
-            }${previewInfo}. Please remove some images before adding more.`;
-          } else {
-            description = `You currently have ${totalImageCount} image${
-              totalImageCount !== 1 ? "s" : ""
-            }${previewInfo}. You can only add ${remainingSlots} more gallery image${
-              remainingSlots !== 1 ? "s" : ""
-            }.`;
-          }
+          toaster.error({
+            title: `Maximum ${MAX_IMAGES} total images allowed per product`,
+            description: `You currently have ${totalImageCount} images${previewInfo}. Remove some images first to add new ones.`,
+          });
+        } else {
+          const previewInfo = hasPreviewImage
+            ? ` (including 1 preview image)`
+            : "";
 
           toaster.error({
             title: `Maximum ${MAX_IMAGES} total images allowed per product`,
-            description,
+            description: `You currently have ${totalImageCount} images${previewInfo}. You can only add ${remainingSlots} more gallery image${
+              remainingSlots === 1 ? "" : "s"
+            }.`,
           });
-          return false;
         }
-        return true;
+
+        return false;
       }}
     >
       <VUploader.LabelOrError>
