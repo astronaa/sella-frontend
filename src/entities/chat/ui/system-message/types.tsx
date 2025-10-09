@@ -14,7 +14,7 @@ export interface SystemMessageAttrs {
 export const systemMessageTypes = new Map<ChatSystemMessageTypes, SystemMessageAttrs>([
 	['NEW_CHAT', {
 		description: `Feel free to ask any questions before ordering by messaging the seller. Keep all 
-		conversations within this chat window to stay protected from scams.`,
+		conversations within this chat window to stay protected.`,
 		Icon: Icons.SellaInside,
 		className: 'text-accent-100',
 	}],

@@ -46,7 +46,7 @@ const features: Feature[] = [
 	{
 		title: "Secure at its core",
 		description:
-			"Escrow and Dispute System ensures fair transactions, protecting all parties from scams.",
+			"Escrow and Dispute System ensures fair transactions, protecting all parties.",
 		image: ImageSecure,
 	},
 

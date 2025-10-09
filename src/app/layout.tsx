@@ -20,7 +20,7 @@ const fontVariables = [
 
 export const metadata: Metadata = {
   title: "Sella",
-  description: "",
+  description: "Trade digital goods and services with built-in escrow. Safe, fast, and free. Launch your storefront in minutes!",
   metadataBase: new URL(APP_BASE_URL),
 };
 

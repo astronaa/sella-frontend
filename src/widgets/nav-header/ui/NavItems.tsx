@@ -11,7 +11,7 @@ export function NavItems({
       <Link href="/marketplace">Explore</Link>
       <Link href="/#features">Features</Link>
       <Link href="https://sellastore.gitbook.io/whitepaper">Whitepaper</Link>
-      <Link href="/#roadmap">Roadmap</Link>
+      {/* <Link href="/#roadmap">Roadmap</Link> */}
     </div>
   );
 }
