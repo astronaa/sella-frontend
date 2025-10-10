@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   title: "Sella",
   description: "Trade digital goods and services with built-in escrow. Safe, fast, and free. Launch your storefront in minutes!",
   metadataBase: new URL(APP_BASE_URL),
+  image: [
+      {
+        url: "/opengraph-image.png",
+        alt: "Sella storefront preview",
+      },
+  ],
 };
 
 export default function RootLayout({
