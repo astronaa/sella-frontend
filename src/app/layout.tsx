@@ -20,8 +20,21 @@ const fontVariables = [
 
 export const metadata: Metadata = {
   title: "Sella",
-  description: "Trade digital goods and services with built-in escrow. Safe, fast, and free. Launch your storefront in minutes!",
+  description:
+    "Trade digital goods and services with built-in escrow. Safe, fast, and free. Launch your storefront in minutes!",
   metadataBase: new URL(APP_BASE_URL),
+  openGraph: {
+    images: [
+      {
+        url: "/opengraph-image.png",
+        alt: "Sella storefront preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({
