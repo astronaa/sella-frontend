@@ -51,9 +51,9 @@ export function ConnectTwitterDialog({ onActionFulfilled, ...props }: ConnectTwi
 				<Dialog.Content>
 					<Dialog.CloseButton />
 					<Dialog.ContentHeading>
-						<Dialog.Title>First things first</Dialog.Title>
+						<Dialog.Title>Connect Your Twitter (Optional)</Dialog.Title>
 						<Dialog.Description>
-							Let&apos;s get you authenticated via Twitter, so we can get the ball rolling.
+							Connect your Twitter/X account to unlock additional features. You can skip this step and connect later.
 						</Dialog.Description>
 					</Dialog.ContentHeading>
 

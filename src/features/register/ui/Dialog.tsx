@@ -28,9 +28,9 @@ export function SetupProfileDialog({ onActionFulfilled, ...props }: RegisterDial
 					<Dialog.CloseButton />
 
 					<Dialog.ContentHeading>
-						<Dialog.Title>First things first</Dialog.Title>
+						<Dialog.Title>Setup Your Profile</Dialog.Title>
 						<Dialog.Description>
-							Let&apos;s get you authenticated via Twitter, so we can get the ball rolling.
+							Let&apos;s create your profile and get you started.
 						</Dialog.Description>
 					</Dialog.ContentHeading>
 

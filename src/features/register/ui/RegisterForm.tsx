@@ -32,10 +32,10 @@ export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: Re
 	};
 
 	return (
-		<Form 
-			onSubmit={onSubmit} 
+		<Form
+			onSubmit={onSubmit}
 			validate={zodValidate(schema)}
-			initialValues={user}
+			initialValues={user ?? {}}
 		>
 			{({ handleSubmit }) => (
 				<form

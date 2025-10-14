@@ -86,9 +86,8 @@ export const useRegisterFlow = create<StoreType>(set => ({
 			hasUsername: loginResponse.hasUsername
 		})
 
-		if (!loginResponse.hasTwitter)
-			set({ open: true, currentModal: 'register-twitter' });
-		else if (!loginResponse.hasUsername)
+		// Twitter is now optional - skip directly to username setup if needed
+		if (!loginResponse.hasUsername)
 			set({ open: true, currentModal: 'register-profile' });
 	}
 }));
