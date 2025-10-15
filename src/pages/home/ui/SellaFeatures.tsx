@@ -24,14 +24,14 @@ const features: Feature[] = [
 		image: ImageNoKyc,
 	},
 	{
-		title: "Sell Anything*",
+		title: "Sell anything*",
 		description:
 			"We believe in freedom of commerce, without restrictions. However, illegal or harmful items and services are not permitted!",
 		image: ImageSellAnything,
 	},
 
 	{
-		title: "Memorable Store Link",
+		title: "Memorable store link",
 		description:
 			"Stand out with a unique, easy-to-remember storefront link. Pick something short and sweet while it’s early!",
 		image: ImageStoreLink,

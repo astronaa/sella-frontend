@@ -38,14 +38,14 @@ export function CreateStore() {
 function CreateStoreFeatures() {
   return (
     <div className="flex flex-col gap-[1.8rem] max-w-[25rem]">
-      <Feature label="Hassle Free">
+      <Feature label="Hassle free">
         It takes about 30 seconds to get your storefront running
       </Feature>
-      <Feature label="Sell Anything*">
+      <Feature label="Sell anything*">
         From digital goods, to physical items, services and anything else in
         between
       </Feature>
-      <Feature label="No Subscription">
+      <Feature label="No subscription">
         Enjoy free usage with no hidden fees — only a transaction fee deducted from each successful trade
       </Feature>
     </div>
