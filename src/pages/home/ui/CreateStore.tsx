@@ -45,7 +45,7 @@ function CreateStoreFeatures() {
         From digital goods, to physical items, services and anything else in
         between
       </Feature>
-      <Feature label="No subscription">
+      <Feature label="No Subscription">
         Enjoy free usage with no hidden fees — only a transaction fee deducted from each successful trade
       </Feature>
     </div>

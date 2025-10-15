@@ -9,7 +9,7 @@ export function FeaturesList() {
         Digital or Physical, Goods or Services
       </Feature>
       <Feature label="No KYC">Quick and easy</Feature>
-      <Feature label="No subscription">No hidden fees</Feature>
+      <Feature label="No Subscription">No hidden fees</Feature>
       <Feature label="Robust Escrow">Buyer or seller, we got your back</Feature>
       {/*
 			<Feature label="Powered by $SELLA">
