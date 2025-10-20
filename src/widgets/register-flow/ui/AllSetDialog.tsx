@@ -16,7 +16,7 @@ export function AllSetDialog(props: Dialog.RootProps) {
           <Dialog.ContentHeading>
             <Dialog.Title>All set!</Dialog.Title>
             <Dialog.Description>
-              We hope Sella.store will be the start of something great for you!
+              We hope Sella.to will be the start of something great for you!
               Good luck! Head to your dashboard to continue adding more products
               to your storefront.
             </Dialog.Description>

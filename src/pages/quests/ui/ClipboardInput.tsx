@@ -14,7 +14,7 @@ export function ClipboardInput() {
 
   return (
     <Skeleton loading={isLoading} className="rounded-[1rem]">
-      <Clipboard.Root value={`sella.store/${data?.refCode}`}>
+      <Clipboard.Root value={`sella.to/${data?.refCode}`}>
         <Clipboard.Control className="flex gap-4">
           <StoreInputAddon>
             {({ Component: Addon, inputClassName }) => (

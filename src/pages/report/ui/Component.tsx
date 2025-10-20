@@ -13,7 +13,7 @@ import { ProductCard } from "~/entities/product";
 import Link from "next/link";
 
 const items = [
-  { name: "This item violates Sella.store ToS", value: "1" },
+  { name: "This item violates Sella.to ToS", value: "1" },
   { name: "This report is false", value: "2" },
 ];
 

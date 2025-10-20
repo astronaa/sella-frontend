@@ -19,7 +19,7 @@ interface InputAddonProps {
 export function InputAddon({ children }: InputAddonProps) {
   return children({
     Component: Addon,
-    inputClassName: "ps-[6.2rem]",
+    inputClassName: "ps-[4.8rem]",
   });
 }
 
@@ -32,7 +32,7 @@ function Addon({ className, ...props }: ComponentProps<typeof BaseInputAddon>) {
         className
       )}
     >
-      sella.store/
+      sella.to/
     </BaseInputAddon>
   );
 }
