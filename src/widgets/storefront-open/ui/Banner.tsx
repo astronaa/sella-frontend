@@ -13,7 +13,7 @@ export function Banner({ className, ...props }: HTMLAttributes<HTMLDivElement>) 
 			{...props}
 		>
 			<div className="text-5xl text-white font-semibold max-md:text-3xl">
-				No KYC, No Pesky Regulations
+				No KYC. No nonsense.
 			</div>
 			<div className="text-black-60 max-w-[33rem] mx-auto text-lg max-md:text-base">
 				Open your storefront in less than 30 seconds! Start by reserving your storefront handle
