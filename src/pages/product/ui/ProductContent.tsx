@@ -38,7 +38,7 @@ export function ProductContent({
       <div className="flex flex-col gap-4 lg:gap-6 pb-8 border-b border-white/[.08]">
         {images && <GalleryCarousel images={images} />}
         <div className=" text-black-74 flex flex-col gap-[1.25rem]">
-          <p className="line-clamp-5 lg:line-clamp-none whitespace-pre-line">
+          <p className="whitespace-pre-line">
             {Boolean(product.description)
               ? product.description
               : "No description"}
