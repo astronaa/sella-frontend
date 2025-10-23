@@ -54,12 +54,12 @@ function EscrowFeatures() {
         involved. We don&apos;t take sides; our focus is on providing a safe and
         fair environment for everyone.
       </Feature>
-      <Feature label="Escrow-Protected Transactions">
+      <Feature label="Escrow-protected transactions">
         Every transaction is safeguarded by established escrow procedures. The
         funds are only released to the seller when the buyer confirms receipt of
         the goods or services.
       </Feature>
-      <Feature label="Efficient Dispute Resolution">
+      <Feature label="Efficient dispute resolution">
         We review chat history and engage with both parties to help find a
         resolution if a dispute arises. Our approach is based on fairness and
         transparency. Trust matters.

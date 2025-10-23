@@ -4,13 +4,13 @@ import { Icons } from "~/shared/ui/icons";
 export function FeaturesList() {
   return (
     <div className="flex flex-col gap-[1rem] max-w-[28.75rem]">
-      <Feature label="Rocket Start">Launch storefront in 30 seconds</Feature>
-      <Feature label="Sell Anything*">
+      <Feature label="Rocket start">Launch storefront in 30 seconds</Feature>
+      <Feature label="Sell anything*">
         Digital or Physical, Goods or Services
       </Feature>
       <Feature label="No KYC">Quick and easy</Feature>
       <Feature label="No subscription">No hidden fees</Feature>
-      <Feature label="Robust Escrow">Buyer or seller, we got your back</Feature>
+      <Feature label="Robust escrow">Buyer or seller, we got your back</Feature>
       {/*
 			<Feature label="Powered by $SELLA">
 				Exclusive benefits & perks

@@ -14,7 +14,7 @@ export function Hero() {
 
       <div className="flex flex-grow items-end justify-between gap-[1rem] relative w-full max-w-content m-auto max-lg:justify-center">
         <div className="flex flex-col gap-[3rem] max-w-[35rem] w-full pb-[7.25rem] flex-shrink-0">
-          <Heading size="xl">Open your web3 storefront in seconds</Heading>
+          <Heading size="xl">Open Your Web3 Storefront in Seconds</Heading>
 
           <FeaturesList />
           <StorefrontOpenControls />
