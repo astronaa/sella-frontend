@@ -71,6 +71,7 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 					label='Storefront Image' name='previewImage'
 					className='rounded-full'
 					initialImageSrc={previewImageUrl ?? undefined}
+					maxSizePerFile={2097152}
 				/>
 			</DividerWithElement>
 

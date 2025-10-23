@@ -161,6 +161,7 @@ export function SettingsForm({
               name="avatar"
               className="flex-shrink-0 size-[11.625rem] rounded-full"
               initialImageSrc={initialValues.avatarImage ?? undefined}
+              maxSizePerFile={2097152}
             />
 
             <div className="flex flex-col w-full justify-between max-md:gap-[1rem] gap-[0.5rem]">

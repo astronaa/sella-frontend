@@ -62,6 +62,7 @@ export function General({
           name="previewImage"
           className="flex-shrink-0 size-[11.625rem] rounded-[1.25rem]"
           initialImageSrc={previewImageUrl ?? undefined}
+          maxSizePerFile={2097152}
         />
         <div className="flex flex-col justify-between max-md:gap-[1rem] w-full">
           <VTextControl.Root className="w-full" name="name">
@@ -171,6 +172,7 @@ function ImagesUploader() {
       name="galleryImages"
       multiple
       rootProps={{ className: "w-full" }}
+      maxSizePerFile={2097152}
       onBeforeAdd={(newFiles) => {
         // Calculate what the total would be after adding new files
         const totalAfterAdd = totalImageCount + newFiles.length;

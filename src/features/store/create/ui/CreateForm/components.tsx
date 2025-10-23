@@ -58,6 +58,7 @@ export function Controls({ className, ...props }: HTMLAttributes<HTMLDivElement>
 				<VImageUploader
 					label='Storefront Image' name='previewImage'
 					className='rounded-full'
+					maxSizePerFile={2097152}
 				/>
 			</DividerWithElement>
 

@@ -48,7 +48,8 @@ export function RegisterForm({ onActionFulfilled, onBeforeAction, ...props }: Re
 							label='Upload Avatar' name='avatar'
 							className='rounded-full'
 							initialImageSrc={user?.avatarImage ?? undefined}
-						/>
+							maxSizePerFile={2097152}
+					/>
 					</DividerWithElement>
 
 					<VTextControl.Root className='w-full' name='username'>

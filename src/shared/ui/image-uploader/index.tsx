@@ -5,15 +5,17 @@ import { Icons } from "../icons";
 import { HTMLAttributes, InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import { IconButton } from "../kit/button";
 import { useCallbackRef } from "~/shared/lib/use-callback-ref";
+import { toaster } from "../toaster";
 
 export interface ImageUploaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 	label: string
 	onChange?: (image: File | null | undefined) => void
 	accept?: InputHTMLAttributes<HTMLInputElement>['accept'],
 	initialImageSrc?: string
+	maxSizePerFile?: number
 }
 
-export function ImageUploader({ className, label, onChange, accept, initialImageSrc, ...props }: ImageUploaderProps) {
+export function ImageUploader({ className, label, onChange, accept, initialImageSrc, maxSizePerFile, ...props }: ImageUploaderProps) {
 	const defaultValue = initialImageSrc ?? null;
 	const [imagePreview, setImagePreview] = useState<string | null>(defaultValue);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -43,6 +45,18 @@ export function ImageUploader({ className, label, onChange, accept, initialImage
 		const file = e.target.files?.[0];
 		if (!file)
 			return;
+
+		if (maxSizePerFile && file.size > maxSizePerFile) {
+			const maxSizeMB = (maxSizePerFile / (1024 * 1024)).toFixed(1);
+			const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+			toaster.error({
+				title: 'File too large',
+				description: `File is ${fileSizeMB}MB, maximum allowed is ${maxSizeMB}MB`
+			});
+			if (inputRef.current)
+				inputRef.current.value = '';
+			return;
+		}
 
 		changePreview(file)
 	};

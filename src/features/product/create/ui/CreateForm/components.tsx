@@ -43,6 +43,7 @@ export function General({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 				<VImageUploader
 					label='Attach Preview' name='previewImage'
 					className='flex-shrink-0 size-[11.625rem] rounded-[1.25rem]'
+					maxSizePerFile={2097152}
 				/>
 				<div className='flex flex-col justify-between max-md:gap-[1rem] w-full'>
 					<VTextControl.Root className='w-full' name='name'>
@@ -109,6 +110,7 @@ export function Description({ className, ...props }: HTMLAttributes<HTMLDivEleme
 			<VUploader.Root
 				name='galleryImages' multiple
 				rootProps={{ className: 'w-full' }}
+				maxSizePerFile={2097152}
 			>
 				<VUploader.LabelOrError>
 					Product Images
