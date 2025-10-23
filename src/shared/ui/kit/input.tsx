@@ -49,7 +49,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         className={styles({
           size,
           className: cn(
-            "whitespace-normal break-words overflow-y-auto resize-none",
+            "whitespace-normal break-words overflow-y-auto",
             className
           ),
         })}
