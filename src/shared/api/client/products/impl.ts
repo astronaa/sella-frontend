@@ -109,6 +109,16 @@ export function createProductsClient() {
               error,
             };
       },
+      async delete() {
+        const { error } = await authFetchClient.DELETE(
+          "/api/products/{id}",
+          {
+            params: { path: { id: productId } },
+          }
+        );
+
+        return { error };
+      },
       async getReport() {
         return await authFetchClient.GET("/api/product/{id}/report", {
           params: { path: { id: productId } },
