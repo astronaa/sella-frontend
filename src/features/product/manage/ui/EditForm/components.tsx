@@ -233,7 +233,7 @@ function ImagesUploader() {
           />
         ))}
       >
-        <VUploader.AddButton />
+        {remainingSlots > 0 && <VUploader.AddButton />}
       </VUploader.Previews>
     </VUploader.Root>
   );

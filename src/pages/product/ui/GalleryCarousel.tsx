@@ -1,32 +1,47 @@
 import { PreviewImage } from "~/shared/ui/image";
-import { Carousel } from "~/shared/ui/kit";
+import { Carousel, Dialog } from "~/shared/ui/kit";
 import { cn } from "~/shared/lib/cn";
 import { Scrollable } from "~/shared/ui/scrollable";
+import { useState } from "react";
+import { Portal } from "@ark-ui/react";
+import NextImage from "next/image";
 
 export function GalleryCarousel(props: { images: string[] }) {
 	const images = props.images.length > 0 ? props.images : [null];
+	const [currentIndex, setCurrentIndex] = useState(0);
+	const [isFullscreen, setIsFullscreen] = useState(false);
+	const currentImage = images[currentIndex];
 
 	return (
-		<Carousel.Root className='w-full'>
-			<Carousel.Viewport
-				className='w-full h-[18.625rem] lg:h-[27.125rem] overflow-hidden bg-white/[.04]'
+		<>
+			<Carousel.Root
+				className='w-full'
+				onIndexChange={(details) => setCurrentIndex(details.index)}
 			>
-				<Carousel.ItemGroup className='!h-full'>
-					{images.map((image, index) => (
-						<Carousel.Item
-							key={index} index={index}
-							className='flex items-center justify-center max-h-full'
-						>
-							<PreviewImage
-								src={image}
-								alt={`Slide ${index}`}
-								width={760} height={434}
-								className={cn('w-full h-auto max-h-full', image === null && 'h-full')}
-							/>
-						</Carousel.Item>
-					))}
-				</Carousel.ItemGroup>
-			</Carousel.Viewport>
+				<Carousel.Viewport
+					className='w-full h-[18.625rem] lg:h-[27.125rem] overflow-hidden bg-white/[.04] cursor-pointer'
+					onClick={() => {
+						if (currentImage !== null) {
+							setIsFullscreen(true);
+						}
+					}}
+				>
+					<Carousel.ItemGroup className='!h-full'>
+						{images.map((image, index) => (
+							<Carousel.Item
+								key={index} index={index}
+								className='flex items-center justify-center max-h-full'
+							>
+								<PreviewImage
+									src={image}
+									alt={`Slide ${index}`}
+									width={760} height={434}
+									className={cn('w-full h-auto max-h-full', image === null && 'h-full')}
+								/>
+							</Carousel.Item>
+						))}
+					</Carousel.ItemGroup>
+				</Carousel.Viewport>
 
 			{images[0] !== null && (
 				<Carousel.Control className='overflow-hidden' asChild>
@@ -54,7 +69,29 @@ export function GalleryCarousel(props: { images: string[] }) {
 					</Scrollable.Root>
 				</Carousel.Control>
 			)}
-		</Carousel.Root>
+			</Carousel.Root>
+
+			<Dialog.Root open={isFullscreen} onOpenChange={(details) => setIsFullscreen(details.open)}>
+				<Portal>
+					<Dialog.Backdrop className='bg-black/80' />
+					<Dialog.Positioner className='flex items-center justify-center'>
+						<Dialog.Content className='relative w-[90vw] max-w-4xl bg-transparent border-none p-0 gap-0'>
+							<Dialog.CloseButton className='absolute -top-10 right-0 text-white hover:text-white/70' />
+							{currentImage && (
+								<NextImage
+									src={currentImage}
+									alt='Fullscreen view'
+									width={1200}
+									height={800}
+									className='w-full h-auto object-contain'
+									priority
+								/>
+							)}
+						</Dialog.Content>
+					</Dialog.Positioner>
+				</Portal>
+			</Dialog.Root>
+		</>
 	);
 }
 
