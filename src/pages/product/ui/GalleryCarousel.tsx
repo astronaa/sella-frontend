@@ -35,8 +35,11 @@ export function GalleryCarousel(props: { images: string[] }) {
 								<PreviewImage
 									src={image}
 									alt={`Slide ${index}`}
-									width={760} height={434}
+									width={1440}
+									height={1080}
+									sizes='(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px'
 									className={cn('w-full h-auto max-h-full', image === null && 'h-full')}
+									priority={index === 0}
 								/>
 							</Carousel.Item>
 						))}
@@ -73,19 +76,22 @@ export function GalleryCarousel(props: { images: string[] }) {
 
 			<Dialog.Root open={isFullscreen} onOpenChange={(details) => setIsFullscreen(details.open)}>
 				<Portal>
-					<Dialog.Backdrop className='bg-black/80' />
-					<Dialog.Positioner className='flex items-center justify-center'>
-						<Dialog.Content className='relative w-[90vw] max-w-4xl bg-transparent border-none p-0 gap-0'>
-							<Dialog.CloseButton className='absolute -top-10 right-0 text-white hover:text-white/70' />
+					<Dialog.Backdrop className='fixed inset-0 bg-black/95' />
+					<Dialog.Positioner className='fixed inset-0 flex items-center justify-center p-4'>
+						<Dialog.Content className='relative w-full h-full flex items-center justify-center bg-transparent border-none p-0 gap-0'>
+							<Dialog.CloseButton className='absolute top-4 right-4 z-10 text-white hover:text-white/70' />
 							{currentImage && (
-								<NextImage
-									src={currentImage}
-									alt='Fullscreen view'
-									width={1200}
-									height={800}
-									className='w-full h-auto object-contain'
-									priority
-								/>
+								<div className='relative w-full h-full flex items-center justify-center'>
+									<NextImage
+										src={currentImage}
+										alt='Fullscreen view'
+										fill
+										className='object-contain w-full h-full'
+										priority
+										quality={95}
+										sizes='100vw'
+									/>
+								</div>
 							)}
 						</Dialog.Content>
 					</Dialog.Positioner>
