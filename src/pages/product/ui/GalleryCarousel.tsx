@@ -36,8 +36,7 @@ export function GalleryCarousel(props: { images: string[] }) {
                 <PreviewImage
                   src={image}
                   alt={`Slide ${index}`}
-                  width={1920}
-                  height={1080}
+                  fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"
                   className={cn(
                     "w-full h-auto max-h-full",
@@ -73,8 +72,7 @@ export function GalleryCarousel(props: { images: string[] }) {
                       <PreviewImage
                         src={image}
                         alt={`Indicator ${index}`}
-                        width={1920}
-                        height={1080}
+                        fill
                         className="size-full"
                         draggable={false}
                         quality={100}
@@ -102,11 +100,11 @@ export function GalleryCarousel(props: { images: string[] }) {
                   <NextImage
                     src={currentImage}
                     alt="Fullscreen view"
-                    fill
-                    className="object-contain w-full h-full"
+                    width={1500}
+                    height={865}
+                    className="object-contain"
                     priority
                     quality={100}
-                    sizes="100vw"
                   />
                 </div>
               )}
