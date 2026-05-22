@@ -1,3 +1,3 @@
 export { PageDashboardSales as default } from '~/pages/dashboard-orders-sales';
 
-export const revalidate = 0;
+export const dynamic = "force-static";

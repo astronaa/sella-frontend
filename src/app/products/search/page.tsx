@@ -1,12 +1,12 @@
 import { PageProductSearchResults } from "~/pages/search-results";
-import { apiClient } from "~/shared/api/client";
+import { Suspense } from "react";
 
-export default function Page(props: { searchParams: unknown }) {
-	const searchParams = apiClient.products.schemaSearch.parse(props.searchParams);
-
+export default function Page() {
 	return (
-		<PageProductSearchResults {...searchParams} />
+		<Suspense>
+			<PageProductSearchResults />
+		</Suspense>
 	)
 }
 
-export const revalidate = 0;
+export const dynamic = "force-static";

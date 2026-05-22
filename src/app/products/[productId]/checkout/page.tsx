@@ -1,23 +1,19 @@
-import { PageProductCreateOrder } from "~/pages/product-checkout";
-import { RouteProps } from "../route-props";
-import { schemaPaymentToken } from "~/shared/api/client";
+import { staticProducts } from "~/shared/static-data/marketplace";
+import { Heading } from "~/shared/ui/kit/heading";
 
-export interface PageProps extends RouteProps {
-	searchParams: { 
-		tab?: string, 
-		token?: string,
-		block?: string
-	}
-}
-
-export default function Page({ params, searchParams }: PageProps) {
-	const { tab, ...method } = searchParams;
-
+export default function Page() {
 	return (
-		<PageProductCreateOrder
-			storeId={params.productId}
-			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : undefined}
-			method={schemaPaymentToken.parse(method)}
-		/>
+		<div className="flex flex-col w-full gap-[1.5rem] max-w-content mx-auto px-[1rem]">
+			<Heading>Checkout unavailable</Heading>
+			<p className="max-w-[42rem] text-black-60">
+				Checkout requires the live Sella backend and is disabled in this static GitHub Pages preview.
+			</p>
+		</div>
 	);
 }
+
+export function generateStaticParams() {
+	return staticProducts.map((product) => ({ productId: product.id }));
+}
+
+export const dynamicParams = false;

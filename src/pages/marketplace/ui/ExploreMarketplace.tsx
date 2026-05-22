@@ -4,7 +4,7 @@ import { cn } from "~/shared/lib/cn";
 import { HTMLAttributes } from "react";
 import { resolvedTwConfig } from "~/shared/lib/resolved-tw-config";
 import { Heading } from "~/shared/ui/kit/heading";
-import { StoresInitialData } from "../api/stores";
+import type { StoresInitialData } from "../api/stores";
 import { Scrollable } from "~/shared/ui/scrollable";
 import { StoreCard, StoreLink } from "~/entities/store";
 

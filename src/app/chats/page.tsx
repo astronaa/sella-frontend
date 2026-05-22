@@ -4,4 +4,4 @@ export default function Page() {
 	return <PageChatInitialSection className='size-full' />
 }
 
-export const revalidate = 0;
+export const dynamic = "force-static";

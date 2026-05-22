@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HTMLAttributes, useEffect, useMemo } from "react";
 import { StoreInputAddon } from "~/entities/store";
@@ -13,6 +14,14 @@ import { Button } from "~/shared/ui/kit/button";
 import { Input, InputGroup } from "~/shared/ui/kit/input";
 
 export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "true") {
+		return <StaticActionControls className={className} {...props} />;
+	}
+
+	return <LiveActionControls className={className} {...props} />;
+}
+
+function LiveActionControls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const router = useRouter();
 	const { data: user } = useUserGetQuery();
 	const { 
@@ -72,6 +81,24 @@ export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivEl
 				initialValues={initialValues}
 				onActionFulfilled={store => router.push(`/${store.url}`)}
 			/>
+		</div>
+	);
+}
+
+function StaticActionControls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	return (
+		<div {...props} className={cn("flex gap-[1rem] flex-wrap", className)}>
+			<InputGroup>
+				<Input
+					className="rounded-[1.25rem] border border-secondary w-full h-full"
+					placeholder="yourstorefront"
+					disabled
+				/>
+			</InputGroup>
+
+			<Button className="w-full md:w-auto" size="xl" asChild>
+				<Link href="/marketplace">Explore Marketplace</Link>
+			</Button>
 		</div>
 	);
 }

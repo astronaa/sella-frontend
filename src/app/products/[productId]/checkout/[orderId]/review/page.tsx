@@ -1,17 +1,22 @@
-import { PageProductLeaveReviewForOrder } from "~/pages/product-checkout";
-import { PageProps as ParentPageProps } from "../page"
+import { staticProducts } from "~/shared/static-data/marketplace";
+import { Heading } from "~/shared/ui/kit/heading";
 
-type PageProps = ParentPageProps;
-
-export default function Page({ params, searchParams }: PageProps) {
-	const { tab } = searchParams;
-
+export default function Page() {
 	return (
-		<PageProductLeaveReviewForOrder
-			{...params}
-			initialTab={tab == 'chat' || tab == 'order-actions' ? tab : undefined}
-		/>
+		<div className="flex flex-col w-full gap-[1.5rem] max-w-content mx-auto px-[1rem]">
+			<Heading>Review unavailable</Heading>
+			<p className="max-w-[42rem] text-black-60">
+				Reviews require the live Sella backend and are disabled in this static GitHub Pages preview.
+			</p>
+		</div>
 	);
 }
 
-export const revalidate = 0;
+export function generateStaticParams() {
+	return staticProducts.map((product) => ({
+		productId: product.id,
+		orderId: "static-preview",
+	}));
+}
+
+export const dynamicParams = false;

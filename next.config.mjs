@@ -2,11 +2,16 @@ const baseUrlMediaPattern = new URL(
   "/api/media/**",
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002"
 );
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath,
+  output: "export",
   staticPageGenerationTimeout: 600,
+  trailingSlash: true,
   images: {
+    unoptimized: true,
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 640, 768, 1024],
     remotePatterns: [

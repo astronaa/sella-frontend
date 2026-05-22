@@ -11,7 +11,7 @@ import { Scrollable } from "~/shared/ui/scrollable";
 import { CategoryBox, categoryQueries } from "~/entities/category";
 import { useFilters } from "~/pages/marketplace/model/filters";
 import { useDebounce } from "~/shared/lib/use-debounce";
-import { StoresInitialData } from "../api/stores";
+import type { StoresInitialData } from "../api/stores";
 import { WithControllableProps, useControllableState } from "~/shared/lib/use-controllable-state";
 import { useSearchParamsPagination } from "~/shared/lib/search-params";
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +34,7 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 			page, limit: ITEMS_PER_PAGE,
 			...filters
 		}),
-		initialData,
+		initialData: initialData as never,
 		initialDataUpdatedAt: 0
 	})
 

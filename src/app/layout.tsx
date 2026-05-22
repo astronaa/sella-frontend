@@ -9,6 +9,7 @@ import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { fontTTNorms } from "~/shared/assets/fonts/tt-norms-pro";
 import { Providers } from "./_providers";
+import { StaticProviders } from "./_providers/static";
 import { PageRootLayout } from "~/pages/root-layout";
 import { APP_BASE_URL } from "~/shared/config/app-base-url";
 
@@ -42,14 +43,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const content = <PageRootLayout>{children}</PageRootLayout>;
+
   return (
     <html lang="en">
       <body
         className={cn(...fontVariables, "bg-black-06 text-white font-inter")}
       >
-        <Providers>
-          <PageRootLayout>{children}</PageRootLayout>
-        </Providers>
+        {process.env.NEXT_PUBLIC_STATIC_EXPORT === "true" ? (
+          <StaticProviders>{content}</StaticProviders>
+        ) : (
+          <Providers>{content}</Providers>
+        )}
       </body>
     </html>
   );

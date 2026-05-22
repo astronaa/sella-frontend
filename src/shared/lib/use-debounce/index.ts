@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useDebounce<T extends (...args: any) => void>(func: T, delayMs: number) {
-	const intervalRef = useRef<NodeJS.Timeout>();
+	const intervalRef = useRef<ReturnType<typeof setTimeout>>();
 
 	function clearDebounce(){
 		if (intervalRef.current)
