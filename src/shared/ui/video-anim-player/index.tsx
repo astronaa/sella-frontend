@@ -1,6 +1,7 @@
 'use client';
 
 import { HTMLAttributes, useLayoutEffect, useRef, useState } from "react";
+import { withBasePath } from "~/shared/config/base-path";
 import { cn } from "~/shared/lib/cn";
 
 interface VideoAnimationPlayerProps extends HTMLAttributes<HTMLDivElement> {
@@ -25,8 +26,8 @@ export function VideoAnimationPlayer({ src, srcHevc, children, ...props }: Video
 				className={cn('size-full', !videoLoaded && 'opacity-0 size-0')}
 				onTimeUpdate={() => setVideoLoaded(true)}
 			>
-				{!!srcHevc && <source src={srcHevc} type='video/quicktime' />}
-				<source src={src} />
+				{!!srcHevc && <source src={withBasePath(srcHevc)} type='video/quicktime' />}
+				<source src={withBasePath(src)} />
 			</video>
 			{!videoLoaded && children}
 		</div>

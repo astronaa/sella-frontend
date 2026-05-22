@@ -1,6 +1,5 @@
 import "./globals.css";
 import "@park-ui/tailwind-plugin/preset.css";
-import "@rainbow-me/rainbowkit/styles.css";
 
 import type { Metadata } from "next";
 
@@ -8,9 +7,8 @@ import { cn } from "~/shared/lib/cn";
 import { fontInter } from "~/shared/assets/fonts/inter";
 import { fontManrope } from "~/shared/assets/fonts/manrope";
 import { fontTTNorms } from "~/shared/assets/fonts/tt-norms-pro";
-import { Providers } from "./_providers";
 import { StaticProviders } from "./_providers/static";
-import { PageRootLayout } from "~/pages/root-layout";
+import { StaticRootLayout } from "~/pages/root-layout/ui/StaticComponent";
 import { APP_BASE_URL } from "~/shared/config/app-base-url";
 
 const fontVariables = [
@@ -43,18 +41,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const content = <PageRootLayout>{children}</PageRootLayout>;
-
   return (
     <html lang="en">
       <body
         className={cn(...fontVariables, "bg-black-06 text-white font-inter")}
       >
-        {process.env.NEXT_PUBLIC_STATIC_EXPORT === "true" ? (
-          <StaticProviders>{content}</StaticProviders>
-        ) : (
-          <Providers>{content}</Providers>
-        )}
+        <StaticProviders>
+          <StaticRootLayout>{children}</StaticRootLayout>
+        </StaticProviders>
       </body>
     </html>
   );
