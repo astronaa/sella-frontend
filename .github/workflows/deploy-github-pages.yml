@@ -31,7 +31,10 @@ jobs:
       - name: Configure GitHub Pages base path
         shell: bash
         run: |
-          if [[ "${{ github.event.repository.name }}" == "${{ github.repository_owner }}.github.io" ]]; then
+          if [[ -f CNAME ]]; then
+            echo "NEXT_PUBLIC_BASE_PATH=" >> "$GITHUB_ENV"
+            echo "NEXT_PUBLIC_APP_URL=https://$(cat CNAME)" >> "$GITHUB_ENV"
+          elif [[ "${{ github.event.repository.name }}" == "${{ github.repository_owner }}.github.io" ]]; then
             echo "NEXT_PUBLIC_BASE_PATH=" >> "$GITHUB_ENV"
             echo "NEXT_PUBLIC_APP_URL=https://${{ github.repository_owner }}.github.io" >> "$GITHUB_ENV"
           else
@@ -54,6 +57,10 @@ jobs:
 
       - name: Disable Jekyll processing
         run: touch out/.nojekyll
+
+      - name: Copy CNAME
+        if: hashFiles('CNAME') != ''
+        run: cp CNAME out/CNAME
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
