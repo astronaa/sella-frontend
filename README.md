@@ -4,7 +4,6 @@
 * [tailwind](https://tailwindcss.com/) as a css framework
 * methodology: [FSD](https://feature-sliced.design/docs/get-started/overview). If you are not familiar, then just follow at least the rules below in `Development guidelines`
 
-
 ## Development guidelines
 Based on the FSD principles:
 1. Do not create any folders on `src/` folder
