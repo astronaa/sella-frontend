@@ -29,31 +29,31 @@ export function Hero() {
 			<div className="relative flex flex-1 items-center justify-between gap-[2rem] w-full max-w-content m-auto max-lg:justify-center">
 				<div className="flex flex-col gap-[2.25rem] max-w-[38.5rem] w-full flex-shrink-0 py-[3rem] max-md:py-[3rem]">
 					<div className="flex flex-col gap-[1.5rem]">
-						<Eyebrow>Escrow-secured marketplace</Eyebrow>
+						<Eyebrow className="lp-enter lp-enter-1">Escrow-secured marketplace</Eyebrow>
 
 						{/* size lg, no per-use text-[] override: the Heading kit
 						    concatenates classes without twMerge, so an override
 						    races the variant in stylesheet order (xl was winning
 						    at 72px and the nowrap line painted past the column) */}
-						<Heading size="lg" className="tracking-[-0.02em]">
+						<Heading size="lg" className="tracking-[-0.02em] lp-enter lp-enter-2">
 							Sell anything.
 							<br />
 							{/* stay inside the gold family: ending on accent-hover
 							    orange made the tail of the line read as a second
 							    color */}
-							<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
+							<span className="lp-shimmer bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
 								Escrow does the rest.
 							</span>
 						</Heading>
 
-						<p className="text-black-60 text-[1.125rem] leading-[1.55] max-w-[30rem]">
+						<p className="lp-enter lp-enter-3 text-black-60 text-[1.125rem] leading-[1.55] max-w-[30rem]">
 							Open your web3 storefront in 30 seconds and sell to anyone,
 							anywhere. Funds sit in an on-chain escrow until both sides are
 							happy. No KYC, no subscription.
 						</p>
 					</div>
 
-					<div className="flex flex-col gap-[0.5rem] items-start">
+					<div className="lp-enter lp-enter-4 flex flex-col gap-[0.5rem] items-start">
 						{chipRows.map((row) => (
 							<div key={row[0]} className="flex flex-wrap gap-[0.5rem]">
 								{row.map((chip) => (
@@ -68,14 +68,19 @@ export function Hero() {
 						))}
 					</div>
 
-					<StorefrontOpenControls />
+					<div className="lp-enter lp-enter-5">
+						<StorefrontOpenControls />
+					</div>
 
-					<EscrowTicker className="max-w-[30rem]" />
+					<EscrowTicker className="lp-enter lp-enter-6 max-w-[30rem]" />
 				</div>
 
 				{/* artist 3D render, kept clean. Centered with the copy: with
 				    the hero at viewport height, self-end glued it too low */}
-				<div className="hidden lg:block flex-shrink-0 self-center mt-[2rem]">
+				<div className="lp-enter lp-enter-3 relative hidden lg:block flex-shrink-0 self-center mt-[2rem]">
+					{/* breathing pool of light behind the shelf so the render
+					    sits in the room instead of floating in the void */}
+					<div className="lp-aura lp-aura-breathe inset-[-8%]" aria-hidden />
 					<VideoAnimationPlayer
 						className="w-[30rem] xl:w-[44rem] h-[44rem]"
 						src="/videos/hero-anim2.webm"

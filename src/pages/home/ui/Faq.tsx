@@ -1,5 +1,5 @@
 import { Heading } from "~/shared/ui/kit/heading";
-import { Eyebrow, Reveal } from "./shared";
+import { Aura, Eyebrow, Reveal } from "./shared";
 
 /**
  * FAQ content sourced from the whitepaper (Solution, Technology,
@@ -62,7 +62,8 @@ const faqs = [
 
 export function Faq() {
 	return (
-		<div className="py-[7rem] max-md:py-[4rem] px-4">
+		<div className="relative overflow-hidden py-[7rem] max-md:py-[4rem] px-4">
+			<Aura className="top-[2rem] left-[-16rem] size-[44rem]" />
 			<div className="flex flex-col lg:flex-row gap-[3.5rem] w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.25rem] lg:w-[24rem] flex-shrink-0">
 					<Eyebrow>Questions</Eyebrow>
@@ -90,7 +91,7 @@ export function Faq() {
 				<div className="flex flex-col gap-[0.75rem] w-full">
 					{faqs.map((faq, index) => (
 						<Reveal key={faq.question} delay={index * 50}>
-							<details className="group rounded-[1.25rem] bg-white/[0.03] open:bg-white/[0.05] transition-colors">
+							<details className="group rounded-[1.25rem] bg-white/[0.03] hover:bg-white/[0.045] open:bg-white/[0.05] transition-colors">
 								<summary className="flex items-center justify-between gap-[1rem] cursor-pointer select-none list-none px-[1.5rem] py-[1.25rem] text-white font-semibold [&::-webkit-details-marker]:hidden">
 									{faq.question}
 									<span className="flex items-center justify-center size-[1.75rem] rounded-full border border-white/[0.1] text-black-60 transition-transform duration-300 group-open:rotate-45 flex-shrink-0">

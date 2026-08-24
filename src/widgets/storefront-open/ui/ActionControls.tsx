@@ -67,7 +67,7 @@ export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivEl
 			</StoreInputAddon>
 
 			<Button
-				className="w-full md:w-auto" size="xl"
+				className="lp-btn-sheen w-full md:w-auto" size="xl"
 				onClick={onButtonClick}
 			>
 				Open Storefront

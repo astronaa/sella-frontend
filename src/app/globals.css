@@ -243,3 +243,119 @@ body {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
+
+/* ===== atmosphere + motion pass =====
+   the page used to sit flat on #0F0F0F; these give it air without ever
+   drawing a stroke: film grain unifying every surface, gold auras
+   anchoring sections, an entrance for the hero, and hover life */
+
+/* fine monochrome film grain over the whole viewport; fixed so it never
+   scrolls, pointer-transparent, and under the sticky header's z */
+.lp-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* soft gold pool of light behind a section's key content; size and
+   place per use, it fades to nothing well before its own edge */
+.lp-aura {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 221, 0, 0.065), transparent 72%);
+}
+.lp-aura-breathe { animation: lp-aura-breathe 9s ease-in-out infinite; }
+@keyframes lp-aura-breathe {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* hero entrance: children cascade up on first paint */
+@keyframes lp-enter {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.lp-enter { animation: lp-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.lp-enter-1 { animation-delay: 0.05s; }
+.lp-enter-2 { animation-delay: 0.15s; }
+.lp-enter-3 { animation-delay: 0.25s; }
+.lp-enter-4 { animation-delay: 0.35s; }
+.lp-enter-5 { animation-delay: 0.45s; }
+.lp-enter-6 { animation-delay: 0.55s; }
+
+/* slow light sweep across a gradient headline, there and back */
+.lp-shimmer {
+  background-size: 220% 100%;
+  animation: lp-shimmer 9s ease-in-out infinite;
+}
+@keyframes lp-shimmer {
+  0%, 35% { background-position: 0% 0; }
+  60% { background-position: 90% 0; }
+  85%, 100% { background-position: 0% 0; }
+}
+
+/* cards lift toward the hand with a warm shadow, never a stroke */
+.lp-hover-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.lp-hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.7),
+    0 10px 36px -14px rgba(255, 221, 0, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-enter, .lp-shimmer, .lp-aura-breathe { animation: none; }
+  .lp-hover-card, .lp-hover-card:hover { transform: none; transition: none; }
+}
+
+/* one light sweep across the primary CTA on hover */
+.lp-btn-sheen { position: relative; overflow: hidden; }
+.lp-btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 30%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.lp-btn-sheen:hover::after {
+  opacity: 1;
+  animation: lp-btn-sheen 0.7s ease forwards;
+}
+@keyframes lp-btn-sheen {
+  to { transform: skewX(-20deg) translateX(520%); }
+}
+
+/* spark travelling the roadmap rail, phase to phase */
+.lp-rail-spark {
+  position: absolute;
+  top: 1.25rem;
+  margin-top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #ffdd00;
+  box-shadow: 0 0 12px 3px rgba(255, 221, 0, 0.5);
+  animation: lp-rail-spark 7s linear infinite;
+}
+@keyframes lp-rail-spark {
+  0% { left: 2%; opacity: 0; }
+  6% { opacity: 1; }
+  94% { opacity: 1; }
+  100% { left: 97%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-btn-sheen:hover::after { animation: none; opacity: 0; }
+  .lp-rail-spark { animation: none; opacity: 0; }
+}

@@ -2,13 +2,14 @@ import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCard, StoreLink } from "~/entities/store";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { fetchMarketplaceStores } from "../api/stores";
-import { Eyebrow, Reveal } from "./shared";
+import { Aura, Eyebrow, Reveal } from "./shared";
 
 export async function ExploreMarketPlace() {
 	const { data } = await fetchMarketplaceStores();
 
 	return (
-		<div id="explore" className="py-[7rem] max-md:py-[4rem] px-4">
+		<div id="explore" className="relative overflow-hidden py-[7rem] max-md:py-[4rem] px-4">
+			<Aura className="top-[-8rem] right-[-12rem] size-[48rem]" />
 			<div className="mx-auto flex flex-col gap-[3.5rem] relative w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.25rem]">
 					<Eyebrow>Some ideas to get you going</Eyebrow>
@@ -30,7 +31,7 @@ export async function ExploreMarketPlace() {
 							<StoreCard.Root
 								store={store}
 								asChild
-								className="w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13] transition-colors duration-300"
+								className="lp-hover-card w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13]"
 							>
 								<StoreLink>
 									<StoreCard.Composition />

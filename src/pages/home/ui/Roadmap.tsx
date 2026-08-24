@@ -1,5 +1,5 @@
 import { Heading } from "~/shared/ui/kit/heading";
-import { Eyebrow, Reveal } from "./shared";
+import { Aura, Eyebrow, Reveal } from "./shared";
 
 /**
  * Launch timeline. Tone matters: the platform is FINISHED and being
@@ -84,7 +84,8 @@ const statusClass: Record<PhaseStatus, string> = {
 
 export function Roadmap() {
 	return (
-		<div className="py-[7rem] max-md:py-[4rem] px-4">
+		<div className="relative overflow-hidden py-[7rem] max-md:py-[4rem] px-4">
+			<Aura className="top-[-6rem] left-1/2 -translate-x-1/2 w-[60rem] h-[34rem]" />
 			<div className="flex flex-col gap-[4rem] max-md:gap-[3rem] w-full max-w-content m-auto">
 				<Reveal className="flex flex-col items-center text-center gap-[1.5rem]">
 					<Eyebrow>Launch timeline</Eyebrow>
@@ -112,6 +113,8 @@ export function Roadmap() {
 						className="hidden lg:block absolute left-[1.25rem] right-[1.25rem] top-[1.25rem] h-px border-t border-dashed border-white/[0.14]"
 						aria-hidden
 					/>
+					{/* a trade travelling the waves, phase to phase */}
+					<span className="lp-rail-spark hidden lg:block" aria-hidden />
 
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-x-[1.5rem] gap-y-[2.5rem]">
 						{phases.map((item) => (

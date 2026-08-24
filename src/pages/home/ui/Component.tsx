@@ -12,6 +12,8 @@ import { Roadmap } from "./Roadmap";
 export function Component() {
   return (
     <div className="">
+      {/* film grain unifies every surface on the page */}
+      <div className="lp-grain" aria-hidden />
       <Hero />
       <HowItWorks />
       <ExploreMarketPlace />

@@ -1,5 +1,5 @@
 import { Heading } from "~/shared/ui/kit/heading";
-import { Eyebrow, Reveal } from "./shared";
+import { Aura, Eyebrow, Reveal } from "./shared";
 import { JuryVignette } from "./JuryVignette";
 
 /**
@@ -44,7 +44,8 @@ const pillars = [
 
 export function Disputes() {
 	return (
-		<div className="py-[7rem] max-md:py-[4rem] px-4">
+		<div className="relative overflow-hidden py-[7rem] max-md:py-[4rem] px-4">
+			<Aura className="top-[-4rem] left-[-14rem] size-[46rem]" />
 			<div className="flex flex-col gap-[3.5rem] w-full max-w-content m-auto">
 				<div className="flex items-center justify-between gap-[2rem] max-lg:justify-center">
 					<Reveal className="flex flex-col gap-[1.25rem]">
@@ -75,7 +76,7 @@ export function Disputes() {
 						<Reveal
 							key={pillar.title}
 							delay={index * 90}
-							className="relative flex flex-col gap-[1rem] rounded-[1.5rem] bg-white/[0.03] p-[1.75rem]"
+							className="lp-hover-card relative flex flex-col gap-[1rem] rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] p-[1.75rem]"
 						>
 							<span className="flex items-center justify-center size-[2.75rem] rounded-[0.75rem] bg-accent-100/[0.12] text-accent-100">
 								{pillar.icon}

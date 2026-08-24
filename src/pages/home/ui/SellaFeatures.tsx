@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Heading } from "~/shared/ui/kit/heading";
-import { Eyebrow, Reveal } from "./shared";
+import { Aura, Eyebrow, Reveal } from "./shared";
 
 import ImageNoKyc from "../assets/features/no-kyc.png";
 import ImageSellAnything from "../assets/features/sell-anything.png";
@@ -117,7 +117,8 @@ const allFeatures = [
 
 export function SellaFeautes() {
 	return (
-		<div className="py-[7rem] max-md:py-[4rem] px-4">
+		<div className="relative overflow-hidden py-[7rem] max-md:py-[4rem] px-4">
+			<Aura className="top-[16rem] right-[-14rem] size-[50rem]" />
 			<div className="flex flex-col gap-[3.5rem] w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.25rem]">
 					<Eyebrow>Why sellers stay</Eyebrow>
@@ -134,7 +135,7 @@ export function SellaFeautes() {
 
 				{/* two illustrated flagship tiles */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-[1.25rem]">
-					<Reveal className="relative flex flex-col rounded-[1.5rem] bg-white/[0.03] overflow-hidden">
+					<Reveal className="lp-hover-card relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
 						<div
 							className="flex justify-center items-center h-[15rem]"
 							style={{
@@ -153,7 +154,7 @@ export function SellaFeautes() {
 						</div>
 					</Reveal>
 
-					<Reveal delay={90} className="relative flex flex-col rounded-[1.5rem] bg-white/[0.03] overflow-hidden">
+					<Reveal delay={90} className="lp-hover-card relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
 						<div
 							className="flex justify-center items-center h-[15rem]"
 							style={{

@@ -18,6 +18,11 @@ export function Eyebrow({ className, children, ...props }: HTMLAttributes<HTMLDi
 	);
 }
 
+/** Soft pool of gold light anchoring a section; position and size per use. */
+export function Aura({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+	return <div aria-hidden {...props} className={cn("lp-aura", className)} />;
+}
+
 /** Fades content up when it enters the viewport. Pure presentation, no layout impact. */
 export function Reveal({
 	className,
@@ -38,18 +43,28 @@ export function Reveal({
 
 		node.classList.add("lp-armed");
 
+		let settle = 0;
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
 					node.classList.add("lp-visible");
 					observer.disconnect();
+					// once revealed, hand the element back untouched so its own
+					// transitions (hover lifts) aren't slowed or delayed by ours
+					settle = window.setTimeout(() => {
+						node.classList.remove("lp-armed", "lp-visible");
+						node.style.transitionDelay = "";
+					}, 1000);
 				}
 			},
 			{ threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
 		);
 
 		observer.observe(node);
-		return () => observer.disconnect();
+		return () => {
+			observer.disconnect();
+			window.clearTimeout(settle);
+		};
 	}, []);
 
 	return (
