@@ -1,4 +1,5 @@
 import useEmblaCarousel from 'embla-carousel-react'
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 import { Children } from 'react';
 import { cn } from '~/shared/lib/cn';
 import { ark, HTMLArkProps } from '@ark-ui/react'
@@ -8,7 +9,9 @@ export type RootProps = HTMLArkProps<'div'> & {
 }
 
 export function Root({ scrollOptions = { dragFree: true }, className, children, ...props }: RootProps) {
-	const [ref] = useEmblaCarousel(scrollOptions);
+	// wheel gestures let trackpads scroll the strip natively; dragging
+	// still works for mouse and touch
+	const [ref] = useEmblaCarousel(scrollOptions, [WheelGesturesPlugin()]);
 	const element = Children.only(children)
 
 	return (

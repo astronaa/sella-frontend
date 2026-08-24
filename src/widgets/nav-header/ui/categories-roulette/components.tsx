@@ -15,6 +15,7 @@ import { PropsWithChildren, useMemo, useState } from "react";
 import { Button as BaseButton, ButtonProps } from "~/shared/ui/kit/button";
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
+import { categoryIcon } from "~/shared/ui/category-icons";
 import { Scrollable } from "~/shared/ui/scrollable";
 import { CategoryBox, categoryQueries } from "~/entities/category";
 import { Category } from "~/shared/api/client";
@@ -91,7 +92,7 @@ export function Content({ itemsClassName, ...props }: ContentProps) {
 					<CategoryBox
 						key={c.id}
 						category={c} active={category?.id === c.id}
-						className={itemsClassName} truncateName
+						className={itemsClassName}
 						onClick={() => {
 							setCategory(category => category?.id == c.id ? null : c);
 							setOpen(false);
@@ -108,9 +109,12 @@ export function Content({ itemsClassName, ...props }: ContentProps) {
 							itemsClassName
 						)}
 					>
-						<span className='transition-opacity duration-200 group-hover:opacity-0'>
-							{name}
-						</span>
+						<div className='flex flex-col items-center gap-[0.625rem] transition-opacity duration-200 group-hover:opacity-0'>
+							<span className='flex items-center justify-center size-[5rem] p-[0.75rem]'>
+								{categoryIcon(name)}
+							</span>
+							<span>{name}</span>
+						</div>
 						<span className='absolute inset-0 flex items-center justify-center text-accent-100 text-[0.875rem] opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
 							coming soon
 						</span>

@@ -1,4 +1,5 @@
 import { Heading } from "~/shared/ui/kit/heading";
+import { DottedGlobe } from "./DottedGlobe";
 import { Eyebrow, Reveal } from "./shared";
 
 /**
@@ -68,44 +69,47 @@ export function Borderless() {
 
 	return (
 		<div className="relative py-[7rem] max-md:py-[4rem] overflow-hidden">
-			{/* spinning dotted Earth rising from the bottom of the section,
-			    a horizon behind the whole block */}
-			<div className="absolute left-1/2 -translate-x-1/2 bottom-[-46rem] size-[80rem] max-md:size-[40rem] max-md:bottom-[-24rem] lp-globe opacity-60 pointer-events-none" aria-hidden>
-				<div className="lp-globe-map" />
-			</div>
-			<div className="absolute left-1/2 -translate-x-1/2 bottom-[-46rem] size-[80rem] max-md:size-[40rem] max-md:bottom-[-24rem] rounded-full border border-accent-100/[0.10] pointer-events-none" aria-hidden />
-
 			<div className="relative flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
-				<Reveal className="flex flex-col items-center text-center gap-[1.5rem] px-4 w-full max-w-content mx-auto">
-					<Eyebrow>Borderless by default</Eyebrow>
+				{/* copy on the left, spinning dotted Earth on the right so the
+				    globe never sits underneath the text */}
+				<div className="grid lg:grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[4rem] gap-y-[3rem] px-4 w-full max-w-content mx-auto">
+					<div className="flex flex-col gap-[3rem]">
+						<Reveal className="flex flex-col gap-[1.5rem]">
+							<Eyebrow>Borderless by default</Eyebrow>
 
-					<Heading size="lg" className="tracking-[-0.02em]">
-						Talent has no borders.
-						<br />
-						<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
-							Now selling doesn&apos;t either.
-						</span>
-					</Heading>
+							<Heading size="lg" className="tracking-[-0.02em]">
+								Talent has no borders.
+								<br />
+								<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
+									Now selling doesn&apos;t either.
+								</span>
+							</Heading>
 
-					<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
-						Billions of people live where payment processors don&apos;t
-						operate and banks can&apos;t reach the global market. Their work
-						is world-class; their rails aren&apos;t. Sella runs on wallets:
-						if you can deliver, you can sell to anyone on Earth.
-					</p>
-				</Reveal>
+							<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
+								Billions of people live where payment processors don&apos;t
+								operate and banks can&apos;t reach the global market. Their work
+								is world-class; their rails aren&apos;t. Sella runs on wallets:
+								if you can deliver, you can sell to anyone on Earth.
+							</p>
+						</Reveal>
 
-				<Reveal delay={80} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-[2.5rem] gap-y-[2rem] px-4 w-full max-w-content mx-auto">
-					{points.map((point) => (
-						<div key={point.title} className="flex flex-col gap-[0.5rem]">
-							<span className="size-[0.5rem] rounded-full bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.4)] mb-[0.375rem]" />
-							<span className="text-white font-semibold">{point.title}</span>
-							<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
-								{point.description}
-							</span>
-						</div>
-					))}
-				</Reveal>
+						<Reveal delay={80} className="grid grid-cols-1 md:grid-cols-2 gap-x-[2.5rem] gap-y-[2rem]">
+							{points.map((point) => (
+								<div key={point.title} className="flex flex-col gap-[0.5rem]">
+									<span className="size-[0.5rem] rounded-full bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.4)] mb-[0.375rem]" />
+									<span className="text-white font-semibold">{point.title}</span>
+									<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
+										{point.description}
+									</span>
+								</div>
+							))}
+						</Reveal>
+					</div>
+
+					<div className="size-[34rem] max-xl:size-[28rem] max-lg:size-[22rem] max-lg:mx-auto" aria-hidden>
+						<DottedGlobe />
+					</div>
+				</div>
 
 				{/* worldwide trades as a slow full-bleed ticker */}
 				<Reveal delay={140} className="flex flex-col gap-[1rem]">
