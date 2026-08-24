@@ -40,7 +40,7 @@ const sellerSteps: SideStep[] = [
 	{
 		title: "Deliver, then get paid",
 		description:
-			"You deliver through the order chat. The moment the buyer confirms, or the release window ends with no dispute, the contract sends the money to your wallet.",
+			"You deliver through the order chat. Buyer confirms: instant payout. Buyer goes silent: the window ends and the funds auto-release to you. Buyer blocks unfairly: you can open a dispute yourself, and your delivery evidence is already in the chat.",
 	},
 ];
 
