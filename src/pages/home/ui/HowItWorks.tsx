@@ -103,7 +103,7 @@ export function HowItWorks() {
 					<Heading size="lg" className="tracking-[-0.02em] max-w-[46rem] text-balance">
 						Sell anything to anyone.
 						<br />
-						<span className="bg-gradient-to-r from-accent-100 via-[#FFE865] to-accent-hover bg-clip-text text-transparent">
+						<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
 							The contract makes it safe.
 						</span>
 					</Heading>

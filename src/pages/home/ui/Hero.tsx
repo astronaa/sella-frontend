@@ -35,7 +35,10 @@ export function Hero() {
 						>
 							Sell anything.
 							<br />
-							<span className="bg-gradient-to-r from-accent-100 via-[#FFE865] to-accent-hover bg-clip-text text-transparent">
+							{/* stay inside the gold family: ending on accent-hover
+							    orange made the tail of the line read as a second
+							    color */}
+							<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
 								Escrow does the rest.
 							</span>
 						</Heading>

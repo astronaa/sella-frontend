@@ -111,7 +111,7 @@ export function EscrowBuyerSeller() {
 						<Heading size="lg" className="tracking-[-0.02em]">
 							One contract.
 							<br />
-							<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
+							<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
 								Both sides covered.
 							</span>
 						</Heading>

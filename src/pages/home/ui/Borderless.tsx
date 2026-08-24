@@ -79,7 +79,7 @@ export function Borderless() {
 					<Heading size="lg" className="tracking-[-0.02em]">
 						Talent has no borders.
 						<br />
-						<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
+						<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
 							Now selling doesn&apos;t either.
 						</span>
 					</Heading>
