@@ -73,8 +73,9 @@ export function Hero() {
 					<EscrowTicker className="max-w-[30rem]" />
 				</div>
 
-				{/* artist 3D render, kept clean */}
-				<div className="hidden lg:block flex-shrink-0 self-end">
+				{/* artist 3D render, kept clean. Centered with the copy: with
+				    the hero at viewport height, self-end glued it too low */}
+				<div className="hidden lg:block flex-shrink-0 self-center mt-[2rem]">
 					<VideoAnimationPlayer
 						className="w-[30rem] xl:w-[44rem] h-[44rem]"
 						src="/videos/hero-anim2.webm"

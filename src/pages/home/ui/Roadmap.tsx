@@ -1,209 +1,145 @@
-import { cn } from "~/shared/lib/cn";
 import { Heading } from "~/shared/ui/kit/heading";
+import { Eyebrow, Reveal } from "./shared";
 
-interface StageItemProps {
+/**
+ * Launch timeline. Tone matters: the platform is FINISHED and being
+ * released in waves, so every phase reads as "opening", never as
+ * "building". No calendar dates: phases gate on the previous wave
+ * proving solid, which is the honest version of a gradual launch.
+ */
+
+type PhaseStatus = "live" | "in-progress" | "upcoming";
+
+interface Phase {
+	phase: string;
 	title: string;
-	isCompleted: boolean;
+	status: PhaseStatus;
+	statusLabel: string;
+	description: string;
 }
 
-interface StageProps {
-	title: string;
-	content: string;
-	stageItems: StageItemProps[];
-}
-
-const stagesList = [
+const phases: Phase[] = [
 	{
-		title: "Stage 01",
-		content:
-			"Core functionality getting deployed. From storefront creation to a robust escrow system and dispute functionality",
-		stageItems: [
-			{
-				title: "Token Generating Event",
-				isCompleted: true,
-			},
-			{
-				title: "Listing $SELLA on Uniswap",
-				isCompleted: true,
-			},
-			{
-				title: "Bridging to BNB chain",
-				isCompleted: false,
-			},
-			{
-				title: "Listing $SELLA on Pancakeswap",
-				isCompleted: false,
-			},
-			{
-				title: "Customization Update",
-				isCompleted: false,
-			},
-			{
-				title: "Analytics Dashboard",
-				isCompleted: false,
-			},
-			{
-				title: "Bounty Program",
-				isCompleted: false,
-			},
-		],
+		phase: "01",
+		title: "Sella announced",
+		status: "live",
+		statusLabel: "live now",
+		description:
+			"The platform steps out of stealth: the site, the whitepaper, the demo shops, and the escrow contract already deployed on Ethereum.",
 	},
 	{
-		title: "Stage 02",
-		content:
-			"Time for some premium features and some serious marketing campaigns to attract even more sellers on board.",
-		stageItems: [
-			{
-				title: "CEX Listings",
-				isCompleted: false,
-			},
-			{
-				title: "Staking Mechanism",
-				isCompleted: false,
-			},
-			{
-				title: "Massive Marketing Campaigns",
-				isCompleted: false,
-			},
-			{
-				title: "Discounts & Coupons",
-				isCompleted: false,
-			},
-			{
-				title: "Storefront Customization",
-				isCompleted: false,
-			},
-			{
-				title: "Advertisements",
-				isCompleted: false,
-			},
-			{
-				title: "Product Categorization & Filtering",
-				isCompleted: false,
-			},
-			{
-				title: "Blue Ticks",
-				isCompleted: false,
-			},
-		],
+		phase: "02",
+		title: "Quests open",
+		status: "live",
+		statusLabel: "live now",
+		description:
+			"Points, referrals, and community roles. Early supporters start earning before the first trade settles.",
 	},
 	{
-		title: "Stage 03",
-		content:
-			"Focusing on premium features & loyalty schemes for both sellers and buyers.",
-		stageItems: [
-			{
-				title: "Auto delivery for Digital Goods",
-				isCompleted: false,
-			},
-			{
-				title: "Bulk Import Shop Items From .XLS",
-				isCompleted: false,
-			},
-			{
-				title: "AI Tracking of Fraudulent Activity",
-				isCompleted: false,
-			},
-			{
-				title: "Create Shop Categories",
-				isCompleted: false,
-			},
-			{
-				title: "Tip System for Content Creators",
-				isCompleted: false,
-			},
-			{
-				title: "Governance Module",
-				isCompleted: false,
-			},
-		],
+		phase: "03",
+		title: "Launch partners onboard",
+		status: "in-progress",
+		statusLabel: "in progress",
+		description:
+			"Selected creators, communities, and web3 brands get their storefronts seeded first, so opening day already has full shelves.",
+	},
+	{
+		phase: "04",
+		title: "Storefront creation opens",
+		status: "upcoming",
+		statusLabel: "next wave",
+		description:
+			"Reserved handles turn into real storefronts, wave by wave. Customize the look, list your offers, connect your own domain.",
+	},
+	{
+		phase: "05",
+		title: "Escrow trading begins",
+		status: "upcoming",
+		statusLabel: "then",
+		description:
+			"The first cohort starts selling with full escrow, jury disputes, and instant payouts. Every system is built and tested; we open the gates, not the workshop.",
+	},
+	{
+		phase: "06",
+		title: "Doors open for everyone",
+		status: "upcoming",
+		statusLabel: "full launch",
+		description:
+			"Open registration worldwide and $SELLA utility switched on. The gradual part ends; the marketplace runs at full speed.",
 	},
 ];
 
+const nodeClass: Record<PhaseStatus, string> = {
+	live: "bg-accent-100 text-black-100 shadow-[0_0_24px_-4px_rgba(255,221,0,0.6)]",
+	"in-progress": "bg-accent-100/[0.15] text-accent-100",
+	upcoming: "bg-white/[0.05] text-black-60",
+};
+
+const statusClass: Record<PhaseStatus, string> = {
+	live: "bg-green-100/[0.12] text-green-100",
+	"in-progress": "bg-accent-100/[0.1] text-accent-100",
+	upcoming: "bg-white/[0.05] text-black-60",
+};
+
 export function Roadmap() {
 	return (
-		<div
-			id='roadmap'
-			className={cn(
-				"items-center py-32 px-[1rem] flex flex-col flex-grow justify-between gap-[4.5rem] relative w-full max-w-content mx-auto pb-20",
-				"max-md:gap-[3rem]"
-			)}
-		>
-			<div className="space-y-4 w-full">
-				<Heading size='lg'>
-					Roadmap
-				</Heading>
+		<div className="py-[7rem] max-md:py-[4rem] px-4">
+			<div className="flex flex-col gap-[4rem] max-md:gap-[3rem] w-full max-w-content m-auto">
+				<Reveal className="flex flex-col items-center text-center gap-[1.5rem]">
+					<Eyebrow>Launch timeline</Eyebrow>
 
-				<div className="text-black-60 text-balance max-w-[28.75rem]">
-					Join us on our multi-stage journey to becoming the largest Web3 marketplace in the world!
-				</div>
-			</div>
+					<Heading size="lg" className="tracking-[-0.02em]">
+						Built. Now shipping
+						<br />
+						<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
+							in waves.
+						</span>
+					</Heading>
 
-			<div className="flex justify-center md:justify-center xl:justify-between w-full max-xl:flex-wrap gap-[2rem]">
-				{stagesList.map(({ title, content, stageItems }, index) => (
-					<div key={index} className="flex flex-col max-md:w-full">
-						<Stage
-							title={title}
-							content={content}
-							stageItems={stageItems}
-						/>
+					<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
+						Sella isn&apos;t a promise on a slide. The platform is finished,
+						and we&apos;re opening it in stages: each wave goes live once the
+						one before it has proven solid.
+					</p>
+				</Reveal>
+
+				{/* vertical timeline: dashed rail through medallion nodes,
+				    same visual language as the escrow diagram */}
+				<Reveal delay={80} className="relative max-w-[46rem] w-full mx-auto">
+					<span
+						className="absolute left-[1.25rem] top-[1.25rem] bottom-[1.25rem] w-px border-l border-dashed border-white/[0.14]"
+						aria-hidden
+					/>
+
+					<div className="flex flex-col gap-[2.75rem] max-md:gap-[2.25rem]">
+						{phases.map((item) => (
+							<div key={item.phase} className="relative flex gap-[1.5rem] max-md:gap-[1.125rem]">
+								<span
+									className={`relative z-[1] flex items-center justify-center size-[2.5rem] flex-shrink-0 rounded-full font-semibold text-[0.875rem] ${nodeClass[item.status]}`}
+								>
+									{item.phase}
+								</span>
+
+								<div className="flex flex-col gap-[0.375rem] pt-[0.25rem]">
+									<div className="flex items-center gap-[0.75rem] flex-wrap">
+										<span className="text-white font-semibold text-[1.125rem]">
+											{item.title}
+										</span>
+										<span
+											className={`rounded-full px-[0.75rem] py-[0.25rem] text-[0.75rem] font-semibold ${statusClass[item.status]}`}
+										>
+											{item.statusLabel}
+										</span>
+									</div>
+									<p className="text-black-60 text-[0.9375rem] leading-[1.6] max-w-[36rem]">
+										{item.description}
+									</p>
+								</div>
+							</div>
+						))}
 					</div>
-				))}
+				</Reveal>
 			</div>
 		</div>
 	);
 }
-
-const Stage = ({ title, content, stageItems }: StageProps) => {
-	return (
-		<div className="bg-white/[.04] border border-secondary rounded-[1.25rem] p-4 space-y-6 w-full md:w-[30rem] md:m-2 xl:w-[22.5rem] xl:m-0">
-			<div className="space-y-2">
-				<div className="text-accent-100 font-semibold text-2xl">
-					{title}
-				</div>
-
-				<div className="text-black-60">{content}</div>
-			</div>
-			<div className="space-y-[0.5rem]">
-				{stageItems.map(({ title, isCompleted }, index) => (
-					<StageItem
-						key={index}
-						title={title}
-						isCompleted={isCompleted}
-					/>
-				))}
-			</div>
-		</div>
-	);
-};
-
-const StageItem = ({ title, isCompleted }: StageItemProps) => {
-	const strokeColor = isCompleted ? "#FFDD00" : "#BDBDBD";
-	return (
-		<div
-			className={cn(
-				'bg-white/[.02] border border-secondary rounded-[1.125rem] p-3 flex items-center justify-start gap-[0.5rem]',
-				isCompleted ? 'text-yellow-400' : 'text-black-74',
-			)}
-		>
-			<svg
-				width="10"
-				height="19"
-				viewBox="0 0 10 19"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M4.99935 6.16675C6.8403 6.16675 8.33268 7.65913 8.33268 9.50008C8.33268 11.341 6.8403 12.8334 4.99935 12.8334M4.99935 6.16675C3.1584 6.16675 1.66602 7.65913 1.66602 9.50008C1.66602 11.341 3.1584 12.8334 4.99935 12.8334M4.99935 6.16675V1.16675M4.99935 12.8334V17.8333"
-					stroke={strokeColor}
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-				/>
-			</svg>
-			<span className={isCompleted ? "text-accent-100" : "text-black-74"}>
-				{title}
-			</span>
-		</div>
-	);
-};

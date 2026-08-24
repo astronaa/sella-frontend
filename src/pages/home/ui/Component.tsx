@@ -7,7 +7,7 @@ import { Borderless } from "./Borderless";
 import { SellaFeautes } from "./SellaFeatures";
 import { Faq } from "./Faq";
 import { CreateStore } from "./CreateStore";
-/* import { Roadmap } from "./Roadmap"; */
+import { Roadmap } from "./Roadmap";
 
 export function Component() {
   return (
@@ -19,9 +19,9 @@ export function Component() {
       <Disputes />
       <Borderless />
       <SellaFeautes />
+      <Roadmap />
       <Faq />
       <CreateStore />
-      {/*<Roadmap />*/}
     </div>
   );
 }
