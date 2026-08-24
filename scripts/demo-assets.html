@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>sella demo assets — premium set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Archivo+Black&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#333; font-family:Inter,system-ui,sans-serif; }
+  .card { width:1200px; height:900px; overflow:hidden; position:relative; margin:20px auto; }
+  .logo { width:512px; height:512px; overflow:hidden; position:relative; margin:20px auto; }
+
+  /* ============ CHAIN FOUNDRY: full-frame IDE ============ */
+  .cf { background:#0d1117; color:#c9d1d9; font-family:'JetBrains Mono',monospace; display:flex; flex-direction:column; }
+  .cf-titlebar { height:44px; background:#161b22; display:flex; align-items:center; gap:8px; padding:0 18px; font-size:13px; color:#8b949e; flex-shrink:0; border-bottom:1px solid #21262d; }
+  .cf-dot { width:12px; height:12px; border-radius:99px; }
+  .cf-body { flex:1; display:flex; min-height:0; }
+  .cf-tree { width:230px; background:#0d1117; border-right:1px solid #21262d; padding:16px 0; font-size:13px; color:#8b949e; flex-shrink:0; }
+  .cf-tree div { padding:5px 20px; white-space:nowrap; }
+  .cf-tree .on { background:#161b22; color:#e6edf3; border-left:2px solid #58a6ff; }
+  .cf-ed { flex:1; padding:18px 0; font-size:15px; line-height:1.75; overflow:hidden; position:relative; }
+  .cf-ln { display:flex; }
+  .cf-ln em { width:56px; text-align:right; padding-right:18px; color:#3d444d; font-style:normal; flex-shrink:0; user-select:none; }
+  .k { color:#ff7b72; } .t { color:#79c0ff; } .f { color:#d2a8ff; } .s { color:#a5d6ff; } .c { color:#8b949e; } .n { color:#ffa657; } .g { color:#7ee787; }
+  .cf-status { height:34px; background:#161b22; border-top:1px solid #21262d; display:flex; align-items:center; gap:22px; padding:0 18px; font-size:12px; color:#8b949e; flex-shrink:0; }
+  .cf-badge { position:absolute; right:36px; bottom:70px; background:#0b2812; border:1px solid #238636; color:#7ee787; font-size:13px; padding:9px 16px; border-radius:8px; display:flex; gap:8px; align-items:center; }
+  .cf-plate { position:absolute; left:286px; bottom:88px; right:36px; pointer-events:none; }
+  .cf-plate h1 { font-family:Inter; font-weight:800; font-size:64px; letter-spacing:-0.02em; color:#e6edf3; text-shadow:0 4px 30px rgba(0,0,0,0.8); }
+  .cf-plate p { font-family:Inter; font-size:21px; color:#9ba7b4; margin-top:10px; text-shadow:0 2px 16px rgba(0,0,0,0.9); }
+  .cf-plate .url { font-family:'JetBrains Mono'; font-size:14px; color:#58a6ff; margin-top:14px; }
+
+  /* ============ ALPHA DESK: trading terminal ============ */
+  .ad { background:#07090d; color:#aeb8c4; font-family:'JetBrains Mono',monospace; display:flex; flex-direction:column; }
+  .ad-top { height:46px; display:flex; align-items:center; gap:26px; padding:0 20px; background:#0b0e14; border-bottom:1px solid #1a1f2b; font-size:13px; flex-shrink:0; white-space:nowrap; overflow:hidden; }
+  .up { color:#2ee57a; } .dn { color:#ff5d5d; } .mut { color:#525c6b; }
+  .ad-body { flex:1; display:grid; grid-template-columns:1fr 340px; min-height:0; }
+  .ad-chart { position:relative; border-right:1px solid #1a1f2b; padding:18px; display:flex; flex-direction:column; }
+  .ad-candles { flex:1; display:flex; align-items:flex-end; gap:6px; padding-top:60px; }
+  .ad-candles i { flex:1; position:relative; display:block; }
+  .ad-candles i b { position:absolute; left:50%; width:2px; transform:translateX(-50%); background:currentColor; }
+  .ad-candles i u { position:absolute; left:0; right:0; display:block; text-decoration:none; background:currentColor; border-radius:1px; }
+  .ad-side { display:flex; flex-direction:column; font-size:12.5px; }
+  .ad-side h3 { font-size:11px; letter-spacing:0.14em; color:#525c6b; padding:14px 16px 8px; font-weight:700; }
+  .ad-row { display:flex; justify-content:space-between; padding:4.5px 16px; }
+  .ad-plate { position:absolute; left:20px; top:16px; }
+  .ad-plate h1 { font-family:Inter; font-weight:800; font-size:56px; letter-spacing:-0.02em; color:#f2f5f9; }
+  .ad-plate p { font-family:Inter; font-size:19px; color:#8italic694a2ab; color:#94a2ab; margin-top:8px; max-width:560px; }
+  .ad-tag { position:absolute; right:360px; bottom:26px; background:rgba(46,229,122,0.08); border:1px solid rgba(46,229,122,0.35); color:#2ee57a; padding:8px 14px; font-size:12.5px; border-radius:6px; }
+
+  /* ============ KOL BOOST: dense light feed ============ */
+  .kb { background:#e8eef5; font-family:Inter; overflow:hidden; }
+  .kb:before { content:""; position:absolute; inset:0; background:radial-gradient(80% 60% at 20% 0%, #ffffff 0%, transparent 60%); }
+  .kb-head { position:absolute; top:44px; left:48px; z-index:5; }
+  .kb-head h1 { font-size:58px; font-weight:800; letter-spacing:-0.03em; color:#0c1a2a; }
+  .kb-head p { font-size:20px; color:#51637a; margin-top:8px; max-width:520px; line-height:1.45; }
+  .kb-url { position:absolute; left:48px; bottom:36px; z-index:5; font-weight:700; font-size:15px; color:#0c1a2a; background:#fff; padding:10px 18px; border-radius:99px; box-shadow:0 8px 30px rgba(12,26,42,0.12); }
+  .tw { position:absolute; width:430px; background:#fff; border-radius:18px; padding:20px 22px; box-shadow:0 18px 50px rgba(12,26,42,0.16); z-index:3; }
+  .tw-h { display:flex; gap:10px; align-items:center; }
+  .tw-av { width:42px; height:42px; border-radius:99px; flex-shrink:0; }
+  .tw-n { font-weight:700; font-size:15px; color:#0c1a2a; } .tw-s { font-size:13px; color:#7b8a9c; }
+  .tw-b { font-size:15.5px; color:#20303f; line-height:1.45; margin-top:10px; }
+  .tw-m { display:flex; gap:20px; margin-top:12px; font-size:13.5px; color:#7b8a9c; font-weight:600; }
+  .kb-panel { position:absolute; right:44px; bottom:36px; width:300px; background:#0c1a2a; border-radius:16px; padding:20px; color:#fff; z-index:4; box-shadow:0 24px 60px rgba(12,26,42,0.35); }
+  .kb-panel h4 { font-size:12px; letter-spacing:0.12em; color:#7b8a9c; }
+  .kb-bar { display:flex; align-items:flex-end; gap:7px; height:90px; margin-top:14px; }
+  .kb-bar i { flex:1; background:linear-gradient(180deg,#4da3ff,#2f7fe0); border-radius:4px 4px 0 0; }
+  .kb-kpi { display:flex; justify-content:space-between; margin-top:14px; font-size:13px; color:#aebdcd; }
+  .kb-kpi b { color:#fff; font-size:16px; }
+
+  /* ============ CODE LAB: terminal ============ */
+  .cl { background:#050807; color:#9fe8b9; font-family:'JetBrains Mono',monospace; display:flex; flex-direction:column; }
+  .cl-bar { height:42px; background:#0a100c; border-bottom:1px solid #12241a; display:flex; align-items:center; gap:10px; padding:0 16px; color:#3f6b50; font-size:13px; flex-shrink:0; }
+  .cl-body { flex:1; display:grid; grid-template-columns:1fr 356px; min-height:0; }
+  .cl-log { padding:18px 22px; font-size:14.5px; line-height:1.8; overflow:hidden; }
+  .ok { color:#2ee57a; } .warn { color:#ffd23e; } .dim { color:#3f6b50; } .wt { color:#d8ffe8; }
+  .cl-right { border-left:1px solid #12241a; background:#070b09; padding:18px; display:flex; flex-direction:column; gap:14px; }
+  .cl-plate { position:absolute; left:24px; bottom:56px; right:400px; }
+  .cl-plate h1 { font-family:Inter; font-weight:800; font-size:58px; letter-spacing:-0.02em; color:#eafff2; text-shadow:0 4px 30px rgba(0,0,0,0.9); }
+  .cl-plate p { font-family:Inter; font-size:20px; color:#8fae9c; margin-top:8px; }
+  .cl-plate .url { font-size:14px; color:#2ee57a; margin-top:12px; }
+  .cl-card { background:#0a120d; border:1px solid #16301f; border-radius:10px; padding:14px; font-size:13px; }
+  .cl-card h4 { color:#5d8a6f; font-size:11px; letter-spacing:0.14em; margin-bottom:10px; }
+
+  /* ============ MEME FORGE: comic halftone ============ */
+  .mf { background:#f4501e; font-family:'Archivo Black'; color:#111; }
+  .mf:before { content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(0,0,0,0.28) 2.2px, transparent 2.2px); background-size:26px 26px; }
+  .mf-frame { position:absolute; inset:26px; border:7px solid #111; }
+  .mf h1 { position:absolute; left:70px; top:150px; font-size:100px; line-height:0.98; color:#fff; text-shadow:6px 6px 0 #111; transform:rotate(-2.5deg); max-width:800px; z-index:3; text-transform:uppercase; }
+  .mf-sub { position:absolute; left:70px; bottom:190px; background:#ffd12e; border:5px solid #111; box-shadow:10px 10px 0 rgba(17,17,17,0.85); padding:18px 26px; font-size:30px; transform:rotate(-1.5deg); z-index:4; text-transform:uppercase; }
+  .mf-url { position:absolute; left:70px; bottom:70px; font-size:22px; color:#111; z-index:4; letter-spacing:0.04em; }
+  .mf-burst { position:absolute; border-radius:999px; background:#ffd12e; border:6px solid #111; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:3; box-shadow:8px 10px 0 rgba(17,17,17,0.85); }
+  .mf-stick { position:absolute; background:#fff; border:5px solid #111; padding:14px 18px; font-size:24px; transform:rotate(4deg); box-shadow:8px 8px 0 rgba(17,17,17,0.85); z-index:2; }
+
+  /* ============ DESIGN MARKET: editorial specimen ============ */
+  .dm { background:#f4efe6; color:#181613; font-family:'Libre Caslon Text',serif; padding:64px 72px; display:flex; flex-direction:column; }
+  .dm-rule { border-top:3px solid #181613; }
+  .dm-head { display:flex; justify-content:space-between; align-items:baseline; padding:14px 0 0; font-size:15px; letter-spacing:0.18em; text-transform:uppercase; font-family:Inter; font-weight:600; }
+  .dm h1 { font-size:98px; line-height:1.02; margin-top:44px; letter-spacing:-0.01em; }
+  .dm h1 i { font-style:italic; }
+  .dm-sub { font-size:22px; line-height:1.5; color:#4d463c; margin-top:26px; max-width:660px; }
+  .dm-spec { margin-top:auto; display:grid; grid-template-columns:repeat(6,1fr); gap:0; border-top:2px solid #181613; }
+  .dm-spec > div { border-right:1px solid #b9b0a0; padding:16px 14px; font-family:Inter; font-size:12px; color:#4d463c; }
+  .dm-spec > div:last-child { border-right:none; }
+  .dm-spec b { display:block; font-size:26px; color:#181613; font-family:'Libre Caslon Text'; margin-bottom:6px; }
+  .dm-swatches { position:absolute; right:72px; top:210px; display:flex; flex-direction:column; gap:0; border:2px solid #181613; }
+  .dm-swatches i { width:120px; height:64px; display:block; }
+  .dm-foot { display:flex; justify-content:space-between; font-family:Inter; font-size:14px; margin-top:18px; color:#4d463c; }
+
+  /* logos */
+  .lg { display:flex; align-items:center; justify-content:center; }
+  .lg h1 { font-size:150px; }
+</style>
+</head>
+<body>
+
+<!-- ================= CHAIN FOUNDRY products ================= -->
+<div class="card cf" id="p-erc20-deploy">
+  <div class="cf-titlebar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:12px">chain-foundry — token-launch.sol</span><span style="margin-left:auto">solc 0.8.24 ✓</span></div>
+  <div class="cf-body">
+    <div class="cf-tree">
+      <div>▾ contracts/</div>
+      <div class="on">&nbsp;&nbsp;token-launch.sol</div>
+      <div>&nbsp;&nbsp;liquidity-lock.sol</div>
+      <div>&nbsp;&nbsp;vesting.sol</div>
+      <div>▾ script/</div>
+      <div>&nbsp;&nbsp;deploy.s.sol</div>
+      <div>&nbsp;&nbsp;verify.s.sol</div>
+      <div>▾ test/</div>
+      <div>&nbsp;&nbsp;launch.t.sol&nbsp;&nbsp;<span class="g">✓ 34</span></div>
+    </div>
+    <div class="cf-ed" id="ed-1"></div>
+  </div>
+  <div class="cf-plate">
+    <h1>Token Launch Setup</h1>
+    <p>ERC-20 with liquidity lock, deployed and verified in 24 hours.</p>
+    <div class="url">sella.to/chain-foundry</div>
+  </div>
+  <div class="cf-badge">✓ deployed &amp; verified on mainnet</div>
+  <div class="cf-status"><span class="g">● main</span><span>UTF-8</span><span>Solidity</span><span style="margin-left:auto">Ln 128, Col 42</span></div>
+</div>
+
+<div class="card cf" id="p-staking-vault">
+  <div class="cf-titlebar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:12px">chain-foundry — staking-vault.sol</span><span style="margin-left:auto">solc 0.8.24 ✓</span></div>
+  <div class="cf-body">
+    <div class="cf-tree">
+      <div>▾ contracts/</div>
+      <div class="on">&nbsp;&nbsp;staking-vault.sol</div>
+      <div>&nbsp;&nbsp;rewards-math.sol</div>
+      <div>&nbsp;&nbsp;emergency-exit.sol</div>
+      <div>▾ test/</div>
+      <div>&nbsp;&nbsp;vault.t.sol&nbsp;&nbsp;<span class="g">✓ 51</span></div>
+      <div>&nbsp;&nbsp;fuzz.t.sol&nbsp;&nbsp;<span class="g">✓ 12k runs</span></div>
+    </div>
+    <div class="cf-ed" id="ed-2"></div>
+  </div>
+  <div class="cf-plate">
+    <h1>Staking Vault Setup</h1>
+    <p>Lock, earn, compound. APR curves you control, tested to the edge.</p>
+    <div class="url">sella.to/chain-foundry</div>
+  </div>
+  <div class="cf-badge">✓ 51 tests · 12k fuzz runs passing</div>
+  <div class="cf-status"><span class="g">● main</span><span>UTF-8</span><span>Solidity</span><span style="margin-left:auto">Ln 86, Col 12</span></div>
+</div>
+
+<div class="card cf" id="p-nft-mint">
+  <div class="cf-titlebar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:12px">chain-foundry — mint.sol</span><span style="margin-left:auto">solc 0.8.24 ✓</span></div>
+  <div class="cf-body">
+    <div class="cf-tree">
+      <div>▾ contracts/</div>
+      <div class="on">&nbsp;&nbsp;mint.sol</div>
+      <div>&nbsp;&nbsp;allowlist.sol</div>
+      <div>&nbsp;&nbsp;reveal.sol</div>
+      <div>▾ metadata/</div>
+      <div>&nbsp;&nbsp;base-uri.json</div>
+      <div>▾ test/</div>
+      <div>&nbsp;&nbsp;mint.t.sol&nbsp;&nbsp;<span class="g">✓ 28</span></div>
+    </div>
+    <div class="cf-ed" id="ed-3"></div>
+  </div>
+  <div class="cf-plate">
+    <h1>NFT Mint Contract</h1>
+    <p>Allowlist phases, reveal logic, royalties. Gas-golfed mint path.</p>
+    <div class="url">sella.to/chain-foundry</div>
+  </div>
+  <div class="cf-badge">✓ 61k gas per mint</div>
+  <div class="cf-status"><span class="g">● main</span><span>UTF-8</span><span>Solidity</span><span style="margin-left:auto">Ln 54, Col 8</span></div>
+</div>
+
+<div class="card cf" id="p-custom-audit">
+  <div class="cf-titlebar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:12px">chain-foundry — audit-report.md</span><span style="margin-left:auto">review branch</span></div>
+  <div class="cf-body">
+    <div class="cf-tree">
+      <div>▾ audit/</div>
+      <div class="on">&nbsp;&nbsp;report.md</div>
+      <div>&nbsp;&nbsp;<span class="n">M-01</span> reentrancy.md</div>
+      <div>&nbsp;&nbsp;<span class="n">M-02</span> rounding.md</div>
+      <div>&nbsp;&nbsp;<span class="c">L-01</span> events.md</div>
+      <div>▾ fixes/</div>
+      <div>&nbsp;&nbsp;withdraw-guard.diff</div>
+      <div>&nbsp;&nbsp;mulDiv-floor.diff</div>
+    </div>
+    <div class="cf-ed" id="ed-4"></div>
+  </div>
+  <div class="cf-plate">
+    <h1>Contract Review</h1>
+    <p>Line-by-line audit, findings ranked, fixes included as diffs.</p>
+    <div class="url">sella.to/chain-foundry</div>
+  </div>
+  <div class="cf-badge">2 medium · 1 low · fixes shipped</div>
+  <div class="cf-status"><span class="g">● review</span><span>UTF-8</span><span>Markdown</span><span style="margin-left:auto">Ln 210, Col 1</span></div>
+</div>
+
+<!-- ================= ALPHA DESK products ================= -->
+<div class="card ad" id="p-seed-alloc">
+  <div class="ad-top"><span class="wt" style="color:#f2f5f9">ALPHA DESK</span><span>ETH <span class="up">+2.4%</span></span><span>BTC <span class="up">+1.1%</span></span><span>SOL <span class="dn">-0.8%</span></span><span class="mut">ROUND · SEED</span><span class="mut">VESTING · 12M CLIFF 3M</span><span style="margin-left:auto" class="up">● desk online</span></div>
+  <div class="ad-body">
+    <div class="ad-chart">
+      <div class="ad-plate"><h1>Seed Round Access</h1><p>Allocation in a vetted seed round the desk is already in.</p></div>
+      <div class="ad-candles" id="candles-1"></div>
+      <div class="ad-tag">allocation confirmed on-chain · escrow protected</div>
+    </div>
+    <div class="ad-side" id="side-1"></div>
+  </div>
+</div>
+
+<div class="card ad" id="p-presale-spot">
+  <div class="ad-top"><span class="wt" style="color:#f2f5f9">ALPHA DESK</span><span>ETH <span class="up">+2.4%</span></span><span class="mut">ROUND · PRESALE</span><span class="mut">TGE · Q4</span><span class="mut">CAP · $4.2M</span><span style="margin-left:auto" class="up">● desk online</span></div>
+  <div class="ad-body">
+    <div class="ad-chart">
+      <div class="ad-plate"><h1>Presale Spot</h1><p>A guaranteed presale slot, delivered to your wallet before TGE.</p></div>
+      <div class="ad-candles" id="candles-2"></div>
+      <div class="ad-tag">slot delivered pre-TGE · escrow protected</div>
+    </div>
+    <div class="ad-side" id="side-2"></div>
+  </div>
+</div>
+
+<div class="card ad" id="p-wl-bundle">
+  <div class="ad-top"><span class="wt" style="color:#f2f5f9">ALPHA DESK</span><span class="mut">MINTS · 3 CURATED</span><span class="mut">FILTER · TEAMS THAT SHIP</span><span style="margin-left:auto" class="up">● desk online</span></div>
+  <div class="ad-body">
+    <div class="ad-chart">
+      <div class="ad-plate"><h1>WL Spot Bundle</h1><p>Three whitelist spots across this month's curated mints.</p></div>
+      <div class="ad-candles" id="candles-3"></div>
+      <div class="ad-tag">3 spots · checkable within 48h</div>
+    </div>
+    <div class="ad-side" id="side-3"></div>
+  </div>
+</div>
+
+<div class="card ad" id="p-alpha-report">
+  <div class="ad-top"><span class="wt" style="color:#f2f5f9">ALPHA DESK</span><span class="mut">WEEKLY BRIEF · #47</span><span class="mut">PAGES · 18</span><span class="mut">CALLS TRACKED · ALL</span><span style="margin-left:auto" class="up">● desk online</span></div>
+  <div class="ad-body">
+    <div class="ad-chart">
+      <div class="ad-plate"><h1>Weekly Alpha Report</h1><p>What the desk is watching, entering, and exiting. Every call tracked.</p></div>
+      <div class="ad-candles" id="candles-4"></div>
+      <div class="ad-tag">issue #47 drops sunday · escrow protected</div>
+    </div>
+    <div class="ad-side" id="side-4"></div>
+  </div>
+</div>
+
+<!-- ================= KOL BOOST products ================= -->
+<div class="card kb" id="p-x-thread">
+  <div class="kb-head"><h1>Sponsored Thread</h1><p>A 6-tweet story arc on an account your buyers already follow.</p></div>
+  <div class="tw" style="right:420px; top:70px; transform:rotate(-2deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#4da3ff,#7a5cff)"></span><div><div class="tw-n">@ct_carousel</div><div class="tw-s">Sponsored · pinned 48h</div></div></div>
+    <div class="tw-b">gm. found something actually worth your bags this cycle 🧵👇</div>
+    <div class="tw-m"><span>♥ 8.9K</span><span>↻ 2.1K</span><span>▸ 412K views</span></div>
+  </div>
+  <div class="tw" style="right:120px; top:250px; transform:rotate(1.5deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#4da3ff,#7a5cff)"></span><div><div class="tw-n">@ct_carousel</div><div class="tw-s">2/6</div></div></div>
+    <div class="tw-b">the team ships weekly. contracts verified. liquidity locked. receipts in the next tweet 📜</div>
+    <div class="tw-m"><span>♥ 4.2K</span><span>↻ 980</span></div>
+  </div>
+  <div class="tw" style="right:340px; top:436px; transform:rotate(-1deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#4da3ff,#7a5cff)"></span><div><div class="tw-n">@ct_carousel</div><div class="tw-s">6/6</div></div></div>
+    <div class="tw-b">not financial advice. but my bags don't lie. full breakdown linked below 🔗</div>
+    <div class="tw-m"><span>♥ 6.7K</span><span>↻ 1.6K</span></div>
+  </div>
+  <div class="kb-panel">
+    <h4>REACH · 48H WINDOW</h4>
+    <div class="kb-bar"><i style="height:28%"></i><i style="height:42%"></i><i style="height:64%"></i><i style="height:100%"></i><i style="height:82%"></i><i style="height:58%"></i><i style="height:70%"></i></div>
+    <div class="kb-kpi"><span>views<br><b>1.2M</b></span><span>engagements<br><b>96K</b></span><span>CTR<br><b>4.1%</b></span></div>
+  </div>
+  <div class="kb-url">sella.to/kol-boost</div>
+</div>
+
+<div class="card kb" id="p-kol-package">
+  <div class="kb-head"><h1>KOL Bundle</h1><p>Five mid-tier KOLs post inside one 48-hour window. Links and reach report included.</p></div>
+  <div class="tw" style="right:430px; top:60px; transform:rotate(-2deg); width:380px">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#ff7ab8,#ff4d6a)"></span><div><div class="tw-n">@degen_diaries</div><div class="tw-s">KOL 1 of 5 · posted 14:02</div></div></div>
+    <div class="tw-b">this one's been quietly cooking all quarter 👀</div>
+    <div class="tw-m"><span>♥ 3.1K</span><span>↻ 640</span></div>
+  </div>
+  <div class="tw" style="right:100px; top:180px; transform:rotate(1.5deg); width:380px">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#43e0a0,#1fb87e)"></span><div><div class="tw-n">@onchain_owl</div><div class="tw-s">KOL 2 of 5 · posted 15:37</div></div></div>
+    <div class="tw-b">chart looks ready. team doxxed. i'm in for a starter position 🦉</div>
+    <div class="tw-m"><span>♥ 5.4K</span><span>↻ 1.2K</span></div>
+  </div>
+  <div class="tw" style="right:390px; top:330px; transform:rotate(-1deg); width:380px">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#ffb84d,#ff8a3d)"></span><div><div class="tw-n">@alpha_annie</div><div class="tw-s">KOL 3 of 5 · posted 17:10</div></div></div>
+    <div class="tw-b">rare setup where narrative + fundamentals line up. thread soon 🧵</div>
+    <div class="tw-m"><span>♥ 7.8K</span><span>↻ 2.3K</span></div>
+  </div>
+  <div class="tw" style="right:80px; top:488px; transform:rotate(2deg); width:380px">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#7a5cff,#4da3ff)"></span><div><div class="tw-n">@wagmi_watch</div><div class="tw-s">KOL 4 of 5 · posted 19:55</div></div></div>
+    <div class="tw-b">everyone's timeline about to be full of this. early &gt; loud 🤫</div>
+    <div class="tw-m"><span>♥ 2.9K</span><span>↻ 511</span></div>
+  </div>
+  <div class="kb-panel" style="right:auto; left:48px; bottom:110px">
+    <h4>BUNDLE REACH</h4>
+    <div class="kb-bar"><i style="height:35%"></i><i style="height:55%"></i><i style="height:78%"></i><i style="height:100%"></i><i style="height:88%"></i></div>
+    <div class="kb-kpi"><span>combined<br><b>2.4M</b></span><span>window<br><b>48h</b></span><span>report<br><b>incl.</b></span></div>
+  </div>
+  <div class="kb-url">sella.to/kol-boost</div>
+</div>
+
+<div class="card kb" id="p-ama-host">
+  <div class="kb-head"><h1>Hosted AMA</h1><p>A moderated space with a warmed-up audience. Recording and clips included.</p></div>
+  <div class="tw" style="right:380px; top:80px; width:470px; transform:rotate(-1.5deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#7a5cff,#4da3ff)"></span><div><div class="tw-n">🔴 LIVE · Space</div><div class="tw-s">2,847 listening now</div></div></div>
+    <div class="tw-b" style="font-weight:700; font-size:19px">"Building in the bear: your project × our audience"</div>
+    <div class="tw-m"><span>🎙 2 hosts</span><span>👥 4 speakers</span><span>⏱ 60 min</span></div>
+  </div>
+  <div class="tw" style="right:110px; top:300px; width:400px; transform:rotate(1.5deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#43e0a0,#1fb87e)"></span><div><div class="tw-n">@listener_31</div><div class="tw-s">question queue · #7</div></div></div>
+    <div class="tw-b">"what's the actual moat here vs the other three teams doing this?"</div>
+    <div class="tw-m"><span>▲ upvoted ×214</span></div>
+  </div>
+  <div class="tw" style="right:330px; top:470px; width:400px; transform:rotate(-0.5deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#ffb84d,#ff8a3d)"></span><div><div class="tw-n">clips package</div><div class="tw-s">delivered after the space</div></div></div>
+    <div class="tw-b">6 cut-down moments, subtitled, ready for your feed 🎬</div>
+    <div class="tw-m"><span>0:38</span><span>0:52</span><span>1:14</span><span>+3 more</span></div>
+  </div>
+  <div class="kb-panel">
+    <h4>AVG TURNOUT</h4>
+    <div class="kb-bar"><i style="height:40%"></i><i style="height:66%"></i><i style="height:100%"></i><i style="height:74%"></i><i style="height:52%"></i><i style="height:80%"></i></div>
+    <div class="kb-kpi"><span>live<br><b>2.8K</b></span><span>replay<br><b>19K</b></span><span>clips<br><b>6</b></span></div>
+  </div>
+  <div class="kb-url">sella.to/kol-boost</div>
+</div>
+
+<div class="card kb" id="p-tg-raid">
+  <div class="kb-head"><h1>Raid Pack</h1><p>Coordinated push across 40 Telegram communities, tracked link by link.</p></div>
+  <div class="tw" style="right:420px; top:66px; width:390px; transform:rotate(-2deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#37b8f5,#2079c9)"></span><div><div class="tw-n">Degen Lounge</div><div class="tw-s">TG · 48.2K members</div></div></div>
+    <div class="tw-b">🚀 pinned for 24h · 3.1K clicks</div>
+  </div>
+  <div class="tw" style="right:120px; top:200px; width:390px; transform:rotate(1deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#37b8f5,#2079c9)"></span><div><div class="tw-n">Gem Hunters HQ</div><div class="tw-s">TG · 31.7K members</div></div></div>
+    <div class="tw-b">📌 pinned + mod shoutout · 2.4K clicks</div>
+  </div>
+  <div class="tw" style="right:400px; top:334px; width:390px; transform:rotate(-1deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#37b8f5,#2079c9)"></span><div><div class="tw-n">Moon Mission</div><div class="tw-s">TG · 26.9K members</div></div></div>
+    <div class="tw-b">🔥 raid thread + sticker drop · 1.9K clicks</div>
+  </div>
+  <div class="tw" style="right:90px; top:468px; width:390px; transform:rotate(2deg)">
+    <div class="tw-h"><span class="tw-av" style="background:linear-gradient(135deg,#37b8f5,#2079c9)"></span><div><div class="tw-n">+ 37 more groups</div><div class="tw-s">full tracker sheet delivered</div></div></div>
+    <div class="tw-b">every link tagged, every click counted 📊</div>
+  </div>
+  <div class="kb-panel" style="right:auto; left:48px; bottom:110px">
+    <h4>RAID WINDOW · 24H</h4>
+    <div class="kb-bar"><i style="height:30%"></i><i style="height:70%"></i><i style="height:100%"></i><i style="height:60%"></i><i style="height:44%"></i></div>
+    <div class="kb-kpi"><span>groups<br><b>40</b></span><span>clicks<br><b>21K</b></span><span>tracker<br><b>incl.</b></span></div>
+  </div>
+  <div class="kb-url">sella.to/kol-boost</div>
+</div>
+
+<!-- ================= CODE LAB products ================= -->
+<div class="card cl" id="p-tg-bot">
+  <div class="cl-bar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:10px">code-lab ~ ./shopbot --deploy</span></div>
+  <div class="cl-body">
+    <div class="cl-log" id="log-1"></div>
+    <div class="cl-right">
+      <div class="cl-card"><h4>@YOUR_SHOP_BOT</h4>
+        <div class="wt" style="line-height:1.7">🛍 Merch Drop Vol.3<br>├ hoodie — 45 USDC<br>├ tee — 25 USDC<br>├ cap — 19 USDC<br>└ <span class="ok">[ Pay with escrow ]</span></div>
+      </div>
+      <div class="cl-card"><h4>ORDERS · TODAY</h4>
+        <div style="line-height:1.9"><span class="ok">#1042 paid</span> · hoodie ×1<br><span class="ok">#1041 paid</span> · tee ×2<br><span class="warn">#1040 pending</span> · cap ×1</div>
+      </div>
+      <div class="cl-card"><h4>UPTIME</h4><div class="wt">99.98% · 30d</div></div>
+    </div>
+  </div>
+  <div class="cl-plate"><h1>Telegram Shop Bot</h1><p>Your storefront inside Telegram, orders straight to escrow.</p><div class="url">sella.to/code-lab</div></div>
+</div>
+
+<div class="card cl" id="p-snipe-config">
+  <div class="cl-bar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:10px">code-lab ~ ./sniper --dry-run</span></div>
+  <div class="cl-body">
+    <div class="cl-log" id="log-2"></div>
+    <div class="cl-right">
+      <div class="cl-card"><h4>CONFIG · YOURS</h4>
+        <div style="line-height:1.9">slippage: <span class="wt">8%</span><br>gas cap: <span class="wt">42 gwei</span><br>anti-rug: <span class="ok">on</span><br>honeypot check: <span class="ok">on</span><br>max buy: <span class="wt">0.5 ETH</span></div>
+      </div>
+      <div class="cl-card"><h4>SAFETY RAILS</h4>
+        <div style="line-height:1.9"><span class="ok">✓</span> LP lock verified<br><span class="ok">✓</span> ownership renounced<br><span class="ok">✓</span> sell simulation</div>
+      </div>
+    </div>
+  </div>
+  <div class="cl-plate"><h1>Sniper Config</h1><p>Tuned to your wallet and risk. Dry-run proven before handover.</p><div class="url">sella.to/code-lab</div></div>
+</div>
+
+<div class="card cl" id="p-dune-dash">
+  <div class="cl-bar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:10px">code-lab ~ dune query --refresh 5m</span></div>
+  <div class="cl-body">
+    <div class="cl-log" id="log-3"></div>
+    <div class="cl-right">
+      <div class="cl-card"><h4>PANELS · 9</h4>
+        <div style="line-height:1.9">holders over time<br>volume by pool<br>whale inflows<br>fee revenue<br>retention cohorts<br>+ 4 more</div>
+      </div>
+      <div class="cl-card"><h4>REFRESH</h4><div class="wt">every 5 min · auto</div></div>
+      <div class="cl-card"><h4>HANDOVER</h4><div class="wt">forked to your account</div></div>
+    </div>
+  </div>
+  <div class="cl-plate"><h1>Dune Dashboard</h1><p>Nine live panels on your protocol, built on audited queries.</p><div class="url">sella.to/code-lab</div></div>
+</div>
+
+<div class="card cl" id="p-dex-boiler">
+  <div class="cl-bar"><span class="cf-dot" style="background:#ff5f57"></span><span class="cf-dot" style="background:#febc2e"></span><span class="cf-dot" style="background:#28c840"></span><span style="margin-left:10px">code-lab ~ npm run dev · localhost:3000</span></div>
+  <div class="cl-body">
+    <div class="cl-log" id="log-4"></div>
+    <div class="cl-right">
+      <div class="cl-card"><h4>SWAP · PREVIEW</h4>
+        <div style="line-height:2.0">from: <span class="wt">1.0 ETH</span><br>to: <span class="wt">3,412 TOKEN</span><br>impact: <span class="ok">0.12%</span><br><span class="ok">[ Connect wallet ]</span></div>
+      </div>
+      <div class="cl-card"><h4>STACK</h4>
+        <div style="line-height:1.9">next 14 · wagmi · viem<br>tailwind · rainbowkit</div>
+      </div>
+      <div class="cl-card"><h4>LIGHTHOUSE</h4><div class="ok">98 · 100 · 100 · 100</div></div>
+    </div>
+  </div>
+  <div class="cl-plate"><h1>DEX Frontend Kit</h1><p>A production swap UI wired to your router. Deploy the same day.</p><div class="url">sella.to/code-lab</div></div>
+</div>
+
+<!-- ================= MEME FORGE products ================= -->
+<div class="card mf" id="p-meme-pack">
+  <div class="mf-frame"></div>
+  <h1>Launch<br>Meme Pack</h1>
+  <div class="mf-sub">50 custom memes in your project's skin</div>
+  <div class="mf-url">SELLA.TO/MEME-FORGE</div>
+  <div class="mf-burst" style="right:96px; top:96px; width:210px; height:210px; transform:rotate(6deg)"><span style="font-size:64px">🐸</span><span style="font-size:26px; margin-top:4px">50 PCS</span></div>
+  <div class="mf-stick" style="right:150px; bottom:210px;">wojak edition ✅</div>
+  <div class="mf-stick" style="right:330px; bottom:120px; transform:rotate(-3deg)">same-day delivery</div>
+</div>
+
+<div class="card mf" id="p-sticker-set">
+  <div class="mf-frame"></div>
+  <h1>TG Sticker<br>Set</h1>
+  <div class="mf-sub">24 stickers · rigged to your mascot</div>
+  <div class="mf-url">SELLA.TO/MEME-FORGE</div>
+  <div class="mf-burst" style="right:110px; top:110px; width:190px; height:190px; transform:rotate(-5deg)"><span style="font-size:56px">😂</span><span style="font-size:24px">×24</span></div>
+  <div class="mf-burst" style="right:250px; top:330px; width:150px; height:150px; transform:rotate(4deg)"><span style="font-size:44px">🚀</span></div>
+  <div class="mf-stick" style="right:130px; bottom:180px;">.tgs animated ✅</div>
+</div>
+
+<div class="card mf" id="p-shill-video">
+  <div class="mf-frame"></div>
+  <h1>Hype Cut</h1>
+  <div class="mf-sub">30 seconds of pure conviction, cut to beat</div>
+  <div class="mf-url">SELLA.TO/MEME-FORGE</div>
+  <div class="mf-burst" style="right:100px; top:100px; width:200px; height:200px; transform:rotate(5deg)"><span style="font-size:60px">🎬</span><span style="font-size:22px">0:30</span></div>
+  <div class="mf-stick" style="right:120px; bottom:300px; transform:rotate(-4deg)">4K + captions</div>
+  <div class="mf-stick" style="right:300px; bottom:160px; transform:rotate(3deg)">vertical + wide crops</div>
+</div>
+
+<div class="card mf" id="p-mascot-art">
+  <div class="mf-frame"></div>
+  <h1>Mascot<br>Sheet</h1>
+  <div class="mf-sub">One character · 12 poses · full turnaround</div>
+  <div class="mf-url">SELLA.TO/MEME-FORGE</div>
+  <div class="mf-burst" style="right:96px; top:96px; width:200px; height:200px; transform:rotate(-6deg)"><span style="font-size:60px">🐮</span><span style="font-size:22px">12 POSES</span></div>
+  <div class="mf-stick" style="right:140px; bottom:250px;">source PSD included</div>
+  <div class="mf-stick" style="right:320px; bottom:140px; transform:rotate(-3deg)">sticker-ready linework</div>
+</div>
+
+<!-- ================= DESIGN MARKET products ================= -->
+<div class="card dm" id="p-memecoin-brand">
+  <div class="dm-rule"></div>
+  <div class="dm-head"><span>Design Market</span><span>Spec Sheet · No. 01</span><span>sella.to/design-market</span></div>
+  <h1>Memecoin<br><i>Brand Kit</i></h1>
+  <div class="dm-sub">Logo, wordmark, palette, and social templates. A coin that looks like it deserves the chart it's about to get.</div>
+  <div class="dm-swatches"><i style="background:#181613"></i><i style="background:#f4501e"></i><i style="background:#ffd12e"></i><i style="background:#2ee57a"></i><i style="background:#f4efe6"></i></div>
+  <div class="dm-spec">
+    <div><b>Aa</b>Display · Archivo</div>
+    <div><b>Aa</b>Text · Inter</div>
+    <div><b>5</b>color system</div>
+    <div><b>12</b>social templates</div>
+    <div><b>3</b>logo lockups</div>
+    <div><b>48h</b>delivery</div>
+  </div>
+  <div class="dm-foot"><span>Escrow protected · revisions ×2</span><span>Fig + SVG + PNG</span></div>
+</div>
+
+<div class="card dm" id="p-dapp-ui">
+  <div class="dm-rule"></div>
+  <div class="dm-head"><span>Design Market</span><span>Spec Sheet · No. 02</span><span>sella.to/design-market</span></div>
+  <h1>Dapp <i>UI Kit</i></h1>
+  <div class="dm-sub">Ninety Figma components with connected states: wallets, tables, modals, empty states, the lot. Dark and light, tokenized.</div>
+  <div class="dm-swatches"><i style="background:#0d1117"></i><i style="background:#4da3ff"></i><i style="background:#7ee787"></i><i style="background:#e6edf3"></i><i style="background:#f4efe6"></i></div>
+  <div class="dm-spec">
+    <div><b>90</b>components</div>
+    <div><b>2</b>themes</div>
+    <div><b>640</b>variants</div>
+    <div><b>Auto</b>layout everywhere</div>
+    <div><b>Tokens</b>Figma variables</div>
+    <div><b>∞</b>project license</div>
+  </div>
+  <div class="dm-foot"><span>Escrow protected · docs included</span><span>Figma community-ready</span></div>
+</div>
+
+<div class="card dm" id="p-landing-fig">
+  <div class="dm-rule"></div>
+  <div class="dm-head"><span>Design Market</span><span>Spec Sheet · No. 03</span><span>sella.to/design-market</span></div>
+  <h1>Token <i>Landing</i><br>Page</h1>
+  <div class="dm-sub">Hero, tokenomics, roadmap, FAQ, CTA. Swap the copy and colors in Figma or Framer and ship the same day.</div>
+  <div class="dm-swatches"><i style="background:#181613"></i><i style="background:#7a5cff"></i><i style="background:#4da3ff"></i><i style="background:#ffd12e"></i><i style="background:#f4efe6"></i></div>
+  <div class="dm-spec">
+    <div><b>7</b>sections</div>
+    <div><b>2</b>formats · Fig/Framer</div>
+    <div><b>1 day</b>to live</div>
+    <div><b>100</b>lighthouse perf</div>
+    <div><b>Resp.</b>3 breakpoints</div>
+    <div><b>CMS</b>optional</div>
+  </div>
+  <div class="dm-foot"><span>Escrow protected · setup call included</span><span>Framer publish ready</span></div>
+</div>
+
+<div class="card dm" id="p-pitch-deck">
+  <div class="dm-rule"></div>
+  <div class="dm-head"><span>Design Market</span><span>Spec Sheet · No. 04</span><span>sella.to/design-market</span></div>
+  <h1>Investor<br><i>Deck Kit</i></h1>
+  <div class="dm-sub">The 20-slide structure that has raised real rounds: problem, wedge, traction, tokenomics, ask. Guidance notes on every slide.</div>
+  <div class="dm-swatches"><i style="background:#181613"></i><i style="background:#2ee57a"></i><i style="background:#4da3ff"></i><i style="background:#b9b0a0"></i><i style="background:#f4efe6"></i></div>
+  <div class="dm-spec">
+    <div><b>20</b>slides</div>
+    <div><b>2</b>formats · Fig/Key</div>
+    <div><b>Notes</b>on every slide</div>
+    <div><b>Charts</b>editable data</div>
+    <div><b>16:9</b>+ A4 one-pager</div>
+    <div><b>48h</b>delivery</div>
+  </div>
+  <div class="dm-foot"><span>Escrow protected · revisions ×2</span><span>Raised seed rounds before</span></div>
+</div>
+
+<!-- ================= LOGOS ================= -->
+<div class="logo cf lg" id="logo-chain-foundry" style="border:none">
+  <div style="text-align:center">
+    <div style="font-size:130px; font-weight:800; color:#58a6ff; font-family:'JetBrains Mono'">{&nbsp;}</div>
+    <div style="font-family:Inter; font-weight:800; font-size:44px; color:#e6edf3; margin-top:10px; letter-spacing:-0.02em">Chain Foundry</div>
+    <div style="font-size:16px; color:#8b949e; margin-top:8px">contracts, shipped</div>
+  </div>
+</div>
+
+<div class="logo ad lg" id="logo-alpha-desk">
+  <div style="text-align:center">
+    <div style="font-size:120px; color:#2ee57a; font-weight:700">▲</div>
+    <div style="font-family:Inter; font-weight:800; font-size:46px; color:#f2f5f9; letter-spacing:-0.02em">Alpha Desk</div>
+    <div style="font-size:15px; color:#525c6b; margin-top:8px; letter-spacing:0.2em">EARLY · VETTED · TRACKED</div>
+  </div>
+</div>
+
+<div class="logo kb lg" id="logo-kol-boost">
+  <div style="text-align:center; position:relative; z-index:2">
+    <div style="width:150px;height:150px;border-radius:40px;background:linear-gradient(135deg,#4da3ff,#7a5cff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:74px;box-shadow:0 24px 60px rgba(47,127,224,0.4)">📣</div>
+    <div style="font-family:Inter; font-weight:800; font-size:46px; color:#0c1a2a; margin-top:22px; letter-spacing:-0.02em">KOL Boost</div>
+    <div style="font-size:16px; color:#51637a; margin-top:6px">reach, on the record</div>
+  </div>
+</div>
+
+<div class="logo cl lg" id="logo-code-lab">
+  <div style="text-align:center">
+    <div style="font-size:110px; color:#2ee57a; font-family:'JetBrains Mono'; font-weight:700">&gt;_</div>
+    <div style="font-family:Inter; font-weight:800; font-size:46px; color:#eafff2; margin-top:12px; letter-spacing:-0.02em">Code Lab</div>
+    <div style="font-size:15px; color:#5d8a6f; margin-top:8px; font-family:'JetBrains Mono'">bots · dashboards · dapps</div>
+  </div>
+</div>
+
+<div class="logo mf lg" id="logo-meme-forge">
+  <div class="mf-frame" style="inset:16px; border-width:5px"></div>
+  <div style="text-align:center; position:relative; z-index:2">
+    <div style="font-size:110px">🔥</div>
+    <div style="font-size:52px; color:#fff; text-shadow:4px 4px 0 #111; transform:rotate(-2deg)">MEME<br>FORGE</div>
+  </div>
+</div>
+
+<div class="logo dm lg" id="logo-design-market" style="padding:0">
+  <div style="text-align:center">
+    <div style="font-size:120px; line-height:1">Dm</div>
+    <div style="font-family:Inter; font-weight:600; font-size:15px; letter-spacing:0.3em; margin-top:14px; text-transform:uppercase">Design Market</div>
+    <div style="width:120px; border-top:2px solid #181613; margin:16px auto 0"></div>
+  </div>
+</div>
+
+<script>
+// Solidity editors
+const sol = {
+  'ed-1': [
+    ['c','// SPDX-License-Identifier: MIT'],
+    ['k','pragma'],[null,' solidity ^0.8.24;'],
+    [null,''],
+    ['k','import'],['s',' "@openzeppelin/token/ERC20.sol"'],[null,';'],
+    [null,''],
+    ['k','contract'],['t',' LaunchToken '],['k','is'],['t',' ERC20 '],[null,'{'],
+    [null,'  '],['t','uint256'],[null,' '],['k','public constant'],['n',' SUPPLY'],[null,' = 1_000_000_000e18;'],
+    [null,'  '],['t','address'],[null,' '],['k','public immutable'],['n',' liquidityLock'],[null,';'],
+    [null,''],
+    [null,'  '],['f','constructor'],[null,'('],['t','address'],[null,' lock) '],['t','ERC20'],[null,'('],['s','"Launch"'],[null,', '],['s','"LNCH"'],[null,') {'],
+    [null,'    _mint('],['k','msg.sender'],[null,', SUPPLY);'],
+    [null,'    liquidityLock = lock;'],
+    [null,'  }'],
+    [null,''],
+    [null,'  '],['f','function'],[null,' lockLiquidity('],['t','uint256'],[null,' amount) '],['k','external'],[null,' {'],
+    [null,'    '],['c','// 12-month lock, enforced on-chain'],
+    [null,'    _transfer('],['k','msg.sender'],[null,', liquidityLock, amount);'],
+    [null,'  }'],
+    [null,'}'],
+  ],
+  'ed-2': [
+    ['c','// SPDX-License-Identifier: MIT'],
+    ['k','pragma'],[null,' solidity ^0.8.24;'],
+    [null,''],
+    ['k','contract'],['t',' StakingVault '],[null,'{'],
+    [null,'  '],['k','mapping'],[null,'('],['t','address'],[null,' => '],['t','Stake'],[null,') '],['k','public'],['n',' stakes'],[null,';'],
+    [null,'  '],['t','uint256'],[null,' '],['k','public'],['n',' rewardRate'],[null,' = 1200; '],['c','// 12% APR'],
+    [null,''],
+    [null,'  '],['f','function'],[null,' stake('],['t','uint256'],[null,' amount, '],['t','uint64'],[null,' lockDays) '],['k','external'],[null,' {'],
+    [null,'    '],['k','require'],[null,'(lockDays >= 7, '],['s','"min lock"'],[null,');'],
+    [null,'    stakes['],['k','msg.sender'],[null,'] = '],['t','Stake'],[null,'(amount, lockDays);'],
+    [null,'    '],['c','// boost curve: longer lock, higher APR'],
+    [null,'    emit '],['f','Staked'],[null,'('],['k','msg.sender'],[null,', amount, lockDays);'],
+    [null,'  }'],
+    [null,''],
+    [null,'  '],['f','function'],[null,' compound() '],['k','external'],[null,' {'],
+    [null,'    '],['t','uint256'],[null,' earned = _pending('],['k','msg.sender'],[null,');'],
+    [null,'    stakes['],['k','msg.sender'],[null,'].amount += earned;'],
+    [null,'  }'],
+    [null,'}'],
+  ],
+  'ed-3': [
+    ['c','// SPDX-License-Identifier: MIT'],
+    ['k','pragma'],[null,' solidity ^0.8.24;'],
+    [null,''],
+    ['k','contract'],['t',' Mint721 '],[null,'{'],
+    [null,'  '],['t','bytes32'],[null,' '],['k','public immutable'],['n',' allowlistRoot'],[null,';'],
+    [null,'  '],['t','uint256'],[null,' '],['k','public constant'],['n',' MAX_SUPPLY'],[null,' = 5555;'],
+    [null,''],
+    [null,'  '],['f','function'],[null,' mint('],['t','bytes32'],[null,'[] '],['k','calldata'],[null,' proof) '],['k','external payable'],[null,' {'],
+    [null,'    '],['k','require'],[null,'(_verify(proof), '],['s','"not allowlisted"'],[null,');'],
+    [null,'    '],['k','require'],[null,'(totalSupply < MAX_SUPPLY, '],['s','"sold out"'],[null,');'],
+    [null,'    '],['c','// 61k gas: packed storage, no loops'],
+    [null,'    _mint('],['k','msg.sender'],[null,', ++totalSupply);'],
+    [null,'  }'],
+    [null,''],
+    [null,'  '],['f','function'],[null,' reveal('],['t','string'],[null,' '],['k','calldata'],[null,' uri) '],['k','external onlyOwner'],[null,' {'],
+    [null,'    baseURI = uri;'],
+    [null,'  }'],
+    [null,'}'],
+  ],
+  'ed-4': [
+    ['wt','# Audit Report — staking module'],
+    [null,''],
+    ['n','## M-01 · Reentrancy in withdraw()'],
+    [null,'State written after external call.'],
+    [null,'One refactor away from exploitable.'],
+    ['g','fix: checks-effects-interactions + guard'],
+    [null,''],
+    ['n','## M-02 · Rounding favors caller'],
+    [null,'mulDiv rounds up on payout path.'],
+    ['g','fix: floor division on payouts'],
+    [null,''],
+    ['c','## L-01 · Missing events on admin ops'],
+    ['g','fix: emit on setRate / setCap'],
+    [null,''],
+    ['wt','Coverage: 96% lines · 100% branches on'],
+    ['wt','withdraw, stake, emergencyExit paths.'],
+    [null,''],
+    ['g','All fixes delivered as ready-to-merge diffs.'],
+  ],
+};
+for (const [id, lines] of Object.entries(sol)) {
+  const el = document.getElementById(id);
+  if (!el) continue;
+  el.innerHTML = lines.length && Array.isArray(lines[0]) && lines[0].length === 2 && typeof lines[0][0] === 'string' && lines[0][0].length <= 4
+    ? '' : '';
+  // build: entries are flat arrays alternating [cls, text] pairs per line? Actually each entry IS one line made of pairs.
+}
+// simpler: rebuild manually
+function renderEd(id, lineSpecs) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let html = '';
+  let n = 1;
+  for (const spec of lineSpecs) {
+    html += `<div class="cf-ln"><em>${n++}</em><span>${spec}</span></div>`;
+  }
+  el.innerHTML = html;
+}
+const esc = s => s;
+renderEd('ed-1', [
+  '<span class="c">// SPDX-License-Identifier: MIT</span>',
+  '<span class="k">pragma</span> solidity ^0.8.24;',
+  '&nbsp;',
+  '<span class="k">import</span> <span class="s">"@openzeppelin/token/ERC20.sol"</span>;',
+  '&nbsp;',
+  '<span class="k">contract</span> <span class="t">LaunchToken</span> <span class="k">is</span> <span class="t">ERC20</span> {',
+  '&nbsp;&nbsp;<span class="t">uint256</span> <span class="k">public constant</span> <span class="n">SUPPLY</span> = 1_000_000_000e18;',
+  '&nbsp;&nbsp;<span class="t">address</span> <span class="k">public immutable</span> <span class="n">liquidityLock</span>;',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">constructor</span>(<span class="t">address</span> lock)',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="t">ERC20</span>(<span class="s">"Launch"</span>, <span class="s">"LNCH"</span>)',
+  '&nbsp;&nbsp;{',
+  '&nbsp;&nbsp;&nbsp;&nbsp;_mint(<span class="k">msg.sender</span>, SUPPLY);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;liquidityLock = lock;',
+  '&nbsp;&nbsp;}',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">function</span> lockLiquidity(<span class="t">uint256</span> amount) <span class="k">external</span> {',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// 12-month lock, enforced on-chain</span>',
+  '&nbsp;&nbsp;&nbsp;&nbsp;_transfer(<span class="k">msg.sender</span>, liquidityLock, amount);',
+  '&nbsp;&nbsp;}',
+  '}',
+]);
+renderEd('ed-2', [
+  '<span class="c">// SPDX-License-Identifier: MIT</span>',
+  '<span class="k">pragma</span> solidity ^0.8.24;',
+  '&nbsp;',
+  '<span class="k">contract</span> <span class="t">StakingVault</span> {',
+  '&nbsp;&nbsp;<span class="k">mapping</span>(<span class="t">address</span> => <span class="t">Stake</span>) <span class="k">public</span> <span class="n">stakes</span>;',
+  '&nbsp;&nbsp;<span class="t">uint256</span> <span class="k">public</span> <span class="n">rewardRate</span> = 1200; <span class="c">// 12% APR</span>',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">function</span> stake(<span class="t">uint256</span> amount, <span class="t">uint64</span> lockDays) <span class="k">external</span> {',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">require</span>(lockDays >= 7, <span class="s">"min lock"</span>);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;stakes[<span class="k">msg.sender</span>] = <span class="t">Stake</span>(amount, lockDays);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// boost curve: longer lock, higher APR</span>',
+  '&nbsp;&nbsp;&nbsp;&nbsp;emit <span class="f">Staked</span>(<span class="k">msg.sender</span>, amount, lockDays);',
+  '&nbsp;&nbsp;}',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">function</span> compound() <span class="k">external</span> {',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="t">uint256</span> earned = _pending(<span class="k">msg.sender</span>);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;stakes[<span class="k">msg.sender</span>].amount += earned;',
+  '&nbsp;&nbsp;}',
+  '}',
+]);
+renderEd('ed-3', [
+  '<span class="c">// SPDX-License-Identifier: MIT</span>',
+  '<span class="k">pragma</span> solidity ^0.8.24;',
+  '&nbsp;',
+  '<span class="k">contract</span> <span class="t">Mint721</span> {',
+  '&nbsp;&nbsp;<span class="t">bytes32</span> <span class="k">public immutable</span> <span class="n">allowlistRoot</span>;',
+  '&nbsp;&nbsp;<span class="t">uint256</span> <span class="k">public constant</span> <span class="n">MAX_SUPPLY</span> = 5555;',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">function</span> mint(<span class="t">bytes32</span>[] <span class="k">calldata</span> proof) <span class="k">external payable</span> {',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">require</span>(_verify(proof), <span class="s">"not allowlisted"</span>);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">require</span>(totalSupply < MAX_SUPPLY, <span class="s">"sold out"</span>);',
+  '&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// 61k gas: packed storage, no loops</span>',
+  '&nbsp;&nbsp;&nbsp;&nbsp;_mint(<span class="k">msg.sender</span>, ++totalSupply);',
+  '&nbsp;&nbsp;}',
+  '&nbsp;',
+  '&nbsp;&nbsp;<span class="f">function</span> reveal(<span class="t">string</span> <span class="k">calldata</span> uri) <span class="k">external onlyOwner</span> {',
+  '&nbsp;&nbsp;&nbsp;&nbsp;baseURI = uri;',
+  '&nbsp;&nbsp;}',
+  '}',
+]);
+renderEd('ed-4', [
+  '<span class="wt" style="color:#e6edf3;font-weight:700"># Audit Report — staking module</span>',
+  '&nbsp;',
+  '<span class="n">## M-01 · Reentrancy in withdraw()</span>',
+  'State is written after an external call.',
+  'One refactor away from exploitable.',
+  '<span class="g">fix: checks-effects-interactions + guard</span>',
+  '&nbsp;',
+  '<span class="n">## M-02 · Rounding favors caller</span>',
+  'mulDiv rounds up on the payout path.',
+  '<span class="g">fix: floor division on payouts</span>',
+  '&nbsp;',
+  '<span class="c">## L-01 · Missing events on admin ops</span>',
+  '<span class="g">fix: emit on setRate / setCap</span>',
+  '&nbsp;',
+  'Coverage: 96% lines, 100% branches on',
+  'withdraw, stake and emergencyExit paths.',
+  '&nbsp;',
+  '<span class="g">All fixes delivered as ready-to-merge diffs.</span>',
+]);
+
+// Alpha Desk candles + side panels (deterministic pseudo-random)
+function candles(id, seed) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let v = seed, html = '';
+  const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+  let price = 40 + rnd() * 20;
+  for (let i = 0; i < 42; i++) {
+    const change = (rnd() - 0.44) * 12;
+    const open = price, close = Math.max(8, Math.min(92, price + change));
+    price = close;
+    const up = close >= open;
+    const lo = Math.min(open, close), hi = Math.max(open, close);
+    const wickLo = Math.max(4, lo - rnd() * 6), wickHi = Math.min(96, hi + rnd() * 6);
+    html += `<i style="color:${up ? '#2ee57a' : '#ff5d5d'}; height:100%">
+      <b style="bottom:${wickLo}%; height:${wickHi - wickLo}%"></b>
+      <u style="bottom:${lo}%; height:${Math.max(1.6, hi - lo)}%"></u></i>`;
+  }
+  el.innerHTML = html;
+}
+candles('candles-1', 7); candles('candles-2', 13); candles('candles-3', 29); candles('candles-4', 41);
+
+function sidePanel(id, seed) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let v = seed;
+  const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+  let html = '<h3>ORDER BOOK</h3>';
+  for (let i = 0; i < 7; i++) {
+    const p = (3.2 + rnd() * 0.4).toFixed(4);
+    html += `<div class="ad-row"><span class="dn">${p}</span><span class="mut">${(rnd()*90+4).toFixed(1)}K</span></div>`;
+  }
+  html += `<div class="ad-row" style="border-top:1px solid #1a1f2b;border-bottom:1px solid #1a1f2b;padding:8px 16px"><span class="wt" style="color:#f2f5f9">3.1842</span><span class="up">spread 0.02%</span></div>`;
+  for (let i = 0; i < 7; i++) {
+    const p = (2.8 + rnd() * 0.35).toFixed(4);
+    html += `<div class="ad-row"><span class="up">${p}</span><span class="mut">${(rnd()*90+4).toFixed(1)}K</span></div>`;
+  }
+  html += '<h3 style="margin-top:6px">DESK POSITIONS</h3>';
+  const names = ['SEED-A','PRIV-B','OTC-C','PRE-D'];
+  for (const nm of names) {
+    const pnl = (rnd() * 240 - 40).toFixed(0);
+    const up = +pnl >= 0;
+    html += `<div class="ad-row"><span class="mut">${nm}</span><span class="${up?'up':'dn'}">${up?'+':''}${pnl}%</span></div>`;
+  }
+  el.innerHTML = html;
+}
+sidePanel('side-1', 3); sidePanel('side-2', 17); sidePanel('side-3', 23); sidePanel('side-4', 37);
+
+// Code Lab logs
+function logs(id, lines) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+}
+logs('log-1', [
+  '<span class="dim">$</span> <span class="wt">./shopbot --deploy</span>',
+  '<span class="ok">[ok]</span> telegram api · connected as @your_shop_bot',
+  '<span class="ok">[ok]</span> catalog synced · 30 SKUs',
+  '<span class="ok">[ok]</span> escrow wallet linked · 0xF786…9Fb5',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="wt">14:02:11</span> order #1041 · tee ×2 · <span class="ok">escrow funded</span>',
+  '<span class="wt">14:02:12</span> → buyer notified, chat opened',
+  '<span class="wt">14:19:44</span> order #1042 · hoodie ×1 · <span class="ok">escrow funded</span>',
+  '<span class="wt">14:19:45</span> → tracking requested',
+  '<span class="wt">14:36:02</span> preview sent → @your_shop_preview_bot',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="ok">[live]</span> webhook healthy · 42ms',
+  '<span class="dim">watching for orders…</span>',
+]);
+logs('log-2', [
+  '<span class="dim">$</span> <span class="wt">./sniper --dry-run</span>',
+  '<span class="ok">[ok]</span> rpc pool · 4 endpoints, 38ms median',
+  '<span class="ok">[ok]</span> mempool stream · subscribed',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="wt">block 20941102</span> pair detected · WETH/NEW',
+  '<span class="warn">[sim]</span> honeypot check… <span class="ok">clean</span>',
+  '<span class="warn">[sim]</span> sell path… <span class="ok">passes, 8.2% slip</span>',
+  '<span class="warn">[sim]</span> LP lock… <span class="ok">verified 365d</span>',
+  '<span class="ok">[dry-run]</span> would buy 0.5 ETH @ 42 gwei',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="wt">3 candidates</span> passed rails today · 0 rugs',
+  '<span class="dim">dry-run complete · config exported</span>',
+]);
+logs('log-3', [
+  '<span class="dim">$</span> <span class="wt">dune query --refresh 5m</span>',
+  '<span class="ok">[ok]</span> 9 queries compiled',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="wt">holders_over_time</span>&nbsp;&nbsp;&nbsp;<span class="ok">2.1s · 84k rows</span>',
+  '<span class="wt">volume_by_pool</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">1.4s · 31k rows</span>',
+  '<span class="wt">whale_inflows</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">0.9s · 6k rows</span>',
+  '<span class="wt">fee_revenue</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ok">1.1s · 12k rows</span>',
+  '<span class="wt">retention_cohorts</span>&nbsp;&nbsp;<span class="ok">3.0s · 210k rows</span>',
+  '<span class="dim">…4 more panels</span>',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="ok">[live]</span> dashboard refreshed · next in 5m',
+  '<span class="dim">forking to buyer account on release…</span>',
+]);
+logs('log-4', [
+  '<span class="dim">$</span> <span class="wt">npm run dev</span>',
+  '<span class="ok">✓</span> next 14.2 ready in 1.2s',
+  '<span class="ok">✓</span> wagmi config · 4 chains',
+  '<span class="ok">✓</span> router wired · 0xRouter…D3f2',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="wt">GET /</span> 200 · 38ms',
+  '<span class="wt">GET /swap</span> 200 · 41ms',
+  '<span class="wt">quote</span> 1 ETH → 3,412 TOKEN · <span class="ok">0.12% impact</span>',
+  '<span class="wt">approve</span> simulated · <span class="ok">ok</span>',
+  '<span class="wt">swap</span> simulated · <span class="ok">ok · 142k gas</span>',
+  '<span class="dim">──────────────────────────────</span>',
+  '<span class="ok">lighthouse 98 · 100 · 100 · 100</span>',
+  '<span class="dim">ready · deploy with `vercel --prod`</span>',
+]);
+</script>
+</body>
+</html>
