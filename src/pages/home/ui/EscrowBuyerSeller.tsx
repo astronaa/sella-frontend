@@ -10,9 +10,9 @@ interface SideStep {
 
 const buyerSteps: SideStep[] = [
 	{
-		title: "Pay like in any online shop",
+		title: "Pay from your wallet",
 		description:
-			"Checkout looks like any online store: click, pay, done. Your payment goes into the escrow contract, not to the seller, and stays locked there until the order is complete.",
+			"USDC, USDT or ETH, two clicks, done. As easy as any online checkout, except the payment goes into the escrow contract instead of the seller's pocket, and stays locked until the order is complete.",
 	},
 	{
 		title: "Receive your order",

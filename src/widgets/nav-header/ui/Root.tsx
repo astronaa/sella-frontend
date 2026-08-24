@@ -76,6 +76,24 @@ function Header({ className, staticMode = false, ...props }: RootProps) {
 	);
 }
 
+/* Demo mode: aspirational categories fill the strip edge to edge.
+   They don't filter to anything yet, so hovering swaps the label for
+   "coming soon" instead of navigating. Remove at launch. */
+const comingSoonCategories = [
+	"RWA & Tokenized Assets",
+	"AI Agents",
+	"DeFi & Yield",
+	"NFTs & Collectibles",
+	"Gaming & Metaverse",
+	"DAO & Governance",
+	"Security & Audits",
+	"Nodes & Infra",
+	"Trading Tools",
+	"Domains & Identity",
+	"Physical Goods",
+	"Content & Media",
+];
+
 function CategoriesRoulette(props: { open: boolean }) {
 	const { data: categories, isLoading } = categoryQueries.useGetAll();
 	const open = props.open && !isLoading;
@@ -98,6 +116,17 @@ function CategoriesRoulette(props: { open: boolean }) {
 							>
 								{c.name}
 							</NavLink>
+						))}
+
+						{comingSoonCategories.map(name => (
+							<span key={name} className='group relative whitespace-nowrap cursor-default'>
+								<span className='transition-opacity duration-200 group-hover:opacity-0'>
+									{name}
+								</span>
+								<span className='absolute inset-0 flex items-center justify-center text-accent-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
+									coming soon
+								</span>
+							</span>
 						))}
 					</Scrollable.Container>
 				</Scrollable.Root>

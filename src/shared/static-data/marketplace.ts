@@ -16,7 +16,7 @@ export const staticStores: Store[] = [
 			"Smart contracts, shipped. Token launches, staking vaults, NFT mints. Deployed, verified, and handed over with docs.",
 		isVerified: true,
 		ownerUsername: "chainsmith",
-		tagNames: ["Programming & Tech", "Business"],
+		tagNames: ["Contracts & Code", "Bots & Data"],
 		previewImage: "/demo/logo-chain-foundry.jpg",
 		rating: { likes: 214, dislikes: 6, reviewsCount: 97 },
 	},
@@ -28,7 +28,7 @@ export const staticStores: Store[] = [
 			"Early-round access and research for people who ape responsibly. Every allocation escrow-held until tokens land.",
 		isVerified: true,
 		ownerUsername: "alphadesk",
-		tagNames: ["Business", "Data"],
+		tagNames: ["Alpha & Access", "Bots & Data"],
 		previewImage: "/demo/logo-alpha-desk.jpg",
 		rating: { likes: 168, dislikes: 11, reviewsCount: 74 },
 	},
@@ -40,7 +40,7 @@ export const staticStores: Store[] = [
 			"X threads, KOL bundles, AMAs, and raid packs for launch week. You pay when the posts are live, not before.",
 		isVerified: false,
 		ownerUsername: "kolboost",
-		tagNames: ["Digital Marketing", "Business"],
+		tagNames: ["Promotion & KOLs", "Alpha & Access"],
 		previewImage: "/demo/logo-kol-boost.jpg",
 		rating: { likes: 132, dislikes: 9, reviewsCount: 58 },
 	},
@@ -52,7 +52,7 @@ export const staticStores: Store[] = [
 			"Bots, dashboards, and frontends for onchain projects. Source code included, no black boxes.",
 		isVerified: false,
 		ownerUsername: "codelab",
-		tagNames: ["Programming & Tech", "Data"],
+		tagNames: ["Contracts & Code", "Bots & Data"],
 		previewImage: "/demo/logo-code-lab.jpg",
 		rating: { likes: 96, dislikes: 3, reviewsCount: 41 },
 	},
@@ -64,7 +64,7 @@ export const staticStores: Store[] = [
 			"Memes, stickers, and hype cuts in your project's skin. The content side of your launch, handled.",
 		isVerified: false,
 		ownerUsername: "memeforge",
-		tagNames: ["Graphics & Design", "Films, Music & Games"],
+		tagNames: ["Design & Branding", "Memes & Media"],
 		previewImage: "/demo/logo-meme-forge.jpg",
 		rating: { likes: 151, dislikes: 4, reviewsCount: 66 },
 	},
@@ -76,7 +76,7 @@ export const staticStores: Store[] = [
 			"Web3 branding and product design: memecoin kits, dapp UI libraries, landing templates, investor decks.",
 		isVerified: true,
 		ownerUsername: "designmarket",
-		tagNames: ["Graphics & Design", "Digital Marketing"],
+		tagNames: ["Design & Branding", "Promotion & KOLs"],
 		previewImage: "/demo/logo-design-market.jpg",
 		rating: { likes: 187, dislikes: 5, reviewsCount: 85 },
 	},
@@ -103,7 +103,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "ERC-20 + liquidity lock, deployed and verified in 24h.",
 		description:
 			"Full token launch package: audited ERC-20 template configured to your tokenomics, liquidity lock, ownership renounce option, deployment to mainnet or an L2, and source verification on the explorer. You get the deployer walkthrough, all addresses, and a handover doc. Delivered within 24 hours of receiving your parameters.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 499,
 		storeUrl: "chain-foundry",
 		cover: "/demo/p-erc20-deploy.jpg",
@@ -116,7 +116,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Audited staking contract with APR config and admin panel.",
 		description:
 			"Battle-tested staking vault deployed for your token: configurable APR schedule, lock periods, emergency withdraw, and a simple admin panel to manage rewards. Includes deployment, verification, and a 30-minute handover call.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 899,
 		storeUrl: "chain-foundry",
 		cover: "/demo/p-staking-vault.jpg",
@@ -129,7 +129,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "ERC-721A with allowlist, reveal, and gas-optimized mint.",
 		description:
 			"ERC-721A mint contract with allowlist phases, delayed reveal, per-wallet limits, and withdraw splits. Gas-optimized and deployed to the chain of your choice, with a mint page snippet to drop into your site.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 349,
 		storeUrl: "chain-foundry",
 		cover: "/demo/p-nft-mint.jpg",
@@ -142,7 +142,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Line-by-line review of your Solidity, report in 72h.",
 		description:
 			"An independent line-by-line review of one contract up to 800 lines: findings ranked by severity, concrete fixes, and a re-check of your patches. Written report delivered within 72 hours. Not a formal audit certificate, but the bugs get found.",
-		category: "Business",
+		category: "Alpha & Access",
 		price: 1200,
 		storeUrl: "chain-foundry",
 		cover: "/demo/p-custom-audit.jpg",
@@ -157,7 +157,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Vetted early-round allocations, escrow-held until tokens land.",
 		description:
 			"Access to vetted seed and private-round allocations we negotiate as a syndicate. Your payment sits in escrow until the allocation is confirmed on-chain and tokens are distributed to your wallet. If the round falls through, the contract refunds you automatically.",
-		category: "Business",
+		category: "Alpha & Access",
 		price: 2500,
 		storeUrl: "alpha-desk",
 		cover: "/demo/p-seed-alloc.jpg",
@@ -170,7 +170,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Guaranteed presale entry, refunded if TGE never happens.",
 		description:
 			"A guaranteed spot in a curated presale, one per buyer. The escrow holds your payment until your entry is confirmed by the project. No TGE, no deal: disputes have gone our buyers' way every time a project ghosted.",
-		category: "Business",
+		category: "Alpha & Access",
 		price: 250,
 		storeUrl: "alpha-desk",
 		cover: "/demo/p-presale-spot.jpg",
@@ -183,7 +183,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Three curated mint whitelists from this month's picks.",
 		description:
 			"Three whitelist spots across this month's curated mints. We filter for teams that ship, not rug. Spots delivered to your wallet address within 48 hours, escrow releases when you confirm them on the allowlist checkers.",
-		category: "Business",
+		category: "Alpha & Access",
 		price: 90,
 		storeUrl: "alpha-desk",
 		cover: "/demo/p-wl-bundle.jpg",
@@ -196,7 +196,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "On-chain flows, unlock calendar, narrative watch. PDF.",
 		description:
 			"A weekly PDF for people who read before they ape: smart-money flows, unlock calendar for the next 30 days, narrative rotation watch, and three setups we're tracking with entries and invalidations.",
-		category: "Data",
+		category: "Bots & Data",
 		price: 30,
 		storeUrl: "alpha-desk",
 		cover: "/demo/p-alpha-report.jpg",
@@ -211,7 +211,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Deep-dive thread from a 120K-follower crypto account.",
 		description:
 			"A researched deep-dive thread about your project posted from our 120K crypto account, pinned for 48 hours. You approve the draft before it goes live, and escrow releases only after the thread is up with the link in your order chat.",
-		category: "Digital Marketing",
+		category: "Promotion & KOLs",
 		price: 400,
 		storeUrl: "kol-boost",
 		cover: "/demo/p-x-thread.jpg",
@@ -224,7 +224,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Five mid-tier KOLs post within 48h, report included.",
 		description:
 			"Five mid-tier crypto KOLs (30K-150K) post about your project within a 48-hour window, coordinated for launch week. You get the post links and a reach report. Escrow releases when all five posts are verified live.",
-		category: "Digital Marketing",
+		category: "Promotion & KOLs",
 		price: 1800,
 		storeUrl: "kol-boost",
 		cover: "/demo/p-kol-package.jpg",
@@ -237,7 +237,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "X Spaces AMA: hosted, promoted, and recorded.",
 		description:
 			"A one-hour X Spaces AMA for your project: professional host, promo posts before the event, moderated questions, and the recording delivered after. Calendar slot confirmed in your order chat within 24 hours.",
-		category: "Digital Marketing",
+		category: "Promotion & KOLs",
 		price: 600,
 		storeUrl: "kol-boost",
 		cover: "/demo/p-ama-host.jpg",
@@ -250,7 +250,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "TG raid team plus caption pack for launch week.",
 		description:
 			"A coordinated Telegram raid team for launch week plus a caption pack tuned to your project's voice. Daily activity report in the order chat so you can see exactly what ran.",
-		category: "Digital Marketing",
+		category: "Promotion & KOLs",
 		price: 220,
 		storeUrl: "kol-boost",
 		cover: "/demo/p-tg-raid.jpg",
@@ -265,7 +265,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Node.js storefront bot, webhook-ready source included.",
 		description:
 			"A Telegram bot that announces your new listings, price changes, and restocks to your channel. Node.js source included with webhook setup notes; runs on any $5 VPS.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 79,
 		storeUrl: "code-lab",
 		cover: "/demo/p-tg-bot.jpg",
@@ -278,7 +278,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Battle-tested bot configs plus a safety checklist.",
 		description:
 			"Our battle-tested configuration files for the popular sniping bots, plus the safety checklist that keeps you out of honeypots. Updated monthly; you get the current pack and the next update.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 149,
 		storeUrl: "code-lab",
 		cover: "/demo/p-snipe-config.jpg",
@@ -291,7 +291,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Custom dashboard for your token, live within 48h.",
 		description:
 			"A custom Dune dashboard for your token: holders over time, whale flows, DEX volume, and unlock tracking. Live within 48 hours, with the queries handed over so your team owns it.",
-		category: "Data",
+		category: "Bots & Data",
 		price: 299,
 		storeUrl: "code-lab",
 		cover: "/demo/p-dune-dash.jpg",
@@ -304,7 +304,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Next.js swap UI with wagmi hooks, theme-ready.",
 		description:
 			"A production Next.js swap frontend: wagmi hooks, wallet connect, token lists, slippage settings, and a theming layer so you can skin it to your brand in an afternoon. Source with commit history.",
-		category: "Programming & Tech",
+		category: "Contracts & Code",
 		price: 199,
 		storeUrl: "code-lab",
 		cover: "/demo/p-dex-boiler.jpg",
@@ -319,7 +319,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "50 custom memes in your project's skin, launch-ready.",
 		description:
 			"Fifty custom memes built on formats that are actually moving, re-skinned to your project's mascot and colors. Delivered as a sorted pack with posting-order suggestions for launch week.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 120,
 		storeUrl: "meme-forge",
 		cover: "/demo/p-meme-pack.jpg",
@@ -332,7 +332,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "24 animated stickers, delivered install-ready.",
 		description:
 			"Twenty-four animated Telegram stickers of your mascot: gm, wagmi, pump, cope, and twenty more. Delivered install-ready with the share link, plus source files.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 60,
 		storeUrl: "meme-forge",
 		cover: "/demo/p-sticker-set.jpg",
@@ -345,7 +345,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "A 30-second launch video edited to the trending format.",
 		description:
 			"A 30-second launch video cut to whatever format is trending this month: your branding, your CA, licensed music, subtitles baked in. Two revision rounds, delivered in 72 hours.",
-		category: "Films, Music & Games",
+		category: "Memes & Media",
 		price: 180,
 		storeUrl: "meme-forge",
 		cover: "/demo/p-shill-video.jpg",
@@ -358,7 +358,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Character sheet with 12 poses for your memecoin.",
 		description:
 			"A full character sheet for your memecoin mascot: 12 poses and expressions, transparent PNGs plus vector source, ready for memes, stickers, and site art. Consistent style your community can run with.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 240,
 		storeUrl: "meme-forge",
 		cover: "/demo/p-mascot-art.jpg",
@@ -373,7 +373,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Logo, banner, DEX screener art, and TG skin.",
 		description:
 			"Everything a launch needs to not look like a rug: logo with variants, X banner, DEX screener art, Telegram skin, and a mini style guide. Delivered in 48 hours with source files.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 199,
 		storeUrl: "design-market",
 		cover: "/demo/p-memecoin-brand.jpg",
@@ -386,7 +386,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "320+ Figma components with dark mode and tokens.",
 		description:
 			"A dapp-focused Figma UI kit: 320+ components, wallet flows, transaction states, empty states, dark mode, and design tokens that map cleanly to Tailwind. Updated quarterly.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 89,
 		storeUrl: "design-market",
 		cover: "/demo/p-dapp-ui.jpg",
@@ -399,7 +399,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "Figma + Framer template with tokenomics blocks.",
 		description:
 			"A token landing template in Figma and Framer: hero, tokenomics blocks, roadmap, FAQ, and CTA sections. Swap the copy and colors and you're live the same day.",
-		category: "Graphics & Design",
+		category: "Design & Branding",
 		price: 59,
 		storeUrl: "design-market",
 		cover: "/demo/p-landing-fig.jpg",
@@ -412,7 +412,7 @@ const productSeeds: DemoProductSeed[] = [
 		shortDescription: "A 20-slide deck template that raised real rounds.",
 		description:
 			"The 20-slide structure we've seen raise seed rounds: problem, wedge, traction, tokenomics, ask. Figma and Keynote versions with guidance notes on every slide.",
-		category: "Business",
+		category: "Alpha & Access",
 		price: 79,
 		storeUrl: "design-market",
 		cover: "/demo/p-pitch-deck.jpg",
