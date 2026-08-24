@@ -25,15 +25,15 @@ const phases: Phase[] = [
 		status: "live",
 		statusLabel: "live now",
 		description:
-			"The platform steps out of stealth: the site, the whitepaper, the demo shops, and the escrow contract already deployed on Ethereum.",
+			"Out of stealth: the site, the whitepaper, the demo shops, and the escrow contract live on Ethereum.",
 	},
 	{
 		phase: "02",
 		title: "Quests open",
-		status: "live",
-		statusLabel: "live now",
+		status: "upcoming",
+		statusLabel: "coming soon",
 		description:
-			"Points, referrals, and community roles. Early supporters start earning before the first trade settles.",
+			"Points, referrals, and community roles. Start earning before the first trade settles.",
 	},
 	{
 		phase: "03",
@@ -41,7 +41,7 @@ const phases: Phase[] = [
 		status: "in-progress",
 		statusLabel: "in progress",
 		description:
-			"Selected creators, communities, and web3 brands get their storefronts seeded first, so opening day already has full shelves.",
+			"Creators, communities, and web3 brands get seeded storefronts, so opening day has full shelves.",
 	},
 	{
 		phase: "04",
@@ -49,7 +49,7 @@ const phases: Phase[] = [
 		status: "upcoming",
 		statusLabel: "next wave",
 		description:
-			"Reserved handles turn into real storefronts, wave by wave. Customize the look, list your offers, connect your own domain.",
+			"Reserved handles become real storefronts, wave by wave. Your look, your listings, your domain.",
 	},
 	{
 		phase: "05",
@@ -57,7 +57,7 @@ const phases: Phase[] = [
 		status: "upcoming",
 		statusLabel: "then",
 		description:
-			"The first cohort starts selling with full escrow, jury disputes, and instant payouts. Every system is built and tested; we open the gates, not the workshop.",
+			"The first cohort sells with full escrow, jury disputes, and instant payouts. We open the gates, not the workshop.",
 	},
 	{
 		phase: "06",
@@ -65,7 +65,7 @@ const phases: Phase[] = [
 		status: "upcoming",
 		statusLabel: "full launch",
 		description:
-			"Open registration worldwide and $SELLA utility switched on. The gradual part ends; the marketplace runs at full speed.",
+			"Open registration worldwide and $SELLA utility switched on. The marketplace at full speed.",
 	},
 ];
 
