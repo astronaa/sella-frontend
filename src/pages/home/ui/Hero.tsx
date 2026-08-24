@@ -36,7 +36,7 @@ export function Hero() {
 							Sell anything.
 							<br />
 							<span className="bg-gradient-to-r from-accent-100 via-[#FFE865] to-accent-hover bg-clip-text text-transparent">
-								Escrow does the trust.
+								Escrow does the rest.
 							</span>
 						</Heading>
 
