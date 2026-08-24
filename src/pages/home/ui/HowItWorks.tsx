@@ -268,13 +268,14 @@ export function HowItWorks() {
 							Majority wins, and the contract executes the outcome on its own.
 						</p>
 
-						{/* the two possible verdicts, executed by the contract */}
+						{/* the two possible verdicts, executed by the contract.
+						    Equal-width pills so the "or" sits dead center. */}
 						<div className="flex items-center gap-[0.625rem] mt-[0.875rem] text-[0.8125rem]">
-							<span className="rounded-full bg-white/[0.05] px-[0.875rem] py-[0.375rem] text-black-74">
+							<span className="w-[9.5rem] text-center rounded-full bg-white/[0.05] py-[0.375rem] text-black-74">
 								Refund the buyer
 							</span>
 							<span className="text-black-40">or</span>
-							<span className="rounded-full bg-accent-100/[0.08] px-[0.875rem] py-[0.375rem] text-accent-100">
+							<span className="w-[9.5rem] text-center rounded-full bg-accent-100/[0.08] py-[0.375rem] text-accent-100">
 								Pay the seller
 							</span>
 						</div>
