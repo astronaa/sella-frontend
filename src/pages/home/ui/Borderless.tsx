@@ -70,46 +70,57 @@ export function Borderless() {
 	return (
 		<div className="relative py-[7rem] max-md:py-[4rem] overflow-hidden">
 			<div className="relative flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
-				{/* copy on the left, spinning dotted Earth on the right so the
-				    globe never sits underneath the text */}
-				<div className="grid lg:grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[4rem] gap-y-[3rem] px-4 w-full max-w-content mx-auto">
-					<div className="flex flex-col gap-[3rem]">
-						<Reveal className="flex flex-col gap-[1.5rem]">
-							<Eyebrow>Borderless by default</Eyebrow>
+				{/* centered intro up top, then the Earth enthroned in the
+				    middle with two points flanking it on each side — the globe
+				    gets center stage without ever sitting underneath text */}
+				<Reveal className="flex flex-col items-center text-center gap-[1.5rem] px-4 w-full max-w-content mx-auto">
+					<Eyebrow>Borderless by default</Eyebrow>
 
-							<Heading size="lg" className="tracking-[-0.02em]">
-								Talent has no borders.
-								<br />
-								<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
-									Now selling doesn&apos;t either.
+					<Heading size="lg" className="tracking-[-0.02em]">
+						Talent has no borders.
+						<br />
+						<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
+							Now selling doesn&apos;t either.
+						</span>
+					</Heading>
+
+					<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
+						Billions of people live where payment processors don&apos;t
+						operate and banks can&apos;t reach the global market. Their work
+						is world-class; their rails aren&apos;t. Sella runs on wallets:
+						if you can deliver, you can sell to anyone on Earth.
+					</p>
+				</Reveal>
+
+				<Reveal delay={80} className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-x-[3.5rem] gap-y-[2.5rem] px-4 w-full max-w-content mx-auto">
+					<div className="flex flex-col gap-[3rem] max-lg:order-2 max-lg:gap-[2rem] lg:items-end lg:text-right">
+						{points.slice(0, 2).map((point) => (
+							<div key={point.title} className="flex flex-col gap-[0.5rem] lg:items-end max-w-[24rem]">
+								<span className="size-[0.5rem] rounded-full bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.4)] mb-[0.375rem]" />
+								<span className="text-white font-semibold">{point.title}</span>
+								<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
+									{point.description}
 								</span>
-							</Heading>
-
-							<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
-								Billions of people live where payment processors don&apos;t
-								operate and banks can&apos;t reach the global market. Their work
-								is world-class; their rails aren&apos;t. Sella runs on wallets:
-								if you can deliver, you can sell to anyone on Earth.
-							</p>
-						</Reveal>
-
-						<Reveal delay={80} className="grid grid-cols-1 md:grid-cols-2 gap-x-[2.5rem] gap-y-[2rem]">
-							{points.map((point) => (
-								<div key={point.title} className="flex flex-col gap-[0.5rem]">
-									<span className="size-[0.5rem] rounded-full bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.4)] mb-[0.375rem]" />
-									<span className="text-white font-semibold">{point.title}</span>
-									<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
-										{point.description}
-									</span>
-								</div>
-							))}
-						</Reveal>
+							</div>
+						))}
 					</div>
 
-					<div className="size-[34rem] max-xl:size-[28rem] max-lg:size-[22rem] max-lg:mx-auto" aria-hidden>
+					<div className="size-[36rem] max-xl:size-[30rem] max-lg:size-[24rem] mx-auto max-lg:order-1" aria-hidden>
 						<DottedGlobe />
 					</div>
-				</div>
+
+					<div className="flex flex-col gap-[3rem] max-lg:order-3 max-lg:gap-[2rem]">
+						{points.slice(2).map((point) => (
+							<div key={point.title} className="flex flex-col gap-[0.5rem] max-w-[24rem]">
+								<span className="size-[0.5rem] rounded-full bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.4)] mb-[0.375rem]" />
+								<span className="text-white font-semibold">{point.title}</span>
+								<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
+									{point.description}
+								</span>
+							</div>
+						))}
+					</div>
+				</Reveal>
 
 				{/* worldwide trades as a slow full-bleed ticker */}
 				<Reveal delay={140} className="flex flex-col gap-[1rem]">

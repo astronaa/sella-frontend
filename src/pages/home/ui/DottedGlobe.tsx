@@ -309,8 +309,11 @@ export function DottedGlobe({ className }: { className?: string }) {
 			const dx = e.clientX - lastX;
 			const dy = e.clientY - lastY;
 			const k = 1 / (canvas.clientWidth * 0.45);
+			// natural trackball: the surface under the pointer follows it —
+			// dragging right spins the front eastward, dragging down tips
+			// the front face downward
 			theta += dx * k;
-			pitch = Math.max(-0.9, Math.min(0.9, pitch - dy * k));
+			pitch = Math.max(-0.9, Math.min(0.9, pitch + dy * k));
 			const dt = Math.max((now - lastMove) / 1000, 1 / 120);
 			speed = Math.max(-3, Math.min(3, (dx * k) / dt));
 			lastX = e.clientX;
