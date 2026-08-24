@@ -86,15 +86,37 @@ function Node({
 export function HowItWorks() {
 	return (
 		<div className="relative py-[7rem] max-md:py-[4rem] px-4 overflow-hidden">
-			{/* ambient: glow + faint grid straight on the page background */}
-			<div className="absolute inset-x-0 top-[36%] bottom-0 lp-grid-texture [mask-image:radial-gradient(55%_65%_at_50%_45%,black,transparent)] pointer-events-none" />
-			<div
-				className="absolute inset-0 pointer-events-none"
-				style={{
-					background:
-						"radial-gradient(42% 38% at 50% 62%, rgba(255,221,0,0.08) 0%, transparent 100%)",
-				}}
-			/>
+			{/* designed backdrop instead of an ambient wash: orbit rings
+			    centered where the escrow medallion sits — the contract at
+			    the center of everything — one dashed orbit slowly turning,
+			    and a tight glow motivated by the vault itself */}
+			<div className="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 size-[110rem] pointer-events-none" aria-hidden>
+				<svg viewBox="0 0 100 100" className="absolute inset-0 size-full">
+					<circle cx="50" cy="50" r="11" fill="none" stroke="rgba(255,221,0,0.09)" strokeWidth="0.06" />
+					<circle cx="50" cy="50" r="17" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.06" />
+					<circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.035)" strokeWidth="0.06" />
+					<g className="lp-orbit-turn origin-center">
+						<circle
+							cx="50"
+							cy="50"
+							r="23.5"
+							fill="none"
+							stroke="rgba(255,221,0,0.07)"
+							strokeWidth="0.07"
+							strokeDasharray="0.5 1.3"
+						/>
+						{/* one trade riding the orbit */}
+						<circle cx="50" cy="26.5" r="0.28" fill="#FFDD00" opacity="0.55" />
+					</g>
+				</svg>
+				<div
+					className="absolute inset-0"
+					style={{
+						background:
+							"radial-gradient(closest-side, rgba(255,221,0,0.05) 0%, transparent 34%)",
+					}}
+				/>
+			</div>
 
 			<div className="relative flex flex-col gap-[5.5rem] max-md:gap-[3.5rem] w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.5rem] items-center text-center">

@@ -18,9 +18,25 @@ export function Eyebrow({ className, children, ...props }: HTMLAttributes<HTMLDi
 	);
 }
 
-/** Soft pool of gold light anchoring a section; position and size per use. */
+/**
+ * Ambient light for a section, in the house language: a faint dot grid
+ * revealed by a radial mask with a dim gold tint over it. A bare
+ * radial blob bands into visible rings on near-black and reads muddy;
+ * the grid gives the light something to fall on.
+ */
 export function Aura({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-	return <div aria-hidden {...props} className={cn("lp-aura", className)} />;
+	return (
+		<div aria-hidden {...props} className={cn("absolute pointer-events-none", className)}>
+			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(closest-side,black,transparent_72%)]" />
+			<div
+				className="absolute inset-0"
+				style={{
+					background:
+						"radial-gradient(closest-side, rgba(255, 221, 0, 0.045), transparent 68%)",
+				}}
+			/>
+		</div>
+	);
 }
 
 /** Fades content up when it enters the viewport. Pure presentation, no layout impact. */
