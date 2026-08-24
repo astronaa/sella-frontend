@@ -363,25 +363,6 @@ body {
   .lp-rail-spark { animation: none; opacity: 0; }
 }
 
-/* gold spotlight tracking the cursor inside a card (vars set by
-   CardSpotlight); an interior wash of light, never a stroke */
-.lp-spot { position: relative; }
-.lp-spot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  background: radial-gradient(
-    13rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
-    rgba(255, 221, 0, 0.09),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-.lp-spot:hover::after { opacity: 1; }
-
 /* the grain lives: a 2x layer jumps between offsets on the compositor,
    so the noise flickers like film instead of sitting like wallpaper */
 .lp-grain {
@@ -413,7 +394,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .lp-grain { animation: none; }
   .lp-enter-line { animation: none; }
-  .lp-spot::after { display: none; }
 }
 
 /* dithered glow texture (public/glow-gold.png, generated with baked

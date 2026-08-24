@@ -135,7 +135,7 @@ export function SellaFeautes() {
 
 				{/* two illustrated flagship tiles */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-[1.25rem]">
-					<Reveal className="lp-hover-card lp-spot relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
+					<Reveal className="lp-hover-card relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
 						<div
 							className="flex justify-center items-center h-[15rem]"
 							style={{
@@ -154,7 +154,7 @@ export function SellaFeautes() {
 						</div>
 					</Reveal>
 
-					<Reveal delay={90} className="lp-hover-card lp-spot relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
+					<Reveal delay={90} className="lp-hover-card relative flex flex-col rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] overflow-hidden">
 						<div
 							className="flex justify-center items-center h-[15rem]"
 							style={{

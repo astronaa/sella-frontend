@@ -76,7 +76,7 @@ export function Disputes() {
 						<Reveal
 							key={pillar.title}
 							delay={index * 90}
-							className="lp-hover-card lp-spot relative flex flex-col gap-[1rem] rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] p-[1.75rem]"
+							className="lp-hover-card relative flex flex-col gap-[1rem] rounded-[1.5rem] bg-white/[0.03] hover:bg-white/[0.05] p-[1.75rem]"
 						>
 							<span className="flex items-center justify-center size-[2.75rem] rounded-[0.75rem] bg-accent-100/[0.12] text-accent-100">
 								{pillar.icon}

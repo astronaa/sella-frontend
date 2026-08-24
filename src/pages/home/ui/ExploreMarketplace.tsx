@@ -34,7 +34,7 @@ export async function ExploreMarketPlace() {
 							<StoreCard.Root
 								store={store}
 								asChild
-								className="lp-hover-card lp-spot w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13]"
+								className="lp-hover-card w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13]"
 							>
 								<StoreLink>
 									<StoreCard.Composition />
