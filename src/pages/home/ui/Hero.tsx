@@ -13,7 +13,9 @@ const chipRows = [
 
 export function Hero() {
 	return (
-		<div className="relative overflow-hidden bg-black-100 rounded-b-[3rem] px-[1rem]">
+		// fills the rest of the viewport below the header (~6rem of flow
+		// above), so the next section only appears on scroll
+		<div className="relative overflow-hidden bg-black-100 rounded-b-[3rem] px-[1rem] flex flex-col min-h-[calc(100svh-6rem)]">
 			{/* restrained backdrop: dot grid + single gold radial */}
 			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(70%_70%_at_50%_30%,black,transparent)]" />
 			<div
@@ -24,8 +26,8 @@ export function Hero() {
 				}}
 			/>
 
-			<div className="relative flex items-center justify-between gap-[2rem] w-full max-w-content m-auto max-lg:justify-center">
-				<div className="flex flex-col gap-[2.25rem] max-w-[38.5rem] w-full flex-shrink-0 pt-[4.5rem] pb-[6rem] max-md:py-[3.5rem]">
+			<div className="relative flex flex-1 items-center justify-between gap-[2rem] w-full max-w-content m-auto max-lg:justify-center">
+				<div className="flex flex-col gap-[2.25rem] max-w-[38.5rem] w-full flex-shrink-0 py-[3rem] max-md:py-[3rem]">
 					<div className="flex flex-col gap-[1.5rem]">
 						<Eyebrow>Escrow-secured marketplace</Eyebrow>
 
