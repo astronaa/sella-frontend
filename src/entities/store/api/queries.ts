@@ -4,6 +4,7 @@ import { apiClient } from "~/shared/api/client";
 import { PayloadPagination } from "~/shared/api/client"
 import { Store } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
+import { staticStoreByUrl, staticStores } from "~/shared/static-data/marketplace";
 
 const QUERY_KEY = 'stores'
 
@@ -17,12 +18,19 @@ export function useGetOne({ initialData, storeUrl, staleTime }: GetOneQueryOptio
 	return useQuery({
 		queryKey: [QUERY_KEY, storeUrl],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.for(storeUrl).get()
+			try {
+				const { data, error } = await apiClient.stores.for(storeUrl).get()
 
-			if (error)
-				throw error;
+				if (error)
+					throw error;
 
-			return data;
+				return data;
+			} catch (err) {
+				const fallback = staticStoreByUrl(storeUrl);
+				if (fallback) return fallback;
+
+				throw err;
+			}
 		},
 		initialData,
 		staleTime
@@ -35,12 +43,24 @@ export const getAllOptions = ({ page, limit, ...filters }: GetAllQueryOptions) =
 	queryOptions({
 		queryKey: [QUERY_KEY, { page, limit, ...filters, tagNames: JSON.stringify(filters.tagNames ?? []) }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores.getAll(filters, { page, limit })
+			try {
+				const { data, error } = await apiClient.stores.getAll(filters, { page, limit })
 
-			if (error)
-				throw error;
+				if (error)
+					throw error;
 
-			return data;
+				return data;
+			} catch (err) {
+				const tagNames = filters.tagNames ?? [];
+				const items = staticStores.filter(store =>
+					!tagNames.length || store.tagNames?.some(tag => tagNames.includes(tag))
+				);
+
+				if (!items.length) throw err;
+
+				const start = ((page ?? 1) - 1) * (limit ?? items.length);
+				return { items: items.slice(start, start + (limit ?? items.length)), total: items.length };
+			}
 		}
 	})
 

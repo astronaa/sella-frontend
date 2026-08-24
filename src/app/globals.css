@@ -57,3 +57,353 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.08);
 }
+/* ===== 2026 landing page motion + texture ===== */
+
+@keyframes lp-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes lp-float-alt {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes lp-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes lp-flow-dot {
+  0% { offset-distance: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes lp-reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* visible by default; hidden only once JS "arms" the element, so content
+   never disappears without JS and full-page rendering stays intact */
+.lp-reveal.lp-armed {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.lp-reveal.lp-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-reveal, .lp-reveal.lp-armed { opacity: 1; transform: none; transition: none; }
+}
+
+/* fine dot grid texture for dark panels */
+.lp-grid-texture {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* hairline top highlight on cards — element must be positioned itself
+   (relative/absolute) so the ::before anchors to it */
+.lp-card-highlight::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 5%, rgba(255, 221, 0, 0.35) 50%, transparent 95%);
+  pointer-events: none;
+}
+
+/* ===== money-flow infographic animation =====
+   One shared 10s cycle telling the story in sequence:
+   0-22%  payment dot travels   (step 1 label bright)
+   28-50% delivery arc active   (step 2 label bright)
+   56-78% release dot travels   (step 3 label bright)
+   rest   idle breathing */
+
+@keyframes lp-dot-pay {
+  0% { left: 0%; opacity: 0; }
+  3% { opacity: 1; }
+  22% { left: calc(100% - 8px); opacity: 1; }
+  26% { left: calc(100% - 8px); opacity: 0; }
+  100% { left: calc(100% - 8px); opacity: 0; }
+}
+
+@keyframes lp-dot-release {
+  0%, 56% { left: 0%; opacity: 0; }
+  59% { opacity: 1; }
+  78% { left: calc(100% - 8px); opacity: 1; }
+  82% { left: calc(100% - 8px); opacity: 0; }
+  100% { left: calc(100% - 8px); opacity: 0; }
+}
+
+.lp-dot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #FFDD00;
+  box-shadow: 0 0 10px 2px rgba(255, 221, 0, 0.6);
+}
+
+.lp-dot-pay { animation: lp-dot-pay 10s ease-in-out infinite; }
+.lp-dot-release { animation: lp-dot-release 10s ease-in-out infinite; }
+
+/* step labels: dimmed by default, bright during their window */
+@keyframes lp-step-1-glow {
+  0% { opacity: 1; }
+  24% { opacity: 1; }
+  32% { opacity: 0.4; }
+  100% { opacity: 0.4; }
+}
+@keyframes lp-step-2-glow {
+  0%, 24% { opacity: 0.4; }
+  30%, 50% { opacity: 1; }
+  58%, 100% { opacity: 0.4; }
+}
+@keyframes lp-step-3-glow {
+  0%, 52% { opacity: 0.4; }
+  58%, 80% { opacity: 1; }
+  88%, 100% { opacity: 0.4; }
+}
+.lp-step-1 { animation: lp-step-1-glow 10s ease-in-out infinite; }
+.lp-step-2 { animation: lp-step-2-glow 10s ease-in-out infinite; }
+.lp-step-3 { animation: lp-step-3-glow 10s ease-in-out infinite; }
+
+/* delivery signal: one dot rides the square route in sequence during
+   the delivery window of the shared 10s cycle — up the seller riser
+   (28-33%), across right-to-left (33-45%), down the buyer riser
+   (45-50%) */
+.lp-dot-v {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #FFDD00;
+  box-shadow: 0 0 10px 2px rgba(255, 221, 0, 0.6);
+  opacity: 0;
+}
+@keyframes lp-dot-deliver-up {
+  0%, 28% { top: 100%; opacity: 0; }
+  29% { opacity: 1; }
+  32% { opacity: 1; }
+  33%, 100% { top: 0%; opacity: 0; }
+}
+.lp-dot-deliver-up { animation: lp-dot-deliver-up 10s linear infinite; }
+
+@keyframes lp-dot-deliver {
+  0%, 33% { left: calc(100% - 8px); opacity: 0; }
+  34% { opacity: 1; }
+  44% { opacity: 1; }
+  45%, 100% { left: 0%; opacity: 0; }
+}
+.lp-dot-deliver { animation: lp-dot-deliver 10s linear infinite; }
+
+@keyframes lp-dot-deliver-down {
+  0%, 45% { top: 0%; opacity: 0; }
+  46% { opacity: 1; }
+  49% { opacity: 1; }
+  50%, 100% { top: 100%; opacity: 0; }
+}
+.lp-dot-deliver-down { animation: lp-dot-deliver-down 10s linear infinite; }
+
+
+/* escrow vault: glow peaks when the payment lands and when release starts */
+@keyframes lp-vault-pulse {
+  0%, 100% { filter: drop-shadow(0 0 26px rgba(255, 221, 0, 0.25)); }
+  24%, 58% { filter: drop-shadow(0 0 44px rgba(255, 221, 0, 0.55)); }
+  40%, 76% { filter: drop-shadow(0 0 26px rgba(255, 221, 0, 0.25)); }
+}
+.lp-vault-pulse { animation: lp-vault-pulse 10s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-dot-pay, .lp-dot-release, .lp-dot-deliver, .lp-dot-deliver-up,
+  .lp-dot-deliver-down, .lp-vault-pulse,
+  .lp-step-1, .lp-step-2, .lp-step-3 { animation: none; }
+  .lp-dot, .lp-dot-v { opacity: 0; }
+  .lp-step-1, .lp-step-2, .lp-step-3 { opacity: 1; }
+}
+
+/* borderless globe: rendered by DottedGlobe.tsx (canvas, real 3D
+   projection of /world-map.svg land dots onto a rotating sphere) */
+
+@keyframes lp-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ===== atmosphere + motion pass =====
+   the page used to sit flat on #0F0F0F; these give it air without ever
+   drawing a stroke: film grain unifying every surface, gold auras
+   anchoring sections, an entrance for the hero, and hover life */
+
+/* fine monochrome film grain over the whole viewport; fixed so it never
+   scrolls, pointer-transparent, and under the sticky header's z */
+.lp-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* soft gold pool of light behind a section's key content; size and
+   place per use. Uses the dithered texture, not a CSS gradient, so it
+   never bands into rings. */
+.lp-aura {
+  position: absolute;
+  pointer-events: none;
+  background-image: url("/glow-gold.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.lp-aura-breathe { animation: lp-aura-breathe 9s ease-in-out infinite; }
+@keyframes lp-aura-breathe {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* hero entrance: children cascade up on first paint */
+@keyframes lp-enter {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.lp-enter { animation: lp-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.lp-enter-1 { animation-delay: 0.05s; }
+.lp-enter-2 { animation-delay: 0.15s; }
+.lp-enter-3 { animation-delay: 0.25s; }
+.lp-enter-4 { animation-delay: 0.35s; }
+.lp-enter-5 { animation-delay: 0.45s; }
+.lp-enter-6 { animation-delay: 0.55s; }
+
+/* slow light sweep across a gradient headline, there and back */
+.lp-shimmer {
+  background-size: 220% 100%;
+  animation: lp-shimmer 9s ease-in-out infinite;
+}
+@keyframes lp-shimmer {
+  0%, 35% { background-position: 0% 0; }
+  60% { background-position: 90% 0; }
+  85%, 100% { background-position: 0% 0; }
+}
+
+/* cards lift toward the hand with a warm shadow, never a stroke */
+.lp-hover-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.lp-hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.7),
+    0 10px 36px -14px rgba(255, 221, 0, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-enter, .lp-shimmer, .lp-aura-breathe { animation: none; }
+  .lp-hover-card, .lp-hover-card:hover { transform: none; transition: none; }
+}
+
+/* one light sweep across the primary CTA on hover */
+.lp-btn-sheen { position: relative; overflow: hidden; }
+.lp-btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 30%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.lp-btn-sheen:hover::after {
+  opacity: 1;
+  animation: lp-btn-sheen 0.7s ease forwards;
+}
+@keyframes lp-btn-sheen {
+  to { transform: skewX(-20deg) translateX(520%); }
+}
+
+/* spark travelling the roadmap rail, phase to phase */
+.lp-rail-spark {
+  position: absolute;
+  top: 1.25rem;
+  margin-top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #ffdd00;
+  box-shadow: 0 0 12px 3px rgba(255, 221, 0, 0.5);
+  animation: lp-rail-spark 7s linear infinite;
+}
+@keyframes lp-rail-spark {
+  0% { left: 2%; opacity: 0; }
+  6% { opacity: 1; }
+  94% { opacity: 1; }
+  100% { left: 97%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-btn-sheen:hover::after { animation: none; opacity: 0; }
+  .lp-rail-spark { animation: none; opacity: 0; }
+}
+
+/* the grain lives: a 2x layer jumps between offsets on the compositor,
+   so the noise flickers like film instead of sitting like wallpaper */
+.lp-grain {
+  width: 200%;
+  height: 200%;
+  animation: lp-grain-shift 0.9s steps(1) infinite;
+}
+@keyframes lp-grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  17% { transform: translate(-4%, -6%); }
+  34% { transform: translate(-9%, -2%); }
+  51% { transform: translate(-3%, -9%); }
+  68% { transform: translate(-7%, -5%); }
+  85% { transform: translate(-1%, -3%); }
+}
+
+/* hero headline: each line rises out of its own mask */
+.lp-enter-mask { display: block; overflow: hidden; }
+.lp-enter-line {
+  display: block;
+  animation: lp-enter-line 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes lp-enter-line {
+  from { transform: translateY(108%); }
+  to { transform: translateY(0); }
+}
+.lp-enter-line-2 { animation-delay: 0.14s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-grain { animation: none; }
+  .lp-enter-line { animation: none; }
+}
+
+/* dithered glow texture (public/glow-gold.png, generated with baked
+   per-pixel noise): CSS radial-gradients quantize into visible 8-bit
+   rings on this dark a background — every soft gold pool of light on
+   the LP uses this image instead. Position and size the div; tune
+   strength with opacity (dither amplitude survives down to ~0.4). */
+.lp-glow {
+  background-image: url("/glow-gold.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}

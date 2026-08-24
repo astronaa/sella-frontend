@@ -7,12 +7,9 @@ import { ITEMS_PER_PAGE } from "~/pages/marketplace/config";
 import { storeQueries } from '~/entities/store';
 import { Heading } from "~/shared/ui/kit/heading";
 import { SearchBar } from "~/shared/ui/search-bar";
-import { Scrollable } from "~/shared/ui/scrollable";
-import { CategoryBox, categoryQueries } from "~/entities/category";
 import { useFilters } from "~/pages/marketplace/model/filters";
 import { useDebounce } from "~/shared/lib/use-debounce";
-import type { StoresInitialData } from "../api/stores";
-import { WithControllableProps, useControllableState } from "~/shared/lib/use-controllable-state";
+import { StoresInitialData } from "../api/stores";
 import { useSearchParamsPagination } from "~/shared/lib/search-params";
 import { useQuery } from "@tanstack/react-query";
 import { NotFoundScreen } from "~/shared/ui/not-found-screen";
@@ -34,7 +31,7 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 			page, limit: ITEMS_PER_PAGE,
 			...filters
 		}),
-		initialData: initialData as never,
+		initialData,
 		initialDataUpdatedAt: 0
 	})
 
@@ -63,10 +60,19 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 					</SearchBar.Root>
 				</div>
 
-				<CategoriesRoulette
-					value={category}
-					onChange={category => setFilters(f => ({ ...f, tagNames: category ? [category] : [] }))}
-				/>
+				{/* categories live in the nav (strip + Categories button);
+				    here we only reflect the applied filter */}
+				{category && (
+					<button
+						onClick={() => setFilters(f => ({ ...f, tagNames: [] }))}
+						className='flex items-center gap-[0.5rem] w-fit rounded-full bg-accent-100/[0.09] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-accent-100 hover:bg-accent-100/[0.14] transition-colors'
+					>
+						{category}
+						<svg viewBox="0 0 16 16" className="size-[0.625rem] fill-current">
+							<path d="M8 6.6L12.6 2 14 3.4 9.4 8 14 12.6 12.6 14 8 9.4 3.4 14 2 12.6 6.6 8 2 3.4 3.4 2 8 6.6z" />
+						</svg>
+					</button>
+				)}
 			</div>
 
 			{data && data.items.length === 0 && (
@@ -108,35 +114,3 @@ export function StoresStream({ initialData }: StoresStreamProps) {
 	);
 }
 
-type CategoriesRouletteProps = WithControllableProps<string | null, object>
-
-function CategoriesRoulette(props: CategoriesRouletteProps) {
-	const [category, setCategory] = useControllableState(props);
-	const { data: categories } = categoryQueries.useGetAll();
-
-	return (
-		<div className='relative'>
-			<Scrollable.Root className='mx-[-1rem] w-[calc(100%+1rem*2)]'>
-				<Scrollable.Container className='gap-[1.5rem] relative px-[1rem]'>
-					{categories?.map(c => (
-						<CategoryBox
-							key={c.id} category={c}
-							active={c.name === category}
-							onClick={() => {
-								setCategory(category => c.name != category ? c.name : null)
-							}}
-						/>
-					))}
-				</Scrollable.Container>
-			</Scrollable.Root>
-			<div
-				className='absolute right-[-1rem] top-0 bottom-0 w-[2rem] 
-				bg-gradient-to-r from-transparent to-black-06 to-90% pointer-events-none'
-			/>
-			<div
-				className='absolute left-[-1rem] top-0 bottom-0 w-[2rem] 
-				bg-gradient-to-l from-transparent to-black-06 to-90% pointer-events-none'
-			/>
-		</div>
-	);
-}

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useProductStrictContext } from "~/entities/product";
 import { useUserGetQuery } from "~/entities/user";
 import { OrderCreateBaseCard } from "~/features/order/create";
@@ -12,8 +13,10 @@ import { Skeleton } from "~/shared/ui/kit/skeleton";
 
 export function CheckoutWidget() {
 	const product = useProductStrictContext();
+	const router = useRouter();
 	const startFlow = useRegisterFlow(s => s.startFlow);
 	const { data: user } = useUserGetQuery();
+	void startFlow;
 
 	return (
 		<OrderCreateBaseCard
@@ -44,7 +47,10 @@ export function CheckoutWidget() {
 										e.preventDefault();
 										e.stopPropagation();
 
-										startFlow(true);
+										// Demo mode: signed-out checkout opens the order
+										// preview. When the backend is live, restore:
+										// startFlow(true);
+										router.push(`/products/${product.id}/demo-order`);
 									}
 								}}
 							>

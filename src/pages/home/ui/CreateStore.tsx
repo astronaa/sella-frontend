@@ -1,65 +1,46 @@
-import { GradientBackground } from "~/shared/ui/gradient-background";
-import { Icons } from "~/shared/ui/icons";
-import { PropsWithChildren } from "react";
-import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
+import { Reveal } from "./shared";
+
+const points = ["About 30 seconds to launch", "Sell anything*", "Fees only on successful trades"];
 
 export function CreateStore() {
-  return (
-    <div className="flex flex-col relative overflow-hidden rounded-b-[3rem] pt-[7.5rem] max-xl:pt-[5rem] rounded-[3rem] px-4 md:mx-[1.25rem]">
-      <GradientBackground />
-      <div className="flex justify-between items-end gap-[1rem] relative w-full max-w-content mx-auto max-lg:justify-center">
-        <div className="flex flex-col gap-[3rem] max-w-[35rem] w-full mb-[6.25rem] max-xl:mb-[5rem] flex-shrink-0">
-          <div className="flex flex-col gap-[1.5rem]">
-            <Heading size="lg">Open Your Web3 Storefront in Seconds</Heading>
+	return (
+		<div className="px-4 pb-[2rem] md:px-[1.25rem]">
+			<div className="relative overflow-hidden rounded-[3rem] bg-black-100 px-[1rem] py-[7rem] max-md:py-[4.5rem]">
+				<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(60%_80%_at_50%_100%,black,transparent)]" />
+				<div className="lp-glow absolute left-1/2 top-[115%] -translate-x-1/2 -translate-y-1/2 w-[115%] h-[145%]" />
 
-            <p className="text-black-60">
-              Become a globally accessible seller, and start your digital
-              business today!
-            </p>
-          </div>
+				<Reveal className="relative flex flex-col items-center gap-[2.25rem] text-center max-w-[46rem] m-auto">
+					<Heading size="lg" className="tracking-[-0.02em] text-balance">
+						Open your storefront.
+						<br />
+						<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
+							The escrow is already waiting.
+						</span>
+					</Heading>
 
-          <CreateStoreFeatures />
+					<p className="text-black-60 text-[1.0625rem] leading-[1.6] max-w-[32rem]">
+						Become a globally accessible seller and start your digital business
+						today.
+					</p>
 
-          <StorefrontOpenControls />
-        </div>
+					<div className="flex flex-wrap justify-center gap-[0.5rem]">
+						{points.map((point) => (
+							<span
+								key={point}
+								className="rounded-full bg-white/[0.05] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
+							>
+								{point}
+							</span>
+						))}
+					</div>
 
-        <VideoAnimationPlayer
-					className='flex-shrink-0 w-[26rem] xl:w-[48rem] hidden lg:block h-[48rem]'
-					src='/videos/hero-anim2.webm'
-					srcHevc='/videos/hero-anim2.mov'
-				/>
-      </div>
-    </div>
-  );
-}
-
-function CreateStoreFeatures() {
-  return (
-    <div className="flex flex-col gap-[1.8rem] max-w-[25rem]">
-      <Feature label="Hassle free">
-        It takes about 30 seconds to get your storefront running
-      </Feature>
-      <Feature label="Sell anything*">
-        From digital goods, to physical items, services and anything else in
-        between
-      </Feature>
-      <Feature label="No subscription">
-        Enjoy free usage with no hidden fees — only a transaction fee deducted from each successful trade
-      </Feature>
-    </div>
-  );
-}
-
-function Feature({ label, children }: PropsWithChildren<{ label: string }>) {
-  return (
-    <div className="flex gap-[0.75rem] items-center min-w-0">
-      <Icons.CircleChecked className="text-accent-100 size-[1.75rem] flex-shrink-0" />
-      <p className=" text-black-60 flex flex-col">
-        <span className="text-white font-semibold text-lg">{label}</span>{" "}
-        <span>{children}</span>
-      </p>
-    </div>
-  );
+					<div className="w-full max-w-[30rem] [&>*]:justify-center">
+						<StorefrontOpenControls />
+					</div>
+				</Reveal>
+			</div>
+		</div>
+	);
 }

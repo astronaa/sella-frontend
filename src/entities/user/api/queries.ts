@@ -8,15 +8,20 @@ export const getUserOptions = () =>
 	queryOptions({
 		queryKey: [QUERY_KEY],
 		queryFn: async () => {
-			const { data, error, response } = await apiClient.users.getProfile()
+			try {
+				const { data, error, response } = await apiClient.users.getProfile()
 
-			if(response.status != 200)
+				if(response.status != 200)
+					return null;
+
+				if(error)
+					throw error;
+
+				return data;
+			} catch {
+				// API unreachable: treat as signed out instead of loading forever
 				return null;
-
-			if(error)
-				throw error;
-
-			return data;
+			}
 		}
 	})
 

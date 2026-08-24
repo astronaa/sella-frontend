@@ -11,12 +11,14 @@ import {
 	useCategoriesRouletteStrictContext
 } from "./contex";
 
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, ReactNode, useMemo, useState } from "react";
 import { Button as BaseButton, ButtonProps } from "~/shared/ui/kit/button";
 import { cn } from "~/shared/lib/cn";
 import { Icons } from "~/shared/ui/icons";
+import { categoryIcon } from "~/shared/ui/category-icons";
+import { PreviewImage } from "~/shared/ui/image";
 import { Scrollable } from "~/shared/ui/scrollable";
-import { CategoryBox, categoryQueries } from "~/entities/category";
+import { categoryQueries } from "~/entities/category";
 import { Category } from "~/shared/api/client";
 
 export type RootProps = WithControllableProps<Category | null, PropsWithChildren>
@@ -62,22 +64,79 @@ export interface ContentProps extends Scrollable.RootProps {
 	itemsClassName?: string
 }
 
+/* Demo mode: aspirational categories shown after the catalog ones. */
+const comingSoonCategories = [
+	"RWA & Tokenized Assets",
+	"AI Agents",
+	"DeFi & Yield",
+	"NFTs & Collectibles",
+	"Gaming & Metaverse",
+	"DAO & Governance",
+	"Security & Audits",
+	"Nodes & Infra",
+	"Trading Tools",
+	"Domains & Identity",
+	"Physical Goods",
+	"Content & Media",
+];
+
+function ComingSoonTile({ name, visual, className }: { name: string, visual: ReactNode, className?: string }) {
+	return (
+		<div
+			className={cn(
+				'group relative flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none p-[0.5rem]',
+				'rounded-[0.75rem] bg-white/[.02] flex-shrink-0 text-center text-black-40 cursor-default',
+				className
+			)}
+		>
+			<div className='flex flex-col items-center gap-[0.625rem] transition-opacity duration-200 group-hover:opacity-0'>
+				{visual}
+				<span>{name}</span>
+			</div>
+			<span className='absolute inset-0 flex items-center justify-center text-accent-100 text-[0.875rem] opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
+				coming soon
+			</span>
+		</div>
+	);
+}
+
 export function Content({ itemsClassName, ...props }: ContentProps) {
 	const { data: categories } = categoryQueries.useGetAll();
-	const { category, setCategory, setOpen } = useCategoriesRouletteStrictContext();
 
 	return (
 		<Scrollable.Root {...props}>
 			<Scrollable.Container className='gap-[1.5rem]'>
+				{/* Demo mode: EVERY category is a preview — hovering any tile
+				    shows "coming soon" and nothing filters. Restore at launch:
+				    render CategoryBox with the setCategory/setOpen onClick from
+				    useCategoriesRouletteStrictContext for the catalog ones. */}
 				{categories?.map(c => (
-					<CategoryBox
+					<ComingSoonTile
 						key={c.id}
-						category={c} active={category?.id === c.id}
-						className={itemsClassName} truncateName
-						onClick={() => {
-							setCategory(category => category?.id == c.id ? null : c);
-							setOpen(false);
-						}}
+						name={c.name}
+						className={itemsClassName}
+						visual={
+							<PreviewImage
+								src={c.image}
+								className='size-[5rem] border-none bg-transparent'
+								alt={`Category ${c.name} image`}
+								width={300} height={300}
+								priority={true}
+							/>
+						}
+					/>
+				))}
+
+				{comingSoonCategories.map(name => (
+					<ComingSoonTile
+						key={name}
+						name={name}
+						className={itemsClassName}
+						visual={
+							<span className='flex items-center justify-center size-[5rem] p-[0.75rem]'>
+								{categoryIcon(name)}
+							</span>
+						}
 					/>
 				))}
 			</Scrollable.Container>
