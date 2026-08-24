@@ -1,31 +1,77 @@
-import { FeaturesList } from "./Features";
-import { GradientBackground } from "~/shared/ui/gradient-background";
-import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { Heading } from "~/shared/ui/kit/heading";
+import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
+import { EscrowStatusCards } from "./EscrowStatusCards";
+import { Eyebrow } from "./shared";
+
+const chips = [
+	"30-second setup",
+	"No KYC",
+	"No subscription",
+	"Digital & physical",
+	"On-chain escrow",
+];
 
 export function Hero() {
-  return (
-    <div
-      className="flex flex-col rounded relative overflow-hidden px-[1rem] bg-black rounded-b-[3rem]
-				max-md:top-[-12.5rem] max-md:pt-[10.25rem] max-md:mb-[-10rem]"
-    >
-      <GradientBackground />
+	return (
+		<div className="relative overflow-hidden bg-black-100 rounded-b-[3rem] px-[1rem]">
+			{/* restrained backdrop: dot grid + single gold radial */}
+			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(70%_70%_at_50%_30%,black,transparent)]" />
+			<div
+				className="absolute inset-0"
+				style={{
+					background:
+						"radial-gradient(48% 42% at 78% 18%, rgba(255,221,0,0.10) 0%, transparent 100%), radial-gradient(60% 50% at 12% 92%, rgba(236,149,21,0.06) 0%, transparent 100%)",
+				}}
+			/>
 
-      <div className="flex flex-grow items-end justify-between gap-[1rem] relative w-full max-w-content m-auto max-lg:justify-center">
-        <div className="flex flex-col gap-[3rem] max-w-[35rem] w-full pb-[7.25rem] flex-shrink-0">
-          <Heading size="xl">Open Your Web3 Storefront in Seconds</Heading>
+			<div className="relative flex items-center justify-between gap-[2rem] w-full max-w-content m-auto max-lg:justify-center">
+				<div className="flex flex-col gap-[2.25rem] max-w-[38.5rem] w-full flex-shrink-0 pt-[4.5rem] pb-[6rem] max-md:py-[3.5rem]">
+					<div className="flex flex-col gap-[1.5rem]">
+						<Eyebrow>Escrow-secured marketplace</Eyebrow>
 
-          <FeaturesList />
-          <StorefrontOpenControls />
-        </div>
+						<Heading
+							size="xl"
+							className="tracking-[-0.02em] text-[4rem]/[1.08] max-md:text-[2.75rem]/[1.1] whitespace-nowrap max-md:whitespace-normal"
+						>
+							Sell anything.
+							<br />
+							<span className="bg-gradient-to-r from-accent-100 via-[#FFE865] to-accent-hover bg-clip-text text-transparent">
+								Escrow does the trust.
+							</span>
+						</Heading>
 
-        <VideoAnimationPlayer
-					className='flex-shrink-0 w-[30rem] xl:w-[48rem] hidden lg:block h-[48rem]'
-					src='/videos/hero-anim2.webm'
-					srcHevc='/videos/hero-anim2.mov'
-				/>
-      </div>
-    </div>
-  );
+						<p className="text-black-60 text-[1.125rem] leading-[1.55] max-w-[30rem]">
+							Open your web3 storefront in 30 seconds and sell to anyone,
+							anywhere. Funds sit in an on-chain escrow until both sides are
+							happy. No KYC, no subscription.
+						</p>
+					</div>
+
+					<div className="flex flex-wrap gap-[0.5rem]">
+						{chips.map((chip) => (
+							<span
+								key={chip}
+								className="rounded-full border border-white/[0.09] bg-white/[0.03] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
+							>
+								{chip}
+							</span>
+						))}
+					</div>
+
+					<StorefrontOpenControls />
+				</div>
+
+				{/* artist 3D render + live escrow UI cards floating over it */}
+				<div className="relative hidden lg:block flex-shrink-0 self-end">
+					<VideoAnimationPlayer
+						className="w-[30rem] xl:w-[44rem] h-[44rem]"
+						src="/videos/hero-anim2.webm"
+						srcHevc="/videos/hero-anim2.mov"
+					/>
+					<EscrowStatusCards />
+				</div>
+			</div>
+		</div>
+	);
 }

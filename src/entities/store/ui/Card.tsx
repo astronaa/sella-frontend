@@ -27,18 +27,65 @@ export function Root({ store, className, ...props }: RootProps) {
   );
 }
 
+const monogramGradients = [
+  "linear-gradient(135deg, #FFDD00 0%, #EC9515 100%)",
+  "linear-gradient(135deg, #FFE865 0%, #C97B0E 100%)",
+  "linear-gradient(135deg, #F5C400 0%, #8A5A00 100%)",
+  "linear-gradient(135deg, #FFD84D 0%, #B36A00 100%)",
+  "linear-gradient(135deg, #E8C51F 0%, #7A4E06 100%)",
+];
+
+function monogramFor(title: string) {
+  const initials = title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  let hash = 0;
+  for (let i = 0; i < title.length; i++)
+    hash = (hash * 31 + title.charCodeAt(i)) | 0;
+
+  return {
+    initials: initials || "S",
+    background: monogramGradients[Math.abs(hash) % monogramGradients.length],
+  };
+}
+
 export function Image({
   className,
   ...props
 }: Omit<PreviewImageProps, "src" | "alt">) {
   const { previewImage: imageUrl, name: title } = useStoreStrictContext();
 
+  if (!imageUrl) {
+    const { initials, background } = monogramFor(title ?? "Sella");
+
+    return (
+      <div
+        aria-hidden
+        {...(props as HTMLArkProps<"div">)}
+        className={cn(
+          "rounded-full flex-shrink-0 shadow-sm flex items-center justify-center",
+          "size-[200px] font-bold text-black-100 select-none",
+          "text-[2.5rem] max-xl:text-[1rem]",
+          className
+        )}
+        style={{ background }}
+      >
+        {initials}
+      </div>
+    );
+  }
+
   return (
     <PreviewImage
       width={200}
       height={200}
       alt={`Image of ${title}`}
-      src={imageUrl ?? null}
+      src={imageUrl}
       {...props}
       className={cn("rounded-full flex-shrink-0 shadow-sm", className)}
     />

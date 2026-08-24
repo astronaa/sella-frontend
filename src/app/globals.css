@@ -57,3 +57,67 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.08);
 }
+/* ===== 2026 landing page motion + texture ===== */
+
+@keyframes lp-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes lp-float-alt {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes lp-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes lp-flow-dot {
+  0% { offset-distance: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes lp-reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* visible by default; hidden only once JS "arms" the element, so content
+   never disappears without JS and full-page rendering stays intact */
+.lp-reveal.lp-armed {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.lp-reveal.lp-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-reveal, .lp-reveal.lp-armed { opacity: 1; transform: none; transition: none; }
+}
+
+/* fine dot grid texture for dark panels */
+.lp-grid-texture {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* hairline top highlight on cards — element must be positioned itself
+   (relative/absolute) so the ::before anchors to it */
+.lp-card-highlight::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 5%, rgba(255, 221, 0, 0.35) 50%, transparent 95%);
+  pointer-events: none;
+}

@@ -21,17 +21,32 @@ export function Component({
 		<div
 			{...props}
 			className={cn(
-				"flex items-center justify-center gap-[1rem] p-[2.5rem] m-3 rounded-[1.25rem] mt-[7.5rem]",
-				"border border-white/[.02]",
+				"p-[3rem] m-3 rounded-[1.5rem] mt-[5rem]",
+				"border border-white/[0.05] bg-black-100",
 				className
 			)}
 		>
-			<div className="flex flex-col items-center gap-[2rem]">
-				<Link href="/">
-					<AppLogo />
-				</Link>
+			<div className="flex flex-col gap-[2.5rem] w-full max-w-content m-auto">
+				<div className="flex items-start justify-between gap-[2rem] max-md:flex-col max-md:items-center">
+					<div className="flex flex-col gap-[1rem] max-md:items-center">
+						<Link href="/">
+							<AppLogo />
+						</Link>
+						<p className="text-black-60 text-[0.9375rem] max-w-[18rem] max-md:text-center">
+							The escrow-secured marketplace. Sell anything, get paid safely.
+						</p>
+					</div>
 
-				<FooterItems />
+					<FooterItems />
+				</div>
+
+				<div className="flex items-center justify-between gap-[1rem] pt-[1.5rem] border-t border-white/[0.05] text-black-40 text-[0.8125rem] max-md:flex-col">
+					<span>© {new Date().getFullYear()} Sella</span>
+					<span className="flex items-center gap-[0.5rem]">
+						<span className="size-[0.375rem] rounded-full bg-accent-100" />
+						Escrow secured, on-chain
+					</span>
+				</div>
 			</div>
 		</div>
 	);
