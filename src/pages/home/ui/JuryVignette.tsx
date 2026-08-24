@@ -38,31 +38,47 @@ const scenarios: Scenario[] = [
 		sellerClaim: "project moved the snapshot",
 		votes: ["buyer", "seller", "buyer", "buyer", "seller"],
 		tally: "3 : 2",
-		verdict: "refund sent to the buyer",
+		verdict: "escrow refunded to the buyer",
 		winner: "buyer",
+	},
+	{
+		caseTitle: "Case #131 · logo + brand kit · 199 USDC",
+		buyerClaim: "it's a stock template",
+		sellerClaim: "all original work",
+		votes: ["buyer", "buyer", "buyer", "buyer", "buyer"],
+		tally: "5 : 0",
+		verdict: "escrow refunded to the buyer",
+		winner: "buyer",
+	},
+	{
+		caseTitle: "Case #138 · dev sprint · 800 USDC",
+		buyerClaim: "features are missing",
+		sellerClaim: "those were never in scope",
+		votes: ["seller", "seller", "buyer", "seller", "buyer"],
+		tally: "3 : 2",
+		verdict: "escrow released to the seller",
+		winner: "seller",
 	},
 ];
 
-/* one tick ≈ 0.9s; steps: 0-2 case presented, 3-7 votes land,
-   8-11 verdict shown, then the next scenario starts */
+/* one tick ≈ 0.9s; steps: 0-2 case presented, 3-7 votes land one by
+   one, 8-11 verdict revealed, then the next case starts. Scenario and
+   step both derive from a single tick counter so the state updater
+   stays pure (StrictMode double-invocation kept the old version stuck
+   on scenario one). */
 const TOTAL_STEPS = 12;
 const VOTE_START = 3;
 
 export function JuryVignette() {
-	const [scenarioIndex, setScenarioIndex] = useState(0);
-	const [step, setStep] = useState(0);
+	const [tick, setTick] = useState(0);
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setStep((current) => {
-				if (current + 1 < TOTAL_STEPS) return current + 1;
-				setScenarioIndex((i) => (i + 1) % scenarios.length);
-				return 0;
-			});
-		}, 900);
-
+		const interval = setInterval(() => setTick((t) => t + 1), 900);
 		return () => clearInterval(interval);
 	}, []);
+
+	const scenarioIndex = Math.floor(tick / TOTAL_STEPS) % scenarios.length;
+	const step = tick % TOTAL_STEPS;
 
 	const scenario = scenarios[scenarioIndex];
 	const votesShown = Math.max(0, step - VOTE_START + 1);
@@ -114,8 +130,8 @@ export function JuryVignette() {
 			{/* verdict, executed by the contract */}
 			<div
 				className={cn(
-					"flex items-center gap-[0.625rem] transition-opacity duration-500",
-					verdictShown ? "opacity-100" : "opacity-25"
+					"flex items-center gap-[0.625rem] transition-all duration-500",
+					verdictShown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[0.375rem]"
 				)}
 			>
 				<span

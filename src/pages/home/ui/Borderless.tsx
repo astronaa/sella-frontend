@@ -67,8 +67,12 @@ export function Borderless() {
 	const doubled = [...trades, ...trades];
 
 	return (
-		<div className="py-[7rem] max-md:py-[4rem] overflow-hidden">
-			<div className="flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
+		<div className="relative py-[7rem] max-md:py-[4rem] overflow-hidden">
+			{/* spinning globe behind the section, faded so text stays first */}
+			<div className="absolute left-1/2 top-[1rem] -translate-x-1/2 size-[46rem] max-md:size-[26rem] lp-globe opacity-70 pointer-events-none" aria-hidden />
+			<div className="absolute left-1/2 top-[1rem] -translate-x-1/2 size-[46rem] max-md:size-[26rem] rounded-full border border-accent-100/[0.08] pointer-events-none" aria-hidden />
+
+			<div className="relative flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
 				<Reveal className="flex flex-col items-center text-center gap-[1.5rem] px-4 w-full max-w-content mx-auto">
 					<Eyebrow>Borderless by default</Eyebrow>
 

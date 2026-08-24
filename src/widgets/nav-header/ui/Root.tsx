@@ -49,7 +49,10 @@ function Header({ className, staticMode = false, ...props }: RootProps) {
 			<div
 				{...props}
 				className={cn(
-					'flex flex-col rounded-[1.25rem] h-[4.38rem] relative transition-all gap-[0.5rem]',
+					// height is NOT fixed: the categories strip lives inside
+					// the header, so the header grows to contain it instead of
+					// letting it overflow onto page content
+					'flex flex-col rounded-[1.25rem] relative transition-all gap-[0.5rem]',
 					'backdrop-blur-[3rem] bg-black-08/[.80]',
 					'border border-secondary', mobileMenuOpen && "border-transparent bg-transparent backdrop-blur-none",
 					popupOpen && "border-b-transparent rounded-b-none",
@@ -58,7 +61,7 @@ function Header({ className, staticMode = false, ...props }: RootProps) {
 					!popupOpen && !mobileMenuOpen && staticMode && 'border-transparent backdrop-blur-none bg-transparent w-full',
 				)}
 			>
-				<div className='flex items-center gap-[1rem] p-[1rem] w-full h-full'>
+				<div className='flex items-center gap-[1rem] p-[1rem] w-full h-[4.38rem]'>
 					<HeaderDesktopView />
 					<HeaderTabletView />
 					<HeaderMobileView />

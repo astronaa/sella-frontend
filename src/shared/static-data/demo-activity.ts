@@ -31,7 +31,7 @@ const orderSeeds: DemoOrderSeed[] = [
 	{ productId: "custom-audit", createdAt: "2026-08-22T16:30:00Z", status: "Released", fulfillmentStatus: "Fulfilled" },
 	{ productId: "dune-dash", createdAt: "2026-08-18T14:05:00Z", status: "Released", fulfillmentStatus: "Fulfilled" },
 	{ productId: "meme-pack", createdAt: "2026-08-15T19:48:00Z", status: "Released", fulfillmentStatus: "Fulfilled" },
-	{ productId: "wl-bundle", createdAt: "2026-08-12T08:22:00Z", status: "Resolved", fulfillmentStatus: "Fulfilled" },
+	{ productId: "wl-bundle", createdAt: "2026-08-12T08:22:00Z", status: "Refunded", fulfillmentStatus: "Failed" },
 	{ productId: "landing-fig", createdAt: "2026-08-10T12:10:00Z", status: "Released", fulfillmentStatus: "Fulfilled" },
 ];
 
@@ -136,8 +136,8 @@ const chatSeeds: DemoChatSeed[] = [
 			{ kind: "seller", body: "Team says the third snapshot runs tomorrow, should appear after that.", time: "15:20" },
 			{ kind: "buyer", body: "It's been two days and still nothing. Opening a dispute so the timer doesn't run out on me.", time: "11:02" },
 			{ kind: "system", body: "Dispute opened · funds stay locked while the jury reviews" },
-			{ kind: "system", body: "Dispute resolved 4-1 · partial refund of 30 USDC executed by the contract" },
-			{ kind: "seller", body: "Fair outcome, the third spot fell through on the project's side. Apologies fren, the other two are solid.", time: "10:15" },
+			{ kind: "system", body: "Dispute resolved 4-1 · escrow refunded to the buyer" },
+			{ kind: "seller", body: "Fair call, the third spot fell through on the project's side. Relisting the two that work, no hard feelings fren.", time: "10:15" },
 		],
 	},
 ];
