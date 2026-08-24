@@ -46,6 +46,26 @@ const tiles = [
 			</svg>
 		),
 	},
+	{
+		title: "Escrow on your terms",
+		description:
+			"Sellers set the escrow window per listing. Both sides see the timeline before a single cent is locked.",
+		icon: (
+			<svg viewBox="0 0 20 20" className="size-[1.25rem] fill-current">
+				<path d="M10 2a8 8 0 110 16 8 8 0 010-16zm.75 3.5h-1.5v5l4.1 2.4.75-1.3-3.35-1.9V5.5z" />
+			</svg>
+		),
+	},
+	{
+		title: "AI minds your chats",
+		description:
+			"Your storefront assistant learns your FAQ and answers buyers around the clock. You step in only when it matters.",
+		icon: (
+			<svg viewBox="0 0 20 20" className="size-[1.25rem] fill-current">
+				<path d="M10 1.5l1.8 4.2 4.2 1.8-4.2 1.8L10 13.5 8.2 9.3 4 7.5l4.2-1.8L10 1.5zm5.5 9l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9.9-2.1zM4 12.5l.75 1.75L6.5 15l-1.75.75L4 17.5l-.75-1.75L1.5 15l1.75-.75L4 12.5z" />
+			</svg>
+		),
+	},
 ];
 
 export function SellaFeautes() {
@@ -68,7 +88,7 @@ export function SellaFeautes() {
 				<div className="flex flex-col gap-[1.25rem]">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-[1.25rem]">
 						{/* two illustrated flagship tiles */}
-						<Reveal className="relative flex flex-col rounded-[1.5rem] border border-white/[0.07] bg-white/[0.03] overflow-hidden lp-card-highlight">
+						<Reveal className="relative flex flex-col rounded-[1.5rem] bg-white/[0.03] overflow-hidden">
 							<div
 								className="flex justify-center items-center h-[15rem]"
 								style={{
@@ -87,7 +107,7 @@ export function SellaFeautes() {
 							</div>
 						</Reveal>
 
-						<Reveal delay={90} className="relative flex flex-col rounded-[1.5rem] border border-white/[0.07] bg-white/[0.03] overflow-hidden lp-card-highlight">
+						<Reveal delay={90} className="relative flex flex-col rounded-[1.5rem] bg-white/[0.03] overflow-hidden">
 							<div
 								className="flex justify-center items-center h-[15rem]"
 								style={{
@@ -107,14 +127,14 @@ export function SellaFeautes() {
 						</Reveal>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-[1.25rem]">
+					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[1.25rem]">
 						{tiles.map((tile, index) => (
 							<Reveal
 								key={tile.title}
 								delay={index * 70}
-								className="flex flex-col gap-[0.875rem] rounded-[1.25rem] border border-white/[0.07] bg-white/[0.02] p-[1.5rem]"
+								className="flex flex-col gap-[0.875rem] rounded-[1.25rem] bg-white/[0.03] p-[1.5rem]"
 							>
-								<span className="flex items-center justify-center size-[2.5rem] rounded-[0.625rem] bg-accent-100/[0.1] border border-accent-100/25 text-accent-100">
+								<span className="flex items-center justify-center size-[2.5rem] rounded-[0.625rem] bg-accent-100/[0.12] text-accent-100">
 									{tile.icon}
 								</span>
 								<h3 className="text-white font-semibold">{tile.title}</h3>

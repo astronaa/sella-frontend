@@ -11,15 +11,16 @@ export async function ExploreMarketPlace() {
 		<div id="explore" className="py-[7rem] max-md:py-[4rem] px-4">
 			<div className="mx-auto flex flex-col gap-[3.5rem] relative w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.25rem]">
-					<Eyebrow>Live storefronts</Eyebrow>
+					<Eyebrow>Some ideas to get you going</Eyebrow>
 
 					<Heading size="lg" className="tracking-[-0.02em]">
-						Explore the marketplace.
+						Explore the demo shops.
 					</Heading>
 
 					<p className="text-black-60 text-[1.0625rem] leading-[1.6] max-w-[34rem] text-balance">
-						One-of-a-kind shops you won&apos;t find anywhere else. From digital
-						items to physical goods and unique services.
+						Six imaginary storefronts showing what a Sella shop can be.
+						The sky is the limit: services, files, goods, access, whatever
+						you can deliver.
 					</p>
 				</Reveal>
 

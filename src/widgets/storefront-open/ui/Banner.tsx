@@ -6,8 +6,10 @@ export function Banner({ className, ...props }: HTMLAttributes<HTMLDivElement>) 
 	return (
 		<div
 			className={cn(
+				// filled surface, no stroke: 1px outlines + gradient hairlines
+				// read as template filler on dark UI
 				"relative overflow-hidden flex flex-col w-full gap-[1rem] py-[4.5rem] rounded-[1.5rem] text-center",
-				"border border-white/[0.07] bg-white/[0.02] lp-card-highlight",
+				"bg-white/[0.03]",
 				"max-md:px-6 max-md:w-auto max-md:py-[3rem]",
 				className
 			)}

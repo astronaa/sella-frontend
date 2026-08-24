@@ -52,7 +52,7 @@ export function Hero() {
 						{chips.map((chip) => (
 							<span
 								key={chip}
-								className="rounded-full border border-white/[0.09] bg-white/[0.03] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
+								className="rounded-full bg-white/[0.05] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
 							>
 								{chip}
 							</span>

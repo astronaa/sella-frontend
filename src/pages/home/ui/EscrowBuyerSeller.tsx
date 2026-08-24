@@ -3,34 +3,89 @@ import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
 import { Eyebrow, Reveal } from "./shared";
 
-interface FlowStep {
-	step: string;
+interface SideStep {
 	title: string;
 	description: string;
 }
 
-const flowSteps: FlowStep[] = [
+const buyerSteps: SideStep[] = [
 	{
-		step: "01",
-		title: "Buyer pays",
-		description: "Payment goes straight into the escrow smart contract, not to the seller.",
+		title: "Pay into the contract",
+		description:
+			"Your money goes into escrow, not to the seller. It sits locked on-chain where nobody can touch it.",
 	},
 	{
-		step: "02",
-		title: "Funds locked",
-		description: "Held by the contract on-chain. Neither side can touch the money mid-order.",
+		title: "Get your order",
+		description:
+			"The seller delivers knowing the money is already there. The order chat keeps the full record.",
 	},
 	{
-		step: "03",
-		title: "Seller delivers",
-		description: "Goods, files or services change hands. Chat keeps the full record.",
-	},
-	{
-		step: "04",
-		title: "Escrow releases",
-		description: "Buyer confirms, the contract pays the seller. Instantly, on-chain.",
+		title: "Confirm, or dispute",
+		description:
+			"Happy? Confirm and the contract pays the seller. Not happy? Open a dispute and a jury decides.",
 	},
 ];
+
+const sellerSteps: SideStep[] = [
+	{
+		title: "Open your storefront",
+		description:
+			"Thirty seconds, no KYC. List services, files, or physical goods and share the link anywhere.",
+	},
+	{
+		title: "Work with the money locked",
+		description:
+			"You only start once the buyer's payment is secured in escrow, on the release window you set for the listing. No invoices, no ghosting.",
+	},
+	{
+		title: "Get paid instantly",
+		description:
+			"The buyer confirms and the contract pays your wallet on the spot. Final, on-chain, no chargebacks.",
+	},
+];
+
+function SideColumn({
+	label,
+	steps,
+	guarantee,
+}: {
+	label: string;
+	steps: SideStep[];
+	guarantee: string;
+}) {
+	return (
+		<div className="flex flex-col gap-[1.75rem] flex-1 p-[2rem] max-md:p-[1.5rem]">
+			<span className="text-accent-100 text-[0.8125rem] font-semibold uppercase tracking-[0.16em]">
+				{label}
+			</span>
+
+			<div className="flex flex-col gap-[1.5rem]">
+				{steps.map((step, index) => (
+					<div key={step.title} className="flex gap-[1rem]">
+						<span className="flex items-center justify-center size-[2rem] flex-shrink-0 rounded-full bg-accent-100/[0.12] text-accent-100 font-semibold text-[0.875rem]">
+							{index + 1}
+						</span>
+						<div className="flex flex-col gap-[0.25rem]">
+							<span className="text-white font-semibold text-[1rem]">
+								{step.title}
+							</span>
+							<span className="text-black-60 text-[0.9375rem] leading-[1.55]">
+								{step.description}
+							</span>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<div className="mt-auto flex gap-[0.625rem] items-start rounded-[0.875rem] bg-accent-100/[0.06] px-[1rem] py-[0.875rem]">
+				<svg viewBox="0 0 16 16" className="size-[1rem] flex-shrink-0 mt-[0.125rem] fill-accent-100">
+					<path d="M8 1l5.5 2.2v3.6c0 3.5-2.3 6.6-5.5 7.7-3.2-1.1-5.5-4.2-5.5-7.7V3.2L8 1zm-.9 9.1L4.9 7.9 6 6.8l1.1 1.1 2.9-2.9 1.1 1.1-4 4z" />
+				</svg>
+				<span className="text-black-74 text-[0.875rem] leading-[1.5]">{guarantee}</span>
+			</div>
+		</div>
+	);
+}
 
 export function EscrowBuyerSeller() {
 	return (
@@ -54,25 +109,25 @@ export function EscrowBuyerSeller() {
 						<Eyebrow>How escrow works</Eyebrow>
 
 						<Heading size="lg" className="tracking-[-0.02em]">
-							Trust, written into
+							One contract.
 							<br />
 							<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
-								the contract.
+								Both sides covered.
 							</span>
 						</Heading>
 
 						<p className="text-black-60 text-[1.0625rem] leading-[1.6]">
-							Every sale on Sella runs through an escrow smart contract. The
-							money only moves when both sides are satisfied, so strangers can
-							trade like they have known each other for years. We never hold
-							your funds, and we never take sides.
+							Every sale on Sella runs through an escrow smart contract that
+							sits between buyer and seller. The same lock protects both
+							sides: your money can&apos;t be stolen, and your work can&apos;t
+							go unpaid.
 						</p>
 
 						<div className="flex flex-wrap gap-[0.5rem]">
 							{["Non-custodial", "Every trade covered", "Neutral dispute resolution"].map((chip) => (
 								<span
 									key={chip}
-									className="rounded-full border border-accent-100/20 bg-accent-100/[0.06] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-accent-100"
+									className="rounded-full bg-accent-100/[0.08] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-accent-100"
 								>
 									{chip}
 								</span>
@@ -87,44 +142,35 @@ export function EscrowBuyerSeller() {
 					/>
 				</div>
 
-				{/* flow diagram */}
-				<div className="relative">
-					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-[1.25rem]">
-						{flowSteps.map((step, index) => (
-							<Reveal
-								key={step.step}
-								delay={index * 90}
-								className="relative flex flex-col gap-[1rem] rounded-[1.25rem] border border-white/[0.07] bg-white/[0.03] p-[1.5rem] lp-card-highlight"
-							>
-								<div className="flex items-center gap-[0.75rem]">
-									<span className="flex items-center justify-center size-[2.75rem] flex-shrink-0 rounded-full border border-accent-100/40 bg-black-100 text-accent-100 font-semibold text-[0.9375rem] shadow-[0_0_20px_-4px_rgba(255,221,0,0.35)]">
-										{step.step}
-									</span>
-									<span className="text-white font-semibold text-[1.0625rem] whitespace-nowrap">
-										{step.title}
-									</span>
-								</div>
-								<p className="text-black-60 leading-[1.55] text-[0.9375rem]">
-									{step.description}
-								</p>
+				{/* split panel: buying on the left, selling on the right,
+				    the escrow medallion sitting on the divider between them */}
+				<Reveal className="relative">
+					<div className="relative flex max-md:flex-col rounded-[1.5rem] bg-white/[0.03]">
+						<SideColumn
+							label="You're buying"
+							steps={buyerSteps}
+							guarantee="The seller never touches your money until you confirm. Getting scammed out of a payment is structurally impossible."
+						/>
 
-								{/* chevron in the gap to the next step */}
-								{index < flowSteps.length - 1 && (
-									<span className="hidden xl:flex absolute top-[2.375rem] -translate-y-1/2 right-[-1.125rem] z-10 items-center justify-center size-[1rem] text-accent-100/70">
-										<svg viewBox="0 0 16 16" className="size-[0.875rem] fill-current">
-											<path d="M5.5 2.5L11 8l-5.5 5.5L4.4 12.4 8.8 8 4.4 3.6z" />
-										</svg>
-									</span>
-								)}
-							</Reveal>
-						))}
+						{/* divider with the escrow lock on it */}
+						<div className="relative flex items-center justify-center md:w-px md:self-stretch max-md:h-px max-md:w-full max-md:my-[0.5rem]">
+							<span className="absolute inset-0 md:w-px md:mx-auto max-md:h-px max-md:my-auto bg-gradient-to-b max-md:bg-gradient-to-r from-transparent via-white/[0.14] to-transparent" />
+							<span className="relative z-10 flex items-center justify-center size-[3.25rem] rounded-full bg-accent-100 text-black-100 shadow-[0_0_30px_-6px_rgba(255,221,0,0.55)]">
+								<svg viewBox="0 0 16 16" className="size-[1.25rem] fill-current">
+									<path d="M8 1a3.5 3.5 0 013.5 3.5V6H12a2 2 0 012 2v5a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h.5V4.5A3.5 3.5 0 018 1zm0 1.5A2 2 0 006 4.5V6h4V4.5a2 2 0 00-2-2z" />
+								</svg>
+							</span>
+						</div>
+
+						<SideColumn
+							label="You're selling"
+							steps={sellerSteps}
+							guarantee="Once escrow releases, the money is yours. No chargebacks, no frozen balances, no platform holding your payout."
+						/>
 					</div>
 
-					{/* dispute branch */}
-					<Reveal
-						delay={380}
-						className="mt-[1.25rem] flex items-center gap-[1rem] rounded-[1.25rem] border border-white/[0.07] bg-white/[0.02] px-[1.5rem] py-[1.125rem] max-md:flex-col max-md:items-start"
-					>
+					{/* shared dispute branch */}
+					<div className="mt-[1.25rem] flex items-center gap-[1rem] rounded-[1.25rem] bg-white/[0.03] px-[1.5rem] py-[1.125rem] max-md:flex-col max-md:items-start">
 						<span className="flex items-center gap-[0.5rem] text-white font-semibold whitespace-nowrap">
 							<svg viewBox="0 0 16 16" className="size-[1.125rem] text-accent-100 fill-current">
 								<path d="M8 1.5l6.5 11.3H1.5L8 1.5zm-.75 4.5v3.5h1.5V6h-1.5zm0 4.75v1.5h1.5v-1.5h-1.5z" />
@@ -137,8 +183,8 @@ export function EscrowBuyerSeller() {
 							Three of five decides it, and the contract executes the outcome
 							automatically.
 						</p>
-					</Reveal>
-				</div>
+					</div>
+				</Reveal>
 
 				<div className="max-w-[34rem]">
 					<StorefrontOpenControls />

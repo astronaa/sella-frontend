@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "~/shared/lib/cn";
 
 const X_URL = "https://x.com/joinsella";
@@ -18,6 +19,10 @@ export function LaunchSoonDialog({
 	onClose: () => void;
 	storeUrl?: string;
 }) {
+	// portal target only exists client-side
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => setMounted(true), []);
+
 	useEffect(() => {
 		if (!open) return;
 
@@ -29,9 +34,12 @@ export function LaunchSoonDialog({
 		return () => document.removeEventListener("keydown", onKey);
 	}, [open, onClose]);
 
-	if (!open) return null;
+	if (!open || !mounted) return null;
 
-	return (
+	// portal to <body>: ancestors with backdrop-filter (the nav header)
+	// become containing blocks for position:fixed, which pinned this
+	// dialog to the header instead of the viewport center
+	return createPortal(
 		<div
 			className="fixed inset-0 z-dialog flex items-center justify-center p-[1rem]"
 			role="dialog"
@@ -45,9 +53,9 @@ export function LaunchSoonDialog({
 
 			<div
 				className={cn(
-					"relative w-full max-w-[26rem] rounded-[1.5rem] border border-white/[0.09]",
-					"bg-[#141414] p-[2rem] flex flex-col items-center gap-[1.25rem] text-center",
-					"shadow-[0_40px_100px_rgba(0,0,0,0.7)] lp-card-highlight"
+					"relative w-full max-w-[26rem] rounded-[1.5rem]",
+					"bg-[#161616] p-[2rem] flex flex-col items-center gap-[1.25rem] text-center",
+					"shadow-[0_40px_100px_rgba(0,0,0,0.7)]"
 				)}
 			>
 				<button
@@ -97,6 +105,7 @@ export function LaunchSoonDialog({
 					Back to browsing
 				</button>
 			</div>
-		</div>
+		</div>,
+		document.body
 	);
 }

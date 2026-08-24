@@ -29,6 +29,16 @@ const faqs = [
 			"Payments run in USDT, USDC, and ETH, on Ethereum with Layer 2 support for lower gas fees. Crypto-native payments mean cross-border sales work without currency conversion or intermediaries.",
 	},
 	{
+		question: "Who sets the escrow timeline?",
+		answer:
+			"The seller does, per listing. Every offer states its escrow window up front, so both sides know the timeline before any money is locked. The buyer can always release earlier by confirming delivery, and an open dispute freezes the clock until the jury decides.",
+	},
+	{
+		question: "Do sellers have to babysit the chat?",
+		answer:
+			"No. Each storefront gets an AI assistant trained on your FAQ and listings. It answers routine buyer questions in the order chat around the clock and hands the conversation to you when a question actually needs the seller.",
+	},
+	{
 		question: "Do I need to pass KYC?",
 		answer:
 			"No. Connect your wallet, reserve your storefront handle, and you can be selling within about 30 seconds. No identity verification, no waiting for approval.",
@@ -75,7 +85,7 @@ export function Faq() {
 				<div className="flex flex-col gap-[0.75rem] w-full">
 					{faqs.map((faq, index) => (
 						<Reveal key={faq.question} delay={index * 50}>
-							<details className="group rounded-[1.25rem] border border-white/[0.07] bg-white/[0.02] open:bg-white/[0.04] transition-colors">
+							<details className="group rounded-[1.25rem] bg-white/[0.03] open:bg-white/[0.05] transition-colors">
 								<summary className="flex items-center justify-between gap-[1rem] cursor-pointer select-none list-none px-[1.5rem] py-[1.25rem] text-white font-semibold [&::-webkit-details-marker]:hidden">
 									{faq.question}
 									<span className="flex items-center justify-center size-[1.75rem] rounded-full border border-white/[0.1] text-black-60 transition-transform duration-300 group-open:rotate-45 flex-shrink-0">

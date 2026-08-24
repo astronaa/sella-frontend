@@ -16,7 +16,7 @@ import { LaunchSoonDialog } from "~/widgets/storefront-open/ui/LaunchSoonDialog"
  * Container/bubble classes mirror features/chat-frame exactly.
  */
 
-interface DemoMessage {
+export interface DemoMessage {
 	kind: "system" | "buyer" | "seller";
 	body: string;
 	time?: string;
@@ -33,8 +33,15 @@ const script = (product: Product): DemoMessage[] => [
 	{ kind: "system", body: "Buyer confirmed · funds released to the seller" },
 ];
 
-function DemoChatFrame({ product }: { product: Product }) {
+export function DemoChatFrame({
+	product,
+	messages,
+}: {
+	product: Product;
+	messages?: DemoMessage[];
+}) {
 	const sellerName = product.store?.name ?? product.storeUrl ?? "Seller";
+	const thread = messages ?? script(product);
 
 	return (
 		<div
@@ -64,12 +71,12 @@ function DemoChatFrame({ product }: { product: Product }) {
 			{/* messages */}
 			<div className="flex flex-col justify-between relative rounded-[1.25rem] gap-[1rem] flex-grow min-h-0">
 				<div className="flex flex-col gap-[1rem] overflow-y-auto px-[4px] pb-[6rem]">
-					{script(product).map((message, index) => {
+					{thread.map((message, index) => {
 						if (message.kind === "system") {
 							return (
 								<span
 									key={index}
-									className="mx-auto my-[0.75rem] rounded-full border border-accent-100/25 bg-accent-100/[0.06] px-[1rem] py-[0.4375rem] text-[0.8125rem] text-accent-100 text-center"
+									className="mx-auto my-[0.75rem] rounded-full bg-accent-100/[0.08] px-[1rem] py-[0.4375rem] text-[0.8125rem] text-accent-100 text-center"
 								>
 									{message.body}
 								</span>
@@ -130,7 +137,7 @@ export function CheckoutDemo({ product }: { product: Product }) {
 	return (
 		<div className="flex flex-col gap-[1.5rem] w-full">
 			<div className="flex items-center justify-between gap-[1rem] max-w-content w-full mx-auto px-[1rem]">
-				<span className="flex items-center gap-[0.5rem] rounded-full border border-accent-100/30 bg-accent-100/[0.07] px-[0.875rem] py-[0.375rem] text-[0.8125rem] text-accent-100 w-fit">
+				<span className="flex items-center gap-[0.5rem] rounded-full bg-accent-100/[0.09] px-[0.875rem] py-[0.375rem] text-[0.8125rem] text-accent-100 w-fit">
 					<span className="size-[0.375rem] rounded-full bg-accent-100 animate-pulse" />
 					Order preview · this is how buying works
 				</span>

@@ -34,7 +34,7 @@ function Chip({ item }: { item: readonly [string, string, string] }) {
 	const [emoji, label, price] = item;
 
 	return (
-		<span className="flex items-center gap-[0.625rem] rounded-full border border-white/[0.08] bg-white/[0.025] px-[1.125rem] py-[0.625rem] whitespace-nowrap">
+		<span className="flex items-center gap-[0.625rem] rounded-full bg-white/[0.045] px-[1.125rem] py-[0.625rem] whitespace-nowrap">
 			<span className="text-[1rem] leading-none">{emoji}</span>
 			<span className="text-black-74 text-[0.9375rem]">{label}</span>
 			<span className="text-accent-100/90 text-[0.875rem] font-semibold">{price}</span>
