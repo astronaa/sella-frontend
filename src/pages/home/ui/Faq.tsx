@@ -29,6 +29,11 @@ const faqs = [
 			"Payments run in USDT, USDC, and ETH, on Ethereum with Layer 2 support for lower gas fees. Crypto-native payments mean cross-border sales work without currency conversion or intermediaries.",
 	},
 	{
+		question: "What evidence does the jury actually see?",
+		answer:
+			"The listing, the full order chat with every file and timestamp, and a short statement from each side, with AI summarizing and cross-checking the evidence. That's why delivery happens through the order chat: credentials, files, and tracking numbers handed over there are exactly what the jury can verify later. Delivered outside the chat, it never happened.",
+	},
+	{
 		question: "Who sets the escrow timeline?",
 		answer:
 			"The seller does, per listing. Every offer states its escrow window up front, so both sides know the timeline before any money is locked. The buyer can always release earlier by confirming delivery, and an open dispute freezes the clock until the jury decides.",

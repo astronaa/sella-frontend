@@ -17,7 +17,7 @@ const buyerSteps: SideStep[] = [
 	{
 		title: "Receive your order",
 		description:
-			"The seller ships the goods or delivers files and services in the order chat. Every message and file is timestamped there, so there's always evidence of what was delivered.",
+			"The seller ships the goods or delivers files and services in the order chat. Every message and file is timestamped there, so there's always evidence of what was delivered, and when.",
 	},
 	{
 		title: "Release the money, or dispute",
