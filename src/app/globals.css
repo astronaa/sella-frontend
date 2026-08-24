@@ -262,16 +262,19 @@ body {
 }
 
 /* soft gold pool of light behind a section's key content; size and
-   place per use, it fades to nothing well before its own edge */
+   place per use. Uses the dithered texture, not a CSS gradient, so it
+   never bands into rings. */
 .lp-aura {
   position: absolute;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(255, 221, 0, 0.065), transparent 72%);
+  background-image: url("/glow-gold.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 .lp-aura-breathe { animation: lp-aura-breathe 9s ease-in-out infinite; }
 @keyframes lp-aura-breathe {
-  0%, 100% { opacity: 0.75; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
 }
 
 /* hero entrance: children cascade up on first paint */
@@ -411,4 +414,16 @@ body {
   .lp-grain { animation: none; }
   .lp-enter-line { animation: none; }
   .lp-spot::after { display: none; }
+}
+
+/* dithered glow texture (public/glow-gold.png, generated with baked
+   per-pixel noise): CSS radial-gradients quantize into visible 8-bit
+   rings on this dark a background — every soft gold pool of light on
+   the LP uses this image instead. Position and size the div; tune
+   strength with opacity (dither amplitude survives down to ~0.4). */
+.lp-glow {
+  background-image: url("/glow-gold.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }

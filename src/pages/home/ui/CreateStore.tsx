@@ -9,13 +9,7 @@ export function CreateStore() {
 		<div className="px-4 pb-[2rem] md:px-[1.25rem]">
 			<div className="relative overflow-hidden rounded-[3rem] bg-black-100 px-[1rem] py-[7rem] max-md:py-[4.5rem]">
 				<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(60%_80%_at_50%_100%,black,transparent)]" />
-				<div
-					className="absolute inset-0"
-					style={{
-						background:
-							"radial-gradient(55% 70% at 50% 115%, rgba(255,221,0,0.16) 0%, rgba(236,149,21,0.05) 55%, transparent 100%)",
-					}}
-				/>
+				<div className="lp-glow absolute left-1/2 top-[115%] -translate-x-1/2 -translate-y-1/2 w-[115%] h-[145%]" />
 
 				<Reveal className="relative flex flex-col items-center gap-[2.25rem] text-center max-w-[46rem] m-auto">
 					<Heading size="lg" className="tracking-[-0.02em] text-balance">

@@ -94,13 +94,7 @@ export function EscrowBuyerSeller() {
 			className="relative overflow-hidden rounded-[3rem] px-4 py-[6.5rem] max-md:py-[4rem] md:m-[1.25rem] bg-black-100"
 		>
 			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(80%_60%_at_50%_0%,black,transparent)]" />
-			<div
-				className="absolute inset-0"
-				style={{
-					background:
-						"radial-gradient(50% 40% at 85% 8%, rgba(255,221,0,0.09) 0%, transparent 100%)",
-				}}
-			/>
+			<div className="lp-glow absolute left-[85%] top-[8%] -translate-x-1/2 -translate-y-1/2 w-[100%] h-[80%] opacity-70" />
 
 			<div className="relative w-full max-w-content m-auto flex flex-col gap-[4.5rem]">
 				{/* header row: copy left, artist render right */}

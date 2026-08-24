@@ -107,8 +107,9 @@ export function Borderless() {
 
 					<div className="relative size-[36rem] max-xl:size-[30rem] max-lg:size-[24rem] mx-auto max-lg:order-1" aria-hidden>
 						{/* soft halo seats the sphere on the page so the canvas
-						    edge never reads as a square cut through the glow */}
-						<div className="absolute inset-[-14%] rounded-full pointer-events-none bg-[radial-gradient(circle,rgba(255,221,0,0.07)_0%,rgba(255,221,0,0.035)_38%,transparent_68%)]" />
+						    edge never reads as a square cut through the glow;
+						    dithered texture, so it can't band into rings */}
+						<div className="lp-glow absolute inset-[-14%] opacity-60" />
 						<DottedGlobe />
 					</div>
 

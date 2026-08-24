@@ -86,15 +86,11 @@ function Node({
 export function HowItWorks() {
 	return (
 		<div className="relative py-[7rem] max-md:py-[4rem] px-4 overflow-hidden">
-			{/* ambient: glow + faint grid straight on the page background */}
+			{/* ambient: glow + faint grid straight on the page background.
+			    The glow is the dithered texture, not a CSS gradient — the
+			    gradient quantized into visible rings on this dark a bg */}
 			<div className="absolute inset-x-0 top-[36%] bottom-0 lp-grid-texture [mask-image:radial-gradient(55%_65%_at_50%_45%,black,transparent)] pointer-events-none" />
-			<div
-				className="absolute inset-0 pointer-events-none"
-				style={{
-					background:
-						"radial-gradient(42% 38% at 50% 62%, rgba(255,221,0,0.08) 0%, transparent 100%)",
-				}}
-			/>
+			<div className="lp-glow absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-[92%] h-[86%] opacity-70" />
 
 			<div className="relative flex flex-col gap-[5.5rem] max-md:gap-[3.5rem] w-full max-w-content m-auto">
 				<Reveal className="flex flex-col gap-[1.5rem] items-center text-center">

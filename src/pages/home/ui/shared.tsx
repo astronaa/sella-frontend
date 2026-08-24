@@ -28,13 +28,7 @@ export function Aura({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div aria-hidden {...props} className={cn("absolute pointer-events-none", className)}>
 			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(closest-side,black,transparent_72%)]" />
-			<div
-				className="absolute inset-0"
-				style={{
-					background:
-						"radial-gradient(closest-side, rgba(255, 221, 0, 0.045), transparent 68%)",
-				}}
-			/>
+			<div className="lp-glow absolute inset-0 opacity-40" />
 		</div>
 	);
 }

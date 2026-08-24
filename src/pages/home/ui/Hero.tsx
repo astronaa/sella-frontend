@@ -16,15 +16,11 @@ export function Hero() {
 		// fills the rest of the viewport below the header (~6rem of flow
 		// above), so the next section only appears on scroll
 		<div className="relative overflow-hidden bg-black-100 rounded-b-[3rem] px-[1rem] flex flex-col min-h-[calc(100svh-6rem)]">
-			{/* restrained backdrop: dot grid + single gold radial */}
+			{/* restrained backdrop: dot grid + two pools of the dithered
+			    glow texture (CSS radials band into rings on this bg) */}
 			<div className="absolute inset-0 lp-grid-texture [mask-image:radial-gradient(70%_70%_at_50%_30%,black,transparent)]" />
-			<div
-				className="absolute inset-0"
-				style={{
-					background:
-						"radial-gradient(48% 42% at 78% 18%, rgba(255,221,0,0.10) 0%, transparent 100%), radial-gradient(60% 50% at 12% 92%, rgba(236,149,21,0.06) 0%, transparent 100%)",
-				}}
-			/>
+			<div className="lp-glow absolute left-[78%] top-[18%] -translate-x-1/2 -translate-y-1/2 w-[96%] h-[84%] opacity-75" />
+			<div className="lp-glow absolute left-[12%] top-[92%] -translate-x-1/2 -translate-y-1/2 w-[120%] h-[100%] opacity-45" />
 
 			<div className="relative flex flex-1 items-center justify-between gap-[2rem] w-full max-w-content m-auto max-lg:justify-center">
 				<div className="flex flex-col gap-[2.25rem] max-w-[38.5rem] w-full flex-shrink-0 py-[3rem] max-md:py-[3rem]">
