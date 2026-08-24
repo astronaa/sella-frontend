@@ -4,6 +4,7 @@ import { apiClient } from "~/shared/api/client";
 import { Review } from "~/shared/api/client"
 import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
+import { staticReviewsForProduct } from "~/shared/static-data/reviews";
 
 const QUERY_KEY = 'reviews'
 
@@ -21,14 +22,19 @@ const getForProductQueryOptions = ({
 	infiniteQueryOptions({
 		queryKey: [QUERY_KEY, { productId, limit, ...params }],
 		queryFn: async ({ pageParam }) => {
-			const { data, error } = await apiClient.reviews
-				.forProduct(productId)
-				.getAll(params, { page: pageParam, limit });
+			try {
+				const { data, error } = await apiClient.reviews
+					.forProduct(productId)
+					.getAll(params, { page: pageParam, limit });
 
-			if (error)
-				throw error;
+				if (error)
+					throw error;
 
-			return data;
+				return data;
+			} catch {
+				// API unreachable: demo reviews (empty for unknown products)
+				return staticReviewsForProduct(productId, params.sort, pageParam, limit);
+			}
 		},
 		initialPageParam: initialPage,
 		getNextPageParam: (lastPage, pages, lastPageParam) => 

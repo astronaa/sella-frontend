@@ -1,6 +1,7 @@
 import { apiClient } from "~/shared/api/client";
 import { ProductId } from "~/shared/api/client"
 import { staticProductById } from "~/shared/static-data/marketplace";
+import { staticReviewsForProduct } from "~/shared/static-data/reviews";
 import { INITIAL_PAGE, INITIAL_SORT, ITEMS_PER_PAGE } from "../config";
 
 export async function fetchProduct(productId: ProductId) {
@@ -34,6 +35,6 @@ export async function fetchProductReviews(productId: ProductId) {
 
 		return reviews.data;
 	} catch {
-		return { items: [], total: 0 };
+		return staticReviewsForProduct(productId, INITIAL_SORT, INITIAL_PAGE, ITEMS_PER_PAGE);
 	}
 }
