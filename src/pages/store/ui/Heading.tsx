@@ -53,8 +53,8 @@ export function Heading() {
 
       {(user || store.ownerUsername) && (
         <div className="flex gap-[1rem] md:self-end">
-          {/* Show management buttons if user is the owner, OR while user data is still loading */}
-          {(!user || store.ownerUsername == user.username) && (
+          {/* Management buttons only for the store owner */}
+          {!!user && store.ownerUsername == user.username && (
             <>
               <ManageDialog />
               {products && products.total > 0 && <EditMode.Button />}

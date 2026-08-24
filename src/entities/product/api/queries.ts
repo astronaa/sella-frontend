@@ -3,6 +3,7 @@ import { z } from "zod";
 import { apiClient } from "~/shared/api/client";
 import { ProductId } from "~/shared/api/client"
 import { queryClient } from "~/shared/config/query-client";
+import { staticProductById, staticProductsForStore } from "~/shared/static-data/marketplace";
 
 const QUERY_KEY = 'products'
 const QUERY_KEY_FOR_OWNER = `${QUERY_KEY}-for-owner`
@@ -22,14 +23,21 @@ export const getFromStoreOptions = ({ storeUrl, query }: GetFromStoreOptions) =>
 	return queryOptions({
 		queryKey: [QUERY_KEY, { page, limit, storeUrl, ...filters }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.stores
-				.for(storeUrl)
-				.getProducts({ page, limit }, filters);
+			try {
+				const { data, error } = await apiClient.stores
+					.for(storeUrl)
+					.getProducts({ page, limit }, filters);
 
-			if (error)
-				throw error;
+				if (error)
+					throw error;
 
-			return data;
+				return data;
+			} catch (err) {
+				const fallback = staticProductsForStore(storeUrl, page, limit);
+				if (fallback.total > 0) return fallback;
+
+				throw err;
+			}
 		},
 		placeholderData: (prev) => prev
 	})
@@ -74,12 +82,19 @@ export const getGetOneOptions = ({ productId }: GetOneOptions) =>
 	queryOptions({
 		queryKey: [QUERY_KEY, { id: productId }],
 		queryFn: async () => {
-			const { data, error } = await apiClient.products.for(productId).get();
+			try {
+				const { data, error } = await apiClient.products.for(productId).get();
 
-			if (error)
-				throw error;
+				if (error)
+					throw error;
 
-			return data;
+				return data;
+			} catch (err) {
+				const fallback = staticProductById(productId);
+				if (fallback) return fallback;
+
+				throw err;
+			}
 		},
 	})
 
