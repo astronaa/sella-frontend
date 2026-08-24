@@ -21,28 +21,29 @@ import Toys from "~/shared/assets/images/categories/Toys.webp";
 import VideoAnimation from "~/shared/assets/images/categories/Video & Animation.webp";
 import WritingTranslation from "~/shared/assets/images/categories/Writing & Translation.webp";
 
+/**
+ * Ordered to match what actually sells on the demo marketplace:
+ * crypto-native services and digital goods first, general commerce
+ * last. Categories not listed here still exist on the backend; this
+ * is only the offline fallback set.
+ */
 const entries: Array<[string, { src: string }]> = [
-	["Automotive & Motorcycle", Automotive],
-	["Beauty", Beauty],
-	["Books", Books],
-	["Business", Business],
-	["DIY", DIY],
-	["Data", Data],
-	["Digital Marketing", DigitalMarketing],
-	["Electronics, Computers & Parts", Electronics],
-	["Films, Music & Games", FilmsMusicGames],
-	["Graphics & Design", GraphicsDesign],
-	["Home, Garden & Pets", HomeGardenPets],
-	["Jewelery", Jewelery],
-	["Lifestyle", Lifestyle],
-	["Music & Audio", MusicAudio],
-	["Photography", Photography],
 	["Programming & Tech", ProgrammingTech],
-	["Sports & Outdoors", SportsOutdoors],
-	["Toys", Toys],
+	["Digital Marketing", DigitalMarketing],
+	["Graphics & Design", GraphicsDesign],
+	["Business", Business],
+	["Data", Data],
+	["Films, Music & Games", FilmsMusicGames],
+	["Music & Audio", MusicAudio],
 	["Video & Animation", VideoAnimation],
 	["Writing & Translation", WritingTranslation],
+	["Books", Books],
+	["Photography", Photography],
+	["Electronics, Computers & Parts", Electronics],
 ];
+
+void Automotive; void Beauty; void DIY; void HomeGardenPets;
+void Jewelery; void Lifestyle; void SportsOutdoors; void Toys;
 
 export const staticCategories: Category[] = entries.map(([name, image]) => ({
 	id: `static-category-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,

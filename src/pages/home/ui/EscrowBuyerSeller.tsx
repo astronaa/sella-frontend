@@ -17,8 +17,8 @@ const flowSteps: FlowStep[] = [
 	},
 	{
 		step: "02",
-		title: "Funds locked on-chain",
-		description: "Neither side can touch the money while the order is in progress.",
+		title: "Funds locked",
+		description: "Held by the contract on-chain. Neither side can touch the money mid-order.",
 	},
 	{
 		step: "03",
@@ -89,9 +89,6 @@ export function EscrowBuyerSeller() {
 
 				{/* flow diagram */}
 				<div className="relative">
-					{/* connector line behind cards */}
-					<div className="absolute left-[6%] right-[6%] top-[2.4rem] h-px hidden xl:block bg-gradient-to-r from-transparent via-accent-100/40 to-transparent" />
-
 					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-[1.25rem]">
 						{flowSteps.map((step, index) => (
 							<Reveal
@@ -100,16 +97,25 @@ export function EscrowBuyerSeller() {
 								className="relative flex flex-col gap-[1rem] rounded-[1.25rem] border border-white/[0.07] bg-white/[0.03] p-[1.5rem] lp-card-highlight"
 							>
 								<div className="flex items-center gap-[0.75rem]">
-									<span className="flex items-center justify-center size-[2.75rem] rounded-full border border-accent-100/40 bg-black-100 text-accent-100 font-semibold text-[0.9375rem] shadow-[0_0_20px_-4px_rgba(255,221,0,0.35)]">
+									<span className="flex items-center justify-center size-[2.75rem] flex-shrink-0 rounded-full border border-accent-100/40 bg-black-100 text-accent-100 font-semibold text-[0.9375rem] shadow-[0_0_20px_-4px_rgba(255,221,0,0.35)]">
 										{step.step}
 									</span>
-									<span className="text-white font-semibold text-[1.0625rem]">
+									<span className="text-white font-semibold text-[1.0625rem] whitespace-nowrap">
 										{step.title}
 									</span>
 								</div>
 								<p className="text-black-60 leading-[1.55] text-[0.9375rem]">
 									{step.description}
 								</p>
+
+								{/* chevron in the gap to the next step */}
+								{index < flowSteps.length - 1 && (
+									<span className="hidden xl:flex absolute top-[2.375rem] -translate-y-1/2 right-[-1.125rem] z-10 items-center justify-center size-[1rem] text-accent-100/70">
+										<svg viewBox="0 0 16 16" className="size-[0.875rem] fill-current">
+											<path d="M5.5 2.5L11 8l-5.5 5.5L4.4 12.4 8.8 8 4.4 3.6z" />
+										</svg>
+									</span>
+								)}
 							</Reveal>
 						))}
 					</div>
