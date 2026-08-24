@@ -69,10 +69,11 @@ const phases: Phase[] = [
 	},
 ];
 
+/* node fills are SOLID so the rail line never shows through them */
 const nodeClass: Record<PhaseStatus, string> = {
 	live: "bg-accent-100 text-black-100 shadow-[0_0_24px_-4px_rgba(255,221,0,0.6)]",
-	"in-progress": "bg-accent-100/[0.15] text-accent-100",
-	upcoming: "bg-white/[0.05] text-black-60",
+	"in-progress": "bg-[#2a2410] text-accent-100",
+	upcoming: "bg-[#1b1b1b] text-black-60",
 };
 
 const statusClass: Record<PhaseStatus, string> = {
@@ -103,38 +104,37 @@ export function Roadmap() {
 					</p>
 				</Reveal>
 
-				{/* vertical timeline: dashed rail through medallion nodes,
-				    same visual language as the escrow diagram */}
-				<Reveal delay={80} className="relative max-w-[46rem] w-full mx-auto">
+				{/* horizontal timeline: phases march left to right along a
+				    dashed rail, same visual language as the escrow diagram.
+				    Falls back to a 2-col grid below lg. */}
+				<Reveal delay={80} className="relative w-full">
 					<span
-						className="absolute left-[1.25rem] top-[1.25rem] bottom-[1.25rem] w-px border-l border-dashed border-white/[0.14]"
+						className="hidden lg:block absolute left-[1.25rem] right-[1.25rem] top-[1.25rem] h-px border-t border-dashed border-white/[0.14]"
 						aria-hidden
 					/>
 
-					<div className="flex flex-col gap-[2.75rem] max-md:gap-[2.25rem]">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-x-[1.5rem] gap-y-[2.5rem]">
 						{phases.map((item) => (
-							<div key={item.phase} className="relative flex gap-[1.5rem] max-md:gap-[1.125rem]">
+							<div key={item.phase} className="relative flex flex-col items-start gap-[0.875rem]">
 								<span
 									className={`relative z-[1] flex items-center justify-center size-[2.5rem] flex-shrink-0 rounded-full font-semibold text-[0.875rem] ${nodeClass[item.status]}`}
 								>
 									{item.phase}
 								</span>
 
-								<div className="flex flex-col gap-[0.375rem] pt-[0.25rem]">
-									<div className="flex items-center gap-[0.75rem] flex-wrap">
-										<span className="text-white font-semibold text-[1.125rem]">
-											{item.title}
-										</span>
-										<span
-											className={`rounded-full px-[0.75rem] py-[0.25rem] text-[0.75rem] font-semibold ${statusClass[item.status]}`}
-										>
-											{item.statusLabel}
-										</span>
-									</div>
-									<p className="text-black-60 text-[0.9375rem] leading-[1.6] max-w-[36rem]">
-										{item.description}
-									</p>
-								</div>
+								<span
+									className={`rounded-full px-[0.75rem] py-[0.25rem] text-[0.75rem] font-semibold ${statusClass[item.status]}`}
+								>
+									{item.statusLabel}
+								</span>
+
+								<span className="text-white font-semibold text-[1.0625rem] leading-[1.3]">
+									{item.title}
+								</span>
+
+								<p className="text-black-60 text-[0.875rem] leading-[1.6]">
+									{item.description}
+								</p>
 							</div>
 						))}
 					</div>
