@@ -68,9 +68,11 @@ export function Borderless() {
 
 	return (
 		<div className="relative py-[7rem] max-md:py-[4rem] overflow-hidden">
-			{/* spinning half-globe rising from the bottom of the section,
+			{/* spinning dotted Earth rising from the bottom of the section,
 			    a horizon behind the whole block */}
-			<div className="absolute left-1/2 -translate-x-1/2 bottom-[-46rem] size-[80rem] max-md:size-[40rem] max-md:bottom-[-24rem] lp-globe opacity-60 pointer-events-none" aria-hidden />
+			<div className="absolute left-1/2 -translate-x-1/2 bottom-[-46rem] size-[80rem] max-md:size-[40rem] max-md:bottom-[-24rem] lp-globe opacity-60 pointer-events-none" aria-hidden>
+				<div className="lp-globe-map" />
+			</div>
 			<div className="absolute left-1/2 -translate-x-1/2 bottom-[-46rem] size-[80rem] max-md:size-[40rem] max-md:bottom-[-24rem] rounded-full border border-accent-100/[0.10] pointer-events-none" aria-hidden />
 
 			<div className="relative flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
