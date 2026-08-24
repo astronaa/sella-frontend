@@ -277,7 +277,12 @@ export function DottedGlobe() {
 					varying vec3 vNormal;
 					varying float vY;
 					void main() {
-						float intensity = pow(0.74 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.2);
+						// facing is 1.0 behind the globe and exactly 0.0 at the
+						// shell's own silhouette, so the glow decays to nothing
+						// before its geometry ends instead of stopping as a
+						// hard-edged circle
+						float facing = clamp(-dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
+						float intensity = pow(facing, 1.7) * 2.6;
 						intensity *= 1.05 - 0.3 * vY;
 						gl_FragColor = vec4(glowColor, 1.0) * intensity;
 					}`,

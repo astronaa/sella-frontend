@@ -1,6 +1,5 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { StoreCard, StoreLink } from "~/entities/store";
-import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { fetchMarketplaceStores } from "../api/stores";
 import { Aura, Eyebrow, Reveal } from "./shared";
 
@@ -40,8 +39,6 @@ export async function ExploreMarketPlace() {
 						</Reveal>
 					))}
 				</div>
-
-				<StorefrontOpenBanner />
 			</div>
 		</div>
 	);
