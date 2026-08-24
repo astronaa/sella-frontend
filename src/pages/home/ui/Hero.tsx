@@ -4,12 +4,11 @@ import { StorefrontOpenControls } from "~/widgets/storefront-open";
 import { EscrowTicker } from "./EscrowStatusCards";
 import { Eyebrow } from "./shared";
 
-const chips = [
-	"30-second setup",
-	"No KYC",
-	"No subscription",
-	"Digital & physical",
-	"On-chain escrow",
+/* two balanced rows of three, rendered as explicit rows so the
+   wrap never lands 4-and-1 */
+const chipRows = [
+	["30-second setup", "No KYC", "No subscription"],
+	["Digital & physical", "On-chain escrow", "Instant payouts"],
 ];
 
 export function Hero() {
@@ -32,7 +31,7 @@ export function Hero() {
 
 						<Heading
 							size="xl"
-							className="tracking-[-0.02em] text-[4rem]/[1.08] max-md:text-[2.75rem]/[1.1] whitespace-nowrap max-md:whitespace-normal"
+							className="tracking-[-0.02em] text-[3.25rem]/[1.1] max-md:text-[2.5rem]/[1.12] whitespace-nowrap max-md:whitespace-normal"
 						>
 							Sell anything.
 							<br />
@@ -48,14 +47,18 @@ export function Hero() {
 						</p>
 					</div>
 
-					<div className="flex flex-wrap gap-[0.5rem]">
-						{chips.map((chip) => (
-							<span
-								key={chip}
-								className="rounded-full bg-white/[0.05] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
-							>
-								{chip}
-							</span>
+					<div className="flex flex-col gap-[0.5rem] items-start">
+						{chipRows.map((row) => (
+							<div key={row[0]} className="flex flex-wrap gap-[0.5rem]">
+								{row.map((chip) => (
+									<span
+										key={chip}
+										className="rounded-full bg-white/[0.05] px-[0.875rem] py-[0.4375rem] text-[0.8125rem] text-black-74"
+									>
+										{chip}
+									</span>
+								))}
+							</div>
 						))}
 					</div>
 

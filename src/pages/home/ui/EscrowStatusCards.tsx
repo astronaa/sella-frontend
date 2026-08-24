@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { cn } from "~/shared/lib/cn";
 
 /**
- * Quiet live-activity line for the hero: cycles through escrow events
- * so the marketplace feels alive without UI pasted over the render.
+ * Quiet activity line for the hero: cycles through escrow moments so
+ * the product feels alive without UI pasted over the render. Framed as
+ * a preview ("A day on Sella"), not live activity, to stay consistent
+ * with the demo/coming-soon story everywhere else.
  */
 
 const events = [
@@ -51,7 +53,7 @@ export function EscrowTicker({ className }: { className?: string }) {
 			aria-hidden
 		>
 			<span className="text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-black-40 whitespace-nowrap">
-				Live on Sella
+				A day on Sella <span className="text-black-40/60 normal-case tracking-normal">· preview</span>
 			</span>
 
 			<div
