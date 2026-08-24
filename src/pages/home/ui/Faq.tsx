@@ -16,7 +16,7 @@ const faqs = [
 	{
 		question: "Who resolves disputes?",
 		answer:
-			"The community does. If either side opens a dispute, a randomly selected group of community members reviews the case with AI-assisted insights and votes. The side with more votes wins, and the escrow contract automatically releases or refunds the funds based on that outcome.",
+			"The community does. If either side opens a dispute, five randomly selected community members review the case with AI-assisted insights and vote. Majority wins, three votes out of five, and the escrow contract automatically releases or refunds the funds based on that outcome.",
 	},
 	{
 		question: "What are the fees?",

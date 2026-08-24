@@ -1,53 +1,71 @@
+'use client';
+
+import { useEffect, useState } from "react";
+import { cn } from "~/shared/lib/cn";
+
 /**
- * Live escrow UI chips floated over the hero 3D render.
- * The render carries the brand; these carry the product story.
+ * Quiet live-activity line for the hero: cycles through escrow events
+ * so the marketplace feels alive without UI pasted over the render.
  */
-export function EscrowStatusCards() {
+
+const events = [
+	{ tone: "gold", text: "120 USDC locked in escrow", store: "design-market" },
+	{ tone: "green", text: "Funds released to seller", store: "code-lab" },
+	{ tone: "gold", text: "499 USDC locked in escrow", store: "chain-foundry" },
+	{ tone: "white", text: "New storefront opened", store: "meme-forge" },
+	{ tone: "green", text: "Dispute resolved 3–2 for the buyer", store: "alpha-desk" },
+	{ tone: "green", text: "Buyer confirmed delivery", store: "kol-boost" },
+] as const;
+
+const toneClass = {
+	gold: "bg-accent-100 shadow-[0_0_10px_2px_rgba(255,221,0,0.45)]",
+	green: "bg-green-100 shadow-[0_0_10px_2px_rgba(96,176,77,0.45)]",
+	white: "bg-white/70 shadow-[0_0_10px_2px_rgba(255,255,255,0.25)]",
+} as const;
+
+export function EscrowTicker({ className }: { className?: string }) {
+	const [index, setIndex] = useState(0);
+	const [visible, setVisible] = useState(true);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setVisible(false);
+
+			setTimeout(() => {
+				setIndex((i) => (i + 1) % events.length);
+				setVisible(true);
+			}, 350);
+		}, 3400);
+
+		return () => clearInterval(interval);
+	}, []);
+
+	const event = events[index];
+
 	return (
-		<>
-			<div
-				className="absolute right-[4.5rem] top-[9%] w-[15.5rem] rounded-[1rem] border border-white/[0.09] bg-[#161616] p-[1rem] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] lp-card-highlight"
-				style={{ animation: "lp-float 7s ease-in-out infinite" }}
-			>
-				<div className="flex items-center gap-[0.625rem]">
-					<div className="size-[2rem] rounded-[0.5rem] bg-accent-100/[0.12] border border-accent-100/30 flex items-center justify-center">
-						<svg viewBox="0 0 16 16" className="size-[0.9375rem] text-accent-100 fill-current">
-							<path d="M8 1a3.5 3.5 0 013.5 3.5V6H12a2 2 0 012 2v5a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h.5V4.5A3.5 3.5 0 018 1zm0 1.5A2 2 0 006 4.5V6h4V4.5a2 2 0 00-2-2z" />
-						</svg>
-					</div>
-					<div className="flex flex-col">
-						<span className="text-white text-[0.875rem] font-semibold">Escrow funded</span>
-						<span className="text-black-60 text-[0.75rem]">120 USDC held on-chain</span>
-					</div>
-				</div>
-				<div className="mt-[0.875rem] flex items-center gap-[0.375rem]">
-					<span className="h-[0.25rem] flex-1 rounded-full bg-accent-100" />
-					<span className="h-[0.25rem] flex-1 rounded-full bg-accent-100" />
-					<span className="h-[0.25rem] flex-1 rounded-full bg-white/10" />
-				</div>
-				<div className="mt-[0.5rem] flex justify-between text-[0.6875rem] text-black-40">
-					<span>Funded</span>
-					<span>Delivered</span>
-					<span>Released</span>
-				</div>
-			</div>
+		<div
+			className={cn(
+				"flex items-center gap-[0.75rem] pt-[1.25rem] border-t border-white/[0.06]",
+				className
+			)}
+			aria-hidden
+		>
+			<span className="text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-black-40 whitespace-nowrap">
+				Live on Sella
+			</span>
 
 			<div
-				className="absolute left-[-2.5rem] bottom-[20%] w-[14.5rem] rounded-[1rem] border border-white/[0.09] bg-[#161616] p-[1rem] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)]"
-				style={{ animation: "lp-float-alt 8s ease-in-out infinite" }}
+				className={cn(
+					"flex items-center gap-[0.625rem] min-w-0 transition-all duration-350",
+					visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[0.375rem]"
+				)}
 			>
-				<div className="flex items-center gap-[0.625rem]">
-					<div className="size-[2rem] rounded-full bg-green-100/[0.14] border border-green-100/40 flex items-center justify-center">
-						<svg viewBox="0 0 16 16" className="size-[0.875rem] text-green-100 fill-current">
-							<path d="M6.1 11.6L2.5 8l1.1-1.1 2.5 2.5 6.3-6.3L13.5 4.2z" />
-						</svg>
-					</div>
-					<div className="flex flex-col">
-						<span className="text-white text-[0.875rem] font-semibold">Released to seller</span>
-						<span className="text-black-60 text-[0.75rem]">Buyer confirmed delivery</span>
-					</div>
-				</div>
+				<span className={cn("size-[0.4375rem] flex-shrink-0 rounded-full", toneClass[event.tone])} />
+				<span className="text-black-60 text-[0.875rem] truncate">
+					{event.text}
+					<span className="text-black-40"> · {event.store}</span>
+				</span>
 			</div>
-		</>
+		</div>
 	);
 }

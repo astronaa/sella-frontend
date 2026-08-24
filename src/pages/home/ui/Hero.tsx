@@ -1,7 +1,7 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { VideoAnimationPlayer } from "~/shared/ui/video-anim-player";
 import { StorefrontOpenControls } from "~/widgets/storefront-open";
-import { EscrowStatusCards } from "./EscrowStatusCards";
+import { EscrowTicker } from "./EscrowStatusCards";
 import { Eyebrow } from "./shared";
 
 const chips = [
@@ -60,16 +60,17 @@ export function Hero() {
 					</div>
 
 					<StorefrontOpenControls />
+
+					<EscrowTicker className="max-w-[30rem]" />
 				</div>
 
-				{/* artist 3D render + live escrow UI cards floating over it */}
-				<div className="relative hidden lg:block flex-shrink-0 self-end">
+				{/* artist 3D render, kept clean */}
+				<div className="hidden lg:block flex-shrink-0 self-end">
 					<VideoAnimationPlayer
 						className="w-[30rem] xl:w-[44rem] h-[44rem]"
 						src="/videos/hero-anim2.webm"
 						srcHevc="/videos/hero-anim2.mov"
 					/>
-					<EscrowStatusCards />
 				</div>
 			</div>
 		</div>

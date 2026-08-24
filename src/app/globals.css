@@ -121,3 +121,95 @@ body {
   background: linear-gradient(90deg, transparent 5%, rgba(255, 221, 0, 0.35) 50%, transparent 95%);
   pointer-events: none;
 }
+
+/* ===== money-flow infographic animation =====
+   One shared 10s cycle telling the story in sequence:
+   0-22%  payment dot travels   (step 1 label bright)
+   28-50% delivery arc active   (step 2 label bright)
+   56-78% release dot travels   (step 3 label bright)
+   rest   idle breathing */
+
+@keyframes lp-dot-pay {
+  0% { left: 0%; opacity: 0; }
+  3% { opacity: 1; }
+  22% { left: calc(100% - 8px); opacity: 1; }
+  26% { left: calc(100% - 8px); opacity: 0; }
+  100% { left: calc(100% - 8px); opacity: 0; }
+}
+
+@keyframes lp-dot-release {
+  0%, 56% { left: 0%; opacity: 0; }
+  59% { opacity: 1; }
+  78% { left: calc(100% - 8px); opacity: 1; }
+  82% { left: calc(100% - 8px); opacity: 0; }
+  100% { left: calc(100% - 8px); opacity: 0; }
+}
+
+.lp-dot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #FFDD00;
+  box-shadow: 0 0 10px 2px rgba(255, 221, 0, 0.6);
+}
+
+.lp-dot-pay { animation: lp-dot-pay 10s ease-in-out infinite; }
+.lp-dot-release { animation: lp-dot-release 10s ease-in-out infinite; }
+
+/* step labels: dimmed by default, bright during their window */
+@keyframes lp-step-1-glow {
+  0% { opacity: 1; }
+  24% { opacity: 1; }
+  32% { opacity: 0.4; }
+  100% { opacity: 0.4; }
+}
+@keyframes lp-step-2-glow {
+  0%, 24% { opacity: 0.4; }
+  30%, 50% { opacity: 1; }
+  58%, 100% { opacity: 0.4; }
+}
+@keyframes lp-step-3-glow {
+  0%, 52% { opacity: 0.4; }
+  58%, 80% { opacity: 1; }
+  88%, 100% { opacity: 0.4; }
+}
+.lp-step-1 { animation: lp-step-1-glow 10s ease-in-out infinite; }
+.lp-step-2 { animation: lp-step-2-glow 10s ease-in-out infinite; }
+.lp-step-3 { animation: lp-step-3-glow 10s ease-in-out infinite; }
+
+/* delivery arc: dashes march continuously, stroke brightens in its window */
+@keyframes lp-dash-march {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 40; }
+}
+@keyframes lp-arc-window {
+  0%, 24% { opacity: 0.45; }
+  30%, 50% { opacity: 1; }
+  58%, 100% { opacity: 0.45; }
+}
+.lp-arc-march {
+  animation: lp-dash-march 4.5s linear infinite, lp-arc-window 10s ease-in-out infinite;
+}
+
+/* escrow vault: glow peaks when the payment lands and when release starts */
+@keyframes lp-vault-pulse {
+  0%, 100% { filter: drop-shadow(0 0 26px rgba(255, 221, 0, 0.25)); }
+  24%, 58% { filter: drop-shadow(0 0 44px rgba(255, 221, 0, 0.55)); }
+  40%, 76% { filter: drop-shadow(0 0 26px rgba(255, 221, 0, 0.25)); }
+}
+.lp-vault-pulse { animation: lp-vault-pulse 10s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-dot-pay, .lp-dot-release, .lp-arc-march, .lp-vault-pulse,
+  .lp-step-1, .lp-step-2, .lp-step-3 { animation: none; }
+  .lp-dot { opacity: 0; }
+  .lp-step-1, .lp-step-2, .lp-step-3 { opacity: 1; }
+}
+
+@keyframes lp-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}

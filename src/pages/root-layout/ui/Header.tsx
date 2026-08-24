@@ -15,6 +15,7 @@ import {
 } from "~/shared/config/urls";
 import { useDashboardPreferedOrdersPage } from "~/features/dashboard-prefs";
 import { LogoutButton } from "~/widgets/user/logout-button";
+import { DemoNav } from "./DemoNav";
 
 export function Header() {
   const onTop = !useWindowScroll({ defaultValue: true });
@@ -27,6 +28,7 @@ export function Header() {
       <NavHeader.SlotUnauthorizedButtons>
         {/* <Button variant="outline">Buy $SELLA</Button> */}
 
+        <DemoNav />
         <RegsiterFlowStartButton />
       </NavHeader.SlotUnauthorizedButtons>
 

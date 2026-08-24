@@ -3,6 +3,7 @@ import { HowItWorks } from "./HowItWorks";
 import { ExploreMarketPlace } from "./ExploreMarketplace";
 import { EscrowBuyerSeller } from "./EscrowBuyerSeller";
 import { Disputes } from "./Disputes";
+import { Borderless } from "./Borderless";
 import { SellaFeautes } from "./SellaFeatures";
 import { Faq } from "./Faq";
 import { CreateStore } from "./CreateStore";
@@ -16,6 +17,7 @@ export function Component() {
       <ExploreMarketPlace />
       <EscrowBuyerSeller />
       <Disputes />
+      <Borderless />
       <SellaFeautes />
       <Faq />
       <CreateStore />

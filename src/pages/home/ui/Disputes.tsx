@@ -12,7 +12,7 @@ const pillars = [
 	{
 		title: "A random jury, not a judge",
 		description:
-			"Disputes are decided by community members selected at random for each case. No fixed moderators, no platform putting a thumb on the scale, no way to know your jurors in advance.",
+			"Each case gets a jury of five community members selected at random. No fixed moderators, no platform putting a thumb on the scale, no way to know your jurors in advance.",
 		icon: (
 			<svg viewBox="0 0 20 20" className="size-[1.375rem] fill-current">
 				<path d="M10 2a3 3 0 110 6 3 3 0 010-6zM4 7a2.5 2.5 0 110 5 2.5 2.5 0 010-5zm12 0a2.5 2.5 0 110 5 2.5 2.5 0 010-5zm-6 3.5c2.5 0 4.5 1.3 4.5 3V16h-9v-2.5c0-1.7 2-3 4.5-3zM4 13c.5 0 1 .07 1.44.2-.6.66-.94 1.45-.94 2.3V16H1v-1.5C1 13.7 2.3 13 4 13zm12 0c1.7 0 3 .7 3 1.5V16h-3.5v-.5c0-.85-.35-1.64-.94-2.3.44-.13.94-.2 1.44-.2z" />
@@ -32,7 +32,7 @@ const pillars = [
 	{
 		title: "Majority votes, contract pays",
 		description:
-			"Whichever side gets more votes wins. The escrow contract executes the verdict on-chain automatically: funds are released or refunded, with no one able to override the outcome.",
+			"Three of five votes decides it. The escrow contract executes the verdict on-chain automatically: funds are released or refunded, with no one able to override the outcome.",
 		icon: (
 			<svg viewBox="0 0 20 20" className="size-[1.375rem] fill-current">
 				<path d="M12.6 2l4.9 4.9-1.4 1.4-.7-.7-3.2 3.2.7.7-1.4 1.4-2.1-2.1L4.9 15.3H3v-1.9l4.5-4.5L5.4 6.8 6.8 5.4l.7.7 3.2-3.2-.7-.7L11.4 0l1.2 2zM3 17h14v2H3v-2z" />

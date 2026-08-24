@@ -132,9 +132,10 @@ export function EscrowBuyerSeller() {
 							Something goes wrong?
 						</span>
 						<p className="text-black-60 text-[0.9375rem] leading-[1.55]">
-							Either side can open a dispute. Funds stay locked while a randomly
-							selected community jury reviews the order, votes, and the majority
-							decides. The contract executes the outcome automatically.
+							Either side can open a dispute. Funds stay locked while five
+							randomly selected community jurors review the order and vote.
+							Three of five decides it, and the contract executes the outcome
+							automatically.
 						</p>
 					</Reveal>
 				</div>

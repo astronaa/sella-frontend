@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { HTMLAttributes, useEffect, useMemo } from "react";
+import { HTMLAttributes, useEffect, useMemo, useState } from "react";
 import { StoreInputAddon } from "~/entities/store";
 import { useUserGetQuery } from "~/entities/user";
 import { useRegisterFlow } from "~/features/register";
@@ -11,32 +11,39 @@ import { useDialogState } from "~/shared/lib/dialog";
 import { useDebouncedState } from "~/shared/lib/use-debounce";
 import { Button } from "~/shared/ui/kit/button";
 import { Input, InputGroup } from "~/shared/ui/kit/input";
+import { LaunchSoonDialog } from "./LaunchSoonDialog";
 
 export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	const router = useRouter();
 	const { data: user } = useUserGetQuery();
-	const { 
-		isOpen: shouldOpen, 
-		handleOpenChange, 
+	const {
+		isOpen: shouldOpen,
+		handleOpenChange,
 		open: openDialog,
 		close: closeDialog
 	} = useDialogState();
 
 	const [storeUrl, setStoreUrl] = useDebouncedState(200, '');
+	const [launchSoonOpen, setLaunchSoonOpen] = useState(false);
 	const initialValues = useMemo(() => ({ url: storeUrl }), [storeUrl]);
-	
+
 	const startFlow = useRegisterFlow(s => s.startFlow);
 	const setFlowStoreUrlToCreate = useRegisterFlow(s => s.setStoreUrlToCreate);
 	const flowModalOpen = useRegisterFlow(s => s.open);
 	const currentFlowModal = useRegisterFlow(s => s.currentModal);
 	const open = shouldOpen && !!user && !flowModalOpen;
+	void startFlow; void setFlowStoreUrlToCreate;
 
 	const onButtonClick = () => {
-		openDialog();
 		if(!user) {
-			startFlow();
-			setFlowStoreUrlToCreate(storeUrl);
+			// Pre-launch: show the stay-tuned modal instead of the
+			// register flow. When storefront creation goes live, restore:
+			// openDialog(); startFlow(); setFlowStoreUrlToCreate(storeUrl);
+			setLaunchSoonOpen(true);
+			return;
 		}
+
+		openDialog();
 	}
 
 	useEffect(() => {
@@ -59,7 +66,7 @@ export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivEl
 				)}
 			</StoreInputAddon>
 
-			<Button 
+			<Button
 				className="w-full md:w-auto" size="xl"
 				onClick={onButtonClick}
 			>
@@ -71,6 +78,12 @@ export function ActionControls({ className, ...props }: HTMLAttributes<HTMLDivEl
 				onOpenChange={handleOpenChange}
 				initialValues={initialValues}
 				onActionFulfilled={store => router.push(`/${store.url}`)}
+			/>
+
+			<LaunchSoonDialog
+				open={launchSoonOpen}
+				onClose={() => setLaunchSoonOpen(false)}
+				storeUrl={storeUrl.trim() || undefined}
 			/>
 		</div>
 	);
