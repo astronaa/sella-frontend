@@ -14,7 +14,11 @@ export async function ExploreMarketPlace() {
 					<Eyebrow>Some ideas to get you going</Eyebrow>
 
 					<Heading size="lg" className="tracking-[-0.02em]">
-						Explore the demo shops.
+						Explore the
+						<br />
+						<span className="bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
+							Demo shops.
+						</span>
 					</Heading>
 
 					<p className="text-black-60 text-[1.0625rem] leading-[1.6] max-w-[34rem] text-balance">
@@ -30,7 +34,7 @@ export async function ExploreMarketPlace() {
 							<StoreCard.Root
 								store={store}
 								asChild
-								className="lp-hover-card w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13]"
+								className="lp-hover-card lp-spot w-full mx-auto max-w-none bg-white/[0.02] hover:bg-white/[0.045] hover:border-white/[0.13]"
 							>
 								<StoreLink>
 									<StoreCard.Composition />

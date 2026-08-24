@@ -1,3 +1,4 @@
+import { CardSpotlight } from "./CardSpotlight";
 import { Hero } from "./Hero";
 import { HowItWorks } from "./HowItWorks";
 import { ExploreMarketPlace } from "./ExploreMarketplace";
@@ -14,6 +15,7 @@ export function Component() {
     <div className="">
       {/* film grain unifies every surface on the page */}
       <div className="lp-grain" aria-hidden />
+      <CardSpotlight />
       <Hero />
       <HowItWorks />
       <ExploreMarketPlace />

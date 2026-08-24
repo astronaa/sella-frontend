@@ -359,3 +359,56 @@ body {
   .lp-btn-sheen:hover::after { animation: none; opacity: 0; }
   .lp-rail-spark { animation: none; opacity: 0; }
 }
+
+/* gold spotlight tracking the cursor inside a card (vars set by
+   CardSpotlight); an interior wash of light, never a stroke */
+.lp-spot { position: relative; }
+.lp-spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    13rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(255, 221, 0, 0.09),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.lp-spot:hover::after { opacity: 1; }
+
+/* the grain lives: a 2x layer jumps between offsets on the compositor,
+   so the noise flickers like film instead of sitting like wallpaper */
+.lp-grain {
+  width: 200%;
+  height: 200%;
+  animation: lp-grain-shift 0.9s steps(1) infinite;
+}
+@keyframes lp-grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  17% { transform: translate(-4%, -6%); }
+  34% { transform: translate(-9%, -2%); }
+  51% { transform: translate(-3%, -9%); }
+  68% { transform: translate(-7%, -5%); }
+  85% { transform: translate(-1%, -3%); }
+}
+
+/* hero headline: each line rises out of its own mask */
+.lp-enter-mask { display: block; overflow: hidden; }
+.lp-enter-line {
+  display: block;
+  animation: lp-enter-line 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes lp-enter-line {
+  from { transform: translateY(108%); }
+  to { transform: translateY(0); }
+}
+.lp-enter-line-2 { animation-delay: 0.14s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-grain { animation: none; }
+  .lp-enter-line { animation: none; }
+  .lp-spot::after { display: none; }
+}

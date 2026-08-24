@@ -35,14 +35,19 @@ export function Hero() {
 						    concatenates classes without twMerge, so an override
 						    races the variant in stylesheet order (xl was winning
 						    at 72px and the nowrap line painted past the column) */}
-						<Heading size="lg" className="tracking-[-0.02em] lp-enter lp-enter-2">
-							Sell anything.
-							<br />
+						{/* each line rises out of its own mask instead of the whole
+						    block fading in — the first-paint moment of the page */}
+						<Heading size="lg" className="tracking-[-0.02em]">
+							<span className="lp-enter-mask">
+								<span className="lp-enter-line">Sell anything.</span>
+							</span>
 							{/* stay inside the gold family: ending on accent-hover
 							    orange made the tail of the line read as a second
 							    color */}
-							<span className="lp-shimmer bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
-								Escrow does the rest.
+							<span className="lp-enter-mask">
+								<span className="lp-enter-line lp-enter-line-2 lp-shimmer bg-gradient-to-r from-[#FFE865] via-accent-100 to-[#FFC933] bg-clip-text text-transparent">
+									Escrow does the rest.
+								</span>
 							</span>
 						</Heading>
 
