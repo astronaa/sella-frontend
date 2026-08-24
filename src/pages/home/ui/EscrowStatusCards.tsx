@@ -10,12 +10,11 @@ import { cn } from "~/shared/lib/cn";
  */
 
 const events = [
-	{ tone: "white", text: "Your storefront opens", detail: "30s, no KYC" },
 	{ tone: "gold", text: "First 120 USDC locked", detail: "escrow funded" },
 	{ tone: "white", text: "You deliver", detail: "chat keeps the record" },
 	{ tone: "green", text: "Buyer confirms", detail: "instant payout" },
 	{ tone: "green", text: "Review lands on-chain", detail: "yours forever" },
-	{ tone: "gold", text: "Second order in", detail: "loop restarts" },
+	{ tone: "gold", text: "Second order in", detail: "escrow funded again" },
 ] as const;
 
 const toneClass = {

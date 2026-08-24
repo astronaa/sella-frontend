@@ -29,10 +29,11 @@ export function Hero() {
 					<div className="flex flex-col gap-[1.5rem]">
 						<Eyebrow>Escrow-secured marketplace</Eyebrow>
 
-						<Heading
-							size="xl"
-							className="tracking-[-0.02em] text-[3.25rem]/[1.1] max-md:text-[2.5rem]/[1.12] whitespace-nowrap max-md:whitespace-normal"
-						>
+						{/* size lg, no per-use text-[] override: the Heading kit
+						    concatenates classes without twMerge, so an override
+						    races the variant in stylesheet order (xl was winning
+						    at 72px and the nowrap line painted past the column) */}
+						<Heading size="lg" className="tracking-[-0.02em]">
 							Sell anything.
 							<br />
 							{/* stay inside the gold family: ending on accent-hover
