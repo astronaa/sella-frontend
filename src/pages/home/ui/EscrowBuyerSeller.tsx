@@ -10,9 +10,9 @@ interface SideStep {
 
 const buyerSteps: SideStep[] = [
 	{
-		title: "Pay into the contract",
+		title: "Pay like in any online shop",
 		description:
-			"Your money goes into escrow, not to the seller. It sits locked on-chain where nobody can touch it.",
+			"Checkout feels completely normal: click, pay, done. Under the hood your money lands in an escrow contract instead of the seller's pocket, locked where nobody can touch it.",
 	},
 	{
 		title: "Get your order",
@@ -117,10 +117,10 @@ export function EscrowBuyerSeller() {
 						</Heading>
 
 						<p className="text-black-60 text-[1.0625rem] leading-[1.6]">
-							Every sale on Sella runs through an escrow smart contract that
-							sits between buyer and seller. The same lock protects both
-							sides: your money can&apos;t be stolen, and your work can&apos;t
-							go unpaid.
+							Every sale runs through an escrow smart contract, but nothing
+							about it feels technical: you shop like on any site, and the
+							contract does its work under the hood. Your money can&apos;t be
+							stolen, and your work can&apos;t go unpaid.
 						</p>
 
 						<div className="flex flex-wrap gap-[0.5rem]">

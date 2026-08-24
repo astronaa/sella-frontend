@@ -22,7 +22,9 @@ function ProductionComponent({ children }: PropsWithChildren) {
 		<ChatSocketProvider>
 			<Header />
 
-			<div className='w-full min-h-full pt-[8rem]'>
+			{/* header is sticky (in-flow), so this is breathing room only,
+			    not nav clearance */}
+			<div className='w-full min-h-full pt-[1.5rem]'>
 				{children}
 			</div>
 
