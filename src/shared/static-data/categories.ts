@@ -14,12 +14,12 @@ import ProgrammingTech from "~/shared/assets/images/categories/Programming & Tec
  * wins and this list is never seen.
  */
 const entries: Array<[string, { src: string }]> = [
-	["Programming & Tech", ProgrammingTech],
-	["Digital Marketing", DigitalMarketing],
-	["Graphics & Design", GraphicsDesign],
-	["Business", Business],
-	["Data", Data],
-	["Films, Music & Games", FilmsMusicGames],
+	["Contracts & Code", ProgrammingTech],
+	["Promotion & KOLs", DigitalMarketing],
+	["Design & Branding", GraphicsDesign],
+	["Alpha & Access", Business],
+	["Bots & Data", Data],
+	["Memes & Media", FilmsMusicGames],
 ];
 
 export const staticCategories: Category[] = entries.map(([name, image]) => ({

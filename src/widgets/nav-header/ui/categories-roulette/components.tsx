@@ -62,6 +62,24 @@ export interface ContentProps extends Scrollable.RootProps {
 	itemsClassName?: string
 }
 
+/* Demo mode: aspirational categories shown after the live ones.
+   They don't filter to anything yet, so hovering swaps the tile
+   label for "coming soon" instead of selecting. Remove at launch. */
+const comingSoonCategories = [
+	"RWA & Tokenized Assets",
+	"AI Agents",
+	"DeFi & Yield",
+	"NFTs & Collectibles",
+	"Gaming & Metaverse",
+	"DAO & Governance",
+	"Security & Audits",
+	"Nodes & Infra",
+	"Trading Tools",
+	"Domains & Identity",
+	"Physical Goods",
+	"Content & Media",
+];
+
 export function Content({ itemsClassName, ...props }: ContentProps) {
 	const { data: categories } = categoryQueries.useGetAll();
 	const { category, setCategory, setOpen } = useCategoriesRouletteStrictContext();
@@ -79,6 +97,24 @@ export function Content({ itemsClassName, ...props }: ContentProps) {
 							setOpen(false);
 						}}
 					/>
+				))}
+
+				{comingSoonCategories.map(name => (
+					<div
+						key={name}
+						className={cn(
+							'group relative flex flex-col items-center justify-center gap-[0.625rem] size-[9.375rem] select-none p-[0.5rem]',
+							'rounded-[0.75rem] bg-white/[.02] flex-shrink-0 text-center text-black-40 cursor-default',
+							itemsClassName
+						)}
+					>
+						<span className='transition-opacity duration-200 group-hover:opacity-0'>
+							{name}
+						</span>
+						<span className='absolute inset-0 flex items-center justify-center text-accent-100 text-[0.875rem] opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
+							coming soon
+						</span>
+					</div>
 				))}
 			</Scrollable.Container>
 		</Scrollable.Root>
