@@ -21,6 +21,7 @@ const DOT_RADIUS = 0.0062;
 const TILT_X = 0.22;
 const TILT_Z = -0.14;
 const IDLE_SPEED = 0.05; // rad/s
+const MAX_PITCH = 0.6; // rad of vertical drag either way
 
 // world-map.svg: viewBox "0 15 1000 390" of a 1000x500 equirectangular
 // frame (poles cropped)
@@ -121,10 +122,12 @@ interface ArcState {
 
 export function DottedGlobe() {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const pointerStart = useRef<number | null>(null);
+	const pointerStart = useRef<{ x: number; y: number } | null>(null);
 	const movement = useRef(0);
 	const rotation = useRef(0.8);
 	const velocity = useRef(0);
+	const pitch = useRef(0);
+	const pitchStart = useRef(0);
 
 	useEffect(() => {
 		const container = containerRef.current;
@@ -151,13 +154,20 @@ export function DottedGlobe() {
 		renderer.domElement.style.height = "100%";
 
 		const scene = new THREE.Scene();
+		// far enough back that the atmosphere shell and the arc peaks stay
+		// inside the frustum instead of shearing flat at the canvas edges
 		const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 10);
-		camera.position.set(0, 0, 4.4);
+		camera.position.set(0, 0, 5.0);
 
-		scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-		const sun = new THREE.DirectionalLight(0xffffff, 1.25);
+		scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+		const sun = new THREE.DirectionalLight(0xffffff, 1.1);
 		sun.position.set(-1.4, 0.8, 1.6);
 		scene.add(sun);
+		// faint fill from the other side so the night hemisphere keeps dim
+		// dots instead of collapsing into a black disc against the page
+		const fill = new THREE.DirectionalLight(0xffe865, 0.22);
+		fill.position.set(1.6, -0.4, 0.8);
+		scene.add(fill);
 
 		// tilted parent, spinning child: drag and idle both drive child.rotation.y
 		const tilt = new THREE.Group();
@@ -167,10 +177,11 @@ export function DottedGlobe() {
 		const globe = new THREE.Group();
 		tilt.add(globe);
 
-		// base sphere
+		// base sphere, kept a touch lighter than the page's #0F0F0F so the
+		// ocean hemisphere reads as a lit body, not a hole in the background
 		const base = new THREE.Mesh(
 			new THREE.SphereGeometry(R * 0.996, 64, 64),
-			new THREE.MeshLambertMaterial({ color: 0x0e0e0b })
+			new THREE.MeshLambertMaterial({ color: 0x1d1b10 })
 		);
 		globe.add(base);
 
@@ -238,8 +249,9 @@ export function DottedGlobe() {
 			ROUTES.forEach(([fromKey, toKey], index) => {
 				const from = latLonToVec3(...CITIES[fromKey], R);
 				const to = latLonToVec3(...CITIES[toKey], R);
+				// capped so even near-antipodal arcs peak inside the frustum
 				const distance = from.distanceTo(to);
-				const lift = 1 + distance * 0.35;
+				const lift = 1 + Math.min(distance * 0.25, 0.3);
 				const c1 = from.clone().lerp(to, 0.25).normalize().multiplyScalar(R * lift);
 				const c2 = from.clone().lerp(to, 0.75).normalize().multiplyScalar(R * lift);
 				const curve = new THREE.CubicBezierCurve3(from, c1, c2, to);
@@ -299,8 +311,11 @@ export function DottedGlobe() {
 			if (pointerStart.current === null) {
 				rotation.current += IDLE_SPEED * dt + velocity.current;
 				velocity.current *= 0.94;
+				// vertical drag eases back to the resting tilt
+				pitch.current *= Math.pow(0.2, dt);
 			}
 			globe.rotation.y = rotation.current + movement.current;
+			tilt.rotation.x = TILT_X + pitch.current;
 
 			// arc lifecycle via drawRange (the guide's technique): draw on
 			// (0-0.3), hold (0.3-0.55), retract tail-first (0.55-0.85),
@@ -353,18 +368,30 @@ export function DottedGlobe() {
 	return (
 		<div
 			ref={containerRef}
-			className="size-full cursor-grab active:cursor-grabbing touch-pan-y"
+			className="relative size-full cursor-grab active:cursor-grabbing touch-pan-y select-none"
 			aria-hidden
 			onPointerDown={(e) => {
-				pointerStart.current = e.clientX;
+				e.preventDefault(); // no text-selection drag starting on the globe
+				pointerStart.current = { x: e.clientX, y: e.clientY };
+				pitchStart.current = pitch.current;
 				velocity.current = 0;
-				e.currentTarget.setPointerCapture(e.pointerId);
+				try {
+					e.currentTarget.setPointerCapture(e.pointerId);
+				} catch {
+					// synthetic events have no active pointer; drag still works
+				}
 			}}
 			onPointerMove={(e) => {
 				if (pointerStart.current === null) return;
-				const delta = (e.clientX - pointerStart.current) / 160;
+				const delta = (e.clientX - pointerStart.current.x) / 160;
 				velocity.current = (delta - movement.current) * 0.5;
 				movement.current = delta;
+				// natural trackball: the surface follows the pointer both ways
+				pitch.current = THREE.MathUtils.clamp(
+					pitchStart.current + (e.clientY - pointerStart.current.y) / 220,
+					-MAX_PITCH,
+					MAX_PITCH
+				);
 			}}
 			onPointerUp={() => {
 				rotation.current += movement.current;
