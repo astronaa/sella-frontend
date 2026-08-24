@@ -10,12 +10,12 @@ import { cn } from "~/shared/lib/cn";
  */
 
 const events = [
-	{ tone: "white", text: "Your storefront opens", detail: "30 seconds, no KYC" },
-	{ tone: "gold", text: "First buyer locks 120 USDC in escrow", detail: "money secured before you start" },
-	{ tone: "white", text: "You deliver", detail: "the order chat keeps the record" },
-	{ tone: "green", text: "Buyer confirms", detail: "funds hit your wallet instantly" },
-	{ tone: "green", text: "Review lands on-chain", detail: "reputation you keep forever" },
-	{ tone: "gold", text: "Second order comes in", detail: "and the loop starts again" },
+	{ tone: "white", text: "Your storefront opens", detail: "30s, no KYC" },
+	{ tone: "gold", text: "First 120 USDC locked", detail: "escrow funded" },
+	{ tone: "white", text: "You deliver", detail: "chat keeps the record" },
+	{ tone: "green", text: "Buyer confirms", detail: "instant payout" },
+	{ tone: "green", text: "Review lands on-chain", detail: "yours forever" },
+	{ tone: "gold", text: "Second order in", detail: "loop restarts" },
 ] as const;
 
 const toneClass = {
@@ -52,7 +52,7 @@ export function EscrowTicker({ className }: { className?: string }) {
 			aria-hidden
 		>
 			<span className="text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-black-40 whitespace-nowrap">
-				Your first day on Sella
+				Day one on Sella
 			</span>
 
 			<div

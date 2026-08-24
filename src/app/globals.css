@@ -236,58 +236,6 @@ body {
   .lp-step-1, .lp-step-2, .lp-step-3 { opacity: 1; }
 }
 
-/* disputes jury vignette: five votes land one by one on a 10s cycle,
-   then the tally and verdict light up; everything resets together */
-.lp-cast { opacity: 0; }
-@keyframes lp-cast-0 {
-  0%, 8% { opacity: 0; transform: scale(0.4); }
-  12% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; }
-}
-@keyframes lp-cast-1 {
-  0%, 16% { opacity: 0; transform: scale(0.4); }
-  20% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; }
-}
-@keyframes lp-cast-2 {
-  0%, 24% { opacity: 0; transform: scale(0.4); }
-  28% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; }
-}
-@keyframes lp-cast-3 {
-  0%, 32% { opacity: 0; transform: scale(0.4); }
-  36% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; }
-}
-@keyframes lp-cast-4 {
-  0%, 40% { opacity: 0; transform: scale(0.4); }
-  44% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; }
-}
-.lp-cast-0 { animation: lp-cast-0 10s ease-out infinite; }
-.lp-cast-1 { animation: lp-cast-1 10s ease-out infinite; }
-.lp-cast-2 { animation: lp-cast-2 10s ease-out infinite; }
-.lp-cast-3 { animation: lp-cast-3 10s ease-out infinite; }
-.lp-cast-4 { animation: lp-cast-4 10s ease-out infinite; }
-
-@keyframes lp-verdict {
-  0%, 52% { opacity: 0.25; }
-  58% { opacity: 1; }
-  88% { opacity: 1; }
-  96%, 100% { opacity: 0.25; }
-}
-.lp-verdict { animation: lp-verdict 10s ease-out infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-  .lp-cast, .lp-cast-0, .lp-cast-1, .lp-cast-2, .lp-cast-3, .lp-cast-4,
-  .lp-verdict { animation: none; opacity: 1; }
-}
-
 @keyframes lp-marquee-reverse {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }

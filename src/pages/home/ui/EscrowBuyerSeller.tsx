@@ -12,17 +12,17 @@ const buyerSteps: SideStep[] = [
 	{
 		title: "Pay like in any online shop",
 		description:
-			"Checkout feels completely normal: click, pay, done. Under the hood your money lands in an escrow contract instead of the seller's pocket, locked where nobody can touch it.",
+			"Checkout looks like any online store: click, pay, done. Your payment goes into the escrow contract, not to the seller, and stays locked there until the order is complete.",
 	},
 	{
-		title: "Get your order",
+		title: "Receive your order",
 		description:
-			"The seller delivers knowing the money is already there. The order chat keeps the full record.",
+			"The seller ships the goods or delivers files and services in the order chat. Every message and file is timestamped there, so there's always evidence of what was delivered.",
 	},
 	{
-		title: "Confirm, or dispute",
+		title: "Release the money, or dispute",
 		description:
-			"Happy? Confirm and the contract pays the seller. Not happy? Open a dispute and a jury decides.",
+			"Delivery matches the listing? You confirm, and the contract pays the seller that second. Wrong, late, or missing? You open a dispute: the money stays locked and a jury of five decides who gets it.",
 	},
 ];
 
@@ -30,17 +30,17 @@ const sellerSteps: SideStep[] = [
 	{
 		title: "Open your storefront",
 		description:
-			"Thirty seconds, no KYC. List services, files, or physical goods and share the link anywhere.",
+			"Thirty seconds, no KYC. List services, files, or physical goods, set the price and the escrow release window, and share your link.",
 	},
 	{
-		title: "Work with the money locked",
+		title: "Start after the money locks",
 		description:
-			"You only start once the buyer's payment is secured in escrow, on the release window you set for the listing. No invoices, no ghosting.",
+			"An order only begins once the buyer's payment is secured in the contract. You see the funds are there before you lift a finger, so you never work unpaid.",
 	},
 	{
-		title: "Get paid instantly",
+		title: "Deliver, then get paid",
 		description:
-			"The buyer confirms and the contract pays your wallet on the spot. Final, on-chain, no chargebacks.",
+			"You deliver through the order chat. The moment the buyer confirms, or the release window ends with no dispute, the contract sends the money to your wallet.",
 	},
 ];
 

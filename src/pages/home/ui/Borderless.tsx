@@ -2,32 +2,32 @@ import { Heading } from "~/shared/ui/kit/heading";
 import { Eyebrow, Reveal } from "./shared";
 
 /**
- * Zero-barrier story: no incorporation, no business banking, no
- * processor approval before the first sale. Full-width rhythm: short
- * intro, four points in one grid row, and the global trades as a
- * slow ticker instead of a static board.
+ * Financial-inclusion story: markets locked out of global commerce
+ * (no processors, no payouts, unreliable banking) can sell to the
+ * world through wallets. Full-width rhythm: short intro, four points
+ * in one grid row, and the worldwide trades as a slow ticker.
  */
 
 const points = [
 	{
-		title: "Test before you incorporate",
+		title: "Debanked doesn't mean shut out",
 		description:
-			"Open a storefront, list the offer, see if people pay. Validation first, paperwork later.",
-	},
-	{
-		title: "A wallet is the only account",
-		description:
-			"No business banking, no card processor, no payout onboarding. Connect and sell.",
+			"Where payment processors and payout providers don't operate, a wallet still works. That's the whole account.",
 	},
 	{
 		title: "Paid in stablecoins, instantly",
 		description:
-			"USDC clears the same way everywhere. No frozen payouts, no chargebacks.",
+			"USDC holds its value and clears the same in Lagos, Karachi, or Buenos Aires. No frozen payouts, no conversion haircuts.",
 	},
 	{
-		title: "Buyers reach you anywhere",
+		title: "Buyers from everywhere",
 		description:
-			"On-chain rails don't care about your postcode. If you can deliver, you can sell.",
+			"Your storefront is one link, reachable from any country. Escrow makes strangers safe to trade with.",
+	},
+	{
+		title: "Zero paperwork to start",
+		description:
+			"No company, no business bank account, no onboarding queue. Open a storefront and sell the same day.",
 	},
 ];
 
@@ -70,21 +70,21 @@ export function Borderless() {
 		<div className="py-[7rem] max-md:py-[4rem] overflow-hidden">
 			<div className="flex flex-col gap-[4rem] max-md:gap-[3rem] w-full">
 				<Reveal className="flex flex-col items-center text-center gap-[1.5rem] px-4 w-full max-w-content mx-auto">
-					<Eyebrow>Zero barrier to entry</Eyebrow>
+					<Eyebrow>Borderless by default</Eyebrow>
 
 					<Heading size="lg" className="tracking-[-0.02em]">
-						No bank. No LLC.
+						Talent has no borders.
 						<br />
 						<span className="bg-gradient-to-r from-accent-100 to-accent-hover bg-clip-text text-transparent">
-							Just your first sale.
+							Now selling doesn&apos;t either.
 						</span>
 					</Heading>
 
 					<p className="text-black-60 text-[1.0625rem] leading-[1.65] max-w-[38rem]">
-						Plenty of great sellers live where banking is slow, expensive,
-						or out of reach. Sella runs on wallets, not banks: open a
-						storefront and find out the same day whether people pay.
-						Talent has no borders. Now selling doesn&apos;t either.
+						Billions of people live where payment processors don&apos;t
+						operate and banks can&apos;t reach the global market. Their work
+						is world-class; their rails aren&apos;t. Sella runs on wallets:
+						if you can deliver, you can sell to anyone on Earth.
 					</p>
 				</Reveal>
 

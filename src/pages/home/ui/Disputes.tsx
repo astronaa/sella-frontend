@@ -1,5 +1,6 @@
 import { Heading } from "~/shared/ui/kit/heading";
 import { Eyebrow, Reveal } from "./shared";
+import { JuryVignette } from "./JuryVignette";
 
 /**
  * Dispute-resolution explainer. Mechanics sourced from the whitepaper
@@ -40,59 +41,6 @@ const pillars = [
 		),
 	},
 ];
-
-/**
- * Little jury vignette next to the heading: five jurors cast their
- * votes one by one on a shared 10s cycle, the tally lands, and the
- * verdict line lights up. Vote pattern is check, cross, check, check,
- * cross, so the majority visibly arrives on the fourth vote.
- */
-function JuryVignette() {
-	const votes = [true, false, true, true, false];
-
-	return (
-		<div className="hidden lg:flex flex-col items-center gap-[1.25rem] flex-shrink-0 w-[22rem]" aria-hidden>
-			<div className="flex gap-[1.25rem]">
-				{votes.map((approve, index) => (
-					<div key={index} className="flex flex-col items-center gap-[0.625rem]">
-						<span className="flex items-center justify-center size-[2.75rem] rounded-full bg-[#111111] shadow-[0_0_30px_-10px_rgba(255,255,255,0.2)]">
-							<svg viewBox="0 0 16 16" className="size-[1rem] fill-white/60">
-								<path d="M8 2a2.6 2.6 0 110 5.2A2.6 2.6 0 018 2zm0 6.4c2.9 0 5.2 1.5 5.2 3.4V13H2.8v-1.2c0-1.9 2.3-3.4 5.2-3.4z" />
-							</svg>
-						</span>
-
-						<span
-							className={`lp-cast lp-cast-${index} flex items-center justify-center size-[1.375rem] rounded-full ${
-								approve
-									? "bg-accent-100 text-black-100"
-									: "bg-white/[0.08] text-white/50"
-							}`}
-						>
-							{approve ? (
-								<svg viewBox="0 0 16 16" className="size-[0.625rem] fill-current">
-									<path d="M6.1 11.6L2.5 8l1.1-1.1 2.5 2.5 6.3-6.3L13.5 4.2z" />
-								</svg>
-							) : (
-								<svg viewBox="0 0 16 16" className="size-[0.625rem] fill-current">
-									<path d="M8 6.6L12.6 2 14 3.4 9.4 8 14 12.6 12.6 14 8 9.4 3.4 14 2 12.6 6.6 8 2 3.4 3.4 2 8 6.6z" />
-								</svg>
-							)}
-						</span>
-					</div>
-				))}
-			</div>
-
-			<span className="lp-verdict h-[1.5rem] w-px border-l border-dashed border-white/[0.18]" />
-
-			<div className="lp-verdict flex items-center gap-[0.625rem]">
-				<span className="text-accent-100 font-semibold text-[1.0625rem]">3 : 2</span>
-				<span className="rounded-full bg-accent-100/[0.09] px-[0.875rem] py-[0.375rem] text-[0.8125rem] text-accent-100">
-					verdict executed by the contract
-				</span>
-			</div>
-		</div>
-	);
-}
 
 export function Disputes() {
 	return (
