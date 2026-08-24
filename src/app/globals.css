@@ -412,14 +412,3 @@ body {
   .lp-enter-line { animation: none; }
   .lp-spot::after { display: none; }
 }
-
-/* the dashed orbit (and the trade riding it) turns once every 90s */
-.lp-orbit-turn {
-  animation: lp-orbit-turn 90s linear infinite;
-}
-@keyframes lp-orbit-turn {
-  to { transform: rotate(360deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .lp-orbit-turn { animation: none; }
-}
