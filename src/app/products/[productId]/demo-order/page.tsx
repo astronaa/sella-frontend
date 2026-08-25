@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchProduct } from "~/pages/product/api";
+import { staticProducts } from "~/shared/static-data/marketplace";
 import { CheckoutDemo } from "~/widgets/demo-order/ui/CheckoutDemo";
 
 interface PageProps {
@@ -20,4 +21,9 @@ export default async function Page({ params }: PageProps) {
 	return <CheckoutDemo product={product} />;
 }
 
-export const revalidate = 0;
+// Static export: prerender the demo order for every demo product.
+export function generateStaticParams() {
+	return staticProducts.map((product) => ({ productId: product.id }));
+}
+
+export const dynamicParams = false;

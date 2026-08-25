@@ -117,10 +117,6 @@ function StaticProductResults({ query }: Props) {
 				{searchQuery ? `Search results "${searchQuery}"` : "Featured products"}
 			</Heading>
 
-			<p className="max-w-[42rem] text-black-60">
-				This GitHub Pages preview uses static sample products while the live search backend is offline.
-			</p>
-
 			<div className={cn(
 				'grid grid-cols-4 gap-[2.5rem] w-full',
 				'max-md:grid-cols-1 max-lg:grid-cols-2 max-xl:grid-cols-3'
@@ -128,15 +124,17 @@ function StaticProductResults({ query }: Props) {
 				{products.map(product => (
 					<ProductCard.Root
 						product={product} key={product.id}
-						className='w-full mx-auto h-full'
+						className='w-full mx-auto h-full' asChild
 					>
-						<ProductCard.Image className='max-md:h-[15.875rem]' />
+						<ProductLink product={product}>
+							<ProductCard.Image className='max-md:h-[15.875rem]' />
 
-						<ProductCard.Content>
-							<ProductCard.Title />
-							<ProductCard.Description />
-							<ProductCard.Price />
-						</ProductCard.Content>
+							<ProductCard.Content>
+								<ProductCard.Title />
+								<ProductCard.Description />
+								<ProductCard.Price />
+							</ProductCard.Content>
+						</ProductLink>
 					</ProductCard.Root>
 				))}
 			</div>

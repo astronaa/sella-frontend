@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { fetchStore } from "../api";
 import { ProductsStream } from "./products-stream/Component";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
@@ -13,7 +14,11 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
       <div className="flex flex-col w-full max-w-content mx-auto max-xl:px-4">
         <EditMode.Root>
           <Heading />
-          <ProductsStream className="mb-[6rem] max-md:mb-[5rem]" />
+          {/* Suspense: the products grid reads search params (filters, pagination),
+              which the static export needs wrapped in a boundary. */}
+          <Suspense fallback={<div className="min-h-[30rem] mb-[6rem] max-md:mb-[5rem]" />}>
+            <ProductsStream className="mb-[6rem] max-md:mb-[5rem]" />
+          </Suspense>
         </EditMode.Root>
 
         {/* <SimilarStoreFronts

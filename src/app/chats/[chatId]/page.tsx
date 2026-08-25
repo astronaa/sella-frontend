@@ -1,18 +1,12 @@
-import { Heading } from "~/shared/ui/kit/heading";
+import { RedirectTo } from "~/shared/ui/redirect-to";
 
+/** Demo mode: single chat threads live inside the scripted inbox. */
 export default function Page() {
-	return (
-		<div className="flex flex-col w-full gap-[1.5rem] max-w-content mx-auto px-[1rem]">
-			<Heading>Chat unavailable</Heading>
-			<p className="max-w-[42rem] text-black-60">
-				Chat requires the live Sella backend and is disabled in this static GitHub Pages preview.
-			</p>
-		</div>
-	);
+	return <RedirectTo href="/chats" />;
 }
 
 export function generateStaticParams() {
-	return [{ chatId: "static-preview" }];
+	return [{ chatId: "demo" }];
 }
 
 export const dynamicParams = false;
