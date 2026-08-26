@@ -1,5 +1,7 @@
 import type { Review } from "~/shared/api/client";
 
+import { staticProducts } from "./marketplace";
+
 /**
  * Demo reviews keyed by product id. Same fail-soft role as the rest of
  * the static data: served only when the live API is unreachable.
@@ -204,6 +206,36 @@ function toReviews(productId: string, seeds: Seed[]): Review[] {
 		createdAt: new Date(now - daysAgo * 24 * 60 * 60 * 1000).toISOString(),
 		user: { username, avatarImage: null },
 	}));
+}
+
+export type StoreReview = Review & { productId: string; productName: string };
+
+/**
+ * Every review across one store's products, newest first.
+ *
+ * The API has no store-level review route (reviews hang off an order,
+ * an order is for one product, so `products/:productId/reviews` is the
+ * only way in). This rolls them up client-side so a shop page can show
+ * what buyers said without making you open a listing first. If a real
+ * `stores/:url/reviews` endpoint ever ships, this becomes its fallback.
+ */
+export function staticReviewsForStore(storeUrl: string, limit = 6) {
+	const items: StoreReview[] = staticProducts
+		.filter((product) => product.storeUrl === storeUrl)
+		.flatMap((product) => {
+			const seeds = REVIEW_SEEDS[product.id];
+			if (!seeds) return [];
+
+			return toReviews(product.id, seeds).map((review) => ({
+				...review,
+				productId: product.id,
+				productName: product.name ?? "",
+			}));
+		});
+
+	items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+	return { items: items.slice(0, limit), total: items.length };
 }
 
 export function staticReviewsForProduct(

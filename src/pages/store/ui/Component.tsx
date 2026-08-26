@@ -1,13 +1,15 @@
 import { Suspense } from "react";
-import { fetchStore } from "../api";
+import { fetchStore, fetchStoreReviews } from "../api";
 import { ProductsStream } from "./products-stream/Component";
 import { StorefrontOpenBanner } from "~/widgets/storefront-open";
 import { Heading } from "./Heading";
+import { StoreReviews } from "./StoreReviews";
 import { StoreOnPageProvider } from "./StoreOnPageProvider";
 import { EditMode } from "./edit-mode";
 
 export async function Component({ storeUrl }: { storeUrl: string }) {
   const store = await fetchStore(storeUrl);
+  const reviews = await fetchStoreReviews(storeUrl);
 
   return (
     <StoreOnPageProvider initialData={store}>
@@ -20,6 +22,12 @@ export async function Component({ storeUrl }: { storeUrl: string }) {
             <ProductsStream className="mb-[6rem] max-md:mb-[5rem]" />
           </Suspense>
         </EditMode.Root>
+
+        <StoreReviews
+          className="mb-[6rem] max-md:mb-[5rem]"
+          reviews={reviews.items}
+          total={reviews.total}
+        />
 
         {/* <SimilarStoreFronts
 					className='mb-[6rem] max-md:mb-[3rem]'
