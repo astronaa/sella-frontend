@@ -129,6 +129,69 @@ const REVIEW_SEEDS: Record<string, Seed[]> = {
 		["deck_doctor", true, 57, "Keynote version matched the Figma one exactly. No font chaos."],
 		["anon_founder", true, 89, "The ask-slide guidance stopped me from making the classic vague-ask mistake."],
 	],
+
+	// Restored shops. Every line below is a review a real buyer left on
+	// the live marketplace, recovered from the backend review seed, kept
+	// verbatim and attributed to the seed usernames it shipped with.
+	"roamy-1gb": [
+		["KhlidAlhamdan", true, 19, "A+++ solid"],
+		["Mawilliss", true, 27, "a++ works fine no issues"],
+		["HerrSosa9", true, 13, "good price for global esim. worth it"],
+		["Kommers1337", true, 6, "travelled 3 countries, same esim still good"],
+		["jponchain247", true, 9, "A++++ everything working fine"],
+		["KamalSilSaga", true, 11, "legit global esim. better than expected"],
+		["akimaki99", true, 14, "legit seller AAAA++++"],
+		["attorney", true, 18, "Kinda pricy but reliable, would buy again"],
+	],
+	"roamy-2gb": [
+		["MACAUEC", true, 21, "fast activation, worked right away"],
+		["CoinRuleHQ", true, 25, "ROAMY legit. signal strong everywhere"],
+		["vikraman_web3", true, 28, "LEGIT SERVICE FAST AND EASY"],
+		["micccc001", true, 12, "A+ service fast response, no dropouts"],
+		["CriptoBrasill_", true, 16, "smooth connection, 4G stable af"],
+		["im_insulting", true, 23, "connected right after scan. easy pz"],
+		["torqpad", false, 8, "stopped working after 3 days, should've had 15. seller fixed it later tho"],
+	],
+	"roamy-5gb": [
+		["Nobleheart01", true, 21, "worked fine in bali + singapore +rep"],
+		["CryptokenMedia", true, 25, "bit slow to send qr but worked great after"],
+		["whoisetimfon", true, 28, "no kyc needed. activated in seconds"],
+		["itsluvo", true, 12, "FAST DELIVERY +REP"],
+	],
+	"roamy-10gb": [
+		["Imoka_sol", true, 16, "no kyc is great. got a qr, scanned it, boom done"],
+		["kenn_ronin", true, 23, "instant delivery 🔥 smooth setup"],
+		["web3_sammy", true, 8, "setup took 2 mins. clean and easy"],
+	],
+	"roamy-20gb": [
+		["A_Osinski", true, 19, "works in thailand all good"],
+	],
+	"vpn-1m": [
+		["AlldeCruise", true, 6, "A++ fast setup, no issues"],
+		["DropDynamoX", true, 9, "used mullvad before, glad u accept usdt here"],
+		["911Winter", true, 11, "vpn WORKS GREAT 🔥"],
+		["Monadsheriff", true, 14, "fast access. clean trade +rep"],
+		["Thenewlagos", true, 18, "FINALLY a way to pay in usdt😎"],
+		["DomOnChain", true, 21, "runs smooth, no drops. legit"],
+		["Sankalwanga", true, 25, "good connection fast speeds"],
+		["Kingocheutaji", true, 28, "all good"],
+		["0xsupercoin", true, 12, "FAST DELIVERY +REP"],
+		["ar_stano", false, 16, "seller took 10 hours to deliver"],
+	],
+	"vpn-3m": [
+		["MaiPusSol", true, 23, "mullvad solid as always. A+"],
+		["chiiedoziie", true, 8, "bit slow to reply but got the acc string within an hourish so all good"],
+		["Whaleaped", true, 19, "A+ SERVICE FAST AND EASY"],
+		["decentraVic", true, 27, "mullvad is great, runs solid"],
+		["Costaaa_19", true, 13, "happy w it, thx man"],
+		["Grimm_0x", true, 6, "VPN OK 👍"],
+		["Cryptodecoder0x", true, 9, "all smooth here A+"],
+	],
+	"vpn-12m": [
+		["Balogun_WEB3", true, 11, "works fine on phone + pc"],
+		["0x3Peas", true, 14, "trusted seller. vpn legit"],
+		["shiverswitht", true, 18, "works perfectly. TY"],
+	],
 };
 
 function toReviews(productId: string, seeds: Seed[]): Review[] {

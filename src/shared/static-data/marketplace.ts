@@ -80,6 +80,35 @@ export const staticStores: Store[] = [
 		previewImage: "/demo/logo-design-market.jpg",
 		rating: { likes: 187, dislikes: 5, reviewsCount: 85 },
 	},
+
+	// Restored from the original marketplace. Product artwork is the real
+	// artwork these shops sold with, recovered from the design exports, and
+	// the reviews under them are the ones buyers actually left. Ratings are
+	// the counts those reviews add up to.
+	{
+		id: "static-roamy",
+		name: "Roamy",
+		url: "roamy",
+		description:
+			"Travel data that never asks who you are. Global eSIMs delivered as a QR code, activated in seconds, topped up whenever you like.",
+		isVerified: true,
+		ownerUsername: "roamy",
+		tagNames: ["eSIMS"],
+		previewImage: "/demo/logo-roamy.jpg",
+		rating: { likes: 22, dislikes: 1, reviewsCount: 23 },
+	},
+	{
+		id: "static-vpn",
+		name: "VPN",
+		url: "vpn",
+		description:
+			"Mullvad accounts paid for in crypto. The account number lands in the order chat: no email, no card, no name attached to it.",
+		isVerified: true,
+		ownerUsername: "vpn",
+		tagNames: ["Software"],
+		previewImage: "/demo/logo-vpn.jpg",
+		rating: { likes: 19, dislikes: 1, reviewsCount: 20 },
+	},
 ];
 
 interface DemoProductSeed {
@@ -418,6 +447,116 @@ const productSeeds: DemoProductSeed[] = [
 		cover: "/demo/p-pitch-deck.jpg",
 		rating: { likes: 29, dislikes: 1, reviewsCount: 12 },
 		totalSales: 84,
+	},
+
+	// roamy - the listing copy below is transcribed off the real product
+	// cards; prices and sales counts are the only invented fields, since
+	// those lived in the database and did not survive.
+	{
+		id: "roamy-1gb",
+		name: "1GB / 7 DAYS",
+		shortDescription: "Global eSIM, 105 countries, no KYC. QR in seconds.",
+		description:
+			"No KYC required. One-click installation. Completely anonymous. High-speed connectivity. Top up anytime, anywhere. Covers 105 countries worldwide. Data-only service with hotspot support. Validity starts upon first use in destination.",
+		category: "eSIMS",
+		price: 9,
+		storeUrl: "roamy",
+		cover: "/demo/p-roamy-1gb.jpg",
+		rating: { likes: 8, dislikes: 0, reviewsCount: 8 },
+		totalSales: 143,
+	},
+	{
+		id: "roamy-2gb",
+		name: "2GB / 15 DAYS",
+		shortDescription: "Two weeks of data across 105 countries, no ID needed.",
+		description:
+			"No KYC required. One-click installation. Completely anonymous. High-speed connectivity. Top up anytime, anywhere. Covers 105 countries worldwide. Data-only service with hotspot support. Validity starts upon first use in destination.",
+		category: "eSIMS",
+		price: 15,
+		storeUrl: "roamy",
+		cover: "/demo/p-roamy-2gb.jpg",
+		rating: { likes: 6, dislikes: 1, reviewsCount: 7 },
+		totalSales: 96,
+	},
+	{
+		id: "roamy-5gb",
+		name: "5GB / 30 DAYS",
+		shortDescription: "A month of travel data with hotspot support.",
+		description:
+			"No KYC required. One-click installation. Completely anonymous. High-speed connectivity. Top up anytime, anywhere. Covers 105 countries worldwide. Data-only service with hotspot support. Validity starts upon first use in destination.",
+		category: "eSIMS",
+		price: 25,
+		storeUrl: "roamy",
+		cover: "/demo/p-roamy-5gb.jpg",
+		rating: { likes: 4, dislikes: 0, reviewsCount: 4 },
+		totalSales: 78,
+	},
+	{
+		id: "roamy-10gb",
+		name: "10GB / 30 DAYS",
+		shortDescription: "Enough for a month of working on the road. Hotspot included.",
+		description:
+			"No KYC required. One-click installation. Completely anonymous. High-speed connectivity. Top up anytime, anywhere. Covers 105 countries worldwide. Data-only service with hotspot support. Validity starts upon first use in destination.",
+		category: "eSIMS",
+		price: 39,
+		storeUrl: "roamy",
+		cover: "/demo/p-roamy-10gb.jpg",
+		rating: { likes: 3, dislikes: 0, reviewsCount: 3 },
+		totalSales: 54,
+	},
+	{
+		id: "roamy-20gb",
+		name: "20GB / 30 DAYS",
+		shortDescription: "The heavy plan. Tether your laptop all month.",
+		description:
+			"No KYC required. One-click installation. Completely anonymous. High-speed connectivity. Top up anytime, anywhere. Covers 105 countries worldwide. Data-only service with hotspot support. Validity starts upon first use in destination.",
+		category: "eSIMS",
+		price: 59,
+		storeUrl: "roamy",
+		cover: "/demo/p-roamy-20gb.jpg",
+		rating: { likes: 1, dislikes: 0, reviewsCount: 1 },
+		totalSales: 31,
+	},
+
+	// vpn
+	{
+		id: "vpn-1m",
+		name: "1 Month Access",
+		shortDescription: "Mullvad account for a month, paid in USDT.",
+		description:
+			"A Mullvad VPN account with one month of time loaded on it. You get the account number in the order chat, which is the only credential Mullvad uses: no email, no password, no name. Works on phone and desktop, up to five devices.",
+		category: "Software",
+		price: 9,
+		storeUrl: "vpn",
+		cover: "/demo/p-vpn-1m.jpg",
+		rating: { likes: 9, dislikes: 1, reviewsCount: 10 },
+		totalSales: 118,
+	},
+	{
+		id: "vpn-3m",
+		name: "3 Month Access",
+		shortDescription: "A quarter of Mullvad, no card and no email.",
+		description:
+			"A Mullvad VPN account with three months of time loaded on it. Account number delivered in the order chat, usually within the hour. No email, no password, no name. Works on phone and desktop, up to five devices.",
+		category: "Software",
+		price: 24,
+		storeUrl: "vpn",
+		cover: "/demo/p-vpn-3m.jpg",
+		rating: { likes: 7, dislikes: 0, reviewsCount: 7 },
+		totalSales: 62,
+	},
+	{
+		id: "vpn-12m",
+		name: "12 Months Access",
+		shortDescription: "A full year, cheapest per month.",
+		description:
+			"A Mullvad VPN account with a full year of time loaded on it, the cheapest way to buy it here. Account number delivered in the order chat. No email, no password, no name. Works on phone and desktop, up to five devices.",
+		category: "Software",
+		price: 65,
+		storeUrl: "vpn",
+		cover: "/demo/p-vpn-12m.jpg",
+		rating: { likes: 3, dislikes: 0, reviewsCount: 3 },
+		totalSales: 44,
 	},
 ];
 
